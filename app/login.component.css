@@ -1,6 +1,6 @@
 .social-button-column {
     border-right: 1px solid #ccc;
-    padding: 0px 0px 0px 20px	
+    padding: 0px 0px 0px 20px
 }
 .social-login-btn {
   font-size: 200%;
@@ -25,7 +25,10 @@
   background-color: #3997ba;
   border-color: #347b95;
 }
-
+.social-github {
+  background-color: #323233;
+  border-color: #47618d;
+}
 .social-facebook {
   background-color: #4c699e;
   border-color: #47618d;
