@@ -1,6 +1,6 @@
 .social-button-column {
     border-right: 1px solid #ccc;
-    padding: 0 0 0 1.2%	
+    padding: 0 0 0 1.2%
 }
 .social-login-btn {
 	text-align: center;
@@ -16,7 +16,7 @@
   background-color: #da573b;
   border-color: #be5238;
 }
-.social-google:hover {
+.social-google:hover{
   background-color: #be5238;
   border-color: #9b4631;
 }
@@ -29,7 +29,10 @@
   background-color: #3997ba;
   border-color: #347b95;
 }
-
+.social-github {
+  background-color: #323233;
+  border-color: #47618d;
+}
 .social-facebook {
   background-color: #4c699e;
   border-color: #47618d;
