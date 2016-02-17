@@ -9,6 +9,7 @@ import { HomeComponent } from './home.component';
 import { LoginComponent } from './login.component';
 import { LoginService } from './login.service';
 import { LoggedInRouterOutlet } from './loggedinrouter.directive';
+import { MarketplaceComponent } from './marketplace.component';
 
 
 class CustomRequestOptions extends BaseRequestOptions {
@@ -17,7 +18,7 @@ class CustomRequestOptions extends BaseRequestOptions {
     let auth_header = "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
     this.headers.append('Authorization', auth_header);
   }
-} 
+}
 
 
 @Component({
@@ -37,7 +38,8 @@ class CustomRequestOptions extends BaseRequestOptions {
 @RouteConfig([
    { path: '/home', name: 'Home', component: HomeComponent, useAsDefault: true },
    { path: '/login', name: 'Login', component: LoginComponent },
-   { path: '/dashboard', name: 'Dashboard', component: DashboardComponent }
+   { path: '/dashboard', name: 'Dashboard', component: DashboardComponent },
+   { path: '/marketplace', name: 'Marketplace', component: MarketplaceComponent },
 ])
 export class AppComponent {
 }
