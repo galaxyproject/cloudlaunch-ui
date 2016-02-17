@@ -1,6 +1,7 @@
 // Based on: https://github.com/auth0/angular2-authentication-sample/blob/master/src/app/LoggedInOutlet.ts
 import {Directive, Attribute, ElementRef, DynamicComponentLoader} from 'angular2/core';
 import {Router, RouterOutlet, ComponentInstruction} from 'angular2/router';
+import { LoginService } from './login.service';
 
 @Directive({
   selector: 'router-outlet'
@@ -10,7 +11,8 @@ export class LoggedInRouterOutlet extends RouterOutlet {
   private parentRouter: Router;
 
   constructor(_elementRef: ElementRef, _loader: DynamicComponentLoader,
-              _parentRouter: Router, @Attribute('name') nameAttr: string) {
+              _parentRouter: Router, @Attribute('name') nameAttr: string,
+              private _loginService: LoginService) {
     super(_elementRef, _loader, _parentRouter, nameAttr);
 
     this.parentRouter = _parentRouter;
@@ -21,10 +23,18 @@ export class LoggedInRouterOutlet extends RouterOutlet {
   }
 
   activate(instruction: ComponentInstruction) {
-    var url = this.parentRouter.lastNavigationAttempt;
-    if (!this.publicRoutes[url] && !localStorage.getItem('jwt')) {
-      // todo: redirect to Login, may be there a better way?
-      this.parentRouter.navigateByUrl('/login');
+    let url = this.parentRouter.lastNavigationAttempt;
+    let outlet = this;
+    if (!this.publicRoutes[url]) {
+      let loginPromise = this._loginService.isLoggedIn().then((loggedIn) => {
+        if (loggedIn) {
+            return super.activate(instruction);
+        }
+        else {
+            this.parentRouter.navigateByUrl('/login');
+        } 
+       });
+       return loginPromise;
     }
     return super.activate(instruction);
   }

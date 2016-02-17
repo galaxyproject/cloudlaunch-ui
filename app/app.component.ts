@@ -20,8 +20,8 @@ import {LoggedInRouterOutlet} from './loggedinrouter.directive';
     ]
 })
 @RouteConfig([
-  { path: '/login', name: 'Login', component: LoginComponent, useAsDefault: true },
-  { path: '/home', name: 'Home', component: HomeComponent }
+  { path: '/home', name: 'Home', component: HomeComponent, useAsDefault: true },
+  { path: '/login', name: 'Login', component: LoginComponent }
 ])
 export class AppComponent {
 }

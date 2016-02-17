@@ -14,6 +14,6 @@ export class HomeComponent implements OnInit {
     }
     
     onSubmit() {
-        this.errorMessage = null;
+        //this.errorMessage = null;
     }
 }
