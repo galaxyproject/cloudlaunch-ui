@@ -1,10 +1,12 @@
 import { Component } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import {HTTP_PROVIDERS} from 'angular2/http';
+import { HTTP_PROVIDERS } from 'angular2/http';
+
+import { DashboardComponent } from './dashboard.component';
+import { HomeComponent } from './home.component';
 import { LoginComponent } from './login.component';
 import { LoginService } from './login.service';
-import { HomeComponent } from './home.component';
-import {LoggedInRouterOutlet} from './loggedinrouter.directive';
+import { LoggedInRouterOutlet } from './loggedinrouter.directive';
 
 @Component({
     selector: 'cloudlaunch-app',
@@ -21,7 +23,8 @@ import {LoggedInRouterOutlet} from './loggedinrouter.directive';
 })
 @RouteConfig([
   { path: '/home', name: 'Home', component: HomeComponent, useAsDefault: true },
-  { path: '/login', name: 'Login', component: LoginComponent }
+  { path: '/login', name: 'Login', component: LoginComponent },
+  { path: '/dashboard', name: 'Dashboard', component: DashboardComponent }
 ])
 export class AppComponent {
 }
