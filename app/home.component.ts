@@ -2,20 +2,20 @@ import { Component, OnInit } from 'angular2/core';
 import { Router } from 'angular2/router';
 
 @Component({
-    selector: 'home',
-    template: `
+   selector: 'home',
+   template: `
         <h2>CloudLaunch home</h2>
     `
 })
 export class HomeComponent implements OnInit {
 
-    constructor(
-        private _router: Router) { }
+   constructor(
+      private _router: Router) { }
 
-    ngOnInit() {
-    }
+   ngOnInit() {
+   }
 
-    onSubmit() {
-        //this.errorMessage = null;
-    }
+   onSubmit() {
+      //this.errorMessage = null;
+   }
 }
