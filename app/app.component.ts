@@ -5,6 +5,7 @@ import { HTTP_PROVIDERS } from 'angular2/http';
 import { RequestOptions, BaseRequestOptions } from 'angular2/http';
 
 import { ApplianceService } from './appliance.service';
+import { ApplianceDetailComponent } from './appliance-detail.component';
 import { DashboardComponent } from './dashboard.component';
 import { HomeComponent } from './home.component';
 import { LoginComponent } from './login.component';
@@ -40,6 +41,8 @@ class CustomRequestOptions extends BaseRequestOptions {
    { path: '/login', name: 'Login', component: LoginComponent },
    { path: '/dashboard', name: 'Dashboard', component: DashboardComponent },
    { path: '/marketplace', name: 'Marketplace', component: MarketplaceComponent },
+   { path: '/marketplace/appliance/:id', name: 'ApplianceDetail',
+     component: ApplianceDetailComponent },
 ])
 
 export class AppComponent {

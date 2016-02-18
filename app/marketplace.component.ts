@@ -22,4 +22,10 @@ export class MarketplaceComponent implements OnInit {
       this._appService.getAppliances()
          .then(apps => this.apps = apps);
    }
+
+   gotoDetail(app: Appliance) {
+      let link = ['ApplianceDetail', { id: app.id }];
+      this._router.navigate(link);
+   }
+
 }
