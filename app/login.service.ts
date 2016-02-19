@@ -24,9 +24,7 @@ export class LoginService {
                   loginService._login_method = "token";
                })
                .subscribe(
-               data => {
-                  resolve(true);
-               },
+               data => resolve(true),
                error => resolve(false)
                );
          });
