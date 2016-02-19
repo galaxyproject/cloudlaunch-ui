@@ -1,0 +1,34 @@
+<div *ngIf="appliance">
+
+   <div class="row cl-banner">
+      <div class="col-md-6">
+         <h2>{{ appliance.name }} appliance details</h2>
+      </div>
+      <div class="col-md-6">
+         <img class="pull-right" src="{{ appliance.logo }}">
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="col-md-6">
+         <div class="panel panel-default">
+            <div class="panel-heading">Appliance info</div>
+            <div class="panel-body">
+               {{ appliance.description }}
+            </div>
+         </div>
+      </div>
+      <div class="col-md-6">
+         <div class="panel panel-default">
+            <div class="panel-heading">Launch this appliance</div>
+            <div class="panel-body">
+               <i>TODO: Launch form</i>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <a (click)="goBack()" class="btn btn-raised btn-default">
+      <i class="material-icons">navigate_before</i> Back
+   </a>
+</div>
