@@ -3,12 +3,14 @@ import { RouteParams } from 'angular2/router';
 
 import { Appliance } from './appliance';
 import { ApplianceService } from './appliance.service';
+import { ApplianceLaunchFormComponent } from './appliance-launch-form.component';
 
 @Component({
   selector: 'appliance-detail',
   templateUrl: 'app/appliance-detail.component.html',
   styleUrls: ['app/appliance-detail.component.css'],
-  inputs: ['appliance']
+  inputs: ['appliance'],
+  directives: [ApplianceLaunchFormComponent]
 })
 export class ApplianceDetailComponent implements OnInit{
   appliance: Appliance;
