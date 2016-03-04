@@ -7,7 +7,7 @@ import {Observable}     from 'rxjs/Observable';
 export class LoginService {
    constructor(private _http: Http) { }
     
-   // TODO: This need to be obtained from some global config
+   // TODO: This needs to be obtained from some global config
    private _loginUrl = 'http://localhost:8000/api/v1/auth/login/';
    private _currentUserUrl = 'http://localhost:8000/api/v1/auth/user/';
    private _login_method = null;
@@ -24,12 +24,12 @@ export class LoginService {
                   loginService._login_method = "token";
                })
                .subscribe(
-               data => resolve(true),
-               error => resolve(false)
+                  data => resolve(true),
+                  error => resolve(false)
                );
          });
       }
-      // _auth_token will be empty when the SPA has started up, but the user has
+      // _login_method will be empty when the SPA has started up, but the user has
       // manually logged out, 
       else if (this._login_method == "") {
          return Promise.resolve(false);

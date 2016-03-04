@@ -3,11 +3,13 @@ import { Router } from 'angular2/router';
 
 import { Appliance } from './appliance';
 import { ApplianceService } from './appliance.service';
+import { StandardLayoutComponent } from './layouts/standard-layout.component';
 
 @Component({
    selector: 'marketplace',
    templateUrl: 'app/marketplace.component.html',
    styleUrls: ['app/marketplace.component.css'],
+   directives: [StandardLayoutComponent]
 })
 
 export class MarketplaceComponent implements OnInit {
