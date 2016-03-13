@@ -17,10 +17,9 @@
             </div>
 			<div class="col-md-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Launch this appliance</div>
+                    <div class="panel-heading">Launch this appliance {{ appliance.name }}</div>
                     <div class="panel-body">
-                        <appliance-launch-form [appliance]="appliance">
-                        </appliance-launch-form>
+                        <app-placeholder [appliance]="appliance" [component_path]="'./app/plugins/' + appliance.name.toLowerCase() + '.component'" [component_name]="appliance.name + 'ConfigComponent'"></app-placeholder>
                     </div>
                 </div>
             </div>

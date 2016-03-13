@@ -3,7 +3,7 @@ import { RouteParams } from 'angular2/router';
 
 import { Appliance } from './appliance';
 import { ApplianceService } from './appliance.service';
-import { ApplianceLaunchFormComponent } from './appliance-launch-form.component';
+import { AppPlaceHolderComponent } from './app-placeholder.component';
 import { StandardLayoutComponent } from './layouts/standard-layout.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { StandardLayoutComponent } from './layouts/standard-layout.component';
   templateUrl: 'app/appliance-detail.component.html',
   styleUrls: ['app/appliance-detail.component.css'],
   inputs: ['appliance'],
-  directives: [ApplianceLaunchFormComponent, StandardLayoutComponent]
+  directives: [AppPlaceHolderComponent, StandardLayoutComponent]
 })
 export class ApplianceDetailComponent implements OnInit{
   appliance: Appliance;
