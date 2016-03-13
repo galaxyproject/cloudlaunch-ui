@@ -1,7 +1,7 @@
 import { Injectable } from 'angular2/core';
 
-import { Appliance } from './appliance';
-import { APPS } from './mock-appliance';
+import { Appliance } from '../models/appliance';
+import { APPS } from '../models/mock-appliance';
 
 @Injectable()
 export class ApplianceService {

@@ -1,0 +1,14 @@
+<div class="list-group">
+	<div *ngFor="#app of apps" (click)="gotoDetail(app)" class="col-md-4">
+		<div class="list-group-item cl-app-badge">
+			<div class="row-picture">
+				<img class="circle" src="{{ app.logo }}" alt="Logo">
+			</div>
+			<div class="row-content">
+				<h4 class="list-group-item-heading">{{ app.name }}</h4>
+
+				<p class="list-group-item-text">{{ app.description }}</p>
+			</div>
+		</div>
+	</div>
+</div>

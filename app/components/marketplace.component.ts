@@ -1,14 +1,14 @@
 import { Component, OnInit } from 'angular2/core';
 import { Router } from 'angular2/router';
 
-import { Appliance } from './appliance';
-import { ApplianceService } from './appliance.service';
-import { StandardLayoutComponent } from './layouts/standard-layout.component';
+import { Appliance } from '../models/appliance';
+import { ApplianceService } from '../services/appliance.service';
+import { StandardLayoutComponent } from '../layouts/standard-layout.component';
 
 @Component({
    selector: 'marketplace',
-   templateUrl: 'app/marketplace.component.html',
-   styleUrls: ['app/marketplace.component.css'],
+   templateUrl: 'app/components/marketplace.component.html',
+   styleUrls: ['app/components/marketplace.component.css'],
    directives: [StandardLayoutComponent]
 })
 

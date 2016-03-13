@@ -1,5 +1,5 @@
-import { Component, View, DynamicComponentLoader, ElementRef, OnInit } from 'angular2/core';
-import { Appliance } from './appliance';
+import { Component, DynamicComponentLoader, ElementRef, OnInit } from 'angular2/core';
+import { Appliance } from '../models/appliance';
 
 
 @Component({
@@ -11,18 +11,16 @@ export class AppPlaceHolderComponent implements OnInit {
    appliance: Appliance;
    component_name: string;
    component_path: string;
-   loader: DynamicComponentLoader;
-   element_ref: ElementRef;
 
-   constructor(loader: DynamicComponentLoader, el: ElementRef) {
-      this.loader = loader;
-      this.element_ref = el;
+   constructor(
+      private _loader: DynamicComponentLoader,
+      private _element_ref: ElementRef) {
    }
 
    ngOnInit() {
       System.import(this.component_path)
         .then(m => {
-          this.loader.loadIntoLocation(m[this.component_name], this.element_ref, 'content')
+          this._loader.loadIntoLocation(m[this.component_name], this._element_ref, 'content')
             .then(res => {
                // set inputs
                res.instance.appliance = this.appliance;

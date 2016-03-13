@@ -1,11 +1,11 @@
 import { Component, OnInit } from 'angular2/core';
 import { Router } from 'angular2/router';
+import { StandardLayoutComponent } from '../layouts/standard-layout.component';
 
 @Component({
    selector: 'home',
-   template: `
-        <h2>CloudLaunch home</h2>
-    `
+   templateUrl: 'app/pages/home.component.html',
+   directives: [StandardLayoutComponent]
 })
 export class HomeComponent implements OnInit {
 

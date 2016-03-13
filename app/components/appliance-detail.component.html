@@ -1,0 +1,23 @@
+<div class="row">
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">Appliance info</div>
+			<div class="panel-body">{{ appliance.description }}</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">Launch this appliance: {{ appliance.name }}</div>
+			<div class="panel-body">
+				<app-placeholder [appliance]="appliance"
+					[component_path]="'./app/components/plugins/' + appliance.name.toLowerCase() + '.component'"
+					[component_name]="appliance.name + 'ConfigComponent'"></app-placeholder>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<a (click)="goBack()" class="btn btn-raised btn-default"> <i
+			class="material-icons">navigate_before</i> Back
+		</a>
+	</div>
+</div>

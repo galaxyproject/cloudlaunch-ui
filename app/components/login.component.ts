@@ -1,12 +1,12 @@
 import { Component, OnInit } from 'angular2/core';
 import { Router } from 'angular2/router';
-import { LoginService } from './login.service';
-import { StandardLayoutComponent } from './layouts/standard-layout.component';
+import { LoginService } from '../services/login.service';
+import { StandardLayoutComponent } from '../layouts/standard-layout.component';
 
 @Component({
    selector: 'login',
-   templateUrl: 'app/login.component.html',
-   styleUrls: ['app/login.component.css'],
+   templateUrl: 'app/components/login.component.html',
+   styleUrls: ['app/components/login.component.css'],
    directives: [StandardLayoutComponent]
 })
 export class LoginComponent implements OnInit {

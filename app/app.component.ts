@@ -4,14 +4,21 @@ import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/route
 import { HTTP_PROVIDERS } from 'angular2/http';
 import { RequestOptions, BaseRequestOptions } from 'angular2/http';
 
-import { ApplianceService } from './appliance.service';
-import { ApplianceDetailComponent } from './appliance-detail.component';
-import { DashboardComponent } from './dashboard.component';
-import { HomeComponent } from './home.component';
-import { LoginComponent } from './login.component';
-import { LoginService } from './login.service';
-import { LoggedInRouterOutlet } from './loggedinrouter.directive';
-import { MarketplaceComponent } from './marketplace.component';
+// Services
+import { ApplianceService } from './services/appliance.service';
+import { LoginService } from './services/login.service';
+import { LoggedInRouterOutlet } from './directives/loggedinrouter.directive';
+
+// Pages
+import { LoginPageComponent } from './pages/login.page.component';
+import { MarketplacePageComponent } from './pages/marketplace.page.component';
+import { ApplianceDetailPageComponent } from './pages/appliance-detail.page.component';
+import { HomeComponent } from './pages/home.component';
+
+// Components
+import { DashboardComponent } from './components/dashboard.component';
+
+
 
 class CustomRequestOptions extends BaseRequestOptions {
   constructor () {
@@ -37,12 +44,12 @@ class CustomRequestOptions extends BaseRequestOptions {
 })
 
 @RouteConfig([
-   { path: '/home', name: 'Home', component: HomeComponent, useAsDefault: true },
-   { path: '/login', name: 'Login', component: LoginComponent },
+   { path: '/home', name: 'Home', component: HomeComponent },
+   { path: '/login', name: 'Login', component: LoginPageComponent },
    { path: '/dashboard', name: 'Dashboard', component: DashboardComponent },
-   { path: '/marketplace', name: 'Marketplace', component: MarketplaceComponent },
+   { path: '/marketplace', name: 'Marketplace', component: MarketplacePageComponent, useAsDefault: true },
    { path: '/marketplace/appliance/:id', name: 'ApplianceDetail',
-     component: ApplianceDetailComponent },
+     component: ApplianceDetailPageComponent },
 ])
 
 export class AppComponent {
