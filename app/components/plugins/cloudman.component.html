@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">CloudMan Settings</div>
+            <div class="panel-body">
+                <form class="form">
+                    <!--  Cluster Type Selection -->
+                    <div class="form-group">
+                        <label for="cluster_type">Cluster Type</label> <select id="cluster_type"
+                            name="cluster_type" class="form-control">
+                            <option value="galaxy">Cluster with Galaxy</option>
+                            <option value="cluster">Cluster only</option>
+                            <option value="not_set">Do not set cluster type now</option>
+                        </select>
+                    </div>
+
+                    <!--  Storage Type Selection -->
+                    <div class="form-group">
+                        <label>Storage Type</label>
+                        <div class="radio">
+                            <label> <input type="radio" name="cluster_type"
+                                value="transient" />Transient instance storage
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label> <input type="radio" name="cluster_type" value="volume" />Persistent
+                                volume storage
+                            </label>
+                        </div>
+                    </div>
+
+                    <!--  Default bucket -->
+                    <div class="form-group label-floating is-empty">
+                        <label for="id_default_bucket" class="control-label">Default Bucket</label>
+                        <input id="id_default_bucket" name="default_bucket" type="text"
+                            class="form-control input-md">
+                        <span class="help-block">The default bucket to use. See CloudMan's
+                            wiki for a detailed description of this option.</span>
+                        <span class="material-input"></span>
+                    </div>
+
+                    <!-- Post Start Script -->
+                    <div class="form-group label-floating is-empty">
+                        <label for="id_post_start_script" class="control-label">Post-start</label>
+                        <input id="id_post_start_script" name="post_start_script" type="text"
+                            class="form-control input-md">
+                        <span class="help-block">A URL to the post-start script. See
+                            CloudMan's wiki for a detailed description of this option.</span>
+                        <span class="material-input"></span>
+                    </div>
+                    
+                    <!-- Worker Post Start Script -->
+                    <div class="form-group label-floating is-empty">
+                        <label for="id_worker_post_start_script" class="control-label">Worker post-start script</label>
+                        <input id="id_worker_post_start_script" name="worker_post_start_script" type="text"
+                            class="form-control input-md">
+                        <span class="help-block">A URL to the post-start script for worker nodes. See CloudMan's wiki for the description.</span>
+                        <span class="material-input"></span>
+                    </div>
+                    
+                    <!-- Shared Cluster String -->
+                    <div class="form-group label-floating is-empty">
+                        <label for="id_shared_cluster_string" class="control-label">Shared cluster string</label>
+                        <input id="id_shared_cluster_string" name="shared_cluster_string" type="text"
+                            class="form-control input-md">
+                        <span class="help-block">A share string to use for deriving this cluster instance.</span>
+                        <span class="material-input"></span>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
