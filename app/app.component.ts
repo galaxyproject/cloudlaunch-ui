@@ -52,5 +52,12 @@ class CustomRequestOptions extends BaseRequestOptions {
      component: ApplianceDetailPageComponent },
 ])
 
-export class AppComponent {
+export class AppComponent implements AfterViewChecked {
+   
+   ngAfterViewChecked() {
+      // Unfortunately, there's no single place to apply material effects
+      // and it's therefore done during this lifecycle method.
+      $.material.init();
+      $("select").dropdown();
+   }
 }
