@@ -1,5 +1,5 @@
 import { Component, OnInit } from 'angular2/core';
-import { Router } from 'angular2/router';
+import { Router, ROUTER_DIRECTIVES } from 'angular2/router';
 
 import { Application } from '../models/application';
 import { ApplicationService } from '../services/application.service';
@@ -9,7 +9,7 @@ import { StandardLayoutComponent } from '../layouts/standard-layout.component';
    selector: 'marketplace',
    templateUrl: 'app/components/marketplace.component.html',
    styleUrls: ['app/components/marketplace.component.css'],
-   directives: [StandardLayoutComponent]
+   directives: [StandardLayoutComponent, ROUTER_DIRECTIVES]
 })
 
 export class MarketplaceComponent implements OnInit {
@@ -23,10 +23,4 @@ export class MarketplaceComponent implements OnInit {
       this._appService.getApplications()
          .subscribe(apps => this.apps = apps);
    }
-
-   gotoDetail(app: Application) {
-      let link = ['ApplianceDetail', { slug: app.slug }];
-      this._router.navigate(link);
-   }
-
 }
