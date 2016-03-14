@@ -2,16 +2,16 @@
 	<div class="col-md-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">Appliance info</div>
-			<div class="panel-body">{{ appliance.description }}</div>
+			<div class="panel-body">{{ application.description }}</div>
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="panel panel-default">
-			<div class="panel-heading">Launch this appliance: {{ appliance.name }}</div>
+			<div class="panel-heading">Launch this appliance: {{ application.name }}</div>
 			<div class="panel-body">
-				<app-placeholder [appliance]="appliance"
-					[component_path]="'./app/components/plugins/' + appliance.name.toLowerCase() + '.component'"
-					[component_name]="appliance.name + 'ConfigComponent'"></app-placeholder>
+				<app-placeholder [application]="application"
+					[component_path]="application.frontend_component_path"
+					[component_name]="application.frontend_component_name"></app-placeholder>
 			</div>
 		</div>
 	</div>

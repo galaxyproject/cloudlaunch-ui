@@ -1,14 +1,14 @@
 import { Component, DynamicComponentLoader, ElementRef, OnInit } from 'angular2/core';
-import { Appliance } from '../models/appliance';
+import { Application } from '../models/application';
 
 
 @Component({
    selector: 'app-placeholder',
    template: `<span #content></span>`,
-   inputs: ['appliance', 'component_path', 'component_name'],
+   inputs: ['application', 'component_path', 'component_name'],
 })
 export class AppPlaceHolderComponent implements OnInit {
-   appliance: Appliance;
+   application: Application;
    component_name: string;
    component_path: string;
 
@@ -23,7 +23,7 @@ export class AppPlaceHolderComponent implements OnInit {
           this._loader.loadIntoLocation(m[this.component_name], this._element_ref, 'content')
             .then(res => {
                // set inputs
-               res.instance.appliance = this.appliance;
+               res.instance.application = this.application;
           });
         });
    }

@@ -5,7 +5,7 @@ import { HTTP_PROVIDERS } from 'angular2/http';
 import { RequestOptions, BaseRequestOptions } from 'angular2/http';
 
 // Services
-import { ApplianceService } from './services/appliance.service';
+import { ApplicationService } from './services/application.service';
 import { LoginService } from './services/login.service';
 import { LoggedInRouterOutlet } from './directives/loggedinrouter.directive';
 
@@ -39,7 +39,7 @@ class CustomRequestOptions extends BaseRequestOptions {
       ROUTER_PROVIDERS,
       HTTP_PROVIDERS,
       provide(RequestOptions, { useClass: CustomRequestOptions }),
-      LoginService, ApplianceService
+      LoginService, ApplicationService
    ]
 })
 
@@ -48,7 +48,7 @@ class CustomRequestOptions extends BaseRequestOptions {
    { path: '/login', name: 'Login', component: LoginPageComponent },
    { path: '/dashboard', name: 'Dashboard', component: DashboardComponent },
    { path: '/marketplace', name: 'Marketplace', component: MarketplacePageComponent, useAsDefault: true },
-   { path: '/marketplace/appliance/:id', name: 'ApplianceDetail',
+   { path: '/marketplace/appliance/:slug/', name: 'ApplianceDetail',
      component: ApplianceDetailPageComponent },
 ])
 

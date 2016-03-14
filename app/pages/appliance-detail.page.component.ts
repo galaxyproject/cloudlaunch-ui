@@ -2,7 +2,10 @@ import { Component, OnInit } from 'angular2/core';
 import { RouteParams } from 'angular2/router';
 
 // Services
-import { ApplianceService } from '../services/appliance.service';
+import { ApplicationService } from '../services/application.service';
+
+// Models
+import { Application } from '../models/application';
 
 // Components
 import { StandardLayoutComponent } from '../layouts/standard-layout.component';
@@ -15,18 +18,17 @@ import { ApplianceDetailComponent } from '../components/appliance-detail.compone
    directives: [StandardLayoutComponent, ApplianceDetailComponent]
 })
 export class ApplianceDetailPageComponent implements OnInit {
-   appliance: Appliance;
+   application: Application;
 
    constructor(
-      private _applianceService: ApplianceService,
+      private _applicationService: ApplicationService,
       private _routeParams: RouteParams) {
    }
 
    ngOnInit() {
-      let id = +this._routeParams.get('id');
-
-      this._applianceService.getAppliance(id)
-         .then(appliance => this.appliance = appliance);
+      let slug = this._routeParams.get('slug');
+      this._applicationService.getApplication(slug)
+         .subscribe(application => this.application = application);
    }
 
 }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from 'angular2/core';
 import { Router } from 'angular2/router';
 
-import { Appliance } from '../models/appliance';
-import { ApplianceService } from '../services/appliance.service';
+import { Application } from '../models/application';
+import { ApplicationService } from '../services/application.service';
 import { StandardLayoutComponent } from '../layouts/standard-layout.component';
 
 @Component({
@@ -13,20 +13,19 @@ import { StandardLayoutComponent } from '../layouts/standard-layout.component';
 })
 
 export class MarketplaceComponent implements OnInit {
-   apps: Appliance[] = [];
+   apps: Application[] = [];
 
    constructor(
       private _router: Router,
-      private _appService: ApplianceService) {
-   }
+      private _appService: ApplicationService) {}
 
    ngOnInit() {
-      this._appService.getAppliances()
-         .then(apps => this.apps = apps);
+      this._appService.getApplications()
+         .subscribe(apps => this.apps = apps);
    }
 
-   gotoDetail(app: Appliance) {
-      let link = ['ApplianceDetail', { id: app.id }];
+   gotoDetail(app: Application) {
+      let link = ['ApplianceDetail', { slug: app.slug }];
       this._router.navigate(link);
    }
 

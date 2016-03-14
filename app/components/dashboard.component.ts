@@ -6,7 +6,7 @@ import { Router } from 'angular2/router';
    templateUrl: 'app/components/dashboard.component.html',
    styleUrls: ['app/components/dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
    public cloudName = "Mock cloud";
 
    constructor(

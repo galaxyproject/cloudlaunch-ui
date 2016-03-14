@@ -1,17 +1,17 @@
-<div *ngIf="appliance">
-<standard-layout>
-    <page_header>
-        <div class="col-md-6">
-	       <h2>{{ appliance.name }} appliance details</h2>
-        </div>
-        <div class="col-md-6">
-	       <img class="pull-right" src="{{ appliance.logo }}" />
-        </div>
-    </page_header>
-    <page_body>
-        <div class="col-md-12">
-	       <appliance-detail [(appliance)]="appliance"></appliance-detail>
-        </div>
-    </page_body>
-</standard-layout>
+<div *ngIf="application">
+	<standard-layout>
+	    <page_header>
+	        <div class="col-md-6">
+		       <h2>{{ application.name }} appliance details</h2>
+	        </div>
+	        <div class="col-md-6">
+		       <img class="pull-right" src="{{ application.icon_url }}" />
+	        </div>
+	    </page_header>
+	    <page_body>
+	        <div class="col-md-12">
+		       <appliance-detail [(application)]="application"></appliance-detail>
+	        </div>
+	    </page_body>
+	</standard-layout>
 </div>

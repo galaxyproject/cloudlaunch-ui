@@ -2,7 +2,7 @@ import { Component, View, DynamicComponentLoader, ElementRef } from 'angular2/co
 
 @Component({
    selector: 'galaxy-config',
-   template: `<div><i>Galaxy Application template: Appliance name: {{ appliance.name }} </i></div>`,
-   inputs: ['appliance']
+   template: `<div><i>Galaxy Application template: Appliance name: {{ application.name }} </i></div>`,
+   inputs: ['application']
 })
 export class GalaxyConfigComponent {}

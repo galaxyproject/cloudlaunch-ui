@@ -2,7 +2,7 @@ import { Component, View, DynamicComponentLoader, ElementRef } from 'angular2/co
 
 @Component({
    selector: 'gvl-config',
-   template: `<div><i>GVL application template: appliance name {{ appliance.name }} </i></div>`,
-   inputs: ['appliance']
+   template: `<div><i>GVL application template: appliance name {{ application.name }} </i></div>`,
+   inputs: ['application']
 })
 export class GVLConfigComponent {}
