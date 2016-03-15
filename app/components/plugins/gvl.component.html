@@ -1,0 +1,30 @@
+<config-panel>
+    <panel-header>GVL Settings</panel-header>
+    <panel-body>
+        <form class="form">
+        
+            <!--  CloudMan settings -->
+            <cloudman-config></cloudman-config>
+        
+            <!--  GVL Component Selection -->
+            <config-panel>
+                <panel-header>Additional GVL Settings</panel-header>
+                <panel-body>
+                    <div class="form-group">
+                        <label>Additional Applications</label>
+                        <div class="checkbox">
+                            <label> <input type="checkbox" name="gvlapp_cmdlineutils" value="cmdline_utils" />
+                                GVL Commandline Utilities
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label> <input type="checkbox" name="gvlapp_smrt_analysis" value="smrt_analysis" />
+                                PacBio SMRT Analysis
+                            </label>
+                        </div>
+                    </div>
+                </panel-body>
+            </config-panel>        
+        </form>
+    </panel-body>
+</config-panel>
