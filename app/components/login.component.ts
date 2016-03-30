@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
    onSubmit() {
       this.errorMessage = null;
       this._loginService.login(this.email, this.password, this.rememberMe).subscribe(
-         data  => this._router.parent.navigate(['Home']),
+         data  => this._router.parent.navigate(['Marketplace']),
          error => this.errorMessage = <any>error);
    }
 }
