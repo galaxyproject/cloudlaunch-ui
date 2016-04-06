@@ -1,14 +1,20 @@
 <config-panel>
     <panel-header>CloudMan Settings</panel-header>
     <panel-body>
-        <form class="form" (ngSubmit)="onSubmit()" #f="ngForm">
+        <form class="form"
+              (ngSubmit)="onSubmit(clusterForm.value)"
+              [ngFormModel]="clusterForm">
+
             <!-- Cluster name -->
             <div class="form-group label-floating is-empty">
-                <label for="id_cluster_name" class="control-label">Cluster name</label>
-                <!--<input id="id_cluster_name" name="cluster_name" type="text"
-                    class="form-control input-md" required>-->
-                <input type="text" [(ngModel)]="cluster.clusterName" required
-                    class="form-control input-md">
+                <label for="id_cluster_name" class="control-label">
+                    Cluster name
+                </label>
+                <input type="text"
+                       id="cluster_name"
+                       class="form-control input-md"
+                       required
+                       [ngFormControl]="clusterForm.controls['cluster_name']">
                 <span class="help-block">
                     Name of your cluster used for identification and "restarting.
                     If creating a new cluster, type any name you like.
@@ -33,13 +39,15 @@
                 <label>Storage Type</label>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="cluster_type" value="transient" (click)="setStorage('transient')" />
+                        <input type="radio" name="cluster_type" value="transient" (click)="setStorage('transient')" checked *ngIf="storageType=='transient'" />
+                        <input type="radio" name="cluster_type" value="transient" (click)="setStorage('transient')" *ngIf="storageType!='transient'"/>
                         Transient instance storage
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="cluster_type" value="volume" (click)="setStorage('volume')" />
+                        <input type="radio" name="cluster_type" value="volume" (click)="setStorage('volume')" *ngIf="storageType!='volume'"/>
+                        <input type="radio" name="cluster_type" value="volume" (click)="setStorage('volume')" checked *ngIf="storageType=='volume'" />
                         Persistent volume storage
                     </label>
                 </div>
@@ -110,7 +118,7 @@
                 <span class="material-input"></span>
             </div>
 
-            <button type="submit" class="btn btn-raised btn-default" [disabled]="!f.valid">Next</button>
+            <button type="submit" class="btn btn-raised btn-default">Next</button>
 
         </form>
     </panel-body>
