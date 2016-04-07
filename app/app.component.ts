@@ -17,6 +17,7 @@ import { HomeComponent } from './pages/home.component';
 
 // Components
 import { DashboardComponent } from './components/dashboard.component';
+import { CloudLaunchComponent } from './components/cloudlaunch.component';
 
 
 
@@ -50,10 +51,12 @@ class CustomRequestOptions extends BaseRequestOptions {
    { path: '/marketplace', name: 'Marketplace', component: MarketplacePageComponent, useAsDefault: true },
    { path: '/marketplace/appliance/:slug/', name: 'ApplianceDetail',
      component: ApplianceDetailPageComponent },
+   { path: '/marketplace/appliance/:slug/launch', name: 'Launch',
+     component: CloudLaunchComponent }
 ])
 
 export class AppComponent implements AfterViewChecked {
-   
+
    ngAfterViewChecked() {
       // Unfortunately, there's no single place to apply material effects
       // and it's therefore done during this lifecycle method.
