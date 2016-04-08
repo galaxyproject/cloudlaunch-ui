@@ -60,3 +60,13 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Angular-compiled JavaScript files
+*.js
+*.js.map
+
+# Local system files
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+node_modules/
