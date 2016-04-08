@@ -12,9 +12,15 @@ import { CloudService } from '../services/cloud.service';
 })
 
 export class CloudLaunchComponent implements OnInit {
-    clouds: Cloud[] = [];
     errorMessage: string;
     showAdvanced: boolean = false;
+
+    selectedCloud: Cloud;
+    clouds: Cloud[] = [];
+    // clouds: Cloud[] = [
+    //     { name: 'cl1', slug: 'c1s' },
+    //     { name: 'cl2', slug: 'c2s' },
+    // ]
 
     // launchForm: ControlGroup;
     constructor(private _cloudService: CloudService, fb: FormBuilder) {

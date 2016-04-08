@@ -1,0 +1,18 @@
+<cloudlaunch-config>
+
+
+   <div class="form-group">
+      <ul>
+         <li *ngFor="#cloud of clouds">{{ cloud.name }}, {{ cloud.slug }}</li>
+      </ul>
+      --
+      <select>
+         <option *ngFor="#cloud of clouds" [value]="cloud.slug">
+            {{ cloud.name }}
+         </option>
+      </select>
+
+   </div>
+
+   <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
+</cloudlaunch-config>
