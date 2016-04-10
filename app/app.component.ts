@@ -51,8 +51,8 @@ class CustomRequestOptions extends BaseRequestOptions {
    { path: '/marketplace', name: 'Marketplace', component: MarketplacePageComponent, useAsDefault: true },
    { path: '/marketplace/appliance/:slug/', name: 'ApplianceDetail',
      component: ApplianceDetailPageComponent },
-   { path: '/marketplace/appliance/:slug/launch', name: 'Launch',
-     component: CloudLaunchComponent }
+   // { path: '/marketplace/appliance/:slug/launch', name: 'Launch',
+   //   component: CloudLaunchComponent }
 ])
 
 export class AppComponent implements AfterViewChecked {

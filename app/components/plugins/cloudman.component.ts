@@ -6,6 +6,8 @@ import {
    ControlGroup,
    AbstractControl} from 'angular2/common';
 import { Router, RouteParams } from 'angular2/router';
+
+import { CloudLaunchComponent } from '../cloudlaunch.component';
 // import { CloudManCloud } from './cloudmancloud.component';
 
 // @RouteConfig([
@@ -37,7 +39,8 @@ export class CloudManConfigService {
    templateUrl: 'app/components/plugins/cloudman.component.html',
    inputs: ['application'],
    providers: [CloudManConfigService],
-   directives: [ConfigPanelComponent, FORM_DIRECTIVES]
+   directives: [ConfigPanelComponent, CloudLaunchComponent,
+                FORM_DIRECTIVES]
 })
 
 export class CloudManConfigComponent {

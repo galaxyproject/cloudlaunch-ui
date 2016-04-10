@@ -1,125 +1,136 @@
 <config-panel>
-    <panel-header>CloudMan Settings</panel-header>
-    <panel-body>
-        <form class="form"
-              (ngSubmit)="onSubmit(clusterForm.value)"
-              [ngFormModel]="clusterForm">
+   <panel-header>CloudMan Settings</panel-header>
+   <panel-body>
+      <form class="form"
+           (ngSubmit)="onSubmit(clusterForm.value)"
+           [ngFormModel]="clusterForm">
 
-            <!-- Cluster name -->
-            <div class="form-group label-floating is-empty">
-                <label for="id_cluster_name" class="control-label">
-                    Cluster name
-                </label>
-                <input type="text"
-                       id="cluster_name"
-                       class="form-control input-md"
-                       required
-                       [ngFormControl]="clusterForm.controls['cluster_name']">
-                <span class="help-block">
-                    Name of your cluster used for identification and "restarting.
-                    If creating a new cluster, type any name you like.
-                </span>
-                <span class="material-input"></span>
-            </div>
+         <!-- Cloud launching part of the form -->
+         <!-- TODO: move to the bottom once functional -->
+         <cloudlaunch-config></cloudlaunch-config>
 
-            <!-- Access password -->
-            <div class="form-group label-floating is-empty">
-                <label for="id_password" class="control-label">Access password</label>
-                <input id="id_password" name="password" type="password"
-                    class="form-control input-md" required>
-                <span class="help-block">
-                    Your choice of password, for the CloudMan web interface and
-                    accessing the cluster via ssh.
-                </span>
-                <span class="material-input"></span>
-            </div>
+         <config-panel>
+            <panel-header>CloudMan Configuration</panel-header>
+               <panel-body>
 
-            <!--  Storage Type Selection -->
-            <div class="form-group">
-                <label>Storage Type</label>
-                <div class="radio">
-                    <label>
+               <!-- Cluster name -->
+               <div class="form-group label-floating is-empty">
+                  <label for="id_cluster_name" class="control-label">
+                     Cluster name
+                  </label>
+                  <input type="text"
+                        id="cluster_name"
+                        class="form-control input-md"
+                        required
+                        [ngFormControl]="clusterForm.controls['cluster_name']">
+                  <span class="help-block">
+                     Name of your cluster used for identification and "restarting.
+                     If creating a new cluster, type any name you like.
+                  </span>
+                  <span class="material-input"></span>
+               </div>
+
+               <!-- Access password -->
+               <div class="form-group label-floating is-empty">
+                  <label for="id_password" class="control-label">Access password</label>
+                  <input id="id_password" name="password" type="password"
+                     class="form-control input-md" required>
+                  <span class="help-block">
+                     Your choice of password, for the CloudMan web interface and
+                     accessing the cluster via ssh.
+                  </span>
+                  <span class="material-input"></span>
+               </div>
+
+               <!--  Storage Type Selection -->
+               <div class="form-group">
+                  <label>Storage Type</label>
+                  <div class="radio">
+                     <label>
                         <input type="radio" name="cluster_type" value="transient" (click)="setStorage('transient')" checked *ngIf="storageType=='transient'" />
                         <input type="radio" name="cluster_type" value="transient" (click)="setStorage('transient')" *ngIf="storageType!='transient'"/>
                         Transient instance storage
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
+                     </label>
+                  </div>
+                  <div class="radio">
+                     <label>
                         <input type="radio" name="cluster_type" value="volume" (click)="setStorage('volume')" *ngIf="storageType!='volume'"/>
                         <input type="radio" name="cluster_type" value="volume" (click)="setStorage('volume')" checked *ngIf="storageType=='volume'" />
                         Persistent volume storage
-                    </label>
-                </div>
-            </div>
+                     </label>
+                  </div>
+               </div>
 
-            <!--  Storage size -->
-            <div class="form-group" *ngIf="storageType=='volume'">
-                <label for="id_storage_size" class="control-label">Storage size</label>
-                <input type="number" [(ngModel)]="cluster.storageSize" required
-                    class="form-control input-md">
-                <span class="help-block">
-                    Desired size of your persistent storage.
-                </span>
-                <span class="material-input"></span>
-            </div>
+               <!--  Storage size -->
+               <div class="form-group" *ngIf="storageType=='volume'">
+                  <label for="id_storage_size" class="control-label">Storage size</label>
+                  <input type="number" [(ngModel)]="cluster.storageSize" required
+                     class="form-control input-md">
+                  <span class="help-block">
+                     Desired size of your persistent storage.
+                  </span>
+                  <span class="material-input"></span>
+               </div>
 
-            <div class="togglebutton">
-                <label>
-                    <input type="checkbox" (click)="toggleAdvanced()">Advanced options
-                </label>
-            </div>
+               <div class="togglebutton">
+                  <label>
+                     <input type="checkbox" (click)="toggleAdvanced()">Advanced options
+                  </label>
+               </div>
 
-            <!--  Cluster Type Selection -->
-            <div class="form-group" *ngIf="showAdvanced">
-                <label for="cluster_type">Cluster Type</label>
-                <select id="cluster_type" name="cluster_type" class="form-control">
-                    <option *ngFor="#cType of clusterTypes" value="{{ cType.value }}">
+               <!--  Cluster Type Selection -->
+               <div class="form-group" *ngIf="showAdvanced">
+                  <label for="cluster_type">Cluster Type</label>
+                  <select id="cluster_type" name="cluster_type" class="form-control">
+                     <option *ngFor="#cType of clusterTypes" value="{{ cType.value }}">
                         {{ cType.title }}
-                    </option>
-                </select>
-            </div>
+                     </option>
+                  </select>
+               </div>
 
-            <!--  Default bucket -->
-            <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
-                <label for="id_default_bucket" class="control-label">Default Bucket</label> <input
-                    id="id_default_bucket" name="default_bucket" type="text" class="form-control input-md">
-                <span class="help-block">The default bucket to use. See CloudMan's wiki for a
-                    detailed description of this option.</span>
-                <span class="material-input"></span>
-            </div>
+               <!--  Default bucket -->
+               <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
+                  <label for="id_default_bucket" class="control-label">Default Bucket</label> <input
+                     id="id_default_bucket" name="default_bucket" type="text" class="form-control input-md">
+                  <span class="help-block">The default bucket to use. See CloudMan's wiki for a
+                     detailed description of this option.</span>
+                  <span class="material-input"></span>
+               </div>
 
-            <!-- Post Start Script -->
-            <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
-                <label for="id_post_start_script" class="control-label">Post-start</label> <input
-                    id="id_post_start_script" name="post_start_script" type="text"
-                    class="form-control input-md">
-                <span class="help-block">A URL to the post-start script. See CloudMan's wiki for a
-                    detailed description of this option.</span>
-                <span class="material-input"></span>
-            </div>
+               <!-- Post Start Script -->
+               <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
+                  <label for="id_post_start_script" class="control-label">Post-start</label> <input
+                     id="id_post_start_script" name="post_start_script" type="text"
+                     class="form-control input-md">
+                  <span class="help-block">A URL to the post-start script. See CloudMan's wiki for a
+                     detailed description of this option.</span>
+                  <span class="material-input"></span>
+               </div>
 
-            <!-- Worker Post Start Script -->
-            <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
-                <label for="id_worker_post_start_script" class="control-label">Worker post-start
-                    script</label> <input id="id_worker_post_start_script" name="worker_post_start_script"
-                    type="text" class="form-control input-md">
-                <span class="help-block">A URL to the post-start script for worker nodes. See
-                    CloudMan's wiki for the description.</span>
-                <span class="material-input"></span>
-            </div>
+               <!-- Worker Post Start Script -->
+               <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
+                  <label for="id_worker_post_start_script" class="control-label">Worker post-start
+                     script</label> <input id="id_worker_post_start_script" name="worker_post_start_script"
+                     type="text" class="form-control input-md">
+                  <span class="help-block">A URL to the post-start script for worker nodes. See
+                     CloudMan's wiki for the description.</span>
+                  <span class="material-input"></span>
+               </div>
 
-            <!-- Shared Cluster String -->
-            <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
-                <label for="id_shared_cluster_string" class="control-label">Shared cluster string</label> <input
-                    id="id_shared_cluster_string" name="shared_cluster_string" type="text"
-                    class="form-control input-md">
-                <span class="help-block">A share string to use for deriving this cluster instance.</span>
-                <span class="material-input"></span>
-            </div>
+               <!-- Shared Cluster String -->
+               <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
+                  <label for="id_shared_cluster_string" class="control-label">Shared cluster string</label> <input
+                     id="id_shared_cluster_string" name="shared_cluster_string" type="text"
+                     class="form-control input-md">
+                  <span class="help-block">A share string to use for deriving this cluster instance.</span>
+                  <span class="material-input"></span>
+               </div>
 
-            <button type="submit" class="btn btn-raised btn-default">Next</button>
+            </panel-body>
+         </config-panel>
 
-        </form>
-    </panel-body>
+         <button type="submit" class="btn btn-raised btn-default">Launch</button>
+
+      </form>
+   </panel-body>
 </config-panel>

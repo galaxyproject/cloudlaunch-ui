@@ -3,12 +3,13 @@ import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
 
 import { Cloud } from '../models/cloud';
 import { CloudService } from '../services/cloud.service';
+import { ConfigPanelComponent } from '../layouts/config-panel.component';
 
 @Component({
   selector: 'cloudlaunch-config',
   templateUrl: 'app/components/cloudlaunch.component.html',
   providers: [CloudService],
-  directives: [FORM_DIRECTIVES]
+  directives: [ConfigPanelComponent, FORM_DIRECTIVES]
 })
 
 export class CloudLaunchComponent implements OnInit {
@@ -23,7 +24,8 @@ export class CloudLaunchComponent implements OnInit {
     // ]
 
     // launchForm: ControlGroup;
-    constructor(private _cloudService: CloudService, fb: FormBuilder) {
+    constructor(private _cloudService: CloudService,
+                fb: FormBuilder) {
         // this.launchForm = fb.group({
         //     // 'clouds': this.clouds
         // });
@@ -36,7 +38,8 @@ export class CloudLaunchComponent implements OnInit {
     getClouds() {
         this._cloudService.getClouds()
             .subscribe(clouds => this.clouds = clouds,
-                       error => this.errorMessage = <any>error);
+                       error => this.errorMessage = <any>error,
+                       () => console.log('done: ', this.clouds));
     }
 
     toggleAdvanced() {

@@ -1,18 +1,18 @@
-<cloudlaunch-config>
+<config-panel>
+   <panel-header>Cloud Launch Settings</panel-header>
+   <panel-body>
+      <div class="form-group">
+         <ul>
+            <li *ngFor="#cloud of clouds">{{ cloud.name }}, {{ cloud.slug }}</li>
+         </ul>
+         --
+         <select [(ngModel)]="selectedCloud">
+            <option *ngFor="#cloud of clouds" [value]="cloud.name">
+               {{ cloud.name }}
+            </option>
+         </select>
+      </div>
 
-
-   <div class="form-group">
-      <ul>
-         <li *ngFor="#cloud of clouds">{{ cloud.name }}, {{ cloud.slug }}</li>
-      </ul>
-      --
-      <select>
-         <option *ngFor="#cloud of clouds" [value]="cloud.slug">
-            {{ cloud.name }}
-         </option>
-      </select>
-
-   </div>
-
-   <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
-</cloudlaunch-config>
+      <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
+   </panel-body>
+</config-panel>
