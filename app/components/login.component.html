@@ -32,8 +32,7 @@
 				<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
 					<div class="alert alert-danger" role="alert" *ngIf="errorMessage">
 						<span class="glyphicon glyphicon-exclamation-sign"
-							aria-hidden="true"></span> <span class="sr-only">Error:</span> {{
-						errorMessage }}
+							aria-hidden="true"></span> <span class="sr-only">Error:</span> {{ errorMessage }}
 					</div>
 					<!-- TODO: The dummy ngIf below is a workaround for bug: https://github.com/angular/angular/issues/6374 -->
 					<fieldset *ngIf="true">
