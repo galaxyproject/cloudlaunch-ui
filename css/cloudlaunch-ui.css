@@ -1,0 +1,87 @@
+/* FOOTER */
+
+.footer {
+    background: AliceBlue;
+    height: 130px;
+    position: relative;
+    width: 100%;
+    border-top: 1px solid #DDDDDD;
+}
+.footer img {
+  filter: gray; /* IE6-9 */
+  filter: grayscale(1); /* Firefox 35+ */
+  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+  max-width: 200px;
+  max-height: 100px;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+/* Disable grayscale on hover */
+.footer img:hover {
+  filter: none;
+  -webkit-filter: grayscale(0);
+  max-width: 200px;
+  max-height: 100px;
+}
+
+.frame {
+    height: 130px; /* equals frame height */
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.footer p {
+    margin: 0;
+}
+.footer h3 {
+    border-bottom: 1px solid #BAC1C8;
+    color: #54697E;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 10px;
+    padding: 5px 0 10px;
+    text-transform: uppercase;
+}
+.footer ul {
+    font-size: 13px;
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+    margin-top: 5px;
+    color: #7F8C8D;
+}
+.footer ul li a {
+    padding: 0 0 5px 0;
+    display: block;
+}
+.footer a {
+    color: #78828D
+}
+
+/* Sticky Footer - http://ryanfait.com/resources/footer-stick-to-bottom-of-page/ */
+
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+.wrapper {
+    min-height: 100%;
+    margin: 0 auto -130px; /* the bottom margin is the negative value of the footer's height */
+}
+footer, .push {
+    height: 130px; /* '.push' must be the same height as 'footer' */
+}
+
+/* END FOOTER */

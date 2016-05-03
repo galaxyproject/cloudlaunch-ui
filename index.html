@@ -37,6 +37,7 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap-material-design.css">
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap-material-design/dist/css/ripples.min.css">
     <link href="//cdn.rawgit.com/FezVrasta/dropdown.js/master/jquery.dropdown.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/cloudlaunch-ui.css">
 
     <!-- 3. Configure SystemJS -->
     <script>
@@ -66,34 +67,59 @@
   <!-- 4. Display the application -->
   <body>
 
-    <!-- Begin Navigation Bar -->
-	<nav class="navbar navbar-default">
-	  <div class="container">
-	    <!-- Brand and toggle get grouped for better mobile display -->
-	    <div class="navbar-header">
-	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-	        <span class="sr-only">Toggle navigation</span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	      </button>
-	      <a class="navbar-brand" href="#">CloudLaunch</a>
-	    </div>
-
-	    <!-- Collect the nav links, forms, and other content for toggling -->
-	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	      <ul class="nav navbar-nav navbar-right">
-	        <li class="active">
-	           <a href="/"><i class="fa fa-home"></i> Home <span class="sr-only">(current)</span></a>
-	        </li>
-	      </ul>
-	    </div><!-- /.navbar-collapse -->
-	  </div><!-- /.container-fluid -->
-	</nav>
-
-    <div class="container-fluid">
-        <cloudlaunch-app>Loading...</cloudlaunch-app>
+    <div id="container" class="wrapper">
+    
+        <!-- Begin Navigation Bar -->
+    	<nav class="navbar navbar-default">
+    	  <div class="container">
+    	    <!-- Brand and toggle get grouped for better mobile display -->
+    	    <div class="navbar-header">
+    	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+    	        <span class="sr-only">Toggle navigation</span>
+    	        <span class="icon-bar"></span>
+    	        <span class="icon-bar"></span>
+    	        <span class="icon-bar"></span>
+    	      </button>
+    	      <a class="navbar-brand" href="#">CloudLaunch</a>
+    	    </div>
+    
+    	    <!-- Collect the nav links, forms, and other content for toggling -->
+    	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    	      <ul class="nav navbar-nav navbar-right">
+    	        <li class="active">
+    	           <a href="/"><i class="fa fa-home"></i> Home <span class="sr-only">(current)</span></a>
+    	        </li>
+    	      </ul>
+    	    </div><!-- /.navbar-collapse -->
+    	  </div><!-- /.container-fluid -->
+    	</nav>
+    
+        <div class="container-fluid">
+            <cloudlaunch-app>Loading...</cloudlaunch-app>
+        </div>
+        <!-- Pushes footer down -->
+        <div class="push"></div>
     </div>
+ 
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+        <div class="container">
+            <div class="col-lg-2  col-md-3 col-sm-4 col-xs-12 frame">
+                <a href="https://www.jhu.edu/"><img src="images/logo_galaxy.png"></a>
+            </div>
+            <div class="col-lg-2  col-md-3 col-sm-4 col-xs-12 col-lg-offset-1 frame">
+                <a href="https://www.jhu.edu/"><img src="images/logo_jhu.png"></a>
+            </div>
+            <div class="col-lg-2  col-md-3 col-sm-4 col-xs-12 col-lg-offset-1 frame">
+                <a href="http://www.unimelb.edu.au/"><img src="images/logo_uom.png"></a>
+            </div>
+            <div class="col-lg-2  col-md-3 col-sm-4 col-xs-12 col-lg-offset-1 frame">
+                <a href="https://www.nectar.org.au"><img src="images/logo_galaxy2.png"></a>
+            </div>
+        </div>
+        <!--/.footer-->
+    </footer>    
+    
  
     <!-- Twitter Bootstrap -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
