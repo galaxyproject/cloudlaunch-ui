@@ -4,6 +4,7 @@ import { Headers, RequestOptions } from 'angular2/http';
 import { Observable }     from 'rxjs/Observable';
 
 import { Cloud } from '../models/cloud';
+import { InstanceType } from '../models/cloud';
 
 @Injectable()
 export class CloudService {
@@ -14,14 +15,21 @@ export class CloudService {
 
    public getClouds() {
       return this._http.get(this._application_url)
-            .map(response => <Cloud[]>response.json().results)
-            .catch(this.handleError);
+         .map(response => <Cloud[]>response.json().results)
+         .catch(this.handleError);
    }
 
    public getCloud(slug: string): Observable<Cloud> {
       return this._http.get(this._application_url + slug + '/')
-            .map(response => <Cloud>response.json())
-            .catch(this.handleError);
+         .map(response => <Cloud>response.json())
+         .catch(this.handleError);
+   }
+
+   public getInstanceTypes(slug: string): Observable<InstanceType[]> {
+      console.log("Getting instance types for " + slug);
+      return this._http.get(this._application_url + slug + '/compute/instance_types/')
+         .map(response => <InstanceType[]>response.json().results)
+         .catch(this.handleError);
    }
 
    private handleError(error: Response) {
