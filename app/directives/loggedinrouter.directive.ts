@@ -1,6 +1,6 @@
 // Based on: https://github.com/auth0/angular2-authentication-sample/blob/master/src/app/LoggedInOutlet.ts
-import { Directive, Attribute, ElementRef, DynamicComponentLoader } from 'angular2/core';
-import { Router, RouterOutlet, ComponentInstruction } from 'angular2/router';
+import { Directive, Attribute, ElementRef, DynamicComponentLoader } from '@angular/core';
+import { Router, RouterOutlet, ComponentInstruction } from '@angular/router';
 import { LoginService } from '../services/login.service';
 
 @Directive({

@@ -1,4 +1,4 @@
-import { Component, View, DynamicComponentLoader, ElementRef } from 'angular2/core';
+import { Component, View, DynamicComponentLoader, ElementRef } from '@angular/core';
 import { ConfigPanelComponent } from '../../layouts/config-panel.component';
 import { CloudManConfigComponent } from './cloudman.component';
 

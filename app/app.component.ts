@@ -1,8 +1,8 @@
-import { provide } from 'angular2/core';
-import { Component } from 'angular2/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import { HTTP_PROVIDERS } from 'angular2/http';
-import { RequestOptions, BaseRequestOptions } from 'angular2/http';
+import { provide } from '@angular/core';
+import { Component } from '@angular/core';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router';
+import { HTTP_PROVIDERS } from '@angular/http';
+import { RequestOptions, BaseRequestOptions } from '@angular/http';
 
 // Services
 import { ApplicationService } from './services/application.service';

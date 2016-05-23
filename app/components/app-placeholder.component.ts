@@ -1,4 +1,4 @@
-import { Component, DynamicComponentLoader, ElementRef, OnInit } from 'angular2/core';
+import { Component, DynamicComponentLoader, ElementRef, OnInit } from '@angular/core';
 import { Application } from '../models/application';
 
 

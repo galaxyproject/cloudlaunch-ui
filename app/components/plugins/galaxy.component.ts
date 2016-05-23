@@ -1,4 +1,4 @@
-import { Component, View, DynamicComponentLoader, ElementRef } from 'angular2/core';
+import { Component, View, DynamicComponentLoader, ElementRef } from '@angular/core';
 
 @Component({
    selector: 'galaxy-config',
