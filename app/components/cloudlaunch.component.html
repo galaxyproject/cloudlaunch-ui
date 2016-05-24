@@ -2,10 +2,6 @@
    <panel-header>Cloud Launch Settings</panel-header>
    <panel-body>
       <div class="form-group">
-         <ul>
-            <li *ngFor="#cloud of clouds">{{ cloud.name }}, {{ cloud.slug }}</li>
-         </ul>
-         --
          <select [(ngModel)]="selectedCloud" class="form-control">
             <option *ngFor="#cloud of clouds" [value]="cloud.name">
                {{ cloud.name }}

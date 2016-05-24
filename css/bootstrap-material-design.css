@@ -2904,7 +2904,7 @@ fieldset[disabled] .navbar .btn-link:focus {
 }
 .panel > .panel-heading,
 .panel.panel-default > .panel-heading {
-  background-color: #eeeeee;
+  background-color: #4FC3F7;
 }
 .panel.panel-inverse > .panel-heading {
   background-color: #3f51b5;
@@ -2930,7 +2930,7 @@ fieldset[disabled] .navbar .btn-link:focus {
 }
 .panel-default > .panel-heading,
 .panel:not([class*="panel-"]) > .panel-heading {
-  color: rgba(0,0,0, 0.87);
+  color: rgba(0, 0, 0, 0.87);
 }
 .panel-footer {
   background-color: #eeeeee;
