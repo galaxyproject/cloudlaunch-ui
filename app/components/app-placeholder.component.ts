@@ -1,6 +1,7 @@
-import { Component, DynamicComponentLoader, ElementRef, OnInit } from 'angular2/core';
+import { Component, ViewContainerRef, ComponentResolver, OnInit } from '@angular/core';
 import { Application } from '../models/application';
 
+declare var System: any;
 
 @Component({
    selector: 'app-placeholder',
@@ -13,17 +14,16 @@ export class AppPlaceHolderComponent implements OnInit {
    component_path: string;
 
    constructor(
-      private _loader: DynamicComponentLoader,
-      private _element_ref: ElementRef) {
+      private viewContainerRef: ViewContainerRef,
+      private componentResolver: ComponentResolver) {
    }
 
    ngOnInit() {
       System.import(this.component_path)
         .then(m => {
-          this._loader.loadIntoLocation(m[this.component_name], this._element_ref, 'content')
-            .then(res => {
-               // set inputs
-               res.instance.application = this.application;
+          this.componentResolver.resolveComponent(m[this.component_name]).then((factory) => {
+            var component = this.viewContainerRef.createComponent(factory, 0,  this.viewContainerRef.injector);
+            component.instance.application = this.application;  
           });
         });
    }

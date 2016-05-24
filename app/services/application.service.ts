@@ -1,6 +1,6 @@
-import {Injectable} from 'angular2/core';
-import {Http, Response} from 'angular2/http';
-import {Headers, RequestOptions} from 'angular2/http';
+import {Injectable} from '@angular/core';
+import {Http, Response} from '@angular/http';
+import {Headers, RequestOptions} from '@angular/http';
 import {Observable}     from 'rxjs/Observable';
 
 import { Application } from '../models/application';
@@ -8,7 +8,7 @@ import { Application } from '../models/application';
 @Injectable()
 export class ApplicationService {
    constructor(private _http: Http) { }
-    
+
    // TODO: This needs to be obtained from some global config
    private _application_url = 'http://localhost:8000/api/v1/applications/';
 

@@ -1,5 +1,5 @@
-import { Component, OnInit } from 'angular2/core';
-import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
+import { Component, OnInit } from '@angular/core';
+import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from '@angular/common';
 
 import { Cloud, InstanceType } from '../models/cloud';
 import { CloudService } from '../services/cloud.service';

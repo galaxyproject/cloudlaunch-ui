@@ -1,12 +1,12 @@
-import {Injectable} from 'angular2/core';
-import {Http, Response} from 'angular2/http';
-import {Headers, RequestOptions} from 'angular2/http';
+import {Injectable} from '@angular/core';
+import {Http, Response} from '@angular/http';
+import {Headers, RequestOptions} from '@angular/http';
 import {Observable}     from 'rxjs/Observable';
 
 @Injectable()
 export class LoginService {
    constructor(private _http: Http) { }
-    
+
    // TODO: This needs to be obtained from some global config
    private _loginUrl = 'http://localhost:8000/api/v1/auth/login/';
    private _currentUserUrl = 'http://localhost:8000/api/v1/auth/user/';
@@ -30,7 +30,7 @@ export class LoginService {
          });
       }
       // _login_method will be empty when the SPA has started up, but the user has
-      // manually logged out, 
+      // manually logged out,
       else if (this._login_method == "") {
          return Promise.resolve(false);
       }

@@ -1,8 +1,8 @@
-import { provide } from 'angular2/core';
-import { Component } from 'angular2/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import { HTTP_PROVIDERS } from 'angular2/http';
-import { RequestOptions, BaseRequestOptions } from 'angular2/http';
+import { provide } from '@angular/core';
+import { Component, AfterViewChecked } from '@angular/core';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router-deprecated';
+import { HTTP_PROVIDERS } from '@angular/http';
+import { RequestOptions, BaseRequestOptions } from '@angular/http';
 
 // Services
 import { ApplicationService } from './services/application.service';
@@ -19,7 +19,7 @@ import { HomeComponent } from './pages/home.component';
 import { DashboardComponent } from './components/dashboard.component';
 import { CloudLaunchComponent } from './components/cloudlaunch.component';
 
-
+declare var $: any
 
 class CustomRequestOptions extends BaseRequestOptions {
   constructor () {
@@ -56,7 +56,7 @@ class CustomRequestOptions extends BaseRequestOptions {
 ])
 
 export class AppComponent implements AfterViewChecked {
-
+   
    ngAfterViewChecked() {
       // Unfortunately, there's no single place to apply material effects
       // and it's therefore done during this lifecycle method.
@@ -70,7 +70,7 @@ export class AppComponent implements AfterViewChecked {
       // only if it actually has elements. If however, option elements are
       // dynamically added later, this logic will not work and the dropdown
       // will not update itself to reflect those changes.
-      selectElem = $("select");
+      var selectElem = $("select");
       selectElem.find("option").each(function() {
           if ($(this).length > 0)
             selectElem.dropdown();
