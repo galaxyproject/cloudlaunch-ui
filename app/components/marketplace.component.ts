@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES } from '@angular/router';
+import { Router, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
 
 import { Application } from '../models/application';
 import { ApplicationService } from '../services/application.service';

@@ -1,11 +1,11 @@
-import { Component, View, DynamicComponentLoader, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { ConfigPanelComponent } from '../../layouts/config-panel.component';
 import {
    FORM_DIRECTIVES,
    FormBuilder,
    ControlGroup,
    AbstractControl} from '@angular/common';
-import { Router, RouteParams } from '@angular/router';
+import { Router, RouteParams } from '@angular/router-deprecated';
 
 import { CloudLaunchComponent } from '../cloudlaunch.component';
 // import { CloudManCloud } from './cloudmancloud.component';
