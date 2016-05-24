@@ -56,25 +56,10 @@ class CustomRequestOptions extends BaseRequestOptions {
 ])
 
 export class AppComponent implements AfterViewChecked {
-   
+
    ngAfterViewChecked() {
       // Unfortunately, there's no single place to apply material effects
       // and it's therefore done during this lifecycle method.
       $.material.init();
-      // A particularly nasty workaround to apply dropdown effects globally.
-      // Dropdown.js can only be called once per dropdown, after which it
-      // caches state. Therefore, the .dropdown() function should be called
-      // after the dropdown is populated. However, whether or not an element
-      // has been populated is context/application specific and difficult to
-      // determine globally. Therefore, the heuristic is to call .dropdown()
-      // only if it actually has elements. If however, option elements are
-      // dynamically added later, this logic will not work and the dropdown
-      // will not update itself to reflect those changes.
-      var selectElem = $("select");
-      selectElem.find("option").each(function() {
-          if ($(this).length > 0)
-            selectElem.dropdown();
-
-        });
    }
 }

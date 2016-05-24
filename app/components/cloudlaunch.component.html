@@ -2,6 +2,7 @@
    <panel-header>Cloud Launch Settings</panel-header>
    <panel-body>
       <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
+      <!--
       <div class="form-group">
          <label for="id_target_cloud" class="control-label">
             On which cloud would you like to launch your appliance?
@@ -23,5 +24,13 @@
             <li *ngFor="let instType of instanceTypes">{{ instType.name }}</li>
          </ul>
       </div>
+      -->
+      <div class="form-group">
+         <label class="control-label">
+            On which cloud would you like to launch your appliance?
+         </label>
+         <ng-select [items]="clouds" placeholder="No cloud selected"></ng-select>
+      </div>
+
    </panel-body>
 </config-panel>

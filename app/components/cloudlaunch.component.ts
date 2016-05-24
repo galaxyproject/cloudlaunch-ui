@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from '@angular/common';
 
+import { SELECT_DIRECTIVES } from 'ng2-select';
+
 import { Cloud, InstanceType } from '../models/cloud';
 import { CloudService } from '../services/cloud.service';
 import { ConfigPanelComponent } from '../layouts/config-panel.component';
@@ -9,7 +11,7 @@ import { ConfigPanelComponent } from '../layouts/config-panel.component';
   selector: 'cloudlaunch-config',
   templateUrl: 'app/components/cloudlaunch.component.html',
   providers: [CloudService],
-  directives: [ConfigPanelComponent, FORM_DIRECTIVES]
+  directives: [ConfigPanelComponent, FORM_DIRECTIVES, SELECT_DIRECTIVES]
 })
 
 export class CloudLaunchComponent implements OnInit {
@@ -32,9 +34,14 @@ export class CloudLaunchComponent implements OnInit {
         // });
     }
 
+    public items: Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
+        'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
+        'The Hague', 'Turin', 'Valencia', 'Vienna', 'Vilnius', 'Warsaw', 'Wrocław',
+        'Zagreb', 'Zaragoza', 'Łódź'];
+
     ngOnInit() {
         this.getClouds();
-        this.getInstanceTypes('aws-us-east-1');
+        // this.getInstanceTypes('aws-us-east-1');
     }
 
     getClouds() {
