@@ -1,7 +1,7 @@
 import { Component, OnInit } from 'angular2/core';
 import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
 
-import { Cloud } from '../models/cloud';
+import { Cloud, InstanceType } from '../models/cloud';
 import { CloudService } from '../services/cloud.service';
 import { ConfigPanelComponent } from '../layouts/config-panel.component';
 
@@ -18,6 +18,7 @@ export class CloudLaunchComponent implements OnInit {
 
     selectedCloud: Cloud;
     clouds: Cloud[] = [];
+    instanceTypes: InstanceType[] = [];
     // clouds: Cloud[] = [
     //     { name: 'cl1', slug: 'c1s' },
     //     { name: 'cl2', slug: 'c2s' },
@@ -33,13 +34,22 @@ export class CloudLaunchComponent implements OnInit {
 
     ngOnInit() {
         this.getClouds();
+        this.getInstanceTypes('aws-us-east-1');
     }
 
     getClouds() {
         this._cloudService.getClouds()
             .subscribe(clouds => this.clouds = clouds,
                        error => this.errorMessage = <any>error,
-                       () => console.log('done: ', this.clouds));
+                       () => console.log('Got clouds: ', this.clouds));
+    }
+
+    getInstanceTypes(slug: string) {
+        console.log('gIT slug: ' + slug);
+        this._cloudService.getInstanceTypes(slug)
+            .subscribe(instanceTypes => this.instanceTypes = instanceTypes,
+            error => this.errorMessage = <any>error,
+            () => console.log('got instance types: ', this.instanceTypes));
     }
 
     toggleAdvanced() {
