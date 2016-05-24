@@ -9,7 +9,7 @@
          <select id="target_cloud" class="form-control"
                [(ngModel)]="selectedCloud"
                (change)="getInstanceTypes($event.target.value)">
-            <option *ngFor="#cloud of clouds" [value]="cloud.slug">
+            <option *ngFor="let cloud of clouds" [value]="cloud.slug">
                {{ cloud.name }}
             </option>
          </select>
@@ -20,7 +20,7 @@
             What type of virtual hardware would you like to use?
          </label>
          <ul id="instance_type" *ngIf="instanceTypes">
-            <li *ngFor="#instType of instanceTypes">{{ instType.name }}</li>
+            <li *ngFor="let instType of instanceTypes">{{ instType.name }}</li>
          </ul>
       </div>
    </panel-body>

@@ -82,7 +82,7 @@
                <div class="form-group" *ngIf="showAdvanced">
                   <label for="cluster_type">Cluster Type</label>
                   <select id="cluster_type" name="cluster_type" class="form-control">
-                     <option *ngFor="#cType of clusterTypes" value="{{ cType.value }}">
+                     <option *ngFor="let cType of clusterTypes" value="{{ cType.value }}">
                         {{ cType.title }}
                      </option>
                   </select>
