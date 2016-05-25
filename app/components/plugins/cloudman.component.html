@@ -7,9 +7,9 @@
 
          <!-- Cloud launching part of the form -->
          <!-- TODO: move to the bottom once functional -->
-         <cloudlaunch-config></cloudlaunch-config>
+         <cloudlaunch-config *ngIf="showCloudLaunch"></cloudlaunch-config>
 
-         <config-panel>
+         <config-panel *ngIf="showCloudLaunch==false">
             <panel-header>CloudMan Configuration</panel-header>
                <panel-body>
 
@@ -34,7 +34,8 @@
                <div class="form-group label-floating is-empty">
                   <label for="id_password" class="control-label">Access password</label>
                   <input id="id_password" name="password" type="password"
-                     class="form-control input-md" required>
+                     class="form-control input-md" required
+                     [ngFormControl]="clusterForm.controls['password']">
                   <span class="help-block">
                      Your choice of password, for the CloudMan web interface and
                      accessing the cluster via ssh.
@@ -126,11 +127,9 @@
                   <span class="material-input"></span>
                </div>
 
+               <button type="submit" class="btn btn-raised btn-default">Next</button>
             </panel-body>
          </config-panel>
-
-         <button type="submit" class="btn btn-raised btn-default">Launch</button>
-
       </form>
    </panel-body>
 </config-panel>

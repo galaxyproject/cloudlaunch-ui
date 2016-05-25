@@ -12,6 +12,7 @@
             [items]="clouds"
             (selected)="onCloudSelect($event)"
             placeholder="No cloud selected">
+            <!--[ngFormControl]="clusterForm.controls['target_cloud']"> -->
          </ng-select>
       </div>
 
@@ -98,5 +99,6 @@
             </div>
          </div>
       </div>
+      <button type="submit" class="btn btn-raised btn-default">Launch</button>
    </panel-body>
 </config-panel>

@@ -51,6 +51,7 @@ export class CloudManConfigComponent {
       {'value': 'None', 'title': 'Do not set cluster type now'}]
    storageType: string = "transient";  // Init default type: transient or volume
    showAdvanced: boolean = false;
+   showCloudLaunch: boolean = false;
 
    clusterForm: ControlGroup;
    clusterName: AbstractControl;
@@ -67,7 +68,9 @@ export class CloudManConfigComponent {
       // this.clusterConfig = cmConfigService.configInfo();
       this.cmConfigService = cmConfigService;
       this.clusterForm = fb.group({
-         'cluster_name': ['']
+         'cluster_name': [''],
+         'password': [''],
+         'target_cloud': ['']
       });
 
       this.clusterName = this.clusterForm.controls['cluster_name'];
@@ -75,8 +78,9 @@ export class CloudManConfigComponent {
 
    onSubmit(value: string): void {
       console.log("onSubmit value: ", value);
-      this.cmConfigService.storeInfo(value['cluster_name']);
+      // this.cmConfigService.storeInfo(value['cluster_name']);
       // this.router.navigate(['Launch', {slug: this.routeParams.get('slug')}]);
+      this.showCloudLaunch = true;
    }
 
    setStorage(sType) {
