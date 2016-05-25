@@ -22,16 +22,16 @@ export class CloudLaunchComponent implements OnInit {
    clouds: Cloud[] = [];
    selectedCloud: Cloud;
    instanceTypes: InstanceType[] = [];
-   instanceTypeHelp: string = CloudLaunchComponent.CLOUD_SELECTION_HELP;
+   instanceTypeHelp: string = this.CLOUD_SELECTION_HELP;
    placements: Placement[] = [];
-   placementHelp: string = CloudLaunchComponent.CLOUD_SELECTION_HELP;
+   placementHelp: string = this.CLOUD_SELECTION_HELP;
    keypairs: KeyPair[] = [];
-   keypairsHelp: string = CloudLaunchComponent.CLOUD_SELECTION_HELP;
+   keypairsHelp: string = this.CLOUD_SELECTION_HELP;
    networks: Network[] = [];
-   networksHelp: string = CloudLaunchComponent.CLOUD_SELECTION_HELP;
+   networksHelp: string = this.CLOUD_SELECTION_HELP;
    selectedNetwork: Network;
    subnets: SubNet[] = [];
-   subnetsHelp: string = CloudLaunchComponent.CLOUD_SELECTION_HELP;
+   subnetsHelp: string = this.CLOUD_SELECTION_HELP;
 
    constructor(private _cloudService: CloudService, fb: FormBuilder) { }
 
@@ -85,7 +85,7 @@ export class CloudLaunchComponent implements OnInit {
          error => this.errorMessage = <any>error,
          () => { this.keypairsHelp = "Select a keypair" });
    }
-   
+
    getNetworks(cloud_id: string) {
       this.networksHelp = "Retrieving list of networks...";
       this.selectedNetwork = null;
@@ -96,11 +96,11 @@ export class CloudLaunchComponent implements OnInit {
          error => this.errorMessage = <any>error,
          () => { this.networksHelp = "Select a network" });
    }
-   
+
    onNetworkSelect(selected_network: Network) {
       this.getSubnets(this.selectedCloud.id, selected_network.id);
    }
-   
+
    getSubnets(cloud_id: string, network_id: string) {
       this.subnetsHelp = "Retrieving list of subnets...";
       this.subnets = [];

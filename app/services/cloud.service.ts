@@ -40,26 +40,24 @@ export class CloudService {
          .map(response => <Placement[]>response.json().results)
          .catch(this.handleError);
    }
-   
+
    public getKeyPairs(slug: string): Observable<KeyPair[]> {
       return this._http.get(this._application_url + slug + '/security/keypairs/')
          .map(response => <KeyPair[]>response.json().results)
          .catch(this.handleError);
    }
-   
+
    public getNetworks(slug: string): Observable<Network[]> {
       return this._http.get(this._application_url + slug + '/networks/')
          .map(response => <Network[]>response.json().results)
          .catch(this.handleError);
    }
-   
+
    public getSubNets(slug: string, network_id: string): Observable<SubNet[]> {
       return this._http.get(this._application_url + slug + '/networks/' + network_id + '/subnets/')
          .map(response => <SubNet[]>response.json().results)
          .catch(this.handleError);
    }
-   
-   
 
    private handleError(error: Response) {
       console.error(error);
