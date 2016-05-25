@@ -3,7 +3,7 @@ import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from '@angular/common';
 
 import { SELECT_DIRECTIVES } from 'ng2-select';
 
-import { Cloud, InstanceType } from '../models/cloud';
+import { Cloud, InstanceType, Placement } from '../models/cloud';
 import { CloudService } from '../services/cloud.service';
 import { ConfigPanelComponent } from '../layouts/config-panel.component';
 
@@ -22,17 +22,13 @@ export class CloudLaunchComponent implements OnInit {
    selectedCloud: Cloud;
    instanceTypes: InstanceType[] = [];
    instanceTypeHelp: string = "Select a target cloud first";
+   placements: Placement[] = [];
+   placementHelp: string = "Select a target cloud first";
 
-   constructor(private _cloudService: CloudService,
-      fb: FormBuilder) {
-      // this.launchForm = fb.group({
-      //     // 'clouds': this.clouds
-      // });
-   }
+   constructor(private _cloudService: CloudService, fb: FormBuilder) {}
 
    ngOnInit() {
       this.getClouds();
-      // this.getInstanceTypes('aws-us-east-1');
    }
 
    getClouds() {
@@ -44,7 +40,8 @@ export class CloudLaunchComponent implements OnInit {
    }
 
    onCloudSelect(selected_cloud: Cloud) {
-      this.getInstanceTypes(selected_cloud.id);
+       this.getInstanceTypes(selected_cloud.id);
+       this.getPlacements(selected_cloud.id);
    }
 
    getInstanceTypes(slug: string) {
@@ -58,5 +55,14 @@ export class CloudLaunchComponent implements OnInit {
 
    toggleAdvanced() {
       this.showAdvanced = !this.showAdvanced;
+   }
+
+   getPlacements(slug: string) {
+       this.placementHelp = "Retrieving placement options...";
+       this.placements = [];
+       this._cloudService.getPlacements(slug)
+           .subscribe(placements => this.placements = placements.map(t => { t.text = t.name; return t; }),
+           error => this.errorMessage = <any>error,
+           () => { this.placementHelp = "Select a placement" });
    }
 }

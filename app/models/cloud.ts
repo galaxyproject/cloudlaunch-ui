@@ -10,3 +10,10 @@ export interface InstanceType {
    text: string;
    name: string;
 }
+
+export interface Placement {
+   id: string;
+   text: string;
+   name: string;
+}
+

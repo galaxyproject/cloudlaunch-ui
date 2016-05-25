@@ -3,6 +3,7 @@
    <panel-body>
       <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
 
+      <!-- Cloud choice -->
       <div class="form-group">
          <label for="id_target_cloud" class="control-label">
             On which cloud would you like to launch your appliance?
@@ -14,6 +15,7 @@
          </ng-select>
       </div>
 
+      <!-- Instance type selection -->
       <div class="form-group">
          <label for="id_instance_type" class="control-label">
             What type of virtual hardware would you like to use?
@@ -23,6 +25,31 @@
          [placeholder]="instanceTypeHelp">
          </ng-select>
       </div>
+
+      <div class="togglebutton">
+         <label>
+            <input type="checkbox" (click)="toggleAdvanced()">Advanced options
+         </label>
+      </div>
+
+      <!-- Placement selection -->
+      <div class="form-group" *ngIf="showAdvanced">
+         <label for="id_placement" class="control-label">
+            In which cloud region to launch this appliance?
+         </label>
+         <ng-select id="placement"  [items]="placements"
+         [disabled]="selectedCloud"
+         [placeholder]="placementHelp">
+         </ng-select>
+      </div>
+
+      <!-- Key pair selection -->
+
+      <!-- EBS optimized selection (AWS only) -->
+
+      <!-- Volume IOPS selection (AWS only) -->
+
+      <!-- Subnet selection -->
 
    </panel-body>
 </config-panel>
