@@ -18,6 +18,8 @@ export class CloudLaunchComponent implements OnInit {
    CLOUD_SELECTION_HELP: string = "Select a target cloud first";
    errorMessage: string;
    showAdvanced: boolean = false;
+   cloudFields = true; // Used to reset form fields that are dependent on cloud selection
+                       // See 'reset' on https://angular.io/docs/ts/latest/guide/forms.html
 
    clouds: Cloud[] = [];
    selectedCloud: Cloud;
@@ -48,11 +50,17 @@ export class CloudLaunchComponent implements OnInit {
    }
 
    onCloudSelect(selected_cloud: Cloud) {
-      this.selectedCloud = selected_cloud;
-      this.getInstanceTypes(selected_cloud.id);
-      this.getPlacements(selected_cloud.id);
-      this.getKeyPairs(selected_cloud.id);
-      this.getNetworks(selected_cloud.id);
+      if (selected_cloud != this.selectedCloud) {
+         this.selectedCloud = selected_cloud;
+         // A new cloud was selected; reset form fields
+         this.cloudFields = false;
+         setTimeout(() => this.cloudFields = true, 0);
+         // Fetch options for the newly selected cloud
+         this.getInstanceTypes(selected_cloud.id);
+         this.getPlacements(selected_cloud.id);
+         this.getKeyPairs(selected_cloud.id);
+         this.getNetworks(selected_cloud.id);
+      }
    }
 
    getInstanceTypes(slug: string) {

@@ -15,85 +15,87 @@
          </ng-select>
       </div>
 
-      <!-- Instance type selection -->
-      <div class="form-group">
-         <label for="id_instance_type" class="control-label">
-            What type of virtual hardware would you like to use?
-         </label>
-         <ng-select id="id_instance_type"  [items]="instanceTypes"
-         [disabled]="selectedCloud"
-         [placeholder]="instanceTypeHelp">
-         </ng-select>
-      </div>
-
-      <div class="togglebutton">
-         <label>
-            <input type="checkbox" (click)="toggleAdvanced()">Advanced options
-         </label>
-      </div>
-
-      <div *ngIf="showAdvanced">
-         <!-- Placement selection -->
+      <div *ngIf="cloudFields">
+         <!-- Instance type selection -->
          <div class="form-group">
-            <label for="id_placement" class="control-label">
-               In which placement zone would you like to launch this appliance?
+            <label for="id_instance_type" class="control-label">
+               What type of virtual hardware would you like to use?
             </label>
-            <ng-select id="id_placement"  [items]="placements"
-               [disabled]="selectedCloud"
-               [placeholder]="placementHelp">
+            <ng-select id="id_instance_type"  [items]="instanceTypes"
+            [disabled]="selectedCloud"
+            [placeholder]="instanceTypeHelp">
             </ng-select>
          </div>
 
-         <!-- Key pair selection -->
-         <div class="form-group">
-            <label for="id_keypair" class="control-label">
-               Which keypair would you like to use for this Virtual Machine?
-            </label>
-            <ng-select id="id_keypair"  [items]="keypairs"
-               [disabled]="selectedCloud"
-               [placeholder]="keypairsHelp">
-            </ng-select>
-          </div>
-
-         <!-- Network selection -->
-         <div class="form-group">
-            <label for="id_network" class="control-label">
-               In which network would you like to place this Virtual Machine?
-            </label>
-            <ng-select id="id_network"  [items]="networks"
-               [disabled]="selectedCloud"
-               (selected)="onNetworkSelect($event)"
-               [placeholder]="networksHelp">
-            </ng-select>
-         </div>
-
-         <!-- Subnet selection -->
-         <div class="form-group">
-            <label for="id_subnet" class="control-label">
-               In which subnet would you like to place this Virtual Machine?
-            </label>
-            <ng-select id="id_subnet"  [items]="subnets"
-               [disabled]="selectedCloud"
-               [placeholder]="subnetsHelp">
-            </ng-select>
-         </div>
-
-         <!-- EBS optimized selection (AWS only) -->
-         <div class="checkbox">
+         <div class="togglebutton">
             <label>
-               <input type="checkbox" id="ebs_optimized" name="ebs_optimized">
-                  If checked, use dedicated disk bandwidth (i.e., EBS-optimized)
+               <input type="checkbox" (click)="toggleAdvanced()">Advanced options
             </label>
          </div>
 
-         <!-- Volume IOPS selection (AWS only) -->
-         <!--  Add *ngIf="storageType=='volume'" once variable is propagated -->
-         <div class="form-group">
-            <label for="id_iops" class="control-label">Volume IOPS</label>
-            <input type="number" class="form-control input-md">
-            <span class="help-block">
-               Min: 100; max: 20000; max 30:1 IOPS to size ratio
-            </span>
+         <div *ngIf="showAdvanced">
+            <!-- Placement selection -->
+            <div class="form-group">
+               <label for="id_placement" class="control-label">
+                  In which placement zone would you like to launch this appliance?
+               </label>
+               <ng-select id="id_placement"  [items]="placements"
+                  [disabled]="selectedCloud"
+                  [placeholder]="placementHelp">
+               </ng-select>
+            </div>
+
+            <!-- Key pair selection -->
+            <div class="form-group">
+               <label for="id_keypair" class="control-label">
+                  Which keypair would you like to use for this Virtual Machine?
+               </label>
+               <ng-select id="id_keypair"  [items]="keypairs"
+                  [disabled]="selectedCloud"
+                  [placeholder]="keypairsHelp">
+               </ng-select>
+             </div>
+
+            <!-- Network selection -->
+            <div class="form-group">
+               <label for="id_network" class="control-label">
+                  In which network would you like to place this Virtual Machine?
+               </label>
+               <ng-select id="id_network"  [items]="networks"
+                  [disabled]="selectedCloud"
+                  (selected)="onNetworkSelect($event)"
+                  [placeholder]="networksHelp">
+               </ng-select>
+            </div>
+
+            <!-- Subnet selection -->
+            <div class="form-group">
+               <label for="id_subnet" class="control-label">
+                  In which subnet would you like to place this Virtual Machine?
+               </label>
+               <ng-select id="id_subnet"  [items]="subnets"
+                  [disabled]="selectedCloud"
+                  [placeholder]="subnetsHelp">
+               </ng-select>
+            </div>
+
+            <!-- EBS optimized selection (AWS only) -->
+            <div class="checkbox">
+               <label>
+                  <input type="checkbox" id="ebs_optimized" name="ebs_optimized">
+                     If checked, use dedicated disk bandwidth (i.e., EBS-optimized)
+               </label>
+            </div>
+
+            <!-- Volume IOPS selection (AWS only) -->
+            <!--  Add *ngIf="storageType=='volume'" once variable is propagated -->
+            <div class="form-group">
+               <label for="id_iops" class="control-label">Volume IOPS</label>
+               <input type="number" class="form-control input-md">
+               <span class="help-block">
+                  Min: 100; max: 20000; max 30:1 IOPS to size ratio
+               </span>
+            </div>
          </div>
       </div>
    </panel-body>
