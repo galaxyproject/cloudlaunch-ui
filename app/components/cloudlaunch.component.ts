@@ -8,58 +8,55 @@ import { CloudService } from '../services/cloud.service';
 import { ConfigPanelComponent } from '../layouts/config-panel.component';
 
 @Component({
-  selector: 'cloudlaunch-config',
-  templateUrl: 'app/components/cloudlaunch.component.html',
-  providers: [CloudService],
-  directives: [ConfigPanelComponent, FORM_DIRECTIVES, SELECT_DIRECTIVES]
+   selector: 'cloudlaunch-config',
+   templateUrl: 'app/components/cloudlaunch.component.html',
+   providers: [CloudService],
+   directives: [ConfigPanelComponent, FORM_DIRECTIVES, SELECT_DIRECTIVES]
 })
 
 export class CloudLaunchComponent implements OnInit {
-    errorMessage: string;
-    showAdvanced: boolean = false;
+   errorMessage: string;
+   showAdvanced: boolean = false;
 
-    selectedCloud: Cloud;
-    clouds: Cloud[] = [];
-    instanceTypes: InstanceType[] = [];
-    // clouds: Cloud[] = [
-    //     { name: 'cl1', slug: 'c1s' },
-    //     { name: 'cl2', slug: 'c2s' },
-    // ]
+   clouds: Cloud[] = [];
+   selectedCloud: Cloud;
+   instanceTypes: InstanceType[] = [];
+   instanceTypeHelp: string = "Select a target cloud first";
 
-    // launchForm: ControlGroup;
-    constructor(private _cloudService: CloudService,
-                fb: FormBuilder) {
-        // this.launchForm = fb.group({
-        //     // 'clouds': this.clouds
-        // });
-    }
+   constructor(private _cloudService: CloudService,
+      fb: FormBuilder) {
+      // this.launchForm = fb.group({
+      //     // 'clouds': this.clouds
+      // });
+   }
 
-    public items: Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
-        'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
-        'The Hague', 'Turin', 'Valencia', 'Vienna', 'Vilnius', 'Warsaw', 'Wrocław',
-        'Zagreb', 'Zaragoza', 'Łódź'];
+   ngOnInit() {
+      this.getClouds();
+      // this.getInstanceTypes('aws-us-east-1');
+   }
 
-    ngOnInit() {
-        this.getClouds();
-        // this.getInstanceTypes('aws-us-east-1');
-    }
+   getClouds() {
+      this.selectedCloud = null;
+      this._cloudService.getClouds()
+         .subscribe(clouds => this.clouds = clouds.map(c => { c.id = c.slug; c.text = c.name; return c; }),
+         error => this.errorMessage = <any>error,
+         () => console.log('Got clouds: ', this.clouds));
+   }
 
-    getClouds() {
-        this._cloudService.getClouds()
-            .subscribe(clouds => this.clouds = clouds,
-                       error => this.errorMessage = <any>error,
-                       () => console.log('Got clouds: ', this.clouds));
-    }
+   onCloudSelect(selected_cloud: Cloud) {
+      this.getInstanceTypes(selected_cloud.id);
+   }
 
-    getInstanceTypes(slug: string) {
-        console.log('gIT slug: ' + slug);
-        this._cloudService.getInstanceTypes(slug)
-            .subscribe(instanceTypes => this.instanceTypes = instanceTypes,
-            error => this.errorMessage = <any>error,
-            () => console.log('got instance types: ', this.instanceTypes));
-    }
+   getInstanceTypes(slug: string) {
+      this.instanceTypeHelp = "Retrieving instance types...";
+      this.instanceTypes = [];
+      this._cloudService.getInstanceTypes(slug)
+         .subscribe(instanceTypes => this.instanceTypes = instanceTypes.map(t => { t.text = t.name; return t; }),
+         error => this.errorMessage = <any>error,
+         () => { this.instanceTypeHelp = "Select an Instance Type"; console.log('got instance types: ', this.instanceTypes) });
+   }
 
-    toggleAdvanced() {
-        this.showAdvanced = !this.showAdvanced;
-    }
+   toggleAdvanced() {
+      this.showAdvanced = !this.showAdvanced;
+   }
 }

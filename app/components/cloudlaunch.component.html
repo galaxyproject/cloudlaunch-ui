@@ -2,34 +2,26 @@
    <panel-header>Cloud Launch Settings</panel-header>
    <panel-body>
       <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
-      <!--
+
       <div class="form-group">
          <label for="id_target_cloud" class="control-label">
             On which cloud would you like to launch your appliance?
          </label>
-         <select id="target_cloud" class="form-control"
-               [(ngModel)]="selectedCloud"
-               (change)="getInstanceTypes($event.target.value)">
-            <option *ngFor="let cloud of clouds" [value]="cloud.slug">
-               {{ cloud.name }}
-            </option>
-         </select>
+         <ng-select id="target_cloud"
+            [items]="clouds"
+            (selected)="onCloudSelect($event)"
+            placeholder="No cloud selected">
+         </ng-select>
       </div>
 
-      <div class="form-group label-floating">
+      <div class="form-group">
          <label for="id_instance_type" class="control-label">
             What type of virtual hardware would you like to use?
          </label>
-         <ul id="instance_type" *ngIf="instanceTypes">
-            <li *ngFor="let instType of instanceTypes">{{ instType.name }}</li>
-         </ul>
-      </div>
-      -->
-      <div class="form-group">
-         <label class="control-label">
-            On which cloud would you like to launch your appliance?
-         </label>
-         <ng-select [items]="clouds" placeholder="No cloud selected"></ng-select>
+         <ng-select id="id_instance_type"  [items]="instanceTypes"
+         [disabled]="selectedCloud"
+         [placeholder]="instanceTypeHelp">
+         </ng-select>
       </div>
 
    </panel-body>
