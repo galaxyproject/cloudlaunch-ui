@@ -32,24 +32,55 @@
          </label>
       </div>
 
-      <!-- Placement selection -->
-      <div class="form-group" *ngIf="showAdvanced">
-         <label for="id_placement" class="control-label">
-            In which cloud region to launch this appliance?
-         </label>
-         <ng-select id="placement"  [items]="placements"
-         [disabled]="selectedCloud"
-         [placeholder]="placementHelp">
-         </ng-select>
+      <div *ngIf="showAdvanced">
+          <!-- Placement selection -->
+          <div class="form-group">
+             <label for="id_placement" class="control-label">
+                In which placement zone would you like to launch this appliance?
+             </label>
+             <ng-select id="id_placement"  [items]="placements"
+             [disabled]="selectedCloud"
+             [placeholder]="placementHelp">
+             </ng-select>
+          </div>
+    
+          <!-- Key pair selection -->
+          <div class="form-group">
+             <label for="id_keypair" class="control-label">
+                Which keypair would you like to use for this Virtual Machine?
+             </label>
+             <ng-select id="id_keypair"  [items]="keypairs"
+             [disabled]="selectedCloud"
+             [placeholder]="keypairsHelp">
+             </ng-select>
+          </div>
+    
+          <!-- EBS optimized selection (AWS only) -->
+    
+          <!-- Volume IOPS selection (AWS only) -->
+    
+          <!-- Network selection -->
+          <div class="form-group">
+             <label for="id_network" class="control-label">
+                In which network would you like to place this Virtual Machine?
+             </label>
+             <ng-select id="id_network"  [items]="networks"
+             [disabled]="selectedCloud"
+             (selected)="onNetworkSelect($event)"
+             [placeholder]="networksHelp">
+             </ng-select>
+          </div>
+          
+          <!-- Subnet selection -->
+          <div class="form-group">
+             <label for="id_subnet" class="control-label">
+                In which subnet would you like to place this Virtual Machine?
+             </label>
+             <ng-select id="id_subnet"  [items]="subnets"
+             [disabled]="selectedCloud"
+             [placeholder]="subnetsHelp">
+             </ng-select>
+          </div>
       </div>
-
-      <!-- Key pair selection -->
-
-      <!-- EBS optimized selection (AWS only) -->
-
-      <!-- Volume IOPS selection (AWS only) -->
-
-      <!-- Subnet selection -->
-
    </panel-body>
 </config-panel>

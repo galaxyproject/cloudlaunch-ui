@@ -6,6 +6,9 @@ import { Observable }     from 'rxjs/Observable';
 import { Cloud } from '../models/cloud';
 import { InstanceType } from '../models/cloud';
 import { Placement } from '../models/cloud';
+import { KeyPair } from '../models/cloud';
+import { Network } from '../models/cloud';
+import { SubNet } from '../models/cloud';
 
 @Injectable()
 export class CloudService {
@@ -33,11 +36,30 @@ export class CloudService {
    }
 
    public getPlacements(slug: string): Observable<Placement[]> {
-      console.log("Getting placements for " + slug);
       return this._http.get(this._application_url + slug + '/compute/regions/')
          .map(response => <Placement[]>response.json().results)
          .catch(this.handleError);
    }
+   
+   public getKeyPairs(slug: string): Observable<KeyPair[]> {
+      return this._http.get(this._application_url + slug + '/security/keypairs/')
+         .map(response => <KeyPair[]>response.json().results)
+         .catch(this.handleError);
+   }
+   
+   public getNetworks(slug: string): Observable<Network[]> {
+      return this._http.get(this._application_url + slug + '/networks/')
+         .map(response => <Network[]>response.json().results)
+         .catch(this.handleError);
+   }
+   
+   public getSubNets(slug: string, network_id: string): Observable<SubNet[]> {
+      return this._http.get(this._application_url + slug + '/networks/' + network_id + '/subnets/')
+         .map(response => <SubNet[]>response.json().results)
+         .catch(this.handleError);
+   }
+   
+   
 
    private handleError(error: Response) {
       console.error(error);

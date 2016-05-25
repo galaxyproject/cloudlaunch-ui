@@ -3,7 +3,7 @@ import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from '@angular/common';
 
 import { SELECT_DIRECTIVES } from 'ng2-select';
 
-import { Cloud, InstanceType, Placement } from '../models/cloud';
+import { Cloud, InstanceType, Placement, KeyPair, Network, SubNet } from '../models/cloud';
 import { CloudService } from '../services/cloud.service';
 import { ConfigPanelComponent } from '../layouts/config-panel.component';
 
@@ -15,17 +15,25 @@ import { ConfigPanelComponent } from '../layouts/config-panel.component';
 })
 
 export class CloudLaunchComponent implements OnInit {
+   CLOUD_SELECTION_HELP: string = "Select a target cloud first";
    errorMessage: string;
    showAdvanced: boolean = false;
 
    clouds: Cloud[] = [];
    selectedCloud: Cloud;
    instanceTypes: InstanceType[] = [];
-   instanceTypeHelp: string = "Select a target cloud first";
+   instanceTypeHelp: string = CloudLaunchComponent.CLOUD_SELECTION_HELP;
    placements: Placement[] = [];
-   placementHelp: string = "Select a target cloud first";
+   placementHelp: string = CloudLaunchComponent.CLOUD_SELECTION_HELP;
+   keypairs: KeyPair[] = [];
+   keypairsHelp: string = CloudLaunchComponent.CLOUD_SELECTION_HELP;
+   networks: Network[] = [];
+   networksHelp: string = CloudLaunchComponent.CLOUD_SELECTION_HELP;
+   selectedNetwork: Network;
+   subnets: SubNet[] = [];
+   subnetsHelp: string = CloudLaunchComponent.CLOUD_SELECTION_HELP;
 
-   constructor(private _cloudService: CloudService, fb: FormBuilder) {}
+   constructor(private _cloudService: CloudService, fb: FormBuilder) { }
 
    ngOnInit() {
       this.getClouds();
@@ -40,8 +48,11 @@ export class CloudLaunchComponent implements OnInit {
    }
 
    onCloudSelect(selected_cloud: Cloud) {
-       this.getInstanceTypes(selected_cloud.id);
-       this.getPlacements(selected_cloud.id);
+      this.selectedCloud = selected_cloud;
+      this.getInstanceTypes(selected_cloud.id);
+      this.getPlacements(selected_cloud.id);
+      this.getKeyPairs(selected_cloud.id);
+      this.getNetworks(selected_cloud.id);
    }
 
    getInstanceTypes(slug: string) {
@@ -57,12 +68,45 @@ export class CloudLaunchComponent implements OnInit {
       this.showAdvanced = !this.showAdvanced;
    }
 
-   getPlacements(slug: string) {
-       this.placementHelp = "Retrieving placement options...";
-       this.placements = [];
-       this._cloudService.getPlacements(slug)
-           .subscribe(placements => this.placements = placements.map(t => { t.text = t.name; return t; }),
-           error => this.errorMessage = <any>error,
-           () => { this.placementHelp = "Select a placement" });
+   getPlacements(cloud_id: string) {
+      this.placementHelp = "Retrieving placement options...";
+      this.placements = [];
+      this._cloudService.getPlacements(cloud_id)
+         .subscribe(placements => this.placements = placements.map(p => { p.text = p.name; return p; }),
+         error => this.errorMessage = <any>error,
+         () => { this.placementHelp = "Select a placement" });
+   }
+
+   getKeyPairs(cloud_id: string) {
+      this.keypairsHelp = "Retrieving keypairs...";
+      this.keypairs = [];
+      this._cloudService.getKeyPairs(cloud_id)
+         .subscribe(keypairs => this.keypairs = keypairs.map(kp => { kp.text = kp.name; return kp; }),
+         error => this.errorMessage = <any>error,
+         () => { this.keypairsHelp = "Select a keypair" });
+   }
+   
+   getNetworks(cloud_id: string) {
+      this.networksHelp = "Retrieving list of networks...";
+      this.selectedNetwork = null;
+      this.subnetsHelp = "Select a network first";
+      this.networks = [];
+      this._cloudService.getNetworks(cloud_id)
+         .subscribe(networks => this.networks = networks.map(n => { n.text = n.name ? n.name : n.id; return n; }),
+         error => this.errorMessage = <any>error,
+         () => { this.networksHelp = "Select a network" });
+   }
+   
+   onNetworkSelect(selected_network: Network) {
+      this.getSubnets(this.selectedCloud.id, selected_network.id);
+   }
+   
+   getSubnets(cloud_id: string, network_id: string) {
+      this.subnetsHelp = "Retrieving list of subnets...";
+      this.subnets = [];
+      this._cloudService.getSubNets(cloud_id, network_id)
+         .subscribe(subnets => this.subnets = subnets.map(s => { s.text = s.name ? s.name : s.id; return s; }),
+         error => this.errorMessage = <any>error,
+         () => { this.subnetsHelp = "Select a subnet" });
    }
 }
