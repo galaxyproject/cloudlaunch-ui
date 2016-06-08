@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from '@angular/common';
 
 import { SELECT_DIRECTIVES } from 'ng2-select';
@@ -15,6 +15,8 @@ import { ConfigPanelComponent } from '../layouts/config-panel.component';
 })
 
 export class CloudLaunchComponent implements OnInit {
+   @Output() targetCloud = new EventEmitter();
+
    CLOUD_SELECTION_HELP: string = "Select a target cloud first";
    errorMessage: string;
    showAdvanced: boolean = false;
@@ -60,6 +62,8 @@ export class CloudLaunchComponent implements OnInit {
          this.getPlacements(selected_cloud.id);
          this.getKeyPairs(selected_cloud.id);
          this.getNetworks(selected_cloud.id);
+         // Fire an event with the selected cloud
+         this.targetCloud.next(this.selectedCloud);
       }
    }
 

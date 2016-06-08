@@ -69,8 +69,7 @@ export class CloudManConfigComponent {
       this.cmConfigService = cmConfigService;
       this.clusterForm = fb.group({
          'cluster_name': [''],
-         'password': [''],
-         'target_cloud': ['']
+         'password': ['']
       });
 
       this.clusterName = this.clusterForm.controls['cluster_name'];
@@ -79,13 +78,15 @@ export class CloudManConfigComponent {
    onSubmit(value: string): void {
       console.log("onSubmit value: ", value);
       // this.cmConfigService.storeInfo(value['cluster_name']);
-      // this.router.navigate(['Launch', {slug: this.routeParams.get('slug')}]);
-      this.showCloudLaunch = true;
    }
 
    setStorage(sType) {
       this.storageType = sType;
       console.log(this.storageType);
+   }
+
+   setTargetCloud(targetCloud) {
+      console.log("Target cloud in the CloudMan component: " + targetCloud.id);
    }
 
    toggleAdvanced() {

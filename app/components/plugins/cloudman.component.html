@@ -5,11 +5,7 @@
            (ngSubmit)="onSubmit(clusterForm.value)"
            [ngFormModel]="clusterForm">
 
-         <!-- Cloud launching part of the form -->
-         <!-- TODO: move to the bottom once functional -->
-         <cloudlaunch-config *ngIf="showCloudLaunch"></cloudlaunch-config>
-
-         <config-panel *ngIf="showCloudLaunch==false">
+         <config-panel>
             <panel-header>CloudMan Configuration</panel-header>
                <panel-body>
 
@@ -128,10 +124,12 @@
                      <span class="material-input"></span>
                   </div>
                </div>
-
-               <button type="submit" class="btn btn-raised btn-default">Next</button>
             </panel-body>
          </config-panel>
+
+         <!-- Cloud launching part of the form -->
+         <cloudlaunch-config (targetCloud)="setTargetCloud($event)"></cloudlaunch-config>
+
       </form>
    </panel-body>
 </config-panel>
