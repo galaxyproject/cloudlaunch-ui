@@ -1,17 +1,12 @@
 <config-panel>
-    <panel-header>GVL Settings</panel-header>
     <panel-body>
         <form class="form">
-        
-            <!--  CloudMan settings -->
-            <cloudman-config></cloudman-config>
-        
             <!--  GVL Component Selection -->
             <config-panel>
-                <panel-header>Additional GVL Settings</panel-header>
+                <panel-header>GVL Settings</panel-header>
                 <panel-body>
                     <div class="form-group">
-                        <label>Additional Applications</label>
+                        <label>Auto-start the selected applications</label>
                         <div class="checkbox">
                             <label> <input type="checkbox" name="gvlapp_cmdlineutils" value="cmdline_utils" />
                                 GVL Commandline Utilities
@@ -24,7 +19,10 @@
                         </div>
                     </div>
                 </panel-body>
-            </config-panel>        
+            </config-panel>
+
+            <!--  CloudMan settings -->
+            <cloudman-config></cloudman-config>
         </form>
     </panel-body>
 </config-panel>

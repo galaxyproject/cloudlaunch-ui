@@ -24,7 +24,7 @@
                         required
                         [ngFormControl]="clusterForm.controls['cluster_name']">
                   <span class="help-block">
-                     Name of your cluster used for identification and "restarting.
+                     Name of your cluster used for identification and saving.
                      If creating a new cluster, type any name you like.
                   </span>
                   <span class="material-input"></span>
@@ -79,52 +79,54 @@
                   </label>
                </div>
 
-               <!--  Cluster Type Selection -->
-               <div class="form-group" *ngIf="showAdvanced">
-                  <label for="cluster_type">Cluster Type</label>
-                  <select id="cluster_type" name="cluster_type" class="form-control">
-                     <option *ngFor="let cType of clusterTypes" value="{{ cType.value }}">
-                        {{ cType.title }}
-                     </option>
-                  </select>
-               </div>
+               <div *ngIf="showAdvanced">
+                  <!--  Cluster Type Selection -->
+                  <div class="form-group">
+                     <label for="cluster_type">Cluster Type</label>
+                     <select id="cluster_type" name="cluster_type" class="form-control">
+                        <option *ngFor="let cType of clusterTypes" value="{{ cType.value }}">
+                           {{ cType.title }}
+                        </option>
+                     </select>
+                  </div>
 
-               <!--  Default bucket -->
-               <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
-                  <label for="id_default_bucket" class="control-label">Default Bucket</label> <input
-                     id="id_default_bucket" name="default_bucket" type="text" class="form-control input-md">
-                  <span class="help-block">The default bucket to use. See CloudMan's wiki for a
-                     detailed description of this option.</span>
-                  <span class="material-input"></span>
-               </div>
+                  <!--  Default bucket -->
+                  <div class="form-group label-floating is-empty">
+                     <label for="id_default_bucket" class="control-label">Default Bucket</label> <input
+                        id="id_default_bucket" name="default_bucket" type="text" class="form-control input-md">
+                     <span class="help-block">The default bucket to use. See CloudMan's wiki for a
+                        detailed description of this option.</span>
+                     <span class="material-input"></span>
+                  </div>
 
-               <!-- Post Start Script -->
-               <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
-                  <label for="id_post_start_script" class="control-label">Post-start</label> <input
-                     id="id_post_start_script" name="post_start_script" type="text"
-                     class="form-control input-md">
-                  <span class="help-block">A URL to the post-start script. See CloudMan's wiki for a
-                     detailed description of this option.</span>
-                  <span class="material-input"></span>
-               </div>
+                  <!-- Post Start Script -->
+                  <div class="form-group label-floating is-empty">
+                     <label for="id_post_start_script" class="control-label">Post-start</label> <input
+                        id="id_post_start_script" name="post_start_script" type="text"
+                        class="form-control input-md">
+                     <span class="help-block">A URL to the post-start script. See CloudMan's wiki for a
+                        detailed description of this option.</span>
+                     <span class="material-input"></span>
+                  </div>
 
-               <!-- Worker Post Start Script -->
-               <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
-                  <label for="id_worker_post_start_script" class="control-label">Worker post-start
-                     script</label> <input id="id_worker_post_start_script" name="worker_post_start_script"
-                     type="text" class="form-control input-md">
-                  <span class="help-block">A URL to the post-start script for worker nodes. See
-                     CloudMan's wiki for the description.</span>
-                  <span class="material-input"></span>
-               </div>
+                  <!-- Worker Post Start Script -->
+                  <div class="form-group label-floating is-empty">
+                     <label for="id_worker_post_start_script" class="control-label">Worker post-start
+                        script</label> <input id="id_worker_post_start_script" name="worker_post_start_script"
+                        type="text" class="form-control input-md">
+                     <span class="help-block">A URL to the post-start script for worker nodes. See
+                        CloudMan's wiki for the description.</span>
+                     <span class="material-input"></span>
+                  </div>
 
-               <!-- Shared Cluster String -->
-               <div class="form-group label-floating is-empty" *ngIf="showAdvanced">
-                  <label for="id_shared_cluster_string" class="control-label">Shared cluster string</label> <input
-                     id="id_shared_cluster_string" name="shared_cluster_string" type="text"
-                     class="form-control input-md">
-                  <span class="help-block">A share string to use for deriving this cluster instance.</span>
-                  <span class="material-input"></span>
+                  <!-- Shared Cluster String -->
+                  <div class="form-group label-floating is-empty">
+                     <label for="id_shared_cluster_string" class="control-label">Shared cluster string</label> <input
+                        id="id_shared_cluster_string" name="shared_cluster_string" type="text"
+                        class="form-control input-md">
+                     <span class="help-block">A share string to use for deriving this cluster instance.</span>
+                     <span class="material-input"></span>
+                  </div>
                </div>
 
                <button type="submit" class="btn btn-raised btn-default">Next</button>
