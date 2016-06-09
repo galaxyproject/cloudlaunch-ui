@@ -16,6 +16,7 @@ import { ConfigPanelComponent } from '../layouts/config-panel.component';
 
 export class CloudLaunchComponent implements OnInit {
    @Output() targetCloud = new EventEmitter();
+   @Output() instanceType = new EventEmitter();
 
    CLOUD_SELECTION_HELP: string = "Select a target cloud first";
    errorMessage: string;

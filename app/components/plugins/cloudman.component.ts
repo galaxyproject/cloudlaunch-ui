@@ -89,6 +89,10 @@ export class CloudManConfigComponent {
       console.log("Target cloud in the CloudMan component: " + targetCloud.id);
    }
 
+   setInstanceType(instanceType) {
+       console.log("Instance type in the CloudMan component: " + instanceType.id);
+   }
+
    toggleAdvanced() {
       this.showAdvanced = !this.showAdvanced;
    }

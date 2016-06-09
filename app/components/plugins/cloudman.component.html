@@ -128,7 +128,10 @@
          </config-panel>
 
          <!-- Cloud launching part of the form -->
-         <cloudlaunch-config (targetCloud)="setTargetCloud($event)"></cloudlaunch-config>
+         <cloudlaunch-config
+            (targetCloud)="setTargetCloud($event)"
+            (instanceType)="setInstanceType($event)">
+         </cloudlaunch-config>
 
       </form>
    </panel-body>

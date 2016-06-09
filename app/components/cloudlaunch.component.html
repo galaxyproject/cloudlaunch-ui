@@ -23,8 +23,9 @@
                What type of virtual hardware would you like to use?
             </label>
             <ng-select id="id_instance_type"  [items]="instanceTypes"
-            [disabled]="selectedCloud"
-            [placeholder]="instanceTypeHelp">
+               [disabled]="selectedCloud"
+               [placeholder]="instanceTypeHelp"
+               (selected)="instanceType.emit($event)">
             </ng-select>
          </div>
 
