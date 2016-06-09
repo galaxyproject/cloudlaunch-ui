@@ -90,7 +90,31 @@ export class CloudManConfigComponent {
    }
 
    setInstanceType(instanceType) {
-       console.log("Instance type in the CloudMan component: " + instanceType.id);
+      console.log("Instance type in the CloudMan component: " + instanceType.id);
+   }
+
+   setPlacement(placement) {
+      console.log("Placement in the CloudMan component: " + placement.id);
+   }
+
+   setKeypair(keypair) {
+      console.log("Key pair in the CloudMan component: " + keypair.id);
+   }
+
+   setNetwork(network) {
+      console.log("Network in the CloudMan component: " + network.id);
+   }
+
+   setSubnet(subnet) {
+      console.log("Subnet in the CloudMan component: " + subnet.id);
+   }
+
+   setEbsOptimized(ebsOptimized) {
+      console.log(ebsOptimized);
+   }
+
+   setIops(iops) {
+      console.log(iops);
    }
 
    toggleAdvanced() {

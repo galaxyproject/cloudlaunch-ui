@@ -130,7 +130,13 @@
          <!-- Cloud launching part of the form -->
          <cloudlaunch-config
             (targetCloud)="setTargetCloud($event)"
-            (instanceType)="setInstanceType($event)">
+            (instanceType)="setInstanceType($event)"
+            (placement)="setPlacement($event)"
+            (keypair)="setKeypair($event)"
+            (network)="setNetwork($event)"
+            (subnet)="setSubnet($event)"
+            (ebsOptimized)="setEbsOptimized($event)"
+            (iops)=setIops($event)>
          </cloudlaunch-config>
 
       </form>

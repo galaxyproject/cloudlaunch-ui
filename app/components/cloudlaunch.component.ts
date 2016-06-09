@@ -17,6 +17,12 @@ import { ConfigPanelComponent } from '../layouts/config-panel.component';
 export class CloudLaunchComponent implements OnInit {
    @Output() targetCloud = new EventEmitter();
    @Output() instanceType = new EventEmitter();
+   @Output() placement = new EventEmitter();
+   @Output() keypair = new EventEmitter();
+   @Output() network = new EventEmitter();
+   @Output() subnet = new EventEmitter();
+   @Output() ebsOptimized = new EventEmitter();
+   @Output() iops = new EventEmitter();
 
    CLOUD_SELECTION_HELP: string = "Select a target cloud first";
    errorMessage: string;
@@ -112,6 +118,8 @@ export class CloudLaunchComponent implements OnInit {
 
    onNetworkSelect(selected_network: Network) {
       this.getSubnets(this.selectedCloud.id, selected_network.id);
+      // Fire an event with the selected cloud
+      this.network.next(selected_network);
    }
 
    getSubnets(cloud_id: string, network_id: string) {
