@@ -2,8 +2,8 @@
    <panel-header>CloudMan Settings</panel-header>
    <panel-body>
       <form class="form"
-           (ngSubmit)="onSubmit(clusterForm.value)"
-           [ngFormModel]="clusterForm">
+         [ngFormModel]="cmClusterForm"
+         (ngSubmit)="onSubmit(cmClusterForm.value)">
 
          <config-panel>
             <panel-header>CloudMan Configuration</panel-header>
@@ -18,7 +18,7 @@
                         id="cluster_name"
                         class="form-control input-md"
                         required
-                        [ngFormControl]="clusterForm.controls['cluster_name']">
+                        [ngFormControl]="cmClusterForm.controls['cmClusterName']">
                   <span class="help-block">
                      Name of your cluster used for identification and saving.
                      If creating a new cluster, type any name you like.
@@ -31,7 +31,7 @@
                   <label for="id_password" class="control-label">Access password</label>
                   <input id="id_password" name="password" type="password"
                      class="form-control input-md" required
-                     [ngFormControl]="clusterForm.controls['password']">
+                     [ngFormControl]="cmClusterForm.controls['cmPassword']">
                   <span class="help-block">
                      Your choice of password, for the CloudMan web interface and
                      accessing the cluster via ssh.
@@ -44,25 +44,40 @@
                   <label>Storage Type</label>
                   <div class="radio">
                      <label>
-                        <input type="radio" name="cluster_type" value="transient" (click)="setStorage('transient')" checked *ngIf="storageType=='transient'" />
-                        <input type="radio" name="cluster_type" value="transient" (click)="setStorage('transient')" *ngIf="storageType!='transient'"/>
+                        <input type="radio" name="cluster_type" (value)="transient"
+                           (click)="setStorageType('transient')" checked
+                           *ngIf="cmStorageType.value=='transient'"
+                           [ngFormControl]="cmClusterForm.controls['cmStorageType']" />
+                        <input type="radio" name="cluster_type" (value)="transient"
+                           (click)="setStorageType('transient')"
+                           *ngIf="cmStorageType.value!='transient'"
+                           [ngFormControl]="cmClusterForm.controls['cmStorageType']" />
                         Transient instance storage
                      </label>
                   </div>
                   <div class="radio">
                      <label>
-                        <input type="radio" name="cluster_type" value="volume" (click)="setStorage('volume')" *ngIf="storageType!='volume'"/>
-                        <input type="radio" name="cluster_type" value="volume" (click)="setStorage('volume')" checked *ngIf="storageType=='volume'" />
+                        <input type="radio" name="cluster_type" (value)="volume"
+                           (click)="setStorageType('volume')"
+                           *ngIf="cmStorageType.value!='volume'"
+                           [ngFormControl]="cmClusterForm.controls['cmStorageType']" />
+                        <input type="radio" name="cluster_type" (value)="volume"
+                           (click)="setStorageType('volume')" checked
+                           *ngIf="cmStorageType.value=='volume'"
+                           [ngFormControl]="cmClusterForm.controls['cmStorageType']" />
                         Persistent volume storage
                      </label>
                   </div>
                </div>
 
                <!--  Storage size -->
-               <div class="form-group" *ngIf="storageType=='volume'">
-                  <label for="id_storage_size" class="control-label">Storage size</label>
+               <div class="form-group" *ngIf="cmStorageType.value=='volume'">
+                  <label for="id_storage_size" class="control-label">
+                     Storage size
+                  </label>
                   <input type="number" [(ngModel)]="cluster.storageSize" required
-                     class="form-control input-md">
+                     class="form-control input-md"
+                     [ngFormControl]="cmClusterForm.controls['cmStorageSize']" />
                   <span class="help-block">
                      Desired size of your persistent storage.
                   </span>
@@ -79,48 +94,70 @@
                   <!--  Cluster Type Selection -->
                   <div class="form-group">
                      <label for="cluster_type">Cluster Type</label>
-                     <select id="cluster_type" name="cluster_type" class="form-control">
-                        <option *ngFor="let cType of clusterTypes" value="{{ cType.value }}">
-                           {{ cType.title }}
-                        </option>
-                     </select>
+                     <ng-select id="id_cluster_type" [items]="clusterTypes"
+                        (selected)="setClusterType($event)">
+                     </ng-select>
+
                   </div>
 
                   <!--  Default bucket -->
                   <div class="form-group label-floating is-empty">
-                     <label for="id_default_bucket" class="control-label">Default Bucket</label> <input
-                        id="id_default_bucket" name="default_bucket" type="text" class="form-control input-md">
-                     <span class="help-block">The default bucket to use. See CloudMan's wiki for a
-                        detailed description of this option.</span>
+                     <label for="id_default_bucket" class="control-label">
+                        Default Bucket
+                     </label>
+                     <input id="id_default_bucket" name="default_bucket"
+                        type="text" class="form-control input-md"
+                        [ngFormControl]="cmClusterForm.controls['cmDefaultBucket']" />
+                     <span class="help-block">
+                        The default bucket to use. See CloudMan's wiki for a
+                        detailed description of this option.
+                     </span>
                      <span class="material-input"></span>
                   </div>
 
                   <!-- Post Start Script -->
                   <div class="form-group label-floating is-empty">
-                     <label for="id_post_start_script" class="control-label">Post-start</label> <input
-                        id="id_post_start_script" name="post_start_script" type="text"
-                        class="form-control input-md">
-                     <span class="help-block">A URL to the post-start script. See CloudMan's wiki for a
-                        detailed description of this option.</span>
+                     <label for="id_post_start_script" class="control-label">
+                        Post-start
+                     </label>
+                     <input id="id_post_start_script" name="post_start_script"
+                        type="text" class="form-control input-md"
+                        [ngFormControl]="cmClusterForm.controls['cmPSS']" />
+                     <span class="help-block">
+                        A URL to the post-start script. See CloudMan's wiki for
+                        a detailed description of this option.
+                     </span>
                      <span class="material-input"></span>
                   </div>
 
                   <!-- Worker Post Start Script -->
                   <div class="form-group label-floating is-empty">
-                     <label for="id_worker_post_start_script" class="control-label">Worker post-start
-                        script</label> <input id="id_worker_post_start_script" name="worker_post_start_script"
-                        type="text" class="form-control input-md">
-                     <span class="help-block">A URL to the post-start script for worker nodes. See
-                        CloudMan's wiki for the description.</span>
+                     <label for="id_worker_post_start_script" class="control-label">
+                        Worker post-start script
+                     </label>
+                     <input id="worker_post_start_script"
+                        name="worker_post_start_script" type="text"
+                        class="form-control input-md"
+                        [ngFormControl]="cmClusterForm.controls['cmWPSS']" />
+                     <span class="help-block">
+                        A URL to the post-start script for worker nodes. See
+                        CloudMan's wiki for the description.
+                     </span>
                      <span class="material-input"></span>
                   </div>
 
                   <!-- Shared Cluster String -->
                   <div class="form-group label-floating is-empty">
-                     <label for="id_shared_cluster_string" class="control-label">Shared cluster string</label> <input
-                        id="id_shared_cluster_string" name="shared_cluster_string" type="text"
-                        class="form-control input-md">
-                     <span class="help-block">A share string to use for deriving this cluster instance.</span>
+                     <label for="id_shared_cluster_string" class="control-label">
+                        Shared cluster string
+                     </label>
+                     <input id="id_shared_cluster_string"
+                        name="shared_cluster_string" type="text"
+                        class="form-control input-md"
+                        [ngFormControl]="cmClusterForm.controls['cmShareString']" />
+                     <span class="help-block">
+                        A share string from a cluster to clone.
+                     </span>
                      <span class="material-input"></span>
                   </div>
                </div>

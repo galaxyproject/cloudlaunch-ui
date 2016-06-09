@@ -4,15 +4,11 @@ import {
    FORM_DIRECTIVES,
    FormBuilder,
    ControlGroup,
-   AbstractControl} from '@angular/common';
-import { Router, RouteParams } from '@angular/router-deprecated';
+   Control} from '@angular/common';
+
+import { SELECT_DIRECTIVES } from 'ng2-select';
 
 import { CloudLaunchComponent } from '../cloudlaunch.component';
-// import { CloudManCloud } from './cloudmancloud.component';
-
-// @RouteConfig([
-//    {path: '/cloud', component: CloudManCloud, name: 'CMCloud', useAsDefault: true}
-// ])
 
 class Config {
    clusterName: string;
@@ -40,49 +36,70 @@ export class CloudManConfigService {
    inputs: ['application'],
    providers: [CloudManConfigService],
    directives: [ConfigPanelComponent, CloudLaunchComponent,
-                FORM_DIRECTIVES]
+                FORM_DIRECTIVES, SELECT_DIRECTIVES]
 })
 
 export class CloudManConfigComponent {
    cluster: Object = {};
    clusterTypes: Object[] = [  // First element in the list if the default choice
-      {'value': 'Data', 'title': 'SLURM cluster only'},
-      {'value': 'Galaxy', 'title': 'SLURM cluster with Galaxy'},
-      {'value': 'None', 'title': 'Do not set cluster type now'}]
-   storageType: string = "transient";  // Init default type: transient or volume
+      {'id': 'Data', 'text': 'SLURM cluster only'},
+      {'id': 'Galaxy', 'text': 'SLURM cluster with Galaxy'},
+      {'id': 'None', 'text': 'Do not set cluster type now'}]
+   // storageType: string = "transient";  // Form flag: transient or volume
    showAdvanced: boolean = false;
-   showCloudLaunch: boolean = false;
 
-   clusterForm: ControlGroup;
-   clusterName: AbstractControl;
+   cmClusterForm: ControlGroup;
+   cmStorageType: Control = new Control('transient');
+   cmClusterType: Control;
+
    cmConfigService: CloudManConfigService;
    // clusterConfig: Config;
-   private router: Router;
-   private routeParams: RouteParams;
-   constructor(fb: FormBuilder, configService: CloudManConfigService,
-      cmConfigService: CloudManConfigService, _router: Router,
-      private _routerParams: RouteParams) {
-      this.router = _router;
-      this.routeParams = _routerParams
-      // console.log("routeParams: ", this.routeParams);
-      // this.clusterConfig = cmConfigService.configInfo();
-      this.cmConfigService = cmConfigService;
-      this.clusterForm = fb.group({
-         'cluster_name': [''],
-         'password': ['']
-      });
 
-      this.clusterName = this.clusterForm.controls['cluster_name'];
+   constructor(fb: FormBuilder, configService: CloudManConfigService,
+               cmConfigService: CloudManConfigService) {
+      this.cmConfigService = cmConfigService;
+      this.cmClusterForm = fb.group({
+         'cmClusterName': [''],
+         'cmPassword': [''],
+         'cmStorageType': this.cmStorageType,
+         'cmStorageSize': [''],
+         'cmClusterType': this.cmClusterType,
+         'cmDefaultBucket': [''],
+         'cmPSS': [''],
+         'cmWPSS': [''],
+         'cmShareString': ['']
+      });
    }
 
    onSubmit(value: string): void {
+      // `cmStorageType` and `cmClusterType` form fields do not get get updated
+      // as expected so sync them with the component properties
+      if (value['cmStorageType'] != this.cmStorageType.value) {
+         value['cmStorageType'] = this.cmStorageType.value;
+      }
+
+      if (value['cmClusterType'] == "" || value['cmClusterType'] == null) {
+         if (this.cmClusterType == null) {
+            // Default cluster type for the current appliance
+            // TODO: set this as @Input based on the appliance
+            value['cmClusterType'] = 'Data';
+         } else {
+            value['cmClusterType'] = this.cmClusterType.value;
+         }
+      }
       console.log("onSubmit value: ", value);
       // this.cmConfigService.storeInfo(value['cluster_name']);
    }
 
-   setStorage(sType) {
-      this.storageType = sType;
-      console.log(this.storageType);
+   setStorageType(sType) {
+      console.log(sType);
+      this.cmStorageType = new Control(sType);
+   }
+
+   setClusterType(cType) {
+       console.log(cType);
+       this.cmClusterType = new Control(cType.id);
+       // console.log(this.cmClusterType);
    }
 
    setTargetCloud(targetCloud) {
