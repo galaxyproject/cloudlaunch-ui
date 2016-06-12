@@ -1,23 +1,31 @@
 <div class="row">
-	<div class="col-md-12">
-		<div class="panel panel-info">
-			<div class="panel-heading">Appliance info</div>
-			<div class="panel-body">{{ application.description }}</div>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<div class="panel panel-success">
-			<div class="panel-heading">Launch this appliance: {{ application.name }}</div>
-			<div class="panel-body">
-				<app-placeholder [application]="application"
-					[component_path]="application.frontend_component_path"
-					[component_name]="application.frontend_component_name"></app-placeholder>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<a (click)="goBack()" class="btn btn-raised btn-default"> <i
-			class="material-icons">navigate_before</i> Back
-		</a>
-	</div>
+    <form class="form"
+        [ngFormModel]="applianceLaunchForm"
+        (ngSubmit)="onSubmit(applianceLaunchForm.value)">
+    	<div class="col-md-12">
+    		<div class="panel panel-info">
+    			<div class="panel-heading">Appliance info</div>
+    			<div class="panel-body">{{ application.description }}</div>
+    		</div>
+    	</div>
+    	<div class="col-md-12">
+        		<div class="panel panel-success">
+        			<div class="panel-heading">Launch this appliance: {{ application.name }}</div>
+        			<div class="panel-body">
+        				<app-placeholder [application]="application"
+        					[component_path]="application.frontend_component_path"
+        					[component_name]="application.frontend_component_name"></app-placeholder>
+                        <!-- Cloud launching part of the form -->
+                        <cloudlaunch-config></cloudlaunch-config>
+        			</div>
+        		</div>
+    	</div>
+    	<div class="col-md-12">
+    		<a (click)="goBack()" class="btn btn-raised btn-default"> <i
+    			class="material-icons">navigate_before</i> Back
+    		</a>
+            <button type="submit" class="btn btn-raised btn-default pull-right" [disabled]="!applianceLaunchForm.valid">Launch</button>
+            
+    	</div>
+    </form>
 </div>

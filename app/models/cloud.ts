@@ -34,14 +34,3 @@ export interface SubNet {
    text: string;
    name: string;
 }
-
-export class TargetCloudInfo {
-   public cloudId: string;
-   public instanceType: string;
-   public placement: string;
-   public keypair: string;
-   public network: string;
-   public subnet: string;
-   public ebsOptimized: string;
-   public iops: string;
-}

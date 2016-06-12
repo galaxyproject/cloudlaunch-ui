@@ -17,8 +17,7 @@
                   <input type="text"
                         id="cluster_name"
                         class="form-control input-md"
-                        required
-                        [ngFormControl]="cmClusterForm.controls['cmClusterName']">
+                        ngControl="clusterName">
                   <span class="help-block">
                      Name of your cluster used for identification and saving.
                      If creating a new cluster, type any name you like.
@@ -30,8 +29,8 @@
                <div class="form-group label-floating is-empty">
                   <label for="id_password" class="control-label">Access password</label>
                   <input id="id_password" name="password" type="password"
-                     class="form-control input-md" required
-                     [ngFormControl]="cmClusterForm.controls['cmPassword']">
+                     class="form-control input-md"
+                     ngControl="clusterPassword">
                   <span class="help-block">
                      Your choice of password, for the CloudMan web interface and
                      accessing the cluster via ssh.
@@ -44,40 +43,27 @@
                   <label>Storage Type</label>
                   <div class="radio">
                      <label>
-                        <input type="radio" name="cluster_type" (value)="transient"
-                           (click)="setStorageType('transient')" checked
-                           *ngIf="cmStorageType.value=='transient'"
-                           [ngFormControl]="cmClusterForm.controls['cmStorageType']" />
-                        <input type="radio" name="cluster_type" (value)="transient"
-                           (click)="setStorageType('transient')"
-                           *ngIf="cmStorageType.value!='transient'"
-                           [ngFormControl]="cmClusterForm.controls['cmStorageType']" />
+                        <input type="radio" name="cluster_type" value='transient'
+                           ngControl="storageType" />
                         Transient instance storage
                      </label>
                   </div>
                   <div class="radio">
                      <label>
-                        <input type="radio" name="cluster_type" (value)="volume"
-                           (click)="setStorageType('volume')"
-                           *ngIf="cmStorageType.value!='volume'"
-                           [ngFormControl]="cmClusterForm.controls['cmStorageType']" />
-                        <input type="radio" name="cluster_type" (value)="volume"
-                           (click)="setStorageType('volume')" checked
-                           *ngIf="cmStorageType.value=='volume'"
-                           [ngFormControl]="cmClusterForm.controls['cmStorageType']" />
+                        <input type="radio" name="cluster_type" value='volume'
+                           ngControl="storageType" />
                         Persistent volume storage
                      </label>
                   </div>
                </div>
 
                <!--  Storage size -->
-               <div class="form-group" *ngIf="cmStorageType.value=='volume'">
+               <div class="form-group" *ngIf="storageType=='volume'">
                   <label for="id_storage_size" class="control-label">
                      Storage size
                   </label>
-                  <input type="number" [(ngModel)]="cluster.storageSize" required
-                     class="form-control input-md"
-                     [ngFormControl]="cmClusterForm.controls['cmStorageSize']" />
+                  <input type="number" class="form-control input-md"
+                     ngControl="storageSize" />
                   <span class="help-block">
                      Desired size of your persistent storage.
                   </span>
@@ -95,6 +81,7 @@
                   <div class="form-group">
                      <label for="cluster_type">Cluster Type</label>
                      <ng-select id="id_cluster_type" [items]="clusterTypes"
+                        [initData]="getInitialClusterType()"
                         (selected)="setClusterType($event)">
                      </ng-select>
 
@@ -107,7 +94,7 @@
                      </label>
                      <input id="id_default_bucket" name="default_bucket"
                         type="text" class="form-control input-md"
-                        [ngFormControl]="cmClusterForm.controls['cmDefaultBucket']" />
+                        ngControl="defaultBucket" />
                      <span class="help-block">
                         The default bucket to use. See CloudMan's wiki for a
                         detailed description of this option.
@@ -122,7 +109,7 @@
                      </label>
                      <input id="id_post_start_script" name="post_start_script"
                         type="text" class="form-control input-md"
-                        [ngFormControl]="cmClusterForm.controls['cmPSS']" />
+                        ngControl="masterPostStartScript" />
                      <span class="help-block">
                         A URL to the post-start script. See CloudMan's wiki for
                         a detailed description of this option.
@@ -138,7 +125,7 @@
                      <input id="worker_post_start_script"
                         name="worker_post_start_script" type="text"
                         class="form-control input-md"
-                        [ngFormControl]="cmClusterForm.controls['cmWPSS']" />
+                        ngControl="workerPostStartScript" />
                      <span class="help-block">
                         A URL to the post-start script for worker nodes. See
                         CloudMan's wiki for the description.
@@ -154,7 +141,7 @@
                      <input id="id_shared_cluster_string"
                         name="shared_cluster_string" type="text"
                         class="form-control input-md"
-                        [ngFormControl]="cmClusterForm.controls['cmShareString']" />
+                        ngControl="clusterSharedString" />
                      <span class="help-block">
                         A share string from a cluster to clone.
                      </span>
@@ -163,18 +150,6 @@
                </div>
             </panel-body>
          </config-panel>
-
-         <!-- Cloud launching part of the form -->
-         <cloudlaunch-config
-            (targetCloud)="setTargetCloud($event)"
-            (instanceType)="setInstanceType($event)"
-            (placement)="setPlacement($event)"
-            (keypair)="setKeypair($event)"
-            (network)="setNetwork($event)"
-            (subnet)="setSubnet($event)"
-            (ebsOptimized)="setEbsOptimized($event)"
-            (iops)=setIops($event)>
-         </cloudlaunch-config>
 
       </form>
    </panel-body>

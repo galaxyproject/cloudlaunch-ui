@@ -22,7 +22,7 @@ export class AppPlaceHolderComponent implements OnInit {
       System.import(this.component_path)
         .then(m => {
           this.componentResolver.resolveComponent(m[this.component_name]).then((factory) => {
-            var component = this.viewContainerRef.createComponent(factory, 0,  this.viewContainerRef.injector);
+            let component = this.viewContainerRef.createComponent(factory, 0,  this.viewContainerRef.injector);
             component.instance.application = this.application;  
           });
         });

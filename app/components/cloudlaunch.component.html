@@ -1,111 +1,109 @@
 <config-panel>
    <panel-header>Cloud Launch Settings</panel-header>
    <panel-body>
-      <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
+      <form class="form"
+         [ngFormModel]="cloudLaunchForm"
+         (ngSubmit)="onSubmit(cloudLaunchForm.value)">
 
-      <!-- Cloud choice -->
-      <div class="form-group">
-         <label for="id_target_cloud" class="control-label">
-            On which cloud would you like to launch your appliance?
-         </label>
-         <ng-select id="target_cloud"
-            [items]="clouds"
-            (selected)="onCloudSelect($event)"
-            placeholder="No cloud selected">
-            <!--[ngFormControl]="clusterForm.controls['target_cloud']"> -->
-         </ng-select>
-      </div>
-
-      <div *ngIf="cloudFields">
-         <!-- Instance type selection -->
-         <div class="form-group">
-            <label for="id_instance_type" class="control-label">
-               What type of virtual hardware would you like to use?
-            </label>
-            <ng-select id="id_instance_type"  [items]="instanceTypes"
-               [disabled]="selectedCloud"
-               [placeholder]="instanceTypeHelp"
-               (selected)="instanceType.emit($event)">
-            </ng-select>
-         </div>
-
-         <div class="togglebutton">
-            <label>
-               <input type="checkbox" (click)="toggleAdvanced()">Advanced options
-            </label>
-         </div>
-
-         <div *ngIf="showAdvanced">
-            <!-- Placement selection -->
-            <div class="form-group">
-               <label for="id_placement" class="control-label">
-                  In which placement zone would you like to launch this appliance?
-               </label>
-               <ng-select id="id_placement"  [items]="placements"
-                  [disabled]="selectedCloud"
-                  [placeholder]="placementHelp"
-                  (selected)=placement.emit($event)>
-               </ng-select>
-            </div>
-
-            <!-- Key pair selection -->
-            <div class="form-group">
-               <label for="id_keypair" class="control-label">
-                  Which keypair would you like to use for this Virtual Machine?
-               </label>
-               <ng-select id="id_keypair"  [items]="keypairs"
-                  [disabled]="selectedCloud"
-                  [placeholder]="keypairsHelp"
-                  (selected)=keypair.emit($event)>
-               </ng-select>
+          <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
+    
+          <!-- Cloud choice -->
+          <div class="form-group">
+             <label for="id_target_cloud" class="control-label">
+                On which cloud would you like to launch your appliance?
+             </label>
+             <ng-select id="target_cloud"
+                [items]="clouds"
+                [initData]="cloudLaunchForm.value['targetCloud']"
+                (selected)="onCloudSelect($event)"
+                placeholder="No cloud selected">
+             </ng-select>
+          </div>
+    
+          <div *ngIf="cloudFields">
+             <!-- Instance type selection -->
+             <div class="form-group">
+                <label for="id_instance_type" class="control-label">
+                   What type of virtual hardware would you like to use?
+                </label>
+                <ng-select id="id_instance_type"  [items]="instanceTypes"
+                   [disabled]="cloudLaunchForm.value['targetCloud']"
+                   (selected)="setInstanceType($event)"
+                   [placeholder]="instanceTypeHelp">
+                </ng-select>
              </div>
-
-            <!-- Network selection -->
-            <div class="form-group">
-               <label for="id_network" class="control-label">
-                  In which network would you like to place this Virtual Machine?
-               </label>
-               <ng-select id="id_network"  [items]="networks"
-                  [disabled]="selectedCloud"
-                  (selected)="onNetworkSelect($event)"
-                  [placeholder]="networksHelp">
-               </ng-select>
-            </div>
-
-            <!-- Subnet selection -->
-            <div class="form-group">
-               <label for="id_subnet" class="control-label">
-                  In which subnet would you like to place this Virtual Machine?
-               </label>
-               <ng-select id="id_subnet"  [items]="subnets"
-                  [disabled]="selectedCloud"
-                  [placeholder]="subnetsHelp"
-                  (selected)=subnet.emit($event)>
-               </ng-select>
-            </div>
-
-            <!-- EBS optimized selection (AWS only) -->
-            <div class="checkbox">
-               <label>
-                  <input type="checkbox" id="ebs_optimized" name="ebs_optimized"
-                     (change)=ebsOptimized.emit($event.target.checked)>
-                     If checked, use dedicated disk bandwidth (i.e., EBS-optimized)
-               </label>
-            </div>
-
-            <!-- Volume IOPS selection (AWS only) -->
-            <!--  Add *ngIf="storageType=='volume'" once variable is propagated -->
-            <div class="form-group">
-               <label for="id_iops" class="control-label">Volume IOPS</label>
-               <input #iopsel type="number" class="form-control input-md"
-                  (blur)="iops.emit(iopsel.value)"
-                  (keyup.enter)="iops.emit(iopsel.value)">
-               <span class="help-block">
-                  Min: 100; max: 20000; max 30:1 IOPS to size ratio
-               </span>
-            </div>
-         </div>
-      </div>
-      <button type="submit" class="btn btn-raised btn-default">Launch</button>
+    
+             <div class="togglebutton">
+                <label>
+                   <input type="checkbox" (click)="toggleAdvanced()">Advanced options
+                </label>
+             </div>
+    
+             <div *ngIf="showAdvanced">
+                <!-- Placement selection -->
+                <div class="form-group">
+                   <label for="id_placement" class="control-label">
+                      In which placement zone would you like to launch this appliance?
+                   </label>
+                   <ng-select id="id_placement"  [items]="placements"
+                      [disabled]="cloudLaunchForm.value['targetCloud']"
+                      [placeholder]="placementHelp">
+                   </ng-select>
+                </div>
+    
+                <!-- Key pair selection -->
+                <div class="form-group">
+                   <label for="id_keypair" class="control-label">
+                      Which keypair would you like to use for this Virtual Machine?
+                   </label>
+                   <ng-select id="id_keypair"  [items]="keypairs"
+                      [disabled]="cloudLaunchForm.value['targetCloud']"
+                      [placeholder]="keypairsHelp">
+                   </ng-select>
+                 </div>
+    
+                <!-- Network selection -->
+                <div class="form-group">
+                   <label for="id_network" class="control-label">
+                      In which network would you like to place this Virtual Machine?
+                   </label>
+                   <ng-select id="id_network"  [items]="networks"
+                      [disabled]="cloudLaunchForm.value['targetCloud']"
+                      (selected)="onNetworkSelect($event)"
+                      [placeholder]="networksHelp">
+                   </ng-select>
+                </div>
+    
+                <!-- Subnet selection -->
+                <div class="form-group">
+                   <label for="id_subnet" class="control-label">
+                      In which subnet would you like to place this Virtual Machine?
+                   </label>
+                   <ng-select id="id_subnet"  [items]="subnets"
+                      [disabled]="cloudLaunchForm.value['targetCloud']"
+                      [placeholder]="subnetsHelp">
+                   </ng-select>
+                </div>
+    
+                <!-- EBS optimized selection (AWS only) -->
+                <div class="checkbox">
+                   <label>
+                      <input type="checkbox" id="ebs_optimized" name="ebs_optimized" />
+                         If checked, use dedicated disk bandwidth (i.e., EBS-optimized)
+                   </label>
+                </div>
+    
+                <!-- Volume IOPS selection (AWS only) -->
+                <!--  Add *ngIf="storageType=='volume'" once variable is propagated -->
+                <div class="form-group">
+                   <label for="id_iops" class="control-label">Volume IOPS</label>
+                   <input type="number" class="form-control input-md" />
+                   <span class="help-block">
+                      Min: 100; max: 20000; max 30:1 IOPS to size ratio
+                   </span>
+                </div>
+             </div>
+          </div>
+        </form>
    </panel-body>
 </config-panel>
