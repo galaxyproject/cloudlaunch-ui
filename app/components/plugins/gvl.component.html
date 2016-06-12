@@ -1,6 +1,8 @@
 <config-panel>
     <panel-body>
-        <form class="form">
+        <form class="form"
+         [ngFormModel]="gvlLaunchForm"
+         (ngSubmit)="onSubmit(gvlLaunchForm.value)">
             <!--  GVL Component Selection -->
             <config-panel>
                 <panel-header>GVL Settings</panel-header>
@@ -8,12 +10,16 @@
                     <div class="form-group">
                         <label>Auto-start the selected applications</label>
                         <div class="checkbox">
-                            <label> <input type="checkbox" name="gvlapp_cmdlineutils" value="cmdline_utils" />
+                            <label>
+                                <input type="checkbox" name="gvlapp_cmdlineutils"
+                                 ngControl="gvlapp_cmdlineutils" />
                                 GVL Commandline Utilities
                             </label>
                         </div>
                         <div class="checkbox">
-                            <label> <input type="checkbox" name="gvlapp_smrt_analysis" value="smrt_analysis" />
+                            <label>
+                                <input type="checkbox" name="gvlapp_smrt_analysis"
+                                 ngControl="gvlapp_smrt_analysis" />
                                 PacBio SMRT Analysis
                             </label>
                         </div>

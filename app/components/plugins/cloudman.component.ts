@@ -6,7 +6,7 @@ import {
    ControlGroup,
    Control,
    Validators,
-   NgFormModel} from '@angular/common';
+   NgFormModel } from '@angular/common';
 
 import { SELECT_DIRECTIVES } from 'ng2-select';
 import { ConfigPanelComponent } from '../../layouts/config-panel.component';
@@ -46,7 +46,7 @@ export class CloudManConfigComponent implements OnInit {
    
    ngOnInit() {
       // Add child form to parent so that validations roll up
-      this.parentForm.form.addControl("app_config", this.cmClusterForm);
+      this.parentForm.form.addControl("config_cloudman", this.cmClusterForm);
    }
    
    getInitialClusterType() : Object {
