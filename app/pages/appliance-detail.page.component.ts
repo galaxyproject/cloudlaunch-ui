@@ -14,6 +14,7 @@ import { ApplianceDetailComponent } from '../components/appliance-detail.compone
 @Component({
    selector: 'appliance-detail-page',
    templateUrl: 'app/pages/appliance-detail.page.component.html',
+   styleUrls: ['app/pages/appliance-detail.page.component.css'],
    inputs: ['appliance'],
    directives: [StandardLayoutComponent, ApplianceDetailComponent]
 })
