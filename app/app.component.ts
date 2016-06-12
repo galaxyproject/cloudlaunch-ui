@@ -2,7 +2,7 @@ import { provide } from '@angular/core';
 import { Component, AfterViewChecked } from '@angular/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router-deprecated';
 import { HTTP_PROVIDERS } from '@angular/http';
-import { RequestOptions, RequestOptionsArgs, BaseRequestOptions } from '@angular/http';
+import { RequestOptions, RequestOptionsArgs, BaseRequestOptions, Headers } from '@angular/http';
 
 // Services
 import { ApplicationService } from './services/application.service';
@@ -22,14 +22,13 @@ import { CloudLaunchComponent } from './components/cloudlaunch.component';
 declare var $: any
 
 class CustomRequestOptions extends BaseRequestOptions {
-  constructor () {
-    super();
-  }
    
   merge(options?: RequestOptionsArgs): RequestOptions {
      let auth_header = "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
-     this.headers.append('Authorization', auth_header);
-     return options;
+     if (!options.headers)
+        options.headers = new Headers();
+     options.headers.set('Authorization', auth_header);
+     return super.merge(options);
   }
 }
 

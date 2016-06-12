@@ -9,6 +9,7 @@ import {
 import { SELECT_DIRECTIVES } from 'ng2-select';
 
 import { CloudLaunchComponent } from '../cloudlaunch.component';
+import { TargetCloudInfo } from '../../models/cloud';
 
 class Config {
    clusterName: string;
@@ -40,6 +41,7 @@ export class CloudManConfigService {
 })
 
 export class CloudManConfigComponent {
+   cloudInfo: TargetCloudInfo = new TargetCloudInfo();
    cluster: Object = {};
    clusterTypes: Object[] = [  // First element in the list if the default choice
       {'id': 'Data', 'text': 'SLURM cluster only'},
@@ -71,24 +73,25 @@ export class CloudManConfigComponent {
       });
    }
 
-   onSubmit(value: string): void {
+   onSubmit(formValues: string): void {
       // `cmStorageType` and `cmClusterType` form fields do not get get updated
       // as expected so sync them with the component properties
-      if (value['cmStorageType'] != this.cmStorageType.value) {
-         value['cmStorageType'] = this.cmStorageType.value;
+      if (formValues['cmStorageType'] != this.cmStorageType.value) {
+         formValues['cmStorageType'] = this.cmStorageType.value;
       }
 
-      if (value['cmClusterType'] == "" || value['cmClusterType'] == null) {
+      if (formValues['cmClusterType'] == "" || formValues['cmClusterType'] == null) {
          if (this.cmClusterType == null) {
             // Default cluster type for the current appliance
             // TODO: set this as @Input based on the appliance
-            value['cmClusterType'] = 'Data';
+            formValues['cmClusterType'] = 'Data';
          } else {
-            value['cmClusterType'] = this.cmClusterType.value;
+            formValues['cmClusterType'] = this.cmClusterType.value;
          }
       }
-      console.log("onSubmit value: ", value);
-      // this.cmConfigService.storeInfo(value['cluster_name']);
+      console.log("onSubmit formValues: ", formValues);
+      console.log(this.cloudInfo);
+      // this.cmConfigService.storeInfo(formValues['cluster_name']);
    }
 
    setStorageType(sType) {
@@ -104,34 +107,42 @@ export class CloudManConfigComponent {
 
    setTargetCloud(targetCloud) {
       console.log("Target cloud in the CloudMan component: " + targetCloud.id);
+      this.cloudInfo.cloudId = targetCloud.id;
    }
 
    setInstanceType(instanceType) {
       console.log("Instance type in the CloudMan component: " + instanceType.id);
+      this.cloudInfo.instanceType = instanceType.id;
    }
 
    setPlacement(placement) {
       console.log("Placement in the CloudMan component: " + placement.id);
+      this.cloudInfo.placement = placement.id;
    }
 
    setKeypair(keypair) {
       console.log("Key pair in the CloudMan component: " + keypair.id);
+      this.cloudInfo.keypair = keypair.id;
    }
 
    setNetwork(network) {
       console.log("Network in the CloudMan component: " + network.id);
+      this.cloudInfo.network = network.id;
    }
 
    setSubnet(subnet) {
       console.log("Subnet in the CloudMan component: " + subnet.id);
+      this.cloudInfo.subnet = subnet.id;
    }
 
    setEbsOptimized(ebsOptimized) {
       console.log(ebsOptimized);
+      this.cloudInfo.ebsOptimized = ebsOptimized.id;
    }
 
    setIops(iops) {
       console.log(iops);
+      this.cloudInfo.iops = iops.id;
    }
 
    toggleAdvanced() {
