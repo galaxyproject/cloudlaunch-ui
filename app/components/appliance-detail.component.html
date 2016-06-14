@@ -12,11 +12,36 @@
         		<div class="panel panel-success">
         			<div class="panel-heading">Launch this appliance: {{ application.name }}</div>
         			<div class="panel-body">
-        				<app-placeholder [application]="application"
-        					[component_path]="application.frontend_component_path"
-        					[component_name]="application.frontend_component_name"></app-placeholder>
-                        <!-- Cloud launching part of the form -->
-                        <cloudlaunch-config></cloudlaunch-config>
+                    
+                        <div class="form-group">
+                            <label for="id_target_version" class="control-label">
+                                Which version of this appliance would you like to launch?
+                            </label>
+                            <ng-select id="target_version"
+                              [items]="getApplicationVersions()"
+                              (selected)="onVersionSelect($event)"
+                              placeholder="No version selected">
+                            </ng-select>
+                        </div>
+                        
+                        <div class="form-group" *ngIf="applianceLaunchForm.value['targetVersion']">
+                            <label for="id_target_cloud" class="control-label">
+                                On which cloud would you like to launch your appliance?
+                            </label>
+                            <ng-select id="target_cloud"
+                              [items]="clouds"
+                              (selected)="onCloudSelect($event)"
+                              placeholder="No cloud selected">
+                            </ng-select>
+                        </div>
+
+                        <div *ngIf="applianceLaunchForm.value['targetCloud']">
+            				<app-placeholder [application]="application"
+            					[component_path]="applicationVersion.frontend_component_path"
+            					[component_name]="applicationVersion.frontend_component_name"></app-placeholder>
+                            <!-- Cloud launching part of the form -->
+                            <cloudlaunch-config></cloudlaunch-config>
+                        </div>
         			</div>
         		</div>
     	</div>
