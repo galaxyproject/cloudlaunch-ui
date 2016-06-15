@@ -59,8 +59,10 @@ export class CloudLaunchComponent implements OnInit {
          'keyPair': [''],
          'network': [''],
          'subnet': [''],
-         'ebsOptimised': [''],
-         'volumeIOPS': [''],
+         'provider_settings': fb.group({
+            'ebsOptimised': [''],
+            'volumeIOPS': [''],
+         })      
       });
       this.parentForm = parentForm;
    }

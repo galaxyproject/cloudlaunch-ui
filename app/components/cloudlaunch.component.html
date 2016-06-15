@@ -78,7 +78,7 @@
                 <!-- EBS optimized selection (AWS only) -->
                 <div class="checkbox">
                    <label>
-                      <input type="checkbox" id="ebs_optimized" name="ebs_optimized" [ngFormControl]="cloudLaunchForm.controls['ebsOptimised']" />
+                      <input type="checkbox" id="ebs_optimized" name="ebs_optimized" [ngFormControl]="cloudLaunchForm.controls['provider_settings'].controls['ebsOptimised']" />
                          If checked, use dedicated disk bandwidth (i.e., EBS-optimized)
                    </label>
                 </div>
@@ -87,7 +87,7 @@
                 <!--  Add *ngIf="storageType=='volume'" once variable is propagated -->
                 <div class="form-group">
                    <label for="id_iops" class="control-label">Volume IOPS</label>
-                   <input type="number" class="form-control input-md" [ngFormControl]="cloudLaunchForm.controls['volumeIOPS']" />
+                   <input type="number" class="form-control input-md" [ngFormControl]="cloudLaunchForm.controls['provider_settings'].controls['volumeIOPS']" />
                    <span class="help-block">
                       Min: 100; max: 20000; max 30:1 IOPS to size ratio
                    </span>
