@@ -35,12 +35,15 @@
                             </ng-select>
                         </div>
 
-                        <div *ngIf="applianceLaunchForm.value['targetCloud']">
-            				<app-placeholder [application]="application"
-            					[component_path]="applicationVersion.frontend_component_path"
-            					[component_name]="applicationVersion.frontend_component_name"></app-placeholder>
-                            <!-- Cloud launching part of the form -->
-                            <cloudlaunch-config></cloudlaunch-config>
+                        <div *ngIf="applianceLaunchForm.controls['targetCloud'].value">
+                            <form class="form" [ngFormModel]="applianceLaunchForm.find('config_app')">
+                                <app-placeholder [application]="application" [applicationVersion]="applianceLaunchForm.controls['targetVersion'].value"
+                                        [componentPath]="applianceLaunchForm.controls['targetVersion'].value.frontend_component_path"
+                                        [componentName]="applianceLaunchForm.controls['targetVersion'].value.frontend_component_name"></app-placeholder>
+
+                                <!-- Cloud launching part of the form -->
+                                <cloudlaunch-config></cloudlaunch-config>
+                            </form>
                         </div>
         			</div>
         		</div>

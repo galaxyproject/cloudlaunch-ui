@@ -1,4 +1,4 @@
-import { Component, OnInit, Host } from '@angular/core';
+import { Component, OnInit, OnDestroy, Host, Input } from '@angular/core';
 import { RadioControlValueAccessor } from "../../directives/radio_value_accessor";
 import {
    FORM_DIRECTIVES,
@@ -10,15 +10,21 @@ import {
 
 import { SELECT_DIRECTIVES } from 'ng2-select';
 import { ConfigPanelComponent } from '../../layouts/config-panel.component';
+import { Application, ApplicationVersion } from '../../models/application';
 
 @Component({
    selector: 'cloudman-config',
    templateUrl: 'app/components/plugins/cloudman.component.html',
-   inputs: ['application'],
    directives: [FORM_DIRECTIVES, SELECT_DIRECTIVES, RadioControlValueAccessor, ConfigPanelComponent]
 })
 
-export class CloudManConfigComponent implements OnInit {
+export class CloudManConfigComponent implements OnInit, OnDestroy {
+   @Input()
+   application: Application;
+   
+   @Input()
+   applicationVersion: ApplicationVersion;
+   
    cluster: Object = {};
    clusterTypes: Object[] = [  // First element in the list if the default choice
       {'id': 'Galaxy', 'text': 'SLURM cluster with Galaxy'},   
@@ -47,6 +53,10 @@ export class CloudManConfigComponent implements OnInit {
    ngOnInit() {
       // Add child form to parent so that validations roll up
       this.parentForm.form.addControl("config_cloudman", this.cmClusterForm);
+   }
+   
+   ngOnDestroy() {
+      this.parentForm.form.removeControl("config_cloudman");
    }
    
    getInitialClusterType() : Object {

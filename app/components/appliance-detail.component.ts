@@ -27,7 +27,6 @@ export class ApplianceDetailComponent {
    @Input()
    application: Application;
    applianceLaunchForm: ControlGroup;
-   applicationVersion: ApplicationVersion;
    clouds: any[] = [];
 
    constructor(
@@ -36,7 +35,8 @@ export class ApplianceDetailComponent {
    {
       this.applianceLaunchForm = fb.group({
          'targetVersion': [''],
-         'targetCloud': ['']
+         'targetCloud': [''],
+         'config_app': fb.group({}),
       });
    }
    
@@ -45,13 +45,13 @@ export class ApplianceDetailComponent {
    }
    
    onVersionSelect(version) {
-      this.applicationVersion = this.application.versions.filter(v => { return v.version == version.id; })[0];
-      (<Control>this.applianceLaunchForm.controls['targetVersion']).updateValue(this.applicationVersion);
-      this.getCloudsForVersion(this.applicationVersion);
+      let applicationVersion = this.application.versions.filter(v => { return v.version == version.id; })[0];
+      (<Control>this.applianceLaunchForm.controls['targetVersion']).updateValue(applicationVersion);
+      this.getCloudsForVersion(applicationVersion);
    }
    
    getCloudsForVersion(version) {
-      this.clouds = this.applicationVersion.cloud_config.map(cfg => { let r = cfg.cloud; r.id = r.slug; r.text = r.slug; return r; });
+      this.clouds = version.cloud_config.map(cfg => { let r = cfg.cloud; r.id = r.slug; r.text = r.slug; return r; });
    }
    
    onCloudSelect(cloud) {
@@ -63,6 +63,7 @@ export class ApplianceDetailComponent {
    }
 
    onSubmit(formValues: string): void {
-      window.alert("Form data for submission:\n" + JSON.stringify(formValues));
+      console.log(JSON.stringify(formValues));
+      window.alert(JSON.stringify(formValues));
    }
 }

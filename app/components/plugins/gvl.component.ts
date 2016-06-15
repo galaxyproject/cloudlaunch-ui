@@ -1,4 +1,4 @@
-import { Component, OnInit, Host } from '@angular/core';
+import { Component, OnInit, OnDestroy, Host, Input } from '@angular/core';
 import {
    FORM_DIRECTIVES,
    FormBuilder,
@@ -8,15 +8,20 @@ import {
    NgFormModel } from '@angular/common';
 import { ConfigPanelComponent } from '../../layouts/config-panel.component';
 import { CloudManConfigComponent } from './cloudman.component';
+import { Application, ApplicationVersion } from '../../models/application';
 
 @Component({
    selector: 'gvl-config',
    templateUrl: 'app/components/plugins/gvl.component.html',
-   inputs: ['application'],
    directives: [ConfigPanelComponent, CloudManConfigComponent]
 })
-export class GVLConfigComponent implements OnInit {
-
+export class GVLConfigComponent implements OnInit, OnDestroy {
+   @Input()
+   application: Application;
+   
+   @Input()
+   applicationVersion: ApplicationVersion;
+   
    gvlLaunchForm: ControlGroup;
    parentForm: NgFormModel;
 
@@ -31,5 +36,9 @@ export class GVLConfigComponent implements OnInit {
    ngOnInit() {
       // Add child form to parent so that validations roll up
       this.parentForm.form.addControl("config_gvl", this.gvlLaunchForm);
+   }
+   
+   ngOnDestroy() {
+      this.parentForm.form.removeControl("config_gvl");
    }
 }

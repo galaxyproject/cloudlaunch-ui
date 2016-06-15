@@ -59,7 +59,7 @@ export class CloudLaunchComponent implements OnInit {
    ngOnInit() {
       this.getClouds();
       // Add child form to parent so that validations roll up
-      this.parentForm.form.addControl("launch_config", this.cloudLaunchForm);
+      this.parentForm.form.addControl("config_cloudlaunch", this.cloudLaunchForm);
    }
 
    getClouds() {
