@@ -7,19 +7,6 @@
 
           <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
     
-          <!-- Cloud choice -->
-          <div class="form-group">
-             <label for="id_target_cloud" class="control-label">
-                On which cloud would you like to launch your appliance?
-             </label>
-             <ng-select id="target_cloud"
-                [items]="clouds"
-                [initData]="cloudLaunchForm.value['targetCloud']"
-                (selected)="onCloudSelect($event)"
-                placeholder="No cloud selected">
-             </ng-select>
-          </div>
-    
           <div *ngIf="cloudFields">
              <!-- Instance type selection -->
              <div class="form-group">
@@ -27,7 +14,7 @@
                    What type of virtual hardware would you like to use?
                 </label>
                 <ng-select id="id_instance_type"  [items]="instanceTypes"
-                   [disabled]="cloudLaunchForm.value['targetCloud']"
+                   [disabled]="cloudId"
                    (selected)="setInstanceType($event)"
                    [placeholder]="instanceTypeHelp">
                 </ng-select>
@@ -46,7 +33,7 @@
                       In which placement zone would you like to launch this appliance?
                    </label>
                    <ng-select id="id_placement"  [items]="placements"
-                      [disabled]="cloudLaunchForm.value['targetCloud']"
+                      [disabled]="cloudId"
                       [placeholder]="placementHelp">
                    </ng-select>
                 </div>
@@ -57,7 +44,7 @@
                       Which keypair would you like to use for this Virtual Machine?
                    </label>
                    <ng-select id="id_keypair"  [items]="keypairs"
-                      [disabled]="cloudLaunchForm.value['targetCloud']"
+                      [disabled]="cloudId"
                       [placeholder]="keypairsHelp">
                    </ng-select>
                  </div>
@@ -68,7 +55,7 @@
                       In which network would you like to place this Virtual Machine?
                    </label>
                    <ng-select id="id_network"  [items]="networks"
-                      [disabled]="cloudLaunchForm.value['targetCloud']"
+                      [disabled]="cloudId"
                       (selected)="onNetworkSelect($event)"
                       [placeholder]="networksHelp">
                    </ng-select>
@@ -80,7 +67,7 @@
                       In which subnet would you like to place this Virtual Machine?
                    </label>
                    <ng-select id="id_subnet"  [items]="subnets"
-                      [disabled]="cloudLaunchForm.value['targetCloud']"
+                      [disabled]="cloudId"
                       [placeholder]="subnetsHelp">
                    </ng-select>
                 </div>

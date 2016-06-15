@@ -17,10 +17,21 @@ import { ConfigPanelComponent } from '../layouts/config-panel.component';
    selector: 'cloudlaunch-config',
    templateUrl: 'app/components/cloudlaunch.component.html',
    providers: [CloudService],
+   inputs: ['cloudId'],
    directives: [ConfigPanelComponent, FORM_DIRECTIVES, SELECT_DIRECTIVES]
 })
 
 export class CloudLaunchComponent implements OnInit {
+   _cloudId: string;
+   
+   set cloudId(value) {
+      this._cloudId = value;
+      this.onCloudSelect(value);
+   }
+   
+   get cloudId() {
+      return this._cloudId;
+   }
 
    CLOUD_SELECTION_HELP: string = "Select a target cloud first";
    errorMessage: string;
@@ -30,7 +41,6 @@ export class CloudLaunchComponent implements OnInit {
 
    cloudLaunchForm: ControlGroup;
    parentForm: NgFormModel;
-   clouds: Cloud[] = [];
    instanceTypes: InstanceType[] = [];
    instanceTypeHelp: string = this.CLOUD_SELECTION_HELP;
    placements: Placement[] = [];
@@ -44,7 +54,6 @@ export class CloudLaunchComponent implements OnInit {
 
    constructor(private _cloudService: CloudService, fb: FormBuilder, @Host() parentForm: NgFormModel) {
       this.cloudLaunchForm = fb.group({
-         'targetCloud': [''],
          'instanceType': [''],
          'placementZone': [''],
          'keyPair': [''],
@@ -57,31 +66,18 @@ export class CloudLaunchComponent implements OnInit {
    }
 
    ngOnInit() {
-      this.getClouds();
       // Add child form to parent so that validations roll up
       this.parentForm.form.addControl("config_cloudlaunch", this.cloudLaunchForm);
    }
 
-   getClouds() {
-      this.cloudLaunchForm.value['targetCloud'] = null;
-      this._cloudService.getClouds()
-         .subscribe(clouds => this.clouds = clouds.map(c => { c.id = c.slug; c.text = c.name; return c; }),
-         error => this.errorMessage = <any>error,
-         () => console.log('Got clouds: ', this.clouds));
-   }
-
-   onCloudSelect(selectedCloud: Cloud) {
-      if (selectedCloud != this.cloudLaunchForm.value['targetCloud']) {
-         this.cloudLaunchForm.value['targetCloud'] = selectedCloud;
-         // A new cloud was selected; reset form fields
-         this.cloudFields = false;
-         setTimeout(() => this.cloudFields = true, 0);
-         // Fetch options for the newly selected cloud
-         this.getInstanceTypes(selectedCloud.id);
-         this.getPlacements(selectedCloud.id);
-         this.getKeyPairs(selectedCloud.id);
-         this.getNetworks(selectedCloud.id);
-      }
+   onCloudSelect(cloudId: string) {
+      this.cloudFields = false;
+      setTimeout(() => this.cloudFields = true, 0);
+      // Fetch options for the newly selected cloud
+      this.getInstanceTypes(cloudId);
+      this.getPlacements(cloudId);
+      this.getKeyPairs(cloudId);
+      this.getNetworks(cloudId);
    }
 
    getInstanceTypes(cloudId: string) {
@@ -121,7 +117,7 @@ export class CloudLaunchComponent implements OnInit {
 
    getNetworks(cloudId: string) {
       this.networksHelp = "Retrieving list of networks...";
-      this.cloudLaunchForm.value['selectedNetwork'] = null;
+      (<Control>this.cloudLaunchForm.controls['network']).updateValue(null);
       this.subnetsHelp = "Select a network first";
       this.networks = [];
       this._cloudService.getNetworks(cloudId)
@@ -130,8 +126,9 @@ export class CloudLaunchComponent implements OnInit {
          () => { this.networksHelp = "Select a network" });
    }
 
-   onNetworkSelect(selectedNetwork: Network) {
-      this.getSubnets(this.cloudLaunchForm.value['targetCloud'].id, this.cloudLaunchForm.value['selectedNetwork'].id);
+   onNetworkSelect(network: Network) {
+      (<Control>this.cloudLaunchForm.controls['network']).updateValue(network.id);
+      this.getSubnets(this.cloudId, network.id);
    }
 
    getSubnets(cloudId: string, networkId: string) {
