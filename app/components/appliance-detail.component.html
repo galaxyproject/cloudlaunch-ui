@@ -38,12 +38,11 @@
                         <div *ngIf="applianceLaunchForm.controls['targetCloud'].value">
                             <form class="form" [ngFormModel]="applianceLaunchForm.find('config_app')">
                                 <app-placeholder [application]="application" [applicationVersion]="applianceLaunchForm.controls['targetVersion'].value"
-                                        [componentPath]="applianceLaunchForm.controls['targetVersion'].value.frontend_component_path"
-                                        [componentName]="applianceLaunchForm.controls['targetVersion'].value.frontend_component_name"></app-placeholder>
-
-                                <!-- Cloud launching part of the form -->
-                                <cloudlaunch-config></cloudlaunch-config>
+                                        [componentPath]="selectedVersion.frontend_component_path"
+                                        [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
                             </form>
+                            <!-- Cloud launching part of the form -->
+                            <cloudlaunch-config [cloudId]="applianceLaunchForm.controls['targetCloud'].value"></cloudlaunch-config>
                         </div>
         			</div>
         		</div>

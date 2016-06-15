@@ -26,6 +26,8 @@ import {
 export class ApplianceDetailComponent {
    @Input()
    application: Application;
+   
+   selectedVersion: ApplicationVersion;
    applianceLaunchForm: ControlGroup;
    clouds: any[] = [];
 
@@ -46,7 +48,8 @@ export class ApplianceDetailComponent {
    
    onVersionSelect(version) {
       let applicationVersion = this.application.versions.filter(v => { return v.version == version.id; })[0];
-      (<Control>this.applianceLaunchForm.controls['targetVersion']).updateValue(applicationVersion);
+      (<Control>this.applianceLaunchForm.controls['targetVersion']).updateValue(applicationVersion.id);
+      this.selectedVersion = applicationVersion;
       this.getCloudsForVersion(applicationVersion);
    }
    
