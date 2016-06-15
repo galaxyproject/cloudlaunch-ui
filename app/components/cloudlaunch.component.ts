@@ -89,8 +89,8 @@ export class CloudLaunchComponent implements OnInit {
          () => { this.instanceTypeHelp = "Select an Instance Type"; console.log('got instance types: ', this.instanceTypes) });
    }
 
-   setInstanceType(instanceType: InstanceType) {
-      this.cloudLaunchForm.value['instanceType'] = instanceType.id;
+   onInstanceTypeSelect(instanceType: InstanceType) {
+      (<Control>this.cloudLaunchForm.controls['instanceType']).updateValue(instanceType.id);
    }
 
    toggleAdvanced() {
@@ -105,6 +105,11 @@ export class CloudLaunchComponent implements OnInit {
          error => this.errorMessage = <any>error,
          () => { this.placementHelp = "Select a placement" });
    }
+   
+   onPlacementSelect(placement: Placement) {
+      (<Control>this.cloudLaunchForm.controls['placementZone']).updateValue(placement.id);
+   }
+
 
    getKeyPairs(cloudId: string) {
       this.keypairsHelp = "Retrieving keypairs...";
@@ -113,6 +118,10 @@ export class CloudLaunchComponent implements OnInit {
          .subscribe(keypairs => this.keypairs = keypairs.map(kp => { kp.text = kp.name; return kp; }),
          error => this.errorMessage = <any>error,
          () => { this.keypairsHelp = "Select a keypair" });
+   }
+
+   onKeyPairSelect(kp: KeyPair) {
+      (<Control>this.cloudLaunchForm.controls['keyPair']).updateValue(kp.id);
    }
 
    getNetworks(cloudId: string) {
@@ -139,4 +148,9 @@ export class CloudLaunchComponent implements OnInit {
          error => this.errorMessage = <any>error,
          () => { this.subnetsHelp = "Select a subnet" });
    }
+
+   onSubNetSelect(subnet: SubNet) {
+      (<Control>this.cloudLaunchForm.controls['subnet']).updateValue(subnet.id);
+   }
+
 }
