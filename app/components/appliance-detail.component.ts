@@ -36,8 +36,8 @@ export class ApplianceDetailComponent {
       private _applicationService: ApplicationService)
    {
       this.applianceLaunchForm = fb.group({
-         'targetVersion': [''],
-         'targetCloud': [''],
+         'targetVersion': ['', Validators.required],
+         'targetCloud': ['', Validators.required],
          'config_app': fb.group({}),
       });
    }
@@ -67,6 +67,5 @@ export class ApplianceDetailComponent {
 
    onSubmit(formValues: string): void {
       console.log(JSON.stringify(formValues));
-      window.alert(JSON.stringify(formValues));
    }
 }

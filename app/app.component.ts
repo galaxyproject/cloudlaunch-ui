@@ -22,14 +22,17 @@ import { CloudLaunchComponent } from './components/cloudlaunch.component';
 declare var $: any
 
 class CustomRequestOptions extends BaseRequestOptions {
-   
-  merge(options?: RequestOptionsArgs): RequestOptions {
-     let auth_header = "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
-     if (!options.headers)
-        options.headers = new Headers();
-     options.headers.set('Authorization', auth_header);
-     return super.merge(options);
-  }
+
+   merge(options?: RequestOptionsArgs): RequestOptions {
+      let auth_header = "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
+      if (!options.headers)
+         options.headers = new Headers();
+      options.headers.set('Authorization', auth_header);
+      // Set the default content type to JSON
+      if (!options.headers.get('Content-Type'))
+         options.headers.set('Content-Type', 'application/json');
+      return super.merge(options);
+   }
 }
 
 @Component({
@@ -52,8 +55,10 @@ class CustomRequestOptions extends BaseRequestOptions {
    { path: '/login', name: 'Login', component: LoginPageComponent },
    { path: '/dashboard', name: 'Dashboard', component: DashboardComponent },
    { path: '/marketplace', name: 'Marketplace', component: MarketplacePageComponent, useAsDefault: true },
-   { path: '/marketplace/appliance/:slug/', name: 'ApplianceDetail',
-     component: ApplianceDetailPageComponent },
+   {
+      path: '/marketplace/appliance/:slug/', name: 'ApplianceDetail',
+      component: ApplianceDetailPageComponent
+   },
    // { path: '/marketplace/appliance/:slug/launch', name: 'Launch',
    //   component: CloudLaunchComponent }
 ])

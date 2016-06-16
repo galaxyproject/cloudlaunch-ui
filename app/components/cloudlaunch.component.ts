@@ -54,7 +54,7 @@ export class CloudLaunchComponent implements OnInit {
 
    constructor(private _cloudService: CloudService, fb: FormBuilder, @Host() parentForm: NgFormModel) {
       this.cloudLaunchForm = fb.group({
-         'instanceType': [''],
+         'instanceType': ['', Validators.required],
          'placementZone': [''],
          'keyPair': [''],
          'network': [''],
