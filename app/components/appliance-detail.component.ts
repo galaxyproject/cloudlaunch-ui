@@ -4,6 +4,7 @@ import { SELECT_DIRECTIVES } from 'ng2-select';
 
 import { Application, ApplicationVersion } from '../models/application';
 import { ApplicationService } from '../services/application.service';
+import { DeploymentService } from '../services/deployment.service';
 import { AppPlaceHolderComponent } from './app-placeholder.component';
 import { ConfigPanelComponent } from '../layouts/config-panel.component';
 import { StandardLayoutComponent } from '../layouts/standard-layout.component';
@@ -21,7 +22,8 @@ import {
   templateUrl: 'app/components/appliance-detail.component.html',
   styleUrls: ['app/components/appliance-detail.component.css'],
   inputs: ['application'],
-  directives: [SELECT_DIRECTIVES, AppPlaceHolderComponent, StandardLayoutComponent, ConfigPanelComponent, CloudLaunchComponent]
+  directives: [SELECT_DIRECTIVES, AppPlaceHolderComponent, StandardLayoutComponent, ConfigPanelComponent, CloudLaunchComponent],
+  providers: [DeploymentService]
 })
 export class ApplianceDetailComponent {
    @Input()
@@ -30,14 +32,16 @@ export class ApplianceDetailComponent {
    selectedVersion: ApplicationVersion;
    applianceLaunchForm: ControlGroup;
    clouds: any[] = [];
+   public errorMessage: string;
 
    constructor(
       fb: FormBuilder,
-      private _applicationService: ApplicationService)
+      private _applicationService: ApplicationService,
+      private _deploymentService: DeploymentService)
    {
       this.applianceLaunchForm = fb.group({
-         'targetVersion': ['', Validators.required],
-         'targetCloud': ['', Validators.required],
+         'application_version': ['', Validators.required],
+         'target_cloud': ['', Validators.required],
          'config_app': fb.group({}),
       });
    }
@@ -48,7 +52,7 @@ export class ApplianceDetailComponent {
    
    onVersionSelect(version) {
       let applicationVersion = this.application.versions.filter(v => { return v.version == version.id; })[0];
-      (<Control>this.applianceLaunchForm.controls['targetVersion']).updateValue(applicationVersion.id);
+      (<Control>this.applianceLaunchForm.controls['application_version']).updateValue(applicationVersion.id);
       this.selectedVersion = applicationVersion;
       this.getCloudsForVersion(applicationVersion);
    }
@@ -58,14 +62,19 @@ export class ApplianceDetailComponent {
    }
    
    onCloudSelect(cloud) {
-      (<Control>this.applianceLaunchForm.controls['targetCloud']).updateValue(cloud.id);
+      (<Control>this.applianceLaunchForm.controls['target_cloud']).updateValue(cloud.id);
    }
    
    goBack() {
       window.history.back();
    }
 
-   onSubmit(formValues: string): void {
+   onSubmit(formValues: any): void {
+      this.errorMessage = null;
+      formValues['application'] = this.application.slug;
       console.log(JSON.stringify(formValues));
+      this._deploymentService.createDeployment(formValues).subscribe(
+         data  => this.errorMessage = <any>data,
+         error => this.errorMessage = <any>error);
    }
 }

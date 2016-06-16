@@ -12,6 +12,10 @@
         		<div class="panel panel-success">
         			<div class="panel-heading">Launch this appliance: {{ application.name }}</div>
         			<div class="panel-body">
+                        <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+                            <span class="glyphicon glyphicon-exclamation-sign"
+                                aria-hidden="true"></span> <span class="sr-only">Error:</span> {{ errorMessage }}
+                        </div>
                     
                         <div class="form-group">
                             <label for="id_target_version" class="control-label">
@@ -24,7 +28,7 @@
                             </ng-select>
                         </div>
                         
-                        <div class="form-group" *ngIf="applianceLaunchForm.value['targetVersion']">
+                        <div class="form-group" *ngIf="applianceLaunchForm.value['application_version']">
                             <label for="id_target_cloud" class="control-label">
                                 On which cloud would you like to launch your appliance?
                             </label>
@@ -35,14 +39,14 @@
                             </ng-select>
                         </div>
 
-                        <div *ngIf="applianceLaunchForm.controls['targetCloud'].value">
+                        <div *ngIf="applianceLaunchForm.controls['target_cloud'].value">
                             <form class="form" [ngFormModel]="applianceLaunchForm.find('config_app')">
-                                <app-placeholder [application]="application" [applicationVersion]="applianceLaunchForm.controls['targetVersion'].value"
+                                <app-placeholder [application]="application" [applicationVersion]="applianceLaunchForm.controls['application_version'].value"
                                         [componentPath]="selectedVersion.frontend_component_path"
                                         [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
                             </form>
                             <!-- Cloud launching part of the form -->
-                            <cloudlaunch-config [cloudId]="applianceLaunchForm.controls['targetCloud'].value"></cloudlaunch-config>
+                            <cloudlaunch-config [cloudId]="applianceLaunchForm.controls['target_cloud'].value"></cloudlaunch-config>
                         </div>
         			</div>
         		</div>

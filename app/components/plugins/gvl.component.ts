@@ -27,8 +27,8 @@ export class GVLConfigComponent implements OnInit, OnDestroy {
 
    constructor(fb: FormBuilder, @Host() parentForm: NgFormModel) {
       this.gvlLaunchForm = fb.group({
-         'gvlapp_cmdlineutils': [''],
-         'gvlapp_smrt_analysis': ['']
+         'gvl_cmdline_utilities': [''],
+         'smrt_portal': ['']
       });
       this.parentForm = parentForm;
    }
