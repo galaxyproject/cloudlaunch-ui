@@ -6,7 +6,8 @@ import { Observable }     from 'rxjs/Observable';
 import { AppSettings } from '../app.settings';
 import { Cloud } from '../models/cloud';
 import { InstanceType } from '../models/cloud';
-import { Placement } from '../models/cloud';
+import { Region } from '../models/cloud';
+import { PlacementZone } from '../models/cloud';
 import { KeyPair } from '../models/cloud';
 import { Network } from '../models/cloud';
 import { SubNet } from '../models/cloud';
@@ -36,9 +37,15 @@ export class CloudService {
          .catch(this.handleError);
    }
 
-   public getPlacements(slug: string): Observable<Placement[]> {
+   public getRegions(slug: string): Observable<Region[]> {
       return this._http.get(this._application_url + slug + '/compute/regions/')
-         .map(response => <Placement[]>response.json().results)
+         .map(response => <Region[]>response.json().results)
+         .catch(this.handleError);
+   }
+
+   public getPlacementZones(slug: string, region: string): Observable<PlacementZone[]> {
+      return this._http.get(this._application_url + slug + '/compute/regions/' + region + '/zones/')
+         .map(response => <PlacementZone[]>response.json().results)
          .catch(this.handleError);
    }
 

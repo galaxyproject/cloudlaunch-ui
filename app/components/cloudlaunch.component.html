@@ -6,7 +6,7 @@
          (ngSubmit)="onSubmit(cloudLaunchForm.value)">
 
           <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
-    
+
           <div *ngIf="cloudFields">
              <!-- Instance type selection -->
              <div class="form-group">
@@ -19,14 +19,25 @@
                    [placeholder]="instanceTypeHelp">
                 </ng-select>
              </div>
-    
+
              <div class="togglebutton">
                 <label>
                    <input type="checkbox" (click)="toggleAdvanced()">Advanced options
                 </label>
              </div>
-    
+
              <div *ngIf="showAdvanced">
+                <!-- Region selection -->
+                <div class="form-group">
+                   <label for="id_region" class="control-label">
+                      In which cloud region would you like to place this Virtual Machine?
+                   </label>
+                   <ng-select id="id_region"  [items]="regions"
+                      [disabled]="cloudId"
+                      (selected)="onRegionSelect($event)"
+                      [placeholder]="regionHelp">
+                   </ng-select>
+                </div>
                 <!-- Placement selection -->
                 <div class="form-group">
                    <label for="id_placement" class="control-label">
@@ -38,7 +49,7 @@
                       [placeholder]="placementHelp">
                    </ng-select>
                 </div>
-    
+
                 <!-- Key pair selection -->
                 <div class="form-group">
                    <label for="id_keypair" class="control-label">
@@ -50,7 +61,7 @@
                       [placeholder]="keypairsHelp">
                    </ng-select>
                  </div>
-    
+
                 <!-- Network selection -->
                 <div class="form-group">
                    <label for="id_network" class="control-label">
@@ -62,7 +73,6 @@
                       [placeholder]="networksHelp">
                    </ng-select>
                 </div>
-    
                 <!-- Subnet selection -->
                 <div class="form-group">
                    <label for="id_subnet" class="control-label">
@@ -74,7 +84,7 @@
                       [placeholder]="subnetsHelp">
                    </ng-select>
                 </div>
-    
+
                 <!-- EBS optimized selection (AWS only) -->
                 <div class="checkbox">
                    <label>
@@ -82,7 +92,7 @@
                          If checked, use dedicated disk bandwidth (i.e., EBS-optimized)
                    </label>
                 </div>
-    
+
                 <!-- Volume IOPS selection (AWS only) -->
                 <!--  Add *ngIf="storageType=='volume'" once variable is propagated -->
                 <div class="form-group">

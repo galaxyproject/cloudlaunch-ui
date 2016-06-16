@@ -11,7 +11,13 @@ export interface InstanceType {
    name: string;
 }
 
-export interface Placement {
+export interface Region {
+   id: string;
+   text: string;
+   name: string;
+}
+
+export interface PlacementZone {
    id: string;
    text: string;
    name: string;

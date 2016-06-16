@@ -9,7 +9,14 @@ import {
 
 import { SELECT_DIRECTIVES } from 'ng2-select';
 
-import { Cloud, InstanceType, Placement, KeyPair, Network, SubNet } from '../models/cloud';
+import {
+   Cloud,
+   InstanceType,
+   Region,
+   PlacementZone,
+   KeyPair,
+   Network,
+   SubNet } from '../models/cloud';
 import { CloudService } from '../services/cloud.service';
 import { ConfigPanelComponent } from '../layouts/config-panel.component';
 
@@ -23,12 +30,12 @@ import { ConfigPanelComponent } from '../layouts/config-panel.component';
 
 export class CloudLaunchComponent implements OnInit {
    _cloudId: string;
-   
+
    set cloudId(value) {
       this._cloudId = value;
       this.onCloudSelect(value);
    }
-   
+
    get cloudId() {
       return this._cloudId;
    }
@@ -43,7 +50,9 @@ export class CloudLaunchComponent implements OnInit {
    parentForm: NgFormModel;
    instanceTypes: InstanceType[] = [];
    instanceTypeHelp: string = this.CLOUD_SELECTION_HELP;
-   placements: Placement[] = [];
+   regions: Region[] = [];
+   regionHelp: string = this.CLOUD_SELECTION_HELP;
+   placements: PlacementZone[] = [];
    placementHelp: string = this.CLOUD_SELECTION_HELP;
    keypairs: KeyPair[] = [];
    keypairsHelp: string = this.CLOUD_SELECTION_HELP;
@@ -55,6 +64,7 @@ export class CloudLaunchComponent implements OnInit {
    constructor(private _cloudService: CloudService, fb: FormBuilder, @Host() parentForm: NgFormModel) {
       this.cloudLaunchForm = fb.group({
          'instanceType': ['', Validators.required],
+         'region': [''],
          'placementZone': [''],
          'keyPair': [''],
          'network': [''],
@@ -62,7 +72,7 @@ export class CloudLaunchComponent implements OnInit {
          'provider_settings': fb.group({
             'ebsOptimised': [''],
             'volumeIOPS': [''],
-         })      
+         })
       });
       this.parentForm = parentForm;
    }
@@ -77,7 +87,7 @@ export class CloudLaunchComponent implements OnInit {
       setTimeout(() => this.cloudFields = true, 0);
       // Fetch options for the newly selected cloud
       this.getInstanceTypes(cloudId);
-      this.getPlacements(cloudId);
+      this.getRegions(cloudId);
       this.getKeyPairs(cloudId);
       this.getNetworks(cloudId);
    }
@@ -99,16 +109,32 @@ export class CloudLaunchComponent implements OnInit {
       this.showAdvanced = !this.showAdvanced;
    }
 
-   getPlacements(cloudId: string) {
+   getRegions(cloudId: string) {
+       this.regionHelp = "Retrieving list of regions...";
+       (<Control>this.cloudLaunchForm.controls['region']).updateValue(null);
+       this.placementHelp = "Select a region first";
+       this.regions = [];
+       this._cloudService.getRegions(cloudId)
+           .subscribe(regions => this.regions = regions.map(n => { n.text = n.name ? n.name : n.id; return n; }),
+           error => this.errorMessage = <any>error,
+           () => { this.regionHelp = "Select a region" });
+   }
+
+   onRegionSelect(region: Region) {
+       (<Control>this.cloudLaunchForm.controls['region']).updateValue(region.id);
+       this.getPlacements(this.cloudId, region.id);
+   }
+
+   getPlacements(cloudId: string, region: string) {
       this.placementHelp = "Retrieving placement options...";
       this.placements = [];
-      this._cloudService.getPlacements(cloudId)
+      this._cloudService.getPlacementZones(cloudId, region)
          .subscribe(placements => this.placements = placements.map(p => { p.text = p.name; return p; }),
          error => this.errorMessage = <any>error,
          () => { this.placementHelp = "Select a placement" });
    }
-   
-   onPlacementSelect(placement: Placement) {
+
+   onPlacementSelect(placement: PlacementZone) {
       (<Control>this.cloudLaunchForm.controls['placementZone']).updateValue(placement.id);
    }
 
