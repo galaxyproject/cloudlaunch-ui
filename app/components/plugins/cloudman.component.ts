@@ -21,25 +21,26 @@ import { Application, ApplicationVersion } from '../../models/application';
 export class CloudManConfigComponent implements OnInit, OnDestroy {
    @Input()
    application: Application;
-   
+
    @Input()
    applicationVersion: ApplicationVersion;
-   
+
    cluster: Object = {};
    clusterTypes: Object[] = [  // First element in the list if the default choice
-      {'id': 'Galaxy', 'text': 'SLURM cluster with Galaxy'},   
+      {'id': 'Galaxy', 'text': 'SLURM cluster with Galaxy'},
       {'id': 'Data', 'text': 'SLURM cluster only'},
       {'id': 'None', 'text': 'Do not set cluster type now'}]
    showAdvanced: boolean = false;
 
    cmClusterForm: ControlGroup;
+   storageType = new Control('transient', Validators.required);
    parentForm: NgFormModel;
 
    constructor(fb: FormBuilder, @Host() parentForm: NgFormModel) {
       this.cmClusterForm = fb.group({
          'clusterName': ['', Validators.required],
          'clusterPassword': ['', Validators.required],
-         'storageType': ['transient', Validators.required],
+         'storageType': this.storageType,
          'storageSize': [''],
          'clusterType': ['Galaxy'],
          'defaultBucket': [''],
@@ -49,16 +50,16 @@ export class CloudManConfigComponent implements OnInit, OnDestroy {
       });
       this.parentForm = parentForm;
    }
-   
+
    ngOnInit() {
       // Add child form to parent so that validations roll up
       this.parentForm.form.addControl("config_cloudman", this.cmClusterForm);
    }
-   
+
    ngOnDestroy() {
       this.parentForm.form.removeControl("config_cloudman");
    }
-   
+
    getInitialClusterType() : Object {
       return [this.clusterTypes[0]];
    }
@@ -66,7 +67,7 @@ export class CloudManConfigComponent implements OnInit, OnDestroy {
    setClusterType(clusterType) {
       this.cmClusterForm.value['clusterType'] = clusterType.id;
    }
-   
+
    toggleAdvanced() {
       this.showAdvanced = !this.showAdvanced;
    }
