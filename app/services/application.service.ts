@@ -3,14 +3,14 @@ import {Http, Response} from '@angular/http';
 import {Headers, RequestOptions} from '@angular/http';
 import {Observable}     from 'rxjs/Observable';
 
+import { AppSettings } from '../app.settings';
 import { Application } from '../models/application';
 
 @Injectable()
 export class ApplicationService {
    constructor(private _http: Http) { }
 
-   // TODO: This needs to be obtained from some global config
-   private _application_url = 'http://localhost:8000/api/v1/applications/';
+   private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/applications/`;
 
 
    public getApplications(): Observable<Application[]> {

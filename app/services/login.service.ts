@@ -3,13 +3,14 @@ import {Http, Response} from '@angular/http';
 import {Headers, RequestOptions} from '@angular/http';
 import {Observable}     from 'rxjs/Observable';
 
+import { AppSettings } from '../app.settings';
+
 @Injectable()
 export class LoginService {
    constructor(private _http: Http) { }
 
-   // TODO: This needs to be obtained from some global config
-   private _loginUrl = 'http://localhost:8000/api/v1/auth/login/';
-   private _currentUserUrl = 'http://localhost:8000/api/v1/auth/user/';
+   private _loginUrl = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/login/`;
+   private _currentUserUrl = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/user/`;
    private _login_method = null;
 
    public isLoggedIn(): Promise<boolean> {

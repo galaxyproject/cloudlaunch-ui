@@ -3,6 +3,7 @@ import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 
+import { AppSettings } from '../app.settings';
 import { Cloud } from '../models/cloud';
 import { InstanceType } from '../models/cloud';
 import { Placement } from '../models/cloud';
@@ -15,7 +16,7 @@ export class CloudService {
    constructor(private _http: Http) { }
 
    // TODO: This needs to be obtained from some global config
-   private _application_url = 'http://127.0.0.1:8000/api/v1/infrastructure/clouds/';
+   private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/infrastructure/clouds/`;
 
    public getClouds() {
       return this._http.get(this._application_url)
