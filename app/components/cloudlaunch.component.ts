@@ -1,4 +1,4 @@
-import { Component, OnInit, Host } from '@angular/core';
+import { Component, Host } from '@angular/core';
 import {
    FORM_DIRECTIVES,
    FormBuilder,
@@ -17,6 +17,7 @@ import {
    KeyPair,
    Network,
    SubNet } from '../models/cloud';
+import { BasePluginComponent } from './base-plugin.component';
 import { CloudService } from '../services/cloud.service';
 import { ConfigPanelComponent } from '../layouts/config-panel.component';
 
@@ -24,11 +25,11 @@ import { ConfigPanelComponent } from '../layouts/config-panel.component';
    selector: 'cloudlaunch-config',
    templateUrl: 'app/components/cloudlaunch.component.html',
    providers: [CloudService],
-   inputs: ['cloudId'],
+   inputs: ['cloudId', 'initialConfig'],
    directives: [ConfigPanelComponent, FORM_DIRECTIVES, SELECT_DIRECTIVES]
 })
 
-export class CloudLaunchComponent implements OnInit {
+export class CloudLaunchComponent extends BasePluginComponent {
    _cloudId: string;
 
    set cloudId(value) {
@@ -39,7 +40,7 @@ export class CloudLaunchComponent implements OnInit {
    get cloudId() {
       return this._cloudId;
    }
-
+   
    CLOUD_SELECTION_HELP: string = "Select a target cloud first";
    errorMessage: string;
    showAdvanced: boolean = false;
@@ -47,7 +48,6 @@ export class CloudLaunchComponent implements OnInit {
                        // See 'reset' on https://angular.io/docs/ts/latest/guide/forms.html
 
    cloudLaunchForm: ControlGroup;
-   parentForm: NgFormModel;
    instanceTypes: InstanceType[] = [];
    instanceTypeHelp: string = this.CLOUD_SELECTION_HELP;
    regions: Region[] = [];
@@ -61,7 +61,16 @@ export class CloudLaunchComponent implements OnInit {
    subnets: SubNet[] = [];
    subnetsHelp: string = this.CLOUD_SELECTION_HELP;
 
-   constructor(private _cloudService: CloudService, fb: FormBuilder, @Host() parentForm: NgFormModel) {
+   get form() : ControlGroup {
+      return this.cloudLaunchForm;
+   }
+   
+   get configName() : string {
+      return "config_cloudlaunch";
+   }
+
+   constructor(fb: FormBuilder, @Host() parentForm: NgFormModel, private _cloudService: CloudService) {
+      super(fb, parentForm);
       this.cloudLaunchForm = fb.group({
          'instanceType': ['', Validators.required],
          'region': [''],
@@ -74,12 +83,6 @@ export class CloudLaunchComponent implements OnInit {
             'volumeIOPS': [''],
          })
       });
-      this.parentForm = parentForm;
-   }
-
-   ngOnInit() {
-      // Add child form to parent so that validations roll up
-      this.parentForm.form.addControl("config_cloudlaunch", this.cloudLaunchForm);
    }
 
    onCloudSelect(cloudId: string) {
