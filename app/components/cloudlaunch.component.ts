@@ -25,12 +25,22 @@ import { ConfigPanelComponent } from '../layouts/config-panel.component';
    selector: 'cloudlaunch-config',
    templateUrl: 'app/components/cloudlaunch.component.html',
    providers: [CloudService],
-   inputs: ['cloudId', 'initialConfig'],
+   inputs: ['cloudId', 'initialConfig', 'regionName'],
    directives: [ConfigPanelComponent, FORM_DIRECTIVES, SELECT_DIRECTIVES]
 })
 
 export class CloudLaunchComponent extends BasePluginComponent {
    _cloudId: string;
+   _regionName: string;
+
+   set regionName(value) {
+      this._regionName = value;
+      this.getPlacements(this.cloudId, value);
+   }
+
+   get regionName() {
+      return this._regionName;
+   }
 
    set cloudId(value) {
       this._cloudId = value;
@@ -40,7 +50,7 @@ export class CloudLaunchComponent extends BasePluginComponent {
    get cloudId() {
       return this._cloudId;
    }
-   
+
    CLOUD_SELECTION_HELP: string = "Select a target cloud first";
    errorMessage: string;
    showAdvanced: boolean = false;
@@ -64,7 +74,7 @@ export class CloudLaunchComponent extends BasePluginComponent {
    get form() : ControlGroup {
       return this.cloudLaunchForm;
    }
-   
+
    get configName() : string {
       return "config_cloudlaunch";
    }
@@ -73,7 +83,6 @@ export class CloudLaunchComponent extends BasePluginComponent {
       super(fb, parentForm);
       this.cloudLaunchForm = fb.group({
          'instanceType': ['', Validators.required],
-         'region': [''],
          'placementZone': [''],
          'keyPair': [''],
          'network': [''],
@@ -90,7 +99,6 @@ export class CloudLaunchComponent extends BasePluginComponent {
       setTimeout(() => this.cloudFields = true, 0);
       // Fetch options for the newly selected cloud
       this.getInstanceTypes(cloudId);
-      this.getRegions(cloudId);
       this.getKeyPairs(cloudId);
       this.getNetworks(cloudId);
    }
@@ -112,22 +120,6 @@ export class CloudLaunchComponent extends BasePluginComponent {
       this.showAdvanced = !this.showAdvanced;
    }
 
-   getRegions(cloudId: string) {
-       this.regionHelp = "Retrieving list of regions...";
-       (<Control>this.cloudLaunchForm.controls['region']).updateValue(null);
-       this.placementHelp = "Select a region first";
-       this.regions = [];
-       this._cloudService.getRegions(cloudId)
-           .subscribe(regions => this.regions = regions.map(n => { n.text = n.name ? n.name : n.id; return n; }),
-           error => this.errorMessage = <any>error,
-           () => { this.regionHelp = "Select a region" });
-   }
-
-   onRegionSelect(region: Region) {
-       (<Control>this.cloudLaunchForm.controls['region']).updateValue(region.id);
-       this.getPlacements(this.cloudId, region.id);
-   }
-
    getPlacements(cloudId: string, region: string) {
       this.placementHelp = "Retrieving placement options...";
       this.placements = [];
@@ -140,7 +132,6 @@ export class CloudLaunchComponent extends BasePluginComponent {
    onPlacementSelect(placement: PlacementZone) {
       (<Control>this.cloudLaunchForm.controls['placementZone']).updateValue(placement.id);
    }
-
 
    getKeyPairs(cloudId: string) {
       this.keypairsHelp = "Retrieving keypairs...";

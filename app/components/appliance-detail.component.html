@@ -16,7 +16,7 @@
                             <span class="glyphicon glyphicon-exclamation-sign"
                                 aria-hidden="true"></span> <span class="sr-only">Error:</span> {{ errorMessage }}
                         </div>
-                    
+
                         <div class="form-group">
                             <label for="id_target_version" class="control-label">
                                 Which version of this appliance would you like to launch?
@@ -27,7 +27,7 @@
                               placeholder="No version selected">
                             </ng-select>
                         </div>
-                        
+
                         <div class="form-group" *ngIf="applianceLaunchForm.value['application_version']">
                             <label for="id_target_cloud" class="control-label">
                                 On which cloud would you like to launch your appliance?
@@ -46,7 +46,7 @@
                                         [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
                             </form>
                             <!-- Cloud launching part of the form -->
-                            <cloudlaunch-config [cloudId]="applianceLaunchForm.controls['target_cloud'].value" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config>
+                            <cloudlaunch-config [cloudId]="applianceLaunchForm.controls['target_cloud'].value" [regionName]="_targetCloud.region_name" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config>
                         </div>
         			</div>
         		</div>
@@ -56,7 +56,7 @@
     			class="material-icons">navigate_before</i> Back
     		</a>
             <button type="submit" class="btn btn-raised btn-default pull-right" [disabled]="!applianceLaunchForm.valid">Launch</button>
-            
+
     	</div>
     </form>
 </div>

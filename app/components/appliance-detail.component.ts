@@ -9,7 +9,7 @@ import { AppPlaceHolderComponent } from './app-placeholder.component';
 import { ConfigPanelComponent } from '../layouts/config-panel.component';
 import { StandardLayoutComponent } from '../layouts/standard-layout.component';
 import { CloudLaunchComponent } from './cloudlaunch.component';
-
+import { Cloud } from '../models/cloud';
 import {
    FORM_DIRECTIVES,
    FormBuilder,
@@ -28,11 +28,12 @@ import {
 export class ApplianceDetailComponent {
    @Input()
    application: Application;
-   
+
    selectedVersion: ApplicationVersion;
    selectedAppCloudConfig: ApplicationVersionCloudConfig;
    applianceLaunchForm: ControlGroup;
    clouds: any[] = [];
+   private _targetCloud: Cloud;
    public errorMessage: string;
 
    constructor(
@@ -46,27 +47,28 @@ export class ApplianceDetailComponent {
          'config_app': fb.group({}),
       });
    }
-   
+
    getApplicationVersions() {
       return this.application.versions.map(v => { v.id = v.version; v.text = v.version; return v; });
    }
-   
+
    onVersionSelect(version) {
       let applicationVersion = this.application.versions.filter(v => { return v.version == version.id; })[0];
       (<Control>this.applianceLaunchForm.controls['application_version']).updateValue(applicationVersion.id);
       this.selectedVersion = applicationVersion;
       this.getCloudsForVersion(applicationVersion);
    }
-   
+
    getCloudsForVersion(version) {
       this.clouds = version.cloud_config.map(cfg => { let r = cfg.cloud; r.id = r.slug; r.text = r.slug; return r; });
    }
-   
+
    onCloudSelect(cloud) {
+      this._targetCloud = this.clouds.filter(c => { return c.id == cloud.id })[0];
       (<Control>this.applianceLaunchForm.controls['target_cloud']).updateValue(cloud.id);
       this.selectedAppCloudConfig = this.selectedVersion.cloud_config.filter(v => { return v.cloud.slug == cloud.id; })[0];
    }
-   
+
    goBack() {
       window.history.back();
    }

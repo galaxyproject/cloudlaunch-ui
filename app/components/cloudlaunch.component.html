@@ -27,17 +27,6 @@
              </div>
 
              <div *ngIf="showAdvanced">
-                <!-- Region selection -->
-                <div class="form-group">
-                   <label for="id_region" class="control-label">
-                      In which cloud region would you like to place this Virtual Machine?
-                   </label>
-                   <ng-select id="id_region"  [items]="regions"
-                      [disabled]="cloudId"
-                      (selected)="onRegionSelect($event)"
-                      [placeholder]="regionHelp">
-                   </ng-select>
-                </div>
                 <!-- Placement selection -->
                 <div class="form-group">
                    <label for="id_placement" class="control-label">
