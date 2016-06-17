@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Host, Input } from '@angular/core';
+import { Component, Host, Input } from '@angular/core';
 import { RadioControlValueAccessor } from "../../directives/radio_value_accessor";
 import {
    FORM_DIRECTIVES,
@@ -9,6 +9,7 @@ import {
    NgFormModel } from '@angular/common';
 
 import { SELECT_DIRECTIVES } from 'ng2-select';
+import { BasePluginComponent } from '../base-plugin.component';
 import { ConfigPanelComponent } from '../../layouts/config-panel.component';
 
 @Component({
@@ -18,28 +19,7 @@ import { ConfigPanelComponent } from '../../layouts/config-panel.component';
    inputs: ['initialConfig']
 })
 
-export class CloudManConfigComponent implements OnInit, OnDestroy {
-   _initialConfig: any;
-   
-   get initialConfig() {
-      return this._initialConfig;
-   }
-   
-   set initialConfig(value) {
-      this._initialConfig = value;
-      if (value && value.config_cloudman) {
-         let form = <Control>this.cmClusterForm;
-         form.controls['clusterName'].updateValue(value.config_cloudman.clusterName || null);
-         form.controls['clusterPassword'].updateValue(value.config_cloudman.clusterPassword || null);
-         form.controls['clusterType'].updateValue(value.config_cloudman.clusterType || null);
-         form.controls['defaultBucket'].updateValue(value.config_cloudman.defaultBucket || null);
-         form.controls['masterPostStartScript'].updateValue(value.config_cloudman.masterPostStartScript || null);
-         form.controls['workerPostStartScript'].updateValue(value.config_cloudman.workerPostStartScript || null);
-         form.controls['clusterSharedString'].updateValue(value.config_cloudman.clusterSharedString || null);
-      }
-   }
-
-
+export class CloudManConfigComponent extends BasePluginComponent {
    cluster: Object = {};
    clusterTypes: Object[] = [  // First element in the list if the default choice
       {'id': 'Galaxy', 'text': 'SLURM cluster with Galaxy'},
@@ -48,10 +28,18 @@ export class CloudManConfigComponent implements OnInit, OnDestroy {
    showAdvanced: boolean = false;
 
    cmClusterForm: ControlGroup;
-   storageType = new Control('transient', Validators.required);
-   parentForm: NgFormModel;
+   storageType = new Control('', Validators.required);
 
+   get form() : ControlGroup {
+      return this.cmClusterForm;
+   }
+   
+   get configName() : string {
+      return "config_cloudman";
+   }
+      
    constructor(fb: FormBuilder, @Host() parentForm: NgFormModel) {
+      super(fb, parentForm);
       this.cmClusterForm = fb.group({
          'clusterName': [null, Validators.required],
          'clusterPassword': [null, Validators.required],
@@ -63,16 +51,6 @@ export class CloudManConfigComponent implements OnInit, OnDestroy {
          'workerPostStartScript': [null],
          'clusterSharedString': [null]
       });
-      this.parentForm = parentForm;
-   }
-
-   ngOnInit() {
-      // Add child form to parent so that validations roll up
-      this.parentForm.form.addControl("config_cloudman", this.cmClusterForm);
-   }
-
-   ngOnDestroy() {
-      this.parentForm.form.removeControl("config_cloudman");
    }
 
    getInitialClusterType() : Object {
