@@ -2,6 +2,8 @@ import { Cloud } from './cloud';
 
 export interface ApplicationVersionCloudConfig {
    cloud: Cloud;
+   image: any;
+   default_launch_config: any;
 }
 
 export interface ApplicationVersion {

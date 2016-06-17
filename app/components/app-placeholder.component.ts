@@ -1,16 +1,14 @@
 import { Component, ComponentRef, ViewContainerRef, ComponentResolver } from '@angular/core';
-import { Application, ApplicationVersion } from '../models/application';
 
 declare var System: any;
 
 @Component({
    selector: 'app-placeholder',
    template: `<span #content></span>`,
-   inputs: ['application', 'applicationVersion', 'componentPath', 'componentName'],
+   inputs: ['initialConfig', 'componentPath', 'componentName'],
 })
 export class AppPlaceHolderComponent {
-   application: Application;
-   applicationVersion: ApplicationVersion;
+   initialConfig: any;
 
    _componentPath: string;
    _componentName: string;
@@ -54,8 +52,7 @@ export class AppPlaceHolderComponent {
         .then(m => {
           this.componentResolver.resolveComponent(m[this.componentName]).then((factory) => {
             this._currentComponent = this.viewContainerRef.createComponent(factory, 0,  this.viewContainerRef.injector);
-            this._currentComponent.instance.application = this.application;
-            this._currentComponent.instance.applicationVersion = this.applicationVersion;  
+            this._currentComponent.instance.initialConfig = this.initialConfig;
           });
         });
    }

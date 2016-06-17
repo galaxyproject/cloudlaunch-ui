@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 
 import { SELECT_DIRECTIVES } from 'ng2-select';
 
-import { Application, ApplicationVersion } from '../models/application';
+import { Application, ApplicationVersion, ApplicationVersionCloudConfig } from '../models/application';
 import { ApplicationService } from '../services/application.service';
 import { DeploymentService } from '../services/deployment.service';
 import { AppPlaceHolderComponent } from './app-placeholder.component';
@@ -30,6 +30,7 @@ export class ApplianceDetailComponent {
    application: Application;
    
    selectedVersion: ApplicationVersion;
+   selectedAppCloudConfig: ApplicationVersionCloudConfig;
    applianceLaunchForm: ControlGroup;
    clouds: any[] = [];
    public errorMessage: string;
@@ -63,6 +64,7 @@ export class ApplianceDetailComponent {
    
    onCloudSelect(cloud) {
       (<Control>this.applianceLaunchForm.controls['target_cloud']).updateValue(cloud.id);
+      this.selectedAppCloudConfig = this.selectedVersion.cloud_config.filter(v => { return v.cloud.slug == cloud.id; })[0];
    }
    
    goBack() {

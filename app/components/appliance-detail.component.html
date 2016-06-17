@@ -41,7 +41,7 @@
 
                         <div *ngIf="applianceLaunchForm.controls['target_cloud'].value">
                             <form class="form" [ngFormModel]="applianceLaunchForm.find('config_app')">
-                                <app-placeholder [application]="application" [applicationVersion]="applianceLaunchForm.controls['application_version'].value"
+                                <app-placeholder [initialConfig]="selectedAppCloudConfig.default_launch_config.config_app"
                                         [componentPath]="selectedVersion.frontend_component_path"
                                         [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
                             </form>
