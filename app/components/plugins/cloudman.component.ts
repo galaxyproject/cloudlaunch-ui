@@ -46,7 +46,7 @@ export class CloudManConfigComponent extends BasePluginComponent {
          'storageType': this.storageType,
          'storageSize': [null],
          'clusterType': [null],
-         'defaultBucket': [null],
+         'defaultBucket': [null, Validators.required],
          'masterPostStartScript': [null],
          'workerPostStartScript': [null],
          'clusterSharedString': [null]
