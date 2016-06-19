@@ -107,7 +107,7 @@ export class CloudLaunchComponent extends BasePluginComponent {
       this.instanceTypeHelp = "Retrieving instance types...";
       this.instanceTypes = [];
       this._cloudService.getInstanceTypes(cloudId)
-         .subscribe(instanceTypes => this.instanceTypes = instanceTypes.map(t => { t.text = t.name; return t; }),
+         .subscribe(instanceTypes => this.instanceTypes = instanceTypes.map(t => { t.id = t.name; t.text = t.name; return t; }),
          error => this.errorMessage = <any>error,
          () => { this.instanceTypeHelp = "Select an Instance Type"; console.log('got instance types: ', this.instanceTypes) });
    }

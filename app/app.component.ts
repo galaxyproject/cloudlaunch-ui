@@ -1,6 +1,6 @@
 import { provide } from '@angular/core';
 import { Component, AfterViewChecked } from '@angular/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router-deprecated';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router, RouterLink } from '@angular/router-deprecated';
 import { HTTP_PROVIDERS } from '@angular/http';
 import { RequestOptions, RequestOptionsArgs, BaseRequestOptions, Headers } from '@angular/http';
 
@@ -37,11 +37,8 @@ class CustomRequestOptions extends BaseRequestOptions {
 
 @Component({
    selector: 'cloudlaunch-app',
-   template: `
-        <!-- The router-outlet displays the template for the current component based on the URL -->
-        <router-outlet></router-outlet>
-    `,
-   directives: [LoggedInRouterOutlet],
+   templateUrl: 'app/app.component.html',
+   directives: [LoggedInRouterOutlet, RouterLink],
    providers: [
       ROUTER_PROVIDERS,
       HTTP_PROVIDERS,
@@ -65,6 +62,13 @@ class CustomRequestOptions extends BaseRequestOptions {
 
 export class AppComponent implements AfterViewChecked {
 
+  constructor(private router: Router) {
+  }
+
+  isActive(route_name: string): boolean {
+      return this.router.isRouteActive(this.router.generate([route_name]));
+  }
+   
    ngAfterViewChecked() {
       // Unfortunately, there's no single place to apply material effects
       // and it's therefore done during this lifecycle method.
