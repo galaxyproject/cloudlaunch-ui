@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { SELECT_DIRECTIVES } from 'ng2-select';
 
@@ -25,7 +25,7 @@ import {
   directives: [SELECT_DIRECTIVES, AppPlaceHolderComponent, StandardLayoutComponent, ConfigPanelComponent, CloudLaunchComponent],
   providers: [DeploymentService]
 })
-export class ApplianceDetailComponent {
+export class ApplianceDetailComponent implements OnInit {
    @Input()
    application: Application;
 
@@ -42,10 +42,16 @@ export class ApplianceDetailComponent {
       private _deploymentService: DeploymentService)
    {
       this.applianceLaunchForm = fb.group({
+         'name': ['', Validators.required],
          'application_version': ['', Validators.required],
          'target_cloud': ['', Validators.required],
          'config_app': fb.group({}),
       });
+   }
+   
+   ngOnInit() {
+      // Generate a default name for the deployment
+      (<Control>this.applianceLaunchForm.controls['name']).updateValue(this.application.slug + "-" + new Date().toJSON());
    }
 
    getApplicationVersions() {

@@ -41,7 +41,6 @@ export class CloudManConfigComponent extends BasePluginComponent {
    constructor(fb: FormBuilder, @Host() parentForm: NgFormModel) {
       super(fb, parentForm);
       this.cmClusterForm = fb.group({
-         'clusterName': [null, Validators.required],
          'clusterPassword': [null, Validators.required],
          'storageType': this.storageType,
          'storageSize': [null],
