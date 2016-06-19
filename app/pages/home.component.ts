@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router-deprecated';
 import { StandardLayoutComponent } from '../layouts/standard-layout.component';
+import { DeploymentsComponent } from '../components/deployments.component';
 
 @Component({
    selector: 'home',
    templateUrl: 'app/pages/home.component.html',
-   directives: [StandardLayoutComponent]
+   directives: [StandardLayoutComponent, DeploymentsComponent]
 })
 export class HomeComponent implements OnInit {
 

@@ -1,0 +1,16 @@
+<div class="list-group">
+    <table class="table table-striped">
+        <thead>
+            <th>#</th>
+            <th>Name</th>
+            <th>Configuration</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let deploy of deployments">
+                <td>{{ deploy.id }}</td>
+                <td>{{ deploy.name }}</td>
+                <td><pre>{{ deploy.application_config | json | slice:1:100 }}</pre></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

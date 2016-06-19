@@ -6,6 +6,7 @@ import { RequestOptions, RequestOptionsArgs, BaseRequestOptions, Headers } from 
 
 // Services
 import { ApplicationService } from './services/application.service';
+import { DeploymentService } from './services/deployment.service';
 import { LoginService } from './services/login.service';
 import { LoggedInRouterOutlet } from './directives/loggedinrouter.directive';
 
@@ -43,7 +44,7 @@ class CustomRequestOptions extends BaseRequestOptions {
       ROUTER_PROVIDERS,
       HTTP_PROVIDERS,
       provide(RequestOptions, { useClass: CustomRequestOptions }),
-      LoginService, ApplicationService
+      LoginService, ApplicationService, DeploymentService
    ]
 })
 

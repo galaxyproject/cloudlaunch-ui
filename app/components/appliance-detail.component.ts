@@ -22,7 +22,6 @@ import {
   styleUrls: ['app/components/appliance-detail.component.css'],
   inputs: ['application'],
   directives: [SELECT_DIRECTIVES, AppPlaceHolderComponent, StandardLayoutComponent, ConfigPanelComponent, CloudLaunchComponent],
-  providers: [DeploymentService]
 })
 export class ApplianceDetailComponent implements OnInit {
    @Input()
