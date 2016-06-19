@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-
 import { SELECT_DIRECTIVES } from 'ng2-select';
 
 import { Application, ApplicationVersion, ApplicationVersionCloudConfig } from '../models/application';
@@ -84,7 +83,7 @@ export class ApplianceDetailComponent implements OnInit {
       formValues['application'] = this.application.slug;
       console.log(JSON.stringify(formValues));
       this._deploymentService.createDeployment(formValues).subscribe(
-         data  => this.errorMessage = <any>data,
-         error => this.errorMessage = <any>error);
+         data  => this.errorMessage = JSON.stringify(data, null, 2),
+         error => this.errorMessage = JSON.stringify(error, null, 2));
    }
 }

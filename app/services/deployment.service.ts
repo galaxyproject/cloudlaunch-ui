@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
-import { Observable }     from 'rxjs/Observable';
+import { Observable } from 'rxjs/Rx';
 
 import { AppSettings } from '../app.settings';
 import { Deployment } from '../models/deployment';
@@ -23,9 +23,15 @@ export class DeploymentService {
          .map(response => response.json());
    }
    
-   public createDeployment(deployment: Deployment): Observable<Deployment[]> {
+   public createDeployment(deployment: Deployment): Observable<Deployment> {
       let body = JSON.stringify(deployment);
       return this._http.post(this._deployment_url, body)
-         .map(response => response.json().results);
+         .map(response => response.json())
+         .catch(this.handleError);
    }
+   
+   private handleError(error: Response) {
+      return Observable.throw(error.json() || 'Server error');
+   }
+
 }
