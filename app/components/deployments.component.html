@@ -1,15 +1,32 @@
 <div class="list-group">
-    <table class="table table-striped">
+    <table class="table table-striped table-hover">
         <thead>
-            <th>#</th>
-            <th>Name</th>
-            <th>Configuration</th>
+            <tr>
+                <th><p> Name </p></th>
+                <th><p> Status</p></th>
+                <th><p> Uptime</p></th>
+                <th><p> Access URL</p></th>
+            </tr>
         </thead>
         <tbody>
             <tr *ngFor="let deploy of deployments">
-                <td>{{ deploy.id }}</td>
-                <td>{{ deploy.name }}</td>
-                <td><pre>{{ deploy.application_config | json | slice:1:100 }}</pre></td>
+                <td>
+                    <p>{{ deploy.name }}</p>
+                    <p><strong>Application: </strong></p>
+                    <p><strong>Version: </strong></p>
+                </td>
+                <td class="text-left">
+                    <div [ngSwitch]="deploy.task_status.status">
+                      <p *ngSwitchWhen="'SUCCESS'" class="text-success">SUCCESS</p>
+                      <p *ngSwitchWhen="'FAILURE'" class="text-danger">FAILURE</p>
+                      <p *ngSwitchWhen="'PENDING'" class="text-info">PENDING</p>
+                      <p *ngSwitchWhen="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
+                        <br />{{ deploy.task_status?.result?.action }}
+                      </p>
+                    </div>
+                </td>
+                <td>{{ calculateUptime(deploy) | date:'H:mm:ss' }}</td>
+                <td><a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.applicationURL }}">{{ deploy.task_result?.cloudLaunch?.applicationURL }}</a></td>
             </tr>
         </tbody>
     </table>
