@@ -73,7 +73,22 @@
 
     <div id="container" class="wrapper">
 
-        <cloudlaunch-app>Loading...</cloudlaunch-app>
+        <cloudlaunch-app>
+            <style>
+            .loading_splash {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+            </style>
+            <div class="loading_splash"><h1><i class="fa fa-refresh fa-spin fa-fw"></i> Loading...</h1></div>
+        </cloudlaunch-app>
 
         <!-- Pushes footer down -->
         <div class="push"></div>
