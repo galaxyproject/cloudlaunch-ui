@@ -11,13 +11,13 @@ export class LoginService {
 
    private _loginUrl = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/login/`;
    private _currentUserUrl = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/user/`;
-   private _login_method = null;
+   private _login_method: string = null;
 
    public isLoggedIn(): Promise<boolean> {
       // When the SPA starts up, _login_method will be null
       let loginService = this;
       if (this._login_method == null) {
-         return new Promise((resolve) => {
+         return new Promise((resolve: any) => {
             this._http.get(this._currentUserUrl)
                .map(response => response.json())
                .do(function (item) {

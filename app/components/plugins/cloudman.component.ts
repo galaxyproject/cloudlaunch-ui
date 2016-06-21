@@ -33,11 +33,11 @@ export class CloudManConfigComponent extends BasePluginComponent {
    get form() : ControlGroup {
       return this.cmClusterForm;
    }
-   
+
    get configName() : string {
       return "config_cloudman";
    }
-      
+
    constructor(fb: FormBuilder, @Host() parentForm: NgFormModel) {
       super(fb, parentForm);
       this.cmClusterForm = fb.group({
@@ -56,7 +56,7 @@ export class CloudManConfigComponent extends BasePluginComponent {
       return [this.clusterTypes[0]];
    }
 
-   setClusterType(clusterType) {
+   setClusterType(clusterType: any) {
       this.cmClusterForm.value['clusterType'] = clusterType.id;
    }
 
