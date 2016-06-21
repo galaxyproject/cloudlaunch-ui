@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SELECT_DIRECTIVES } from 'ng2-select';
+import { Router } from '@angular/router-deprecated';
 
 import { Application, ApplicationVersion, ApplicationVersionCloudConfig } from '../models/application';
 import { ApplicationService } from '../services/application.service';
@@ -33,9 +34,11 @@ export class ApplianceDetailComponent implements OnInit {
    clouds: any[] = [];
    private _targetCloud: Cloud;
    public errorMessage: string;
+   private submitPending: boolean = false;
 
    constructor(
       fb: FormBuilder,
+      private _router: Router,
       private _applicationService: ApplicationService,
       private _deploymentService: DeploymentService)
    {
@@ -79,10 +82,11 @@ export class ApplianceDetailComponent implements OnInit {
 
    onSubmit(formValues: any): void {
       this.errorMessage = null;
+      this.submitPending = true;
       formValues['application'] = this.application.slug;
       console.log(JSON.stringify(formValues));
       this._deploymentService.createDeployment(formValues).subscribe(
-         data  => this.errorMessage = JSON.stringify(data, null, 2),
-         error => this.errorMessage = JSON.stringify(error, null, 2));
+         data  => { this._router.parent.navigate(['MyAppliances']); },
+         error => { this.errorMessage = JSON.stringify(error, null, 2); this.submitPending = false; });
    }
 }

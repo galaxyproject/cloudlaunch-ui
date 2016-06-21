@@ -63,7 +63,8 @@
     		<a (click)="goBack()" class="btn btn-raised btn-default"> <i
     			class="material-icons">navigate_before</i> Back
     		</a>
-            <button type="submit" class="btn btn-raised btn-default pull-right" [disabled]="!applianceLaunchForm.valid">Launch</button>
+            <button type="submit" class="btn btn-raised btn-default pull-right" [disabled]="submitPending || !applianceLaunchForm.valid">
+                Launch <span *ngIf="submitPending" class="fa fa fa-spinner fa-spin fa-fw"></span></button>
 
     	</div>
     </form>
