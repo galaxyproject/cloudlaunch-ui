@@ -14,7 +14,7 @@ import { LoggedInRouterOutlet } from './directives/loggedinrouter.directive';
 import { LoginPageComponent } from './pages/login.page.component';
 import { MarketplacePageComponent } from './pages/marketplace.page.component';
 import { ApplianceDetailPageComponent } from './pages/appliance-detail.page.component';
-import { HomeComponent } from './pages/home.component';
+import { MyAppliancesComponent } from './pages/my-appliances.component';
 
 // Components
 import { DashboardComponent } from './components/dashboard.component';
@@ -49,9 +49,10 @@ class CustomRequestOptions extends BaseRequestOptions {
 })
 
 @RouteConfig([
-   { path: '/home', name: 'Home', component: HomeComponent },
    { path: '/login', name: 'Login', component: LoginPageComponent },
-   { path: '/dashboard', name: 'Dashboard', component: DashboardComponent },
+   { path: '/appliances', name: 'MyAppliances', component: MyAppliancesComponent },
+   { path: '/public_appliances', name: 'PublicAppliances', component: DashboardComponent },
+   { path: '/profile', name: 'MyProfile', component: DashboardComponent },
    { path: '/marketplace', name: 'Marketplace', component: MarketplacePageComponent, useAsDefault: true },
    {
       path: '/marketplace/appliance/:slug/', name: 'ApplianceDetail',
@@ -66,8 +67,8 @@ export class AppComponent implements AfterViewChecked {
   constructor(private router: Router) {
   }
 
-  isActive(route_name: string): boolean {
-      return this.router.isRouteActive(this.router.generate([route_name]));
+  isActive(instruction: any[]): boolean {
+      return this.router.isRouteActive(this.router.generate(instruction));
   }
    
    ngAfterViewChecked() {

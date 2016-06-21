@@ -10,20 +10,30 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">CloudLaunch</a>
+            <a class="navbar-brand" href="#"><i class="fa fa-rocket"></i> CloudLaunch</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li [class.active]="isActive('Home')">
-                    <a [routerLink]="['Home']">
-                        <i class="fa fa-home"></i> Home <span class="sr-only">(current)</span>
+                <li [class.active]="isActive(['Marketplace'])">
+                    <a [routerLink]="['Marketplace']"><i class="fa fa-shopping-bag"></i> Marketplace
+                        <span class="sr-only">(Marketplace)</span></a>
+                </li>
+                <li [class.active]="isActive(['PublicAppliances'])">
+                    <a [routerLink]="['PublicAppliances']"><i class="fa fa-share-alt"></i> Public Appliances
+                        <span class="sr-only">(Public Appliances)</span></a>
+                </li>
+                <li [class.active]="isActive(['MyAppliances'])">
+                    <a [routerLink]="['MyAppliances']"><i class="fa fa-plug"></i> My Appliances
+                        <span class="sr-only">(My Appliances)</span>
                     </a>
                 </li>
-                <li [class.active]="isActive('Marketplace')">
-                    <a [routerLink]="['Marketplace']"><i class="fa fa-shopping-bag"></i> Marketplace <span
-                            class="sr-only">(Marketplace)</span></a></li>
+                <li [class.active]="isActive(['MyProfile'])">
+                    <a [routerLink]="['MyProfile']"><i class="fa fa-user"></i> My Profile
+                        <span class="sr-only">(My Appliances)</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
