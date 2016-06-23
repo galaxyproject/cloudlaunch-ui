@@ -15,6 +15,7 @@ import { LoginPageComponent } from './pages/login.page.component';
 import { MarketplacePageComponent } from './pages/marketplace.page.component';
 import { ApplianceDetailPageComponent } from './pages/appliance-detail.page.component';
 import { MyAppliancesComponent } from './pages/my-appliances.component';
+import { MyProfileComponent } from './pages/my-profile.component';
 
 // Components
 import { DashboardComponent } from './components/dashboard.component';
@@ -52,7 +53,7 @@ class CustomRequestOptions extends BaseRequestOptions {
    { path: '/login', name: 'Login', component: LoginPageComponent },
    { path: '/appliances', name: 'MyAppliances', component: MyAppliancesComponent },
    { path: '/public_appliances', name: 'PublicAppliances', component: DashboardComponent },
-   { path: '/profile', name: 'MyProfile', component: DashboardComponent },
+   { path: '/profile', name: 'MyProfile', component: MyProfileComponent },
    { path: '/marketplace', name: 'Marketplace', component: MarketplacePageComponent, useAsDefault: true },
    {
       path: '/marketplace/appliance/:slug/', name: 'ApplianceDetail',
