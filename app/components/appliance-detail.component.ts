@@ -86,7 +86,25 @@ export class ApplianceDetailComponent implements OnInit {
       formValues['application'] = this.application.slug;
       console.log(JSON.stringify(formValues));
       this._deploymentService.createDeployment(formValues).subscribe(
-         data  => { this._router.parent.navigate(['MyAppliances']); },
-         error => { this.errorMessage = JSON.stringify(error, null, 2); this.submitPending = false; });
+         data  => this._router.parent.navigate(['MyAppliances']),
+         error => this.handleErrors(error));
    }
+
+   handleErrors(errors) {
+      this.submitPending = false;
+      if (errors) {
+         if (errors.hasOwnProperty("error")) {
+            this.errorMessage = `${errors.error}`;
+         }
+
+         for (let err of errors) {
+            alert(err);
+            //this.applianceLaunchForm.controls[error].setErrors({ remote: error });
+         }
+      }
+      else {
+         this.errorMessage = `${errors.reasonPhrase} (${errors.code})`;
+      }
+   }
+
 }
