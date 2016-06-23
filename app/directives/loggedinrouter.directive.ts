@@ -26,7 +26,7 @@ export class LoggedInRouterOutlet extends RouterOutlet {
       let url = this.parentRouter.lastNavigationAttempt;
       let outlet = this;
       if (!this.publicRoutes[url]) {
-         let loginPromise = this._loginService.isLoggedIn().then((loggedIn) => {
+         let loginPromise: any = this._loginService.isLoggedIn().then((loggedIn) => {
             if (loggedIn) {
                return super.activate(instruction);
             }
