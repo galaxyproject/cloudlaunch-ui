@@ -5,7 +5,9 @@ import { LoginComponent } from '../components/login.component';
 @Component({
    selector: 'login-page',
    templateUrl: 'app/pages/login.page.component.html',
-   directives: [StandardLayoutComponent, LoginComponent]
+   styleUrls: ['app/pages/login.page.component.css'],
+   directives: [StandardLayoutComponent, LoginComponent],
+   host: {'class' : 'ng-animate pageLoadAnimation'}
 })
 export class LoginPageComponent {
 }

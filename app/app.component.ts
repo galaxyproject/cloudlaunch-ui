@@ -14,8 +14,8 @@ import { LoggedInRouterOutlet } from './directives/loggedinrouter.directive';
 import { LoginPageComponent } from './pages/login.page.component';
 import { MarketplacePageComponent } from './pages/marketplace.page.component';
 import { ApplianceDetailPageComponent } from './pages/appliance-detail.page.component';
-import { MyAppliancesComponent } from './pages/my-appliances.component';
-import { MyProfileComponent } from './pages/my-profile.component';
+import { MyAppliancesComponent } from './pages/my-appliances.page.component';
+import { MyProfileComponent } from './pages/my-profile.page.component';
 
 // Components
 import { DashboardComponent } from './components/dashboard.component';

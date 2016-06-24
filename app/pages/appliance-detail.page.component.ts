@@ -16,7 +16,8 @@ import { ApplianceDetailComponent } from '../components/appliance-detail.compone
    templateUrl: 'app/pages/appliance-detail.page.component.html',
    styleUrls: ['app/pages/appliance-detail.page.component.css'],
    inputs: ['appliance'],
-   directives: [StandardLayoutComponent, ApplianceDetailComponent]
+   directives: [StandardLayoutComponent, ApplianceDetailComponent],
+   host: {'class' : 'ng-animate pageLoadAnimation'}
 })
 export class ApplianceDetailPageComponent implements OnInit {
    application: Application;

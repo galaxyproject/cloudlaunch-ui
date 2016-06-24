@@ -5,7 +5,9 @@ import { MarketplaceComponent } from '../components/marketplace.component';
 @Component({
    selector: 'marketplace-page',
    templateUrl: 'app/pages/marketplace.page.component.html',
-   directives: [StandardLayoutComponent, MarketplaceComponent]
+   styleUrls: ['app/pages/marketplace.page.component.css'],
+   directives: [StandardLayoutComponent, MarketplaceComponent],
+   host: {'class' : 'ng-animate pageLoadAnimation'}
 })
 export class MarketplacePageComponent {
 }
