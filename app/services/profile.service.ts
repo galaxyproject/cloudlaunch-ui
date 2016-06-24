@@ -12,7 +12,6 @@ import { OpenStackCredentials } from '../models/profile';
 @Injectable()
 export class ProfileService {
 
-
    constructor(private _http: Http) { }
 
    private _profile_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/user/`;
@@ -31,7 +30,7 @@ export class ProfileService {
          .map(response => response.json())
          .catch(this.handleError);
    }
-   
+
    public deleteCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {
       return this._http.delete(`${this._creds_url_aws}${creds.id}/`)
          .catch(this.handleError);
@@ -43,11 +42,16 @@ export class ProfileService {
          .map(response => response.json())
          .catch(this.handleError);
    }
-   
+
    public saveCredentialsOpenStack(creds: OpenStackCredentials): Observable<OpenStackCredentials> {
       let body = JSON.stringify(creds);
       return this._http.post(`${this._creds_url_openstack}${creds.id}/`, body)
          .map(response => response.json())
+         .catch(this.handleError);
+   }
+
+   public deleteCredentialsOpenStack(creds: OpenStackCredentials): Observable<OpenStackCredentials> {
+      return this._http.delete(`${this._creds_url_openstack}${creds.id}/`)
          .catch(this.handleError);
    }
 
