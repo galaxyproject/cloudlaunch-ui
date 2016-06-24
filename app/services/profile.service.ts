@@ -31,6 +31,11 @@ export class ProfileService {
          .map(response => response.json())
          .catch(this.handleError);
    }
+   
+   public deleteCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {
+      return this._http.delete(`${this._creds_url_aws}${creds.id}/`)
+         .catch(this.handleError);
+   }
 
    public createCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {
       let body = JSON.stringify(creds);
@@ -38,7 +43,7 @@ export class ProfileService {
          .map(response => response.json())
          .catch(this.handleError);
    }
-
+   
    public saveCredentialsOpenStack(creds: OpenStackCredentials): Observable<OpenStackCredentials> {
       let body = JSON.stringify(creds);
       return this._http.post(`${this._creds_url_openstack}${creds.id}/`, body)

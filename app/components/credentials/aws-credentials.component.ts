@@ -125,6 +125,15 @@ export class AWSCredentialsComponent implements OnInit {
       this.setFormValues(new AWSCredentials());
    }
 
+   deleteCreds(creds: AWSCredentials) {
+      this._profileService.deleteCredentialsAWS(creds)
+         .subscribe(result => {
+            this._profileService.getProfile().subscribe(result => {
+               this.profile = result;
+            });
+         });
+   }
+
    saveEdit() {
       // Switch value to id before submit 
       let currentCloudSelection = this.cred_cloud.value;
