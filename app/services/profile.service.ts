@@ -27,7 +27,7 @@ export class ProfileService {
 
    public saveCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {
       let body = JSON.stringify(creds);
-      return this._http.post(`${this._creds_url_aws}${creds.id}/`, body)
+      return this._http.put(`${this._creds_url_aws}${creds.id}/`, body)
          .map(response => response.json())
          .catch(this.handleError);
    }

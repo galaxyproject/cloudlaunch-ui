@@ -34,6 +34,7 @@ export class AWSCredentialsComponent implements OnInit {
    editMode: boolean = false;
    currentObject: AWSCredentials; 
    
+   cred_id: Control = new Control(null);
    cred_name: Control = new Control(null, Validators.required);
    cred_cloud: Control = new Control(null, Validators.required);
    access_key: Control = new Control(null, Validators.required);
@@ -46,6 +47,7 @@ export class AWSCredentialsComponent implements OnInit {
       private _cloudService: CloudService,
       fb: FormBuilder) {
       this.awsCredentialsForm = fb.group({
+         'id': this.cred_id,
          'name': this.cred_name,
          'cloud_id': this.cred_cloud,
          'access_key': this.access_key,
@@ -63,12 +65,35 @@ export class AWSCredentialsComponent implements OnInit {
          () => { console.log('got instance types: ', this.clouds) });
    }
 
+   addToList(temp: any, current: any) {
+   }   
+
+   groupBy(list: any ) {
+      let temp = {}
+      let results = []
+      if (list) {
+         for (let item of list) {
+            if (item.cloud.slug in temp)
+               temp[item.cloud.slug].push(item);
+            else {
+               temp[item.cloud.slug] = []
+               temp[item.cloud.slug].push(item);
+            }
+         }
+      }
+      for (let key in temp) {
+         results.push({ 'cloud_id' : key, 'clouds': temp[key] }); 
+      }
+      return results;
+   }
+
    onCloudSelect(cloud: any) {
       let matching_cloud = this.clouds.filter(cloud => cloud.slug == cloud.id);
       this.cred_cloud.updateValue(matching_cloud[0]);
    }
    
    setFormValues(creds: AWSCredentials) {
+      this.cred_id.updateValue(creds.id);
       this.cred_name.updateValue(creds.name);
       if (creds.cloud) { // Satisfy ng2-select requirements
          creds.cloud.id = creds.cloud.slug;
