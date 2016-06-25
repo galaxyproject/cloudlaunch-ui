@@ -31,6 +31,6 @@ export class LoginComponent implements OnInit {
    }
          
    getApiRoot() : string {
-      return AppSettings.CLOUDLAUNCH_API_ENDPOINT;
+      return AppSettings.CLOUDLAUNCH_SERVER_ROOT;
    }
 }
