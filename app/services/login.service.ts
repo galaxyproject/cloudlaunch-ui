@@ -14,6 +14,18 @@ export class LoginService {
    private _login_method: string = null;
 
    public isLoggedIn(): Promise<boolean> {
+
+      return new Promise((resolve: any) => {
+            this._http.get(this._currentUserUrl)
+               .map(response => response.json())
+               .subscribe(
+                  data => resolve(true),
+                  error => resolve(false)
+               );
+         });
+      
+      /*
+      
       // When the SPA starts up, _login_method will be null
       let loginService = this;
       if (this._login_method == null) {
@@ -41,6 +53,7 @@ export class LoginService {
       else {
          return Promise.resolve(false);
       }
+      */
    }
 
    public login(email: string, password: string, remember_me?: boolean): Observable<string> {
