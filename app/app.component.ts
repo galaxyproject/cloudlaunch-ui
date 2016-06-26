@@ -25,10 +25,6 @@ declare var $: any
 
 class CustomRequestOptions extends BaseRequestOptions {
   // Partially based on: http://stackoverflow.com/questions/34494876/what-is-the-right-way-to-use-angular2-http-requests-with-django-csrf-protection
-  constructor() {
-    super();
-    this.headers.append('X-CSRFToken', this.getCookie('csrftoken'));
-  }
 
   getCookie(name) {
     let value = "; " + document.cookie;
@@ -42,6 +38,7 @@ class CustomRequestOptions extends BaseRequestOptions {
       if (!options.headers)
          options.headers = new Headers();
       options.headers.set('Authorization', auth_header);
+      options.headers.set('X-CSRFToken', this.getCookie('csrftoken'));
       // Set the default content type to JSON
       if (!options.headers.get('Content-Type'))
          options.headers.set('Content-Type', 'application/json');
