@@ -88,7 +88,7 @@ export class AWSCredentialsComponent implements OnInit {
    }
 
    onCloudSelect(cloud: any) {
-      let matching_cloud = this.clouds.filter(cloud => cloud.slug == cloud.id);
+      let matching_cloud = this.clouds.filter(c => c.slug == cloud.id);
       this.cred_cloud.updateValue(matching_cloud[0]);
    }
    
