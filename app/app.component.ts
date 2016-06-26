@@ -8,7 +8,7 @@ import { RequestOptions, RequestOptionsArgs, BaseRequestOptions, Headers } from 
 import { ApplicationService } from './services/application.service';
 import { DeploymentService } from './services/deployment.service';
 import { LoginService } from './services/login.service';
-import { LoggedInRouterOutlet } from './directives/loggedinrouter.directive';
+import { LoggedInRouterOutlet, ProtectedDirective } from './directives/loggedinrouter.directive';
 
 // Pages
 import { LoginPageComponent } from './pages/login.page.component';
@@ -37,7 +37,7 @@ class CustomRequestOptions extends BaseRequestOptions {
       let auth_header = "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
       if (!options.headers)
          options.headers = new Headers();
-      options.headers.set('Authorization', auth_header);
+      //options.headers.set('Authorization', auth_header);
       options.headers.set('X-CSRFToken', this.getCookie('csrftoken'));
       // Set the default content type to JSON
       if (!options.headers.get('Content-Type'))

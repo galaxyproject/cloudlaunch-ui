@@ -39,3 +39,17 @@ export class LoggedInRouterOutlet extends RouterOutlet {
       return super.activate(instruction);
    }
 }
+
+@Directive({
+    selector: '[protected]'
+})
+export class ProtectedDirective  {
+    private sub:any = null;
+
+    constructor(private _loginService: LoginService, private router:Router) {
+         let loginPromise: any = this._loginService.isLoggedIn2().subscribe(
+                  data => true,
+                  error => this.router.navigateByUrl('/login')
+               );
+    }
+}

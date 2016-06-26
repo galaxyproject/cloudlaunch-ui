@@ -56,6 +56,11 @@ export class LoginService {
       */
    }
 
+   public isLoggedIn2(): Observable<boolean> {
+      return this._http.get(this._currentUserUrl)
+               .map(response => response.json());
+   }
+   
    public login(email: string, password: string, remember_me?: boolean): Observable<string> {
       let body = JSON.stringify({ "email": email, "password": password });
       let headers = new Headers({ 'Content-Type': 'application/json' });

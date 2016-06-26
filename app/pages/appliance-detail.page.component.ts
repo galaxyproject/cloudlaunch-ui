@@ -10,13 +10,14 @@ import { Application } from '../models/application';
 // Components
 import { StandardLayoutComponent } from '../layouts/standard-layout.component';
 import { ApplianceDetailComponent } from '../components/appliance-detail.component';
+import { ProtectedDirective } from '../directives/loggedinrouter.directive';
 
 @Component({
    selector: 'appliance-detail-page',
    templateUrl: 'app/pages/appliance-detail.page.component.html',
    styleUrls: ['app/pages/appliance-detail.page.component.css'],
    inputs: ['appliance'],
-   directives: [StandardLayoutComponent, ApplianceDetailComponent],
+   directives: [StandardLayoutComponent, ApplianceDetailComponent, ProtectedDirective],
    host: {'class' : 'ng-animate pageLoadAnimation'}
 })
 export class ApplianceDetailPageComponent implements OnInit {
