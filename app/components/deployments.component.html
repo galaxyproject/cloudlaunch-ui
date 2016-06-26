@@ -19,6 +19,7 @@
                     <div [ngSwitch]="deploy.task_status.status">
                       <p *ngSwitchWhen="'SUCCESS'" class="text-success">SUCCESS</p>
                       <p *ngSwitchWhen="'FAILURE'" class="text-danger">FAILURE</p>
+                      <p *ngSwitchWhen="'UNKNOWN'" class="text-warning">FAILURE</p>
                       <p *ngSwitchWhen="'PENDING'" class="text-info">PENDING</p>
                       <p *ngSwitchWhen="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
                         <br />{{ deploy.task_status?.result?.action }}
