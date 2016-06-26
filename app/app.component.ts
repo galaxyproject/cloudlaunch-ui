@@ -24,6 +24,18 @@ import { CloudLaunchComponent } from './components/cloudlaunch.component';
 declare var $: any
 
 class CustomRequestOptions extends BaseRequestOptions {
+  // Partially based on: http://stackoverflow.com/questions/34494876/what-is-the-right-way-to-use-angular2-http-requests-with-django-csrf-protection
+  constructor() {
+    super();
+    this.headers.append('X-CSRFToken', this.getCookie('csrftoken'));
+  }
+
+  getCookie(name) {
+    let value = "; " + document.cookie;
+    let parts = value.split("; " + name + "=");
+    if (parts.length == 2) 
+      return parts.pop().split(";").shift();
+  }
 
    merge(options?: RequestOptionsArgs): RequestOptions {
       let auth_header = "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
