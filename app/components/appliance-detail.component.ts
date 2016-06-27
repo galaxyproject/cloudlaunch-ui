@@ -67,7 +67,7 @@ export class ApplianceDetailComponent implements OnInit {
    }
 
    getCloudsForVersion(version: ApplicationVersion) {
-      this.clouds = version.cloud_config.map(cfg => { let r = cfg.cloud; r.id = r.slug; r.text = r.slug; return r; });
+      this.clouds = version.cloud_config.map(cfg => { let r = cfg.cloud; r.id = r.slug; r.text = r.name; return r; });
    }
 
    onCloudSelect(cloud: any) {
