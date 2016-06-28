@@ -5,7 +5,20 @@
     	<div class="col-md-12">
     		<div class="panel panel-info">
     			<div class="panel-heading">Appliance info</div>
-    			<div class="panel-body">{{ application.description }}</div>
+    			<div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ application.description }}
+                            <br /><br />
+                        </div>
+                        <div class="col-md-6">
+                            <span class="text-muted">Maintainer:</span> {{ application.maintainer }}
+                        </div>
+                        <div class="col-md-6">
+                            <span class="text-muted">Support URL:</span> {{ application.info_url }}
+                        </div>
+                    </div>
+                </div>
     		</div>
     	</div>
     	<div class="col-md-12">

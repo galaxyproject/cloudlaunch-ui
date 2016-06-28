@@ -1,5 +1,5 @@
 <div class="list-group">
-	<div *ngFor="let app of apps" [routerLink]="['ApplianceDetail', {slug: app.slug}]" class="col-md-4">
+	<div *ngFor="let app of apps" [routerLink]="['ApplianceDetail', {slug: app.slug}]" class="col-md-4 list-group">
 		<div class="list-group-item cl-app-badge">
 			<div class="row-picture">
 				<img class="circle" src="{{ app.icon_url }}" alt="Logo">
