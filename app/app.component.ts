@@ -16,6 +16,7 @@ import { MarketplacePageComponent } from './pages/marketplace.page.component';
 import { ApplianceDetailPageComponent } from './pages/appliance-detail.page.component';
 import { MyAppliancesComponent } from './pages/my-appliances.page.component';
 import { MyProfileComponent } from './pages/my-profile.page.component';
+import { PublicAppliancesPageComponent } from './pages/public-appliances.page.component';
 
 // Components
 import { DashboardComponent } from './components/dashboard.component';
@@ -61,7 +62,7 @@ class CustomRequestOptions extends BaseRequestOptions {
 @RouteConfig([
    { path: '/login', name: 'Login', component: LoginPageComponent },
    { path: '/appliances', name: 'MyAppliances', component: MyAppliancesComponent },
-   { path: '/public_appliances', name: 'PublicAppliances', component: DashboardComponent },
+   { path: '/public_appliances', name: 'PublicAppliances', component: PublicAppliancesPageComponent },
    { path: '/profile', name: 'MyProfile', component: MyProfileComponent },
    { path: '/marketplace', name: 'Marketplace', component: MarketplacePageComponent, useAsDefault: true },
    {

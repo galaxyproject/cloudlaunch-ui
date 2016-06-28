@@ -1,0 +1,24 @@
+<div class="list-group">
+	<div *ngFor="let svc of public_services" class="col-md-4 list-group">
+		<div class="list-group-item cl-app-badge">
+			<div class="col-md-2 row-picture">
+				<img class="circle" src="{{ svc.logo }}" alt="Logo">
+			</div>
+			<div class="col-md-9 row-content col-md-offset-1">
+				<h4 class="list-group-item-heading"><a href="{{ svc.links }}" class="btn-link"> {{ svc.name }}</a></h4>
+			</div>
+            <div class="col-md-12">
+                <p class="list-group-item-text text-muted">Location: {{ svc.location }}, {{ svc.country.name }}</p>
+                <p class="list-group-item-text text-muted">Support: <a href="{{ svc.email_user_support }}" class="btn-link"> {{ svc.email_user_support }}</a></p>
+            </div>
+            <div class="col-md-12">
+                <br />
+                <p class="list-group-item-text">{{ svc.purpose }}</p>
+            </div>
+            <div class="col-md-12">
+                <br />
+                <p class="list-group-item-text text-muted">Quotas: {{ svc.quotas }}</p>
+            </div>
+		</div>
+	</div>
+</div>
