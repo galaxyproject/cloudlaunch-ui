@@ -37,7 +37,7 @@ class CustomRequestOptions extends BaseRequestOptions {
       let auth_header = "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
       if (!options.headers)
          options.headers = new Headers();
-      //options.headers.set('Authorization', auth_header);
+      options.headers.set('Authorization', auth_header);
       options.headers.set('X-CSRFToken', this.getCookie('csrftoken'));
       // Set the default content type to JSON
       if (!options.headers.get('Content-Type'))
