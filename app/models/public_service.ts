@@ -6,6 +6,12 @@ export interface Country {
   name: string;
 }
 
+export interface Location {
+  country: Country;
+  city: string;
+  latitude: number;
+  longitude: number;
+}
 
 export interface PublicService {
   slug: string;
@@ -19,6 +25,5 @@ export interface PublicService {
   purpose: string;
   email_user_support: string;
   quotas: string;
-  location: string;
-  country: Country;
+  location: Location;
 }

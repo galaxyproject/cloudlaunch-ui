@@ -66,6 +66,7 @@ target/
 *.js.map
 
 !systemjs.config.js
+!app/angular-cli-build.js
 
 # Local system files
 .DS_Store
