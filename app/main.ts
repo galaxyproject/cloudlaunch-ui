@@ -1,3 +1,4 @@
+///<reference path="../node_modules/typescript/lib/lib.es6.d.ts"/> 
 import 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
