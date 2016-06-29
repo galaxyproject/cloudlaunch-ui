@@ -3,7 +3,6 @@ import {GOOGLE_MAPS_DIRECTIVES} from 'angular2-google-maps/core';
 import {PublicService} from '../models/public_service';
 
 @Component({
-    moduleId: module.id,
     selector: 'public-appliances-maps',
     templateUrl: 'public-appliances-maps.component.html',
     styleUrls: ['public-appliances-maps.component.css'],
