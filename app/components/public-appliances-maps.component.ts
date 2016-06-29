@@ -4,8 +4,8 @@ import {PublicService} from '../models/public_service';
 
 @Component({
     selector: 'public-appliances-maps',
-    templateUrl: 'public-appliances-maps.component.html',
-    styleUrls: ['public-appliances-maps.component.css'],
+    templateUrl: 'app/components/public-appliances-maps.component.html',
+    styleUrls: ['app/components/public-appliances-maps.component.css'],
     directives: [GOOGLE_MAPS_DIRECTIVES],
     inputs: ['public_services']
 })
