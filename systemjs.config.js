@@ -8,13 +8,18 @@
     'app':                        'app', // 'dist',
     '@angular':                   'node_modules/@angular',
     'rxjs':                       'node_modules/rxjs',
-    'ng2-select':                 'node_modules/ng2-select'
+    'ng2-select':                 'node_modules/ng2-select',
+    'angular2-google-maps': 'node_modules/angular2-google-maps'
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app':                        { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
-    'ng2-select':                 { main: 'ng2-select.js', defaultExtension: 'js' }
+    'ng2-select':                 { main: 'ng2-select.js', defaultExtension: 'js' },
+    'angular2-google-maps/core': {
+      defaultExtension: 'js',
+      main: 'index.js' // you can also use core.umd.js here, if you want faster loads
+    }
   };
   var ngPackageNames = [
     'common',
@@ -37,3 +42,4 @@
   }
   System.config(config);
 })(this);
+
