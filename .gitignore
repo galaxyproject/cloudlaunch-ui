@@ -65,6 +65,8 @@ target/
 *.js
 *.js.map
 
+!systemjs.config.js
+
 # Local system files
 .DS_Store
 *.sublime-project
