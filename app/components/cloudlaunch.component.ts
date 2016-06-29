@@ -16,7 +16,8 @@ import {
    PlacementZone,
    KeyPair,
    Network,
-   SubNet } from '../models/cloud';
+   SubNet,
+   StaticIP } from '../models/cloud';
 import { BasePluginComponent } from './base-plugin.component';
 import { CloudService } from '../services/cloud.service';
 import { ConfigPanelComponent } from '../layouts/config-panel.component';
@@ -70,6 +71,8 @@ export class CloudLaunchComponent extends BasePluginComponent {
    networksHelp: string = this.CLOUD_SELECTION_HELP;
    subnets: SubNet[] = [];
    subnetsHelp: string = this.CLOUD_SELECTION_HELP;
+   staticIPs: StaticIP[] = [];
+   staticIPHelp: string = this.CLOUD_SELECTION_HELP;
 
    get form() : ControlGroup {
       return this.cloudLaunchForm;
@@ -87,6 +90,7 @@ export class CloudLaunchComponent extends BasePluginComponent {
          'keyPair': [''],
          'network': [''],
          'subnet': [''],
+         'staticIP': [''],
          'provider_settings': fb.group({
             'ebsOptimised': [''],
             'volumeIOPS': [''],
@@ -101,6 +105,7 @@ export class CloudLaunchComponent extends BasePluginComponent {
       this.getInstanceTypes(cloudId);
       this.getKeyPairs(cloudId);
       this.getNetworks(cloudId);
+      this.getStaticIPs(cloudId);
    }
 
    getInstanceTypes(cloudId: string) {
@@ -173,6 +178,19 @@ export class CloudLaunchComponent extends BasePluginComponent {
 
    onSubNetSelect(subnet: SubNet) {
       (<Control>this.cloudLaunchForm.controls['subnet']).updateValue(subnet.id);
+   }
+   
+   getStaticIPs(cloudId: string) {
+      this.staticIPHelp = "Retrieving static IPs ...";
+      this.staticIPs = [];
+      this._cloudService.getStaticIPs(cloudId)
+         .subscribe(ips => this.staticIPs = ips.map(s => { s.id = s.ip; s.text = s.ip; return s; }),
+         error => this.errorMessage = <any>error,
+         () => { this.staticIPHelp = "Select a static IP" });
+   }
+   
+   onStaticIPSelect(staticIP: StaticIP) {
+      (<Control>this.cloudLaunchForm.controls['staticIP']).updateValue(staticIP.id);
    }
 
 }

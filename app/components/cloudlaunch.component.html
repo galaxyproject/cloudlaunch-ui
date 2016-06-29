@@ -73,6 +73,18 @@
                       [placeholder]="subnetsHelp">
                    </ng-select>
                 </div>
+                
+                <!-- Static IP selection -->
+                <div class="form-group">
+                   <label for="id_floating_ip" class="control-label">
+                      What static/floating IP would you like to assign to this Virtual Machine?
+                   </label>
+                   <ng-select id="id_floating_ip"  [items]="staticIPs"
+                      [disabled]="cloudId"
+                      (selected)="onStaticIPSelect($event)"
+                      [placeholder]="staticIPHelp">
+                   </ng-select>
+                </div>
 
                 <!-- EBS optimized selection (AWS only) -->
                 <div class="checkbox">

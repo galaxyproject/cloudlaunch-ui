@@ -40,3 +40,9 @@ export interface SubNet {
    text: string;
    name: string;
 }
+
+export interface StaticIP {
+   id: string;
+   text: string;
+   ip: string;
+}

@@ -11,6 +11,7 @@ import { PlacementZone } from '../models/cloud';
 import { KeyPair } from '../models/cloud';
 import { Network } from '../models/cloud';
 import { SubNet } from '../models/cloud';
+import { StaticIP } from '../models/cloud';
 
 @Injectable()
 export class CloudService {
@@ -64,6 +65,12 @@ export class CloudService {
    public getSubNets(slug: string, network_id: string): Observable<SubNet[]> {
       return this._http.get(this._application_url + slug + '/networks/' + network_id + '/subnets/')
          .map(response => <SubNet[]>response.json().results)
+         .catch(this.handleError);
+   }
+   
+   public getStaticIPs(slug: string): Observable<StaticIP[]> {
+      return this._http.get(this._application_url + slug + '/static_ips/')
+         .map(response => <StaticIP[]>response.json().results)
          .catch(this.handleError);
    }
 
