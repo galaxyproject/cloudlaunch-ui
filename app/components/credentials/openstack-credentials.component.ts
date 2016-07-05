@@ -70,7 +70,7 @@ export class OpenStackCredentialsComponent implements OnInit {
    addToList(temp: any, current: any) {
    }   
 
-   groupBy(list: any ) {
+   groupBy(list: any) {
       let temp = {}
       let results = []
       if (list) {
@@ -90,8 +90,15 @@ export class OpenStackCredentialsComponent implements OnInit {
    }
 
    onCloudSelect(cloud: any) {
-      let matching_cloud = this.clouds.filter(cloud => cloud.slug == cloud.id);
+      let matching_cloud = this.clouds.filter(c => c.slug == cloud.id);
       this.cred_cloud.updateValue(matching_cloud[0]);
+   }
+   
+   getSelectedCloud() {
+      if (this.clouds && this.cred_cloud.value)
+         return this.clouds.filter(c => c.id == this.cred_cloud.value.id);
+      else
+         return null;
    }
    
    setFormValues(creds: OpenStackCredentials) {
@@ -126,6 +133,10 @@ export class OpenStackCredentialsComponent implements OnInit {
       this.currentObject = null;
       // Clear form values
       this.setFormValues(new OpenStackCredentials());
+   }
+   
+   isEditing() : boolean {
+      return this.editMode && this.currentObject != null;
    }
 
    deleteCreds(creds: OpenStackCredentials) {

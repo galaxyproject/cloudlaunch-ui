@@ -91,7 +91,14 @@ export class AWSCredentialsComponent implements OnInit {
       let matching_cloud = this.clouds.filter(c => c.slug == cloud.id);
       this.cred_cloud.updateValue(matching_cloud[0]);
    }
-   
+
+   getSelectedCloud() {
+      if (this.clouds && this.cred_cloud.value)
+         return this.clouds.filter(c => c.id == this.cred_cloud.value.id);
+      else
+         return null;
+   }
+
    setFormValues(creds: AWSCredentials) {
       this.cred_id.updateValue(creds.id);
       this.cred_name.updateValue(creds.name);
@@ -123,6 +130,10 @@ export class AWSCredentialsComponent implements OnInit {
       this.currentObject = null;
       // Clear form values
       this.setFormValues(new AWSCredentials());
+   }
+
+   isEditing() : boolean {
+      return this.editMode && this.currentObject != null;
    }
 
    deleteCreds(creds: AWSCredentials) {
