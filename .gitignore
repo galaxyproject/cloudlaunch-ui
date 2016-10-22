@@ -1,75 +1,33 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# C extensions
-*.so
+# compiled output
+/dist
+/tmp
 
-# Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
+# dependencies
+/node_modules
+/bower_components
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*,cover
-.hypothesis/
+# e2e
+/e2e/*.js
+/e2e/*.map
 
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-#Ipython Notebook
-.ipynb_checkpoints
-
-# Angular-compiled JavaScript files
-*.js
-*.js.map
-
-!systemjs.config.js
-!app/angular-cli-build.js
-
-# Local system files
+#System Files
 .DS_Store
-*.sublime-project
-*.sublime-workspace
-node_modules/
+Thumbs.db
