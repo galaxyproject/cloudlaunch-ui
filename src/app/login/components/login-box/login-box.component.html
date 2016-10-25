@@ -1,0 +1,71 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">Please Sign In</h3>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-1 social-button-column">
+				<form class="form-inline">
+					<div class="form-group">
+						<a href="{{ getApiRoot() }}/accounts/github/login"
+							class="btn btn-fab social-login-btn social-github"><i
+							class="fa fa-github"></i></a>
+					</div>
+					<div class="form-group">
+						<a href="{{ getApiRoot() }}/accounts/twitter/login"
+							class="btn btn-fab social-login-btn social-twitter"><i
+							class="fa fa-twitter"></i></a>
+					</div>
+					<div class="form-group">
+						<a href="{{ getApiRoot() }}/accounts/google/login"
+							class="btn btn-fab social-login-btn social-google"><i
+							class="fa fa-google"></i></a>
+					</div>
+					<div class="form-group">
+						<a href="{{ getApiRoot() }}/accounts/facebook/login"
+							class="btn btn-fab social-login-btn social-facebook"><i
+							class="fa fa-facebook"></i></a>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-11">
+				<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+					<div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+						<span class="glyphicon glyphicon-exclamation-sign"
+							aria-hidden="true"></span> <span class="sr-only">Error:</span> {{ errorMessage }}
+					</div>
+					<!-- TODO: The dummy ngIf below is a workaround for bug: https://github.com/angular/angular/issues/6374 -->
+					<fieldset *ngIf="true">
+						<div class="form-group label-floating is-empty"
+							[class.has-error]="ctrlusername && !(ctrlemail.valid || ctrlemail.pristine)">
+							<label for="id_email" class="control-label">Email</label> <input
+								id="id_email" name="ctrlemail" type="email"
+								[(ngModel)]="email" class="form-control input-md" required>
+							<span class="help-block">Please enter a valid email
+								address</span> <span class="material-input"></span>
+						</div>
+						<div class="checkbox">
+							<label> <input type="checkbox" [(ngModel)]="rememberMe"
+								name="ctrlrememberMe">
+								Remember Me
+							</label>
+						</div>
+						<div class="form-group label-floating is-empty"
+							[class.has-error]="ctrlpassword && !(ctrlpassword.valid || ctrlpassword.pristine)">
+							<label for="id_password" class="control-label">Password</label> <input
+								id="id_password" name="ctrlpassword" type="password"
+								[(ngModel)]="password" class="form-control input-md" required>
+							<a href="#">Forgot Password?</a><br /> <span
+								class="material-input"></span>
+						</div>
+						<div class="form-group form-inline">
+							<button id="id_loginbutton" name="loginbutton" type="submit"
+								[disabled]="!loginForm.form.valid"
+								class="btn btn-info pull-right">Sign In</button>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
