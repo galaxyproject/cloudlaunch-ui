@@ -10,7 +10,7 @@ import { MarketplacePageComponent } from './components/marketplace-page/marketpl
 
           
 const appRoutes: Routes = [
-  { path: '', component: MarketplacePageComponent },
+  { path: '', component: MarketplacePageComponent, canActivate: [AuthGuardService] },
 //  { path: 'appliances', component: MyAppliancesComponent, canActivate: [AuthGuardService] },
 //  { path: 'public_appliances', component: PublicAppliancesPageComponent },
 //  { path: 'profile', component: MyProfileComponent, canActivate: [AuthGuardService] },

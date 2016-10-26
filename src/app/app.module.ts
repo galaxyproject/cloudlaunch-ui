@@ -7,6 +7,9 @@ import { LoginModule } from './login/login.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule }  from './app-routing.module';
 
+import { RequestOptions } from '@angular/http';
+import { CustomRequestOptions } from './login/utils/custom-request-options'; 
+
 @NgModule({
   declarations: [
     AppComponent
@@ -17,6 +20,9 @@ import { AppRoutingModule }  from './app-routing.module';
     HttpModule,
     LoginModule,
     AppRoutingModule
+  ],
+  providers: [
+    { provide: RequestOptions, useClass: CustomRequestOptions }
   ],
   bootstrap: [AppComponent]
 })

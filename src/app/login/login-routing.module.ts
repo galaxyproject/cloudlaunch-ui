@@ -3,10 +3,10 @@ import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Services
-import { AuthGuardService } from '../services/auth-guard/auth-guard.service';
+import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 
 //Pages
-import { LoginPageComponent } from './login-page.component';
+import { LoginPageComponent } from './components/login-page/login-page.component';
 //import { MarketplacePageComponent } from './pages/marketplace.page.component';
 //import { ApplianceDetailPageComponent } from './pages/appliance-detail.page.component';
 //import { MyAppliancesComponent } from './pages/my-appliances.page.component';
@@ -15,7 +15,7 @@ import { LoginPageComponent } from './login-page.component';
 
           
 const appRoutes: Routes = [
-  { path: 'login', component: LoginPageComponent },
+  { path: '', component: LoginPageComponent },
 //  { path: 'appliances', component: MyAppliancesComponent, canActivate: [AuthGuardService] },
 //  { path: 'public_appliances', component: PublicAppliancesPageComponent },
 //  { path: 'profile', component: MyProfileComponent, canActivate: [AuthGuardService] },
