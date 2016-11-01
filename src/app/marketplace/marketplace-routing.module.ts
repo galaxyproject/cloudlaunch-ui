@@ -7,15 +7,18 @@ import { AuthGuardService } from '../login/services/auth-guard/auth-guard.servic
 
 //Pages
 import { MarketplacePageComponent } from './components/marketplace-page/marketplace-page.component';
+import { ApplianceDetailPageComponent } from './components/appliance-detail-page/appliance-detail-page.component';
 
           
 const appRoutes: Routes = [
   { path: '', component: MarketplacePageComponent, canActivate: [AuthGuardService] },
+  { path: 'appliance/:slug', component: ApplianceDetailPageComponent, canActivate: [AuthGuardService] },
+  { path: 'plugins', loadChildren: 'app/marketplace/plugins/plugins.module#PluginsModule' }
 //  { path: 'appliances', component: MyAppliancesComponent, canActivate: [AuthGuardService] },
 //  { path: 'public_appliances', component: PublicAppliancesPageComponent },
 //  { path: 'profile', component: MyProfileComponent, canActivate: [AuthGuardService] },
 //  { path: 'marketplace', component: MarketplacePageComponent, canActivate: [AuthGuardService] },
-//  { path: 'marketplace/appliance/:slug/', component: ApplianceDetailPageComponent, canActivate: [AuthGuardService] },
+
 ];
 
 @NgModule({

@@ -1,9 +1,9 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, Directive } from '@angular/core';
 
 @Component({
    selector: 'config-panel',
-   templateUrl: 'app/layouts/config-panel.component.html',
-   styleUrls: ['app/layouts/config-panel.component.css'],
+   templateUrl: './config-panel.component.html',
+   styleUrls: ['./config-panel.component.css'],
    encapsulation: ViewEncapsulation.None
 })
 export class ConfigPanelComponent {
