@@ -1,0 +1,17 @@
+<div *ngIf="application">
+	<standard-layout>
+	    <page-header>
+	        <div class="col-md-6">
+		       <h2>{{ application.name }} appliance details</h2>
+	        </div>
+	        <div class="col-md-6">
+		       <img class="banner-image pull-right" src="{{ application.icon_url }}" />
+	        </div>
+	    </page-header>
+	    <page-body>
+	        <div class="col-md-12">
+		       <app-appliance-detail-control [(application)]="application"></app-appliance-detail-control>
+	        </div>
+	    </page-body>
+	</standard-layout>
+</div>
