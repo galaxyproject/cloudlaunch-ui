@@ -3,7 +3,8 @@ import {
    FormBuilder,
    FormGroup,
    FormControl,
-   Validators } from '@angular/forms';
+   Validators,
+   ControlContainer} from '@angular/forms';
 
 // Provides automatic initialisation of form values based on an initial Config
 // dictionary. Inheriting classes must implement the methods configName
@@ -44,8 +45,8 @@ export abstract class BasePluginComponent implements OnInit, OnDestroy {
       }
    }
    
-   constructor(fb: FormBuilder, @Host() parentForm: FormGroup) {
-      this.parentForm = parentForm;
+   constructor(fb: FormBuilder, @Host() parentContainer: ControlContainer) {
+       this.parentForm = <FormGroup>(parentContainer["form"]);
    }
    
    ngOnInit() {

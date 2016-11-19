@@ -61,14 +61,13 @@
                                 <input id="id_deployment_name" name="name" type="text" class="form-control input-md" ngControl="name">
                             </div>
                         
-                            <form class="form" [formGroup]="applianceLaunchForm.controls.config_app">
-<!--                                 <app-placeholder [initialConfig]="selectedAppCloudConfig.default_launch_config"
-                                        [componentPath]="selectedVersion.frontend_component_path"
-                                        [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
- -->                                <!-- Cloud launching part of the form -->
-                                
-                            </form>
-                            <cloudlaunch-config-control [cloudId]="applianceLaunchForm.controls.target_cloud.value" [regionName]="_targetCloud.region_name" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config-control>
+                            <div class="form" name="config_app">
+                                <app-placeholder [initialConfig]="selectedAppCloudConfig.default_launch_config"
+                                    [componentPath]="selectedVersion.frontend_component_path"
+                                    [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
+                                <!-- Cloud launching part of the form -->
+                                <cloudlaunch-config-control [cloudId]="applianceLaunchForm.controls.target_cloud.value" [regionName]="_targetCloud.region_name" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config-control>                                
+                            </div>
                         </div>
         			</div>
         		</div>

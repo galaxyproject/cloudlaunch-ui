@@ -79,9 +79,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
    }
 
    constructor(fb: FormBuilder, @Host() parentContainer: ControlContainer, private _cloudService: CloudService) {
-      super(fb, <FormGroup>(parentContainer["form"]));
-      let test = <FormGroup>(parentContainer["form"]);
-      debugger;
+      super(fb, parentContainer);
       this.cloudLaunchForm = fb.group({
          'instanceType': ['', Validators.required],
          'placementZone': [''],

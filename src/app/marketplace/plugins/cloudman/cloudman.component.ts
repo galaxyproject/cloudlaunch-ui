@@ -34,9 +34,7 @@ export class CloudManConfigComponent extends BasePluginComponent {
    }
 
    constructor(fb: FormBuilder, @Host() parentContainer: ControlContainer) {
-      super(fb, <FormGroup>(parentContainer["form"]));
-      let test = <FormGroup>(parentContainer["form"]);
-      debugger;
+      super(fb, parentContainer);
       this.cmClusterForm = fb.group({
          'clusterPassword': [null, Validators.required],
          'storageType': this.storageType,

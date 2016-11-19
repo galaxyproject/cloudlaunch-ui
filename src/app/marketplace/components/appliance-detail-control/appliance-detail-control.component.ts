@@ -38,7 +38,7 @@ export class ApplianceDetailControlComponent implements OnInit {
          'name': ['', Validators.required],
          'application_version': ['', Validators.required],
          'target_cloud': ['', Validators.required],
-         'config_app': fb.group({}),
+         'config_app': fb.group({})
       });
    }
 
