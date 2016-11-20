@@ -1,0 +1,42 @@
+<div>
+    <form class="form" [formGroup]="profileForm" (ngSubmit)="onSubmit(cmClusterForm.value)">
+
+        <!-- Username -->
+        <div class="form-group is-empty">
+            <label for="id_username" class="control-label">Username</label> <input id="id_username"
+                name="username" type="text" class="form-control input-md" ngControl="username"
+                disabled>
+            <span class="help-block"> Your registered username </span>
+            <span class="material-input"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group is-empty">
+            <label for="id_email" class="control-label">Email</label> <input id="id_email"
+                name="email" type="text" class="form-control input-md" ngControl="email">
+            <span class="help-block"> Your e-mail address. </span>
+            <span class="material-input"></span>
+        </div>
+
+        <!-- Firstname -->
+        <div class="form-group is-empty">
+            <label for="id_firstname" class="control-label">First Name</label> <input
+                id="id_firstname" name="firstname" type="text" class="form-control input-md"
+                ngControl="first_name">
+            <span class="help-block"> First name </span>
+            <span class="material-input"></span>
+        </div>
+
+        <!-- Lastname -->
+        <div class="form-group is-empty">
+            <label for="id_lastname" class="control-label">Last Name</label> <input id="id_lastname"
+                name="lastname" type="text" class="form-control input-md" ngControl="last_name">
+            <span class="help-block"> Last name </span>
+            <span class="material-input"></span>
+        </div>
+
+        <aws-credentials [profile]="profile"></aws-credentials>
+        <openstack-credentials [profile]="profile"></openstack-credentials>
+        
+    </form>
+</div>
