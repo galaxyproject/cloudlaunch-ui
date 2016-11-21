@@ -1,10 +1,7 @@
 <config-panel>
    <panel-header>Cloud Launch Settings</panel-header>
    <panel-body>
-      <form class="form"
-         [formGroup]="cloudLaunchForm"
-         (ngSubmit)="onSubmit(cloudLaunchForm.value)">
-
+      <div [formGroup]="form">
           <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
 
           <div *ngIf="cloudFields">
@@ -105,6 +102,6 @@
                 </div>
              </div>
           </div>
-        </form>
+        </div>
    </panel-body>
 </config-panel>

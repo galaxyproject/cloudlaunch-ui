@@ -4,7 +4,7 @@ import {
    FormGroup,
    FormControl,
    Validators,
-   ControlContainer} from '@angular/forms';
+   FormGroupDirective} from '@angular/forms';
 
 // Provides automatic initialisation of form values based on an initial Config
 // dictionary. Inheriting classes must implement the methods configName
@@ -12,7 +12,6 @@ import {
 // setting form values as appropriate.
 export abstract class BasePluginComponent implements OnInit, OnDestroy {
    private _initialConfig: any;
-   private parentForm: FormGroup;
    
    get form() : FormGroup {
       throw new TypeError("get form must be implemented");
@@ -29,32 +28,20 @@ export abstract class BasePluginComponent implements OnInit, OnDestroy {
    set initialConfig(value) {
       this._initialConfig = value;
       if (value && value[this.configName]) {
-         this.setControlValuesRecurse(<FormGroup>this.form, value[this.configName]);
+          // Recursively set initial values on controls
+          this.form.patchValue(value[this.configName]);
       }
    }
    
-   setControlValuesRecurse(group: FormGroup, value: any) {
-      for (let controlName in group.controls) {
-         let ctrl = group.controls[controlName];
-         if (ctrl instanceof FormGroup && value[controlName]) {
-            this.setControlValuesRecurse(<FormGroup>ctrl, value[controlName]);
-         }
-         else if (value[controlName]) {
-            (<FormControl>ctrl).setValue(value[controlName] || null);
-         }
-      }
-   }
-   
-   constructor(fb: FormBuilder, @Host() parentContainer: ControlContainer) {
-       this.parentForm = <FormGroup>(parentContainer["form"]);
+   constructor(fb: FormBuilder, private parentContainer: FormGroupDirective) {
    }
    
    ngOnInit() {
       // Add child form to parent so that validations roll up
-      this.parentForm.addControl(this.configName, this.form);
+      this.parentContainer.form.addControl(this.configName, this.form);
    }
    
    ngOnDestroy() {
-      this.parentForm.removeControl(this.configName);
+       this.parentContainer.form.removeControl(this.configName);
    }
 }

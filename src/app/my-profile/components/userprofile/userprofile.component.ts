@@ -18,7 +18,7 @@ export class UserProfileComponent implements OnInit {
    profile: UserProfile = null;
    
    profileForm: FormGroup;
-   username: FormControl = new FormControl(null, Validators.required);
+   username: FormControl = new FormControl({value: null, disabled: true}, Validators.required);
    email: FormControl = new FormControl(null, Validators.required);
    first_name: FormControl = new FormControl(null);
    last_name: FormControl = new FormControl(null);

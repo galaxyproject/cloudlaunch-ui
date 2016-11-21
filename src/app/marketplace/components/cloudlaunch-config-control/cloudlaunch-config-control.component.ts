@@ -3,7 +3,7 @@ import {
    FormBuilder,
    FormGroup,
    FormControl,
-   ControlContainer,
+   FormGroupDirective,
    Validators } from '@angular/forms';
 
 import {
@@ -78,7 +78,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
       return "config_cloudlaunch";
    }
 
-   constructor(fb: FormBuilder, @Host() parentContainer: ControlContainer, private _cloudService: CloudService) {
+   constructor(fb: FormBuilder, parentContainer: FormGroupDirective, private _cloudService: CloudService) {
       super(fb, parentContainer);
       this.cloudLaunchForm = fb.group({
          'instanceType': ['', Validators.required],
@@ -104,7 +104,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
       this.getStaticIPs(cloudId);
    }
 
-   getInstanceTypes(cloudId: string) {debugger;
+   getInstanceTypes(cloudId: string) {
       this.instanceTypeHelp = "Retrieving instance types...";
       this.instanceTypes = [];
       this._cloudService.getInstanceTypes(cloudId)

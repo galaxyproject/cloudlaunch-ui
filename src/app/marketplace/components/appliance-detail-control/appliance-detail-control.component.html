@@ -58,10 +58,10 @@
                                 <label for="id_deployment_name" class="control-label">
                                     Provide a name for your deployment
                                 </label>
-                                <input id="id_deployment_name" name="name" type="text" class="form-control input-md" ngControl="name">
+                                <input id="id_deployment_name" name="name" type="text" class="form-control input-md" formControlName="name">
                             </div>
                         
-                            <div class="form" name="config_app">
+                            <div class="form" formGroupName="config_app">
                                 <app-placeholder [initialConfig]="selectedAppCloudConfig.default_launch_config"
                                     [componentPath]="selectedVersion.frontend_component_path"
                                     [componentName]="selectedVersion.frontend_component_name"></app-placeholder>

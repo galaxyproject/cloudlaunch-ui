@@ -1,9 +1,7 @@
 <config-panel>
    <panel-header>CloudMan Settings</panel-header>
    <panel-body>
-      <form class="form"
-         [formGroup]="cmClusterForm"
-         (ngSubmit)="onSubmit(cmClusterForm.value)">
+      <div [formGroup]="form">
 
          <config-panel>
             <panel-header>CloudMan Configuration</panel-header>
@@ -12,9 +10,9 @@
                <!-- Access password -->
                <div class="form-group label-floating is-empty">
                   <label for="id_password" class="control-label">Access password</label>
-                  <input id="id_password" name="password" type="password"
+                  <input id="id_password" type="password"
                      class="form-control input-md"
-                     ngControl="clusterPassword">
+                     formControlName="clusterPassword">
                   <span class="help-block">
                      Your choice of password, for the CloudMan web interface and
                      accessing the cluster via ssh.
@@ -27,15 +25,15 @@
                   <label>Storage Type</label>
                   <div class="radio">
                      <label>
-                        <input type="radio" name="cluster_type" value='transient'
-                           ngControl="storageType" />
+                        <input type="radio" value='transient'
+                           formControlName="storageType" />
                         Transient instance storage
                      </label>
                   </div>
                   <div class="radio">
                      <label>
-                        <input type="radio" name="cluster_type" value='volume'
-                           ngControl="storageType" />
+                        <input type="radio" value='volume'
+                           formControlName="storageType" />
                         Persistent volume storage
                      </label>
                   </div>
@@ -47,7 +45,7 @@
                      Storage size
                   </label>
                   <input type="number" class="form-control input-md"
-                     ngControl="storageSize" />
+                     formControlName="storageSize" />
                   <span class="help-block">
                      Desired size of your persistent storage.
                   </span>
@@ -76,9 +74,9 @@
                      <label for="id_default_bucket" class="control-label">
                         Default Bucket
                      </label>
-                     <input id="id_default_bucket" name="default_bucket"
+                     <input id="id_default_bucket"
                         type="text" class="form-control input-md"
-                        ngControl="defaultBucket" />
+                        formControlName="defaultBucket" />
                      <span class="help-block">
                         The default bucket to use. See CloudMan's wiki for a
                         detailed description of this option.
@@ -91,9 +89,9 @@
                      <label for="id_post_start_script" class="control-label">
                         Post-start
                      </label>
-                     <input id="id_post_start_script" name="post_start_script"
+                     <input id="id_post_start_script" 
                         type="text" class="form-control input-md"
-                        ngControl="masterPostStartScript" />
+                        formControlName="masterPostStartScript" />
                      <span class="help-block">
                         A URL to the post-start script. See CloudMan's wiki for
                         a detailed description of this option.
@@ -107,9 +105,9 @@
                         Worker post-start script
                      </label>
                      <input id="worker_post_start_script"
-                        name="worker_post_start_script" type="text"
+                        type="text"
                         class="form-control input-md"
-                        ngControl="workerPostStartScript" />
+                        formControlName="workerPostStartScript" />
                      <span class="help-block">
                         A URL to the post-start script for worker nodes. See
                         CloudMan's wiki for the description.
@@ -123,9 +121,9 @@
                         Shared cluster string
                      </label>
                      <input id="id_shared_cluster_string"
-                        name="shared_cluster_string" type="text"
+                        type="text"
                         class="form-control input-md"
-                        ngControl="clusterSharedString" />
+                        formControlName="clusterSharedString" />
                      <span class="help-block">
                         A share string from a cluster to clone.
                      </span>
@@ -135,6 +133,6 @@
             </panel-body>
          </config-panel>
 
-      </form>
+      </div>
    </panel-body>
 </config-panel>

@@ -3,10 +3,10 @@ import {
    FormBuilder,
    FormGroup,
    FormControl,
-   Validators, ControlContainer } from '@angular/forms';
+   Validators,
+   FormGroupDirective } from '@angular/forms';
 
 import { BasePluginComponent } from '../base-plugin.component';
-import { ConfigPanelComponent } from '../../../shared/layouts/config-panel.component';
 
 @Component({
    selector: 'cloudman-config',
@@ -33,7 +33,7 @@ export class CloudManConfigComponent extends BasePluginComponent {
       return "config_cloudman";
    }
 
-   constructor(fb: FormBuilder, @Host() parentContainer: ControlContainer) {
+   constructor(fb: FormBuilder, @Host() parentContainer: FormGroupDirective) {
       super(fb, parentContainer);
       this.cmClusterForm = fb.group({
          'clusterPassword': [null, Validators.required],
