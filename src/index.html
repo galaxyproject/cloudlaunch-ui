@@ -26,8 +26,7 @@
 
    <!-- Styles for Material Design for Bootstrap -->
    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-material-design.css">
-   <!-- <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap-material-design/dist/css/ripples.min.css"> -->
-
+   
    <!-- Styles for CloudLaunch-UI -->
    <link rel="stylesheet" type="text/css" href="assets/css/cloudlaunch-ui.css">
 
@@ -85,8 +84,13 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <!-- Material Design for Bootstrap -->
-    <!-- <script src="../node_modules/bootstrap-material-design/dist/js/material.js"></script>
-    <script src="../node_modules/bootstrap-material-design/dist/js/ripples.min.js"></script> -->
+    <script>
+    // Arrive.js ensures that material.init() is called whenever DOM elements are added/removed.
+    $( document ).ready(function() {
+      $.material.init();
+    });
+    
+    </script>
 </body>
 </html>
 
