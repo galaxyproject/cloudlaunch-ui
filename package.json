@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "2.2.1",
     "@angular/router": "3.2.1",
     "angular2-google-maps": "^0.16.0",
+    "arrive": "^2.3.1",
     "bootstrap-material-design": "^0.5.10",
     "core-js": "^2.4.1",
     "ng2-select": "^1.1.2",
