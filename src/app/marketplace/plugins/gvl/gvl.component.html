@@ -1,0 +1,32 @@
+<config-panel>
+    <panel-body>
+        <div [formGroup]="form">
+            <!--  GVL Component Selection -->
+            <config-panel>
+                <panel-header>GVL Settings</panel-header>
+                <panel-body>
+                    <div class="form-group">
+                        <label>Auto-start the selected applications</label>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="gvl_cmdline_utilities"
+                                 formControlName="gvl_cmdline_utilities" />
+                                GVL Commandline Utilities
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="smrt_portal"
+                                 formControlName="smrt_portal" />
+                                PacBio SMRT Analysis
+                            </label>
+                        </div>
+                    </div>
+                </panel-body>
+            </config-panel>
+
+            <!--  CloudMan settings -->
+            <cloudman-config [initialConfig]="initialConfig.config_gvl"></cloudman-config>
+        </div>
+    </panel-body>
+</config-panel>

@@ -5,7 +5,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { LayoutModule } from '../../shared/layout.module';
+import { UbuntuConfigComponent } from './ubuntu/ubuntu.component.ts'
 import { CloudManConfigComponent } from './cloudman/cloudman.component.ts'
+import { GVLConfigComponent } from './gvl/gvl.component.ts'
 import { SelectModule } from 'ng2-select';
 
 @NgModule({
@@ -17,7 +19,7 @@ import { SelectModule } from 'ng2-select';
     LayoutModule,
     SelectModule
   ],
-  declarations: [CloudManConfigComponent],
-  exports: [CloudManConfigComponent]
+  declarations: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent],
+  exports: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent]
 })
 export class PluginsModule { }
