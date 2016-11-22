@@ -80,7 +80,7 @@ export class ApplianceDetailControlComponent implements OnInit {
       formValues['application'] = this.application.slug;
       console.log(JSON.stringify(formValues));
       this._deploymentService.createDeployment(formValues).subscribe(
-         data  => this._router.navigate(['MyAppliances']),
+         data  => this._router.navigate(['appliances']),
          error => this.handleErrors(error));
    }
 
