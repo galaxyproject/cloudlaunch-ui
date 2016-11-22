@@ -61,7 +61,7 @@
                                 <input id="id_deployment_name" name="name" type="text" class="form-control input-md" formControlName="name">
                             </div>
                         
-                            <div class="form" formGroupName="config_app">
+                            <div class="form" [formGroup]="appConfigForm">
                                 <app-placeholder [initialConfig]="selectedAppCloudConfig.default_launch_config"
                                     [componentPath]="selectedVersion.frontend_component_path"
                                     [componentName]="selectedVersion.frontend_component_name"></app-placeholder>

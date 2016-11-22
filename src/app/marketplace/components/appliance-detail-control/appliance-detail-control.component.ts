@@ -23,6 +23,7 @@ export class ApplianceDetailControlComponent implements OnInit {
    selectedVersion: ApplicationVersion;
    selectedAppCloudConfig: ApplicationVersionCloudConfig;
    applianceLaunchForm: FormGroup;
+   appConfigForm: FormGroup;
    clouds: any[] = [];
    private _targetCloud: Cloud;
    public errorMessage: string;
@@ -34,11 +35,12 @@ export class ApplianceDetailControlComponent implements OnInit {
       private _applicationService: ApplicationService,
       private _deploymentService: DeploymentService)
    {
-      this.applianceLaunchForm = fb.group({
+       this.appConfigForm = fb.group({}); 
+       this.applianceLaunchForm = fb.group({
          'name': ['', Validators.required],
          'application_version': ['', Validators.required],
          'target_cloud': ['', Validators.required],
-         'config_app': fb.group({})
+         'config_app': this.appConfigForm
       });
    }
 

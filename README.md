@@ -6,9 +6,9 @@ A user interface for the [CloudLaunch app](https://github.com/galaxyproject/clou
 To install dependencies and start a development server:
 
     # install typescript development support if necessary
-    npm install tsd -g
+    npm install -g tsd
     # install angular-cli
-    npm install angular-cli -g
+    npm install -g angular-cli
     # install dependencies
     npm install
     # start server

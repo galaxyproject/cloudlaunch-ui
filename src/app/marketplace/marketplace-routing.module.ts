@@ -14,11 +14,6 @@ const appRoutes: Routes = [
   { path: '', component: MarketplacePageComponent, canActivate: [AuthGuardService] },
   { path: 'appliance/:slug', component: ApplianceDetailPageComponent, canActivate: [AuthGuardService] },
   { path: 'plugins', loadChildren: 'app/marketplace/plugins/plugins.module#PluginsModule' }
-//  { path: 'appliances', component: MyAppliancesComponent, canActivate: [AuthGuardService] },
-//  { path: 'public_appliances', component: PublicAppliancesPageComponent },
-//  { path: 'profile', component: MyProfileComponent, canActivate: [AuthGuardService] },
-//  { path: 'marketplace', component: MarketplacePageComponent, canActivate: [AuthGuardService] },
-
 ];
 
 @NgModule({
