@@ -7,6 +7,8 @@ To install dependencies and start a development server:
 
     # install typescript development support if necessary
     npm install tsd -g
+    # install angular-cli
+    npm install angular-cli -g
     # install dependencies
     npm install
     # start server
