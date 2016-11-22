@@ -23,7 +23,7 @@ export class LoginService {
                .map(response => response.json())
                .do(function (item) {
                   // Cache the login method
-                  loginService._login_method = "token";
+                  loginService._login_method = "session";
                })
                .subscribe(
                   data => resolve(true),
@@ -31,16 +31,22 @@ export class LoginService {
                );
          });
       }
-      // _login_method will be empty when the SPA has started up, but the user has
-      // manually logged out,
-      else if (this._login_method == "") {
-         return Promise.resolve(false);
-      }
-      else if (sessionStorage.getItem('token') || localStorage.getItem('token')) {
-         return Promise.resolve(true);
-      }
-      else {
-         return Promise.resolve(false);
+      else { // _login_method is not null, figure out which case it is
+          // _login_method will be empty when the SPA has started up, but the user has
+          // manually logged out,
+          if (this._login_method == "") {
+             return Promise.resolve(false);
+          }
+          else if (sessionStorage.getItem('token') || localStorage.getItem('token')) {
+             return Promise.resolve(true);
+          }
+          else if (this._login_method == "session") {
+              // There's an ongoing session. Could be a token or a cookie
+              return Promise.resolve(true);
+          }
+          else {
+             return Promise.resolve(false);
+          }
       }
    }
 
