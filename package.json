@@ -25,6 +25,7 @@
     "arrive": "^2.3.1",
     "bootstrap-material-design": "^0.5.10",
     "core-js": "^2.4.1",
+    "moment": "^2.17.0",
     "ng2-select": "^1.1.2",
     "rxjs": "5.0.0-beta.12",
     "ts-helpers": "^1.1.1",

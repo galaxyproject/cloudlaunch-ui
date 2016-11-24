@@ -15,12 +15,14 @@ export class DeploymentService {
 
    public getDeployments(): Observable<Deployment[]> {
       return this._http.get(this._deployment_url)
-         .map(response => response.json().results);
+         .map(response => response.json().results)
+         .catch(this.handleError);
    }
 
    public getDeployment(slug: string): Observable<Deployment> {
       return this._http.get(`${this._deployment_url}${slug}/`)
-         .map(response => response.json());
+         .map(response => response.json())
+         .catch(this.handleError);
    }
    
    public createDeployment(deployment: Deployment): Observable<Deployment> {

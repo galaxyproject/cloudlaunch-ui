@@ -5,12 +5,12 @@
                 <th class="col-md-1"><p></p></th>
                 <th class="col-md-4"><p> Name </p></th>
                 <th class="col-md-3"><p> Status</p></th>
-                <th class="col-md-1"><p> Uptime</p></th>
+                <th class="col-md-1"><p> Time since created</p></th>
                 <th class="col-md-3"><p> Access URL</p></th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let deploy of deployments">
+            <tr *ngFor="let deploy of deployments | async">
                 <td><img src="{{ deploy.app_version_details?.application?.icon_url }}"  style="max-width: 64px; max-height: 64px;" /></td>
                 <td>
                     <p><strong>{{ deploy.name }}</strong></p>
@@ -28,7 +28,7 @@
                       </p>
                     </div>
                 </td>
-                <td>{{ calculateUptime(deploy) }}</td>
+                <td>{{  calculateUptime(deploy, currentTimer | async) }}</td>
                 <td><a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.applicationURL }}" target="_blank">{{ deploy.task_result?.cloudLaunch?.applicationURL }}</a></td>
             </tr>
         </tbody>

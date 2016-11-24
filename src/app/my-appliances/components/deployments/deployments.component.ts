@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 import { Observable } from 'rxjs/Rx';
 
 import { Deployment } from '../../../shared/models/deployment';
 import { DeploymentService } from '../../../shared/services/deployment.service';
+import * as moment from 'moment';
 
 
 @Component({
@@ -12,44 +13,40 @@ import { DeploymentService } from '../../../shared/services/deployment.service';
 })
 
 export class DeploymentsComponent implements OnInit {
-   deployments: Deployment[] = [];
-
+   deployments: Observable<Deployment[]>;
+   currentTimer: Observable<any>;
+   
    constructor(
       private _deploymentService: DeploymentService) {
    }
 
    ngOnInit() {
-      this.fetchData().subscribe(deployments => this.deployments = deployments);
-      this.initializePolling().subscribe(deployments => this.deployments = deployments);
+       this.deployments = this.initializePolling();
+       this.currentTimer = this.initializeClock();
    }
    
-   timeDiff(dateEnd, dateBegin) {
-      let diff = dateEnd.getTime() - dateBegin.getTime();
-      
-      let msec = diff;
-      let hh = Math.floor(msec / 1000 / 60 / 60);
-      msec -= hh * 1000 * 60 * 60;
-      let mm = Math.floor(msec / 1000 / 60);
-      msec -= mm * 1000 * 60;
-      let ss = Math.floor(msec / 1000);
-      msec -= ss * 1000;
-      return hh + ":" + mm + ":" + ss;
-   }
-   
-   calculateUptime(dep: Deployment) {
-      return this.timeDiff(new Date(), new Date(Date.parse(dep.added)));
+   calculateUptime(dep: Deployment, currentTime) {
+      let launchTime = moment(dep.added);
+      return moment.duration(currentTime.diff(launchTime)).humanize();
    }
 
    initializePolling() : Observable<Deployment[]> {
       let self = this;
       return Observable
         .interval(5000)
+        .startWith(0)
         .flatMap(() => {
-            return self.fetchData();
+            return this._deploymentService.getDeployments();
         });
    }
    
-   fetchData() : Observable<Deployment[]> {
-      return this._deploymentService.getDeployments();
-   }
+   initializeClock() : Observable<any> {
+       let self = this;
+       return Observable
+         .interval(1000)
+         .startWith(0)
+         .map(() => {
+             return moment();
+         });
+    }
 }

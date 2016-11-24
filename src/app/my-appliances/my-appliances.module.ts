@@ -17,7 +17,6 @@ import { DeploymentService } from '../shared/services/deployment.service';
   imports: [
     CommonModule,
     FormsModule,
-    HttpModule,
     LayoutModule,
     MyAppliancesRoutingModule
   ],
