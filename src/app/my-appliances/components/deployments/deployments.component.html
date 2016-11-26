@@ -1,0 +1,36 @@
+<div class="list-group">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th class="col-md-1"><p></p></th>
+                <th class="col-md-4"><p> Name </p></th>
+                <th class="col-md-3"><p> Status</p></th>
+                <th class="col-md-1"><p> Time since created</p></th>
+                <th class="col-md-3"><p> Access URL</p></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let deploy of deployments | async">
+                <td><img src="{{ deploy.app_version_details?.application?.icon_url }}"  style="max-width: 64px; max-height: 64px;" /></td>
+                <td>
+                    <p><strong>{{ deploy.name }}</strong></p>
+                    <p><span class="text-muted">Application:</span> {{ deploy.app_version_details?.application?.name }}
+                    <br /><span class="text-muted">Version:</span> {{ deploy.app_version_details?.version }}</p>
+                </td>
+                <td class="text-left">
+                    <div [ngSwitch]="deploy.task_status.status">
+                      <p *ngSwitchCase="'SUCCESS'" class="text-success">SUCCESS</p>
+                      <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE</p>
+                      <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE</p>
+                      <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
+                      <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
+                        <br />{{ deploy.task_status?.result?.action }}
+                      </p>
+                    </div>
+                </td>
+                <td>{{  calculateUptime(deploy, currentTimer | async) }}</td>
+                <td><a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.applicationURL }}" target="_blank">{{ deploy.task_result?.cloudLaunch?.applicationURL }}</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
