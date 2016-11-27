@@ -3,50 +3,47 @@
     padding: 0 0 0 1.2%
 }
 .social-login-btn {
-	text-align: center;
-	line-height:2.8em;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    -ms-border-radius: 50%;
     border-radius: 50%;
-    padding: 0.1em;
-    width:2.8em;
-    height:2.8em;
+    float: left;
+    width: 4.8em;
+    height: 4.8em;
+    line-height: 5.5em;
+    text-align: center;
     color: white;
+
+    opacity: 1;
+    transition: opacity 1s;
+    -webkit-transition: opacity .25s ease-in-out;
+}
+
+.social-login-btn:hover, .social-login-btn:active, .social-login-btn:focus, .social-login-btn:active:focus {
+    opacity: 0.7;
+}
+
+.social-login-btn i {
+    font-size: 18pt;
 }
 
 .social-google {
   background-color: #da573b;
   border-color: #be5238;
 }
-.social-google:hover{
-  background-color: #be5238;
-  border-color: #9b4631;
-}
 
 .social-twitter {
   background-color: #1daee3;
   border-color: #3997ba;
 }
-.social-twitter:hover {
-  background-color: #3997ba;
-  border-color: #347b95;
-}
+
 .social-github {
   background-color: #323233;
   border-color: #47618d;
 }
+
 .social-facebook {
   background-color: #4c699e;
   border-color: #47618d;
-}
-.social-facebook:hover {
-  background-color: #47618d;
-  border-color: #3c5173;
-}
-
-.social-windows {
-  background-color: #4875B4;
-  border-color: #466b99;
-}
-.social-windows:hover {
-  background-color: #466b99;
-  border-color: #3b5a7c;
 }
