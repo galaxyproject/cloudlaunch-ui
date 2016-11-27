@@ -1,1 +1,95 @@
 /* You can add global styles to this file, and also import other style files */
+
+.navbar {
+    margin-bottom: 0;
+}
+   
+.loading_splash {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Social icons: Begin */
+
+.social-facebook  {
+  background-color: #4c699e;
+  border: 2px solid #4c699e;
+}
+
+.social-facebook:hover {
+  background-color: #47618d;
+}
+
+.social-google {
+  background-color: #d34836;
+  border: 2px solid #d34836;
+}
+
+.social-google:hover{
+  background-color: #be5238;
+}
+
+.social-twitter {
+  background-color: #1daee3;
+  border: 2px solid #1daee3;
+}
+
+.social-twitter:hover {
+  background-color: #3997ba;
+}
+
+.social-more {
+  background-color: #B5B5B5;
+  border: 2px solid #B5B5B5;
+}
+
+.social-more:hover {
+}
+
+.social {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    float: left;
+    height: 36px;
+    line-height: 36px;
+    margin: 0 8px 0 0;
+    padding: 0;
+    text-align: center;
+    width: 36px;
+
+    -webkit-transform: scale(1);
+    /* Browser Variations: */
+     
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+}
+.social:hover {
+     -webkit-transform: scale(1.2);
+     -moz-transform: scale(1.2);
+     -o-transform: scale(1.2);
+}
+
+.social a i {
+    font-size: 16px;
+    margin: 0 0 0 0px;
+    color: #EDEFF1 !important;
+}
+
+.social a:focus {
+    outline: none;
+}
+
+/* Social Buttons: End */

@@ -1,47 +1,82 @@
-<!-- Begin Navigation Bar -->
-<nav class="navbar navbar-default">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#"><i class="fa fa-rocket"></i> CloudLaunch</a>
+<div id="container" class="wrapper">
+    <!-- Begin Navigation Bar -->
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><i class="fa fa-rocket"></i> CloudLaunch</a>
+            </div>
+    
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li routerLinkActive="active">
+                        <a routerLink="/marketplace"><i class="fa fa-shopping-bag"></i> Marketplace
+                            <span class="sr-only">(Marketplace)</span></a>
+                    </li>
+                    <li routerLinkActive="active">
+                        <a routerLink="/public_appliances"><i class="fa fa-share-alt"></i> Public Appliances
+                            <span class="sr-only">(Public Appliances)</span></a>
+                    </li>
+                    <li routerLinkActive="active">
+                        <a routerLink="/appliances"><i class="fa fa-plug"></i> My Appliances
+                            <span class="sr-only">(My Appliances)</span>
+                        </a>
+                    </li>
+                    <li routerLinkActive="active">
+                        <a routerLink="/profile"><i class="fa fa-user"></i> My Profile
+                            <span class="sr-only">(My Appliances)</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li routerLinkActive="active">
-                    <a routerLink="/marketplace"><i class="fa fa-shopping-bag"></i> Marketplace
-                        <span class="sr-only">(Marketplace)</span></a>
-                </li>
-                <li routerLinkActive="active">
-                    <a routerLink="/public_appliances"><i class="fa fa-share-alt"></i> Public Appliances
-                        <span class="sr-only">(Public Appliances)</span></a>
-                </li>
-                <li routerLinkActive="active">
-                    <a routerLink="/appliances"><i class="fa fa-plug"></i> My Appliances
-                        <span class="sr-only">(My Appliances)</span>
-                    </a>
-                </li>
-                <li routerLinkActive="active">
-                    <a routerLink="/profile"><i class="fa fa-user"></i> My Profile
-                        <span class="sr-only">(My Appliances)</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
+        <!-- /.container-fluid -->
+    </nav>
+    
+    <div class="container-fluid">
+        <!-- The router-outlet displays the template for the current component based on the URL -->
+        <router-outlet></router-outlet>
     </div>
-    <!-- /.container-fluid -->
-</nav>
 
-<div class="container-fluid">
-    <!-- The router-outlet displays the template for the current component based on the URL -->
-    <router-outlet></router-outlet>
+
+    <!-- Pushes footer down -->
+    <div class="push"></div>
 </div>
+
+<!-- Footer -->
+<footer id="footer" class="footer">
+    <div class="container">
+        <div class="col-lg-2  col-md-2 col-sm-4 col-xs-4">
+                <h3><i class="fa fa-ticket"></i> About </h3>
+                <ul>
+                    <li> <a href=""> About </a> </li>
+                    <li> <a href="{{ getSupportContactLink() }}"> Contact Us </a> </li>
+                </ul>
+            </div>
+            <div class="col-lg-2  col-md-2 col-sm-4 col-xs-4 col-lg-offset-1">
+                <h3><i class="fa fa-code"></i> Developer </h3>
+                <ul>
+                    <li> <a href="{{ getDeveloperAPILink() }}"> Developer API (beta) </a> </li>
+                    <li> <a href="https://github.com/galaxyproject/cloudlaunch-ui"> Source Code <i class="fa fa-github"></i></a> </li>
+                </ul>
+            </div>
+            <div class="col-lg-3  col-md-3 col-sm-4 col-xs-4 col-lg-offset-4">
+                <ul class="pull-right" style="padding: 20% 0% 0% 0%">
+                    <li class="social social-facebook"> <a class="addthis_button_facebook"> <i class="fa fa-facebook"></i> </a> </li>
+                    <li class="social social-twitter"> <a class="addthis_button_twitter"> <i class="fa fa-twitter"></i> </a> </li>
+                    <li class="social social-google"> <a class="addthis_button_google"> <i class="fa fa-google-plus"></i> </a> </li>
+                    <li class="social social-more"> <a class="addthis_button_more"> <i class="fa fa-plus"></i> </a> </li>
+                </ul>
+            </div>
+    </div>
+    <!--/.footer-->
+</footer>

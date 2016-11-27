@@ -29,63 +29,23 @@
    
    <!-- Styles for CloudLaunch-UI -->
    <link rel="stylesheet" type="text/css" href="assets/css/cloudlaunch-ui.css">
-
-   <style>
-   .navbar {
-       margin-bottom: 0;
-   }
-   </style>
+   
+   <!-- Go to www.addthis.com/dashboard to customize your tools -->
+   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-583adc140e840536" async="async"></script> 
 </head>
 
 <body>
-    <div id="container" class="wrapper">
-        <app-root>
-            <style>
-            .loading_splash {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                flex-wrap: wrap;
-            }
-            </style>
-            <div class="loading_splash"><h1><i class="fa fa-refresh fa-spin fa-fw"></i> Loading...</h1></div>
-        </app-root>
-
-        <!-- Pushes footer down -->
-        <div class="push"></div>
-    </div>
-
-    <!-- Footer -->
-    <footer id="footer" class="footer">
-        <div class="container">
-            <div class="col-lg-2  col-md-3 col-sm-4 col-xs-12 col-lg-offset-1 frame">
-                <a href="https://galaxyproject.org/" target="_blank"><img src="assets/images/logo_galaxy2.png"></a>
-            </div>
-            <div class="col-lg-2  col-md-3 col-sm-4 col-xs-12 col-lg-offset-1 frame">
-                <a href="https://www.jhu.edu/" target="_blank"><img src="assets/images/logo_jhu.png"></a>
-            </div>
-            <div class="col-lg-2  col-md-3 col-sm-4 col-xs-12 col-lg-offset-1 frame">
-                <a href="http://www.unimelb.edu.au/" target="_blank"><img src="assets/images/logo_uom.png"></a>
-            </div>
-            <div class="col-lg-2  col-md-3 col-sm-4 col-xs-12 col-lg-offset-1 frame">
-                <a href="https://www.gwu.edu/" target="_blank"><img src="assets/images/logo_gwu.png"></a>
-            </div>
-        </div>
-        <!--/.footer-->
-    </footer>
-
+    <app-root>
+        <div class="loading_splash"><h1><i class="fa fa-refresh fa-spin fa-fw"></i> Loading...</h1></div>
+    </app-root>
 
     <!-- Twitter Bootstrap -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <!-- Material Design for Bootstrap -->
     <script>
-    // Arrive.js ensures that material.init() is called whenever DOM elements are added/removed.
+    // Bootstrap-material-design has built-in integration with Arrive.js to ensure that material.init() is called
+    // whenever DOM elements are added/removed. However, we still need to make an initial call.
     $( document ).ready(function() {
       $.material.init();
     });
