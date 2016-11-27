@@ -1,0 +1,26 @@
+.credits img {
+  filter: gray; /* IE6-9 */
+  filter: grayscale(1); /* Firefox 35+ */
+  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+  max-width: 200px;
+  max-height: 100px;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+/* Disable grayscale on hover */
+.credits img:hover {
+  filter: none;
+  -webkit-filter: grayscale(0);
+  max-width: 200px;
+  max-height: 100px;
+}
+
+.frame {
+    height: 130px; /* equals frame height */
+}
