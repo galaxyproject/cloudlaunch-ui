@@ -5,17 +5,7 @@
 
 /* COMPONENT TRANSITION ANIMATIONS */
 
-:host(.pageLoadAnimation) {
+:host {
     display: inline-block;
     width: 100%;
-    -webkit-transition: all ease-in 2s;
-    transition: all ease-in 2s;
-}
-
-:host(.pageLoadAnimation.ng-enter) {
-    animation: fadein 1s;
-}
-
-:host(.pageLoadAnimation.ng-leave) {
-    animation: fadeout 1s;
 }
