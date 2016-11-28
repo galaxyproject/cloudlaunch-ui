@@ -40,7 +40,8 @@
 							[class.has-error]="ctrlusername && !(ctrlemail.valid || ctrlemail.pristine)">
 							<label for="id_email" class="control-label">Email</label> <input
 								id="id_email" name="ctrlemail" type="email"
-								[(ngModel)]="email" class="form-control input-md" required>
+								[(ngModel)]="email" class="form-control input-md"
+								tabindex="1" required>
 							<span class="help-block">Please enter a valid email
 								address</span> <span class="material-input"></span>
 						</div>
@@ -54,14 +55,15 @@
 							[class.has-error]="ctrlpassword && !(ctrlpassword.valid || ctrlpassword.pristine)">
 							<label for="id_password" class="control-label">Password</label> <input
 								id="id_password" name="ctrlpassword" type="password"
-								[(ngModel)]="password" class="form-control input-md" required>
+								[(ngModel)]="password" class="form-control input-md"
+								tabindex="2" required>
 							<a href="#">Forgot Password?</a><br /> <span
 								class="material-input"></span>
 						</div>
 						<div class="form-group form-inline">
 							<button id="id_loginbutton" name="loginbutton" type="submit"
 								[disabled]="!loginForm.form.valid"
-								class="btn btn-info pull-right">Sign In</button>
+								class="btn btn-info pull-right" tabindex="3">Sign In</button>
 						</div>
 					</fieldset>
 				</form>
