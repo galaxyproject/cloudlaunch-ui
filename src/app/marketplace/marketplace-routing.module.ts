@@ -11,7 +11,7 @@ import { ApplianceDetailPageComponent } from './components/appliance-detail-page
 
           
 const appRoutes: Routes = [
-  { path: '', component: MarketplacePageComponent, canActivate: [AuthGuardService] },
+  { path: '', component: MarketplacePageComponent },
   { path: 'appliance/:slug', component: ApplianceDetailPageComponent, canActivate: [AuthGuardService] },
   { path: 'plugins', loadChildren: 'app/marketplace/plugins/plugins.module#PluginsModule' }
 ];

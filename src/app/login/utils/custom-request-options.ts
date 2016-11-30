@@ -11,10 +11,14 @@ export class CustomRequestOptions extends BaseRequestOptions {
   }
 
    merge(options?: RequestOptionsArgs): RequestOptions {
-      let auth_header = "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
-      if (!options.headers)
-         options.headers = new Headers();
-      options.headers.set('Authorization', auth_header);
+       if (!options.headers)
+           options.headers = new Headers();
+      
+      if (sessionStorage.getItem('token') || localStorage.getItem('token')) {
+         let auth_header =  "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
+         options.headers.set('Authorization', auth_header);
+      }
+      
       options.headers.set('X-CSRFToken', this.getCookie('csrftoken'));
       // Set the default content type to JSON
       if (!options.headers.get('Content-Type'))

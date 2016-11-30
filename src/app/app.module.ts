@@ -20,8 +20,8 @@ import { CustomRequestOptions } from './login/utils/custom-request-options';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    LoginModule,
-    AppRoutingModule
+    AppRoutingModule,
+    LoginModule
   ],
   providers: [
     { provide: RequestOptions, useClass: CustomRequestOptions }
