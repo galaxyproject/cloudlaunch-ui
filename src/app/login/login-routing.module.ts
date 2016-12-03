@@ -11,7 +11,8 @@ import { LogoutPageComponent } from './components/logout-page/logout-page.compon
 
 
 const appRoutes: Routes = [
-  { path: '', component: LoginPageComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full'},
+  { path: 'login', component: LoginPageComponent },
   { path: 'logout', component: LogoutPageComponent },
 ];
 
