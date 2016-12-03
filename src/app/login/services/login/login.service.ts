@@ -24,7 +24,8 @@ export class LoginService {
                .map(response => response.json())
                .do(function (item) {
                   // Cache the login method
-                  loginService._login_method = "session";
+                  //loginService._login_method = "session";
+                  this._login_method = "session";
                })
                .subscribe(
                   data => resolve(true),
