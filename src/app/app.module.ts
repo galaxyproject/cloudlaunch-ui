@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule }  from './app-routing.module';
 
 import { RequestOptions } from '@angular/http';
-import { CustomRequestOptions } from './login/utils/custom-request-options'; 
+import { CustomRequestOptions } from './login/utils/custom-request-options';
 
 @NgModule({
   declarations: [

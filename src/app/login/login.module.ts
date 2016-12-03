@@ -10,6 +10,7 @@ import { LoginRoutingModule } from './login-routing.module';
 import { LoginService } from './services/login/login.service';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 import { CustomRequestOptions } from './utils/custom-request-options';
+import { LogoutPageComponent } from './components/logout-page/logout-page.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import { CustomRequestOptions } from './utils/custom-request-options';
     LayoutModule,
     LoginRoutingModule
   ],
-  declarations: [LoginPageComponent, LoginBoxComponent],
+  declarations: [LoginPageComponent, LoginBoxComponent, LogoutPageComponent],
   providers: [LoginService, AuthGuardService]
 })
 export class LoginModule { }

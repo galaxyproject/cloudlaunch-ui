@@ -13,7 +13,7 @@
                 </button>
                 <a class="navbar-brand" href="#"><i class="fa fa-rocket"></i> CloudLaunch</a>
             </div>
-    
+
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
@@ -35,13 +35,18 @@
                             <span class="sr-only">(My Appliances)</span>
                         </a>
                     </li>
+                    <li routerLinkActive="active">
+                        <a routerLink="login/logout"><i class="fa fa-user"></i> Logout
+                            <span class="sr-only">(Logout)</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
     </nav>
-    
+
     <div class="container-fluid">
         <!-- The router-outlet displays the template for the current component based on the URL -->
         <router-outlet></router-outlet>
