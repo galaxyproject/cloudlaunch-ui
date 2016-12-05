@@ -30,15 +30,21 @@
                             <span class="sr-only">(My Appliances)</span>
                         </a>
                     </li>
-                    <li routerLinkActive="active">
-                        <a routerLink="/profile"><i class="fa fa-user"></i> My Profile
-                            <span class="sr-only">(My Profile)</span>
+                    <li class="dropdown">
+                        <a class="dropbtn">
+                            <i class="fa fa-user"></i> User
+                            <span class="caret"></span>
                         </a>
-                    </li>
-                    <li routerLinkActive="active">
-                        <a routerLink="/auth/logout"><i class="fa fa-user"></i> Logout
-                            <span class="sr-only">(Logout)</span>
-                        </a>
+                        <div class="dropdown-content">
+                            <a routerLink="/profile">
+                                <i class="fa fa-user-circle-o"></i> My Profile
+                                <span class="sr-only">(My Profile)</span>
+                            </a>
+                            <a routerLink="/auth/logout">
+                                <i class="fa fa-sign-out"></i> Logout
+                                <span class="sr-only">(Logout)</span>
+                            </a>
+                        </div>
                     </li>
                 </ul>
             </div>
