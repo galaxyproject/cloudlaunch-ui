@@ -30,7 +30,13 @@
                             <span class="sr-only">(My Appliances)</span>
                         </a>
                     </li>
-                    <li class="dropdown">
+                    <li *ngIf="loggedIn==false">
+                        <a routerLink="/auth/login">
+                            <i class="fa fa-sign-in"></i> Login
+                            <span class="sr-only">(Login)</span>
+                        </a>
+                    </li>
+                    <li *ngIf="loggedIn" class="dropdown">
                         <a class="dropbtn">
                             <i class="fa fa-user"></i> User
                             <span class="caret"></span>
