@@ -1,9 +1,13 @@
 .cl-app-badge {
-   outline: 1px solid grey;
    padding: 10px;
    cursor: pointer;
    height: 90px;
    vertical-align: middle;
+   box-shadow: 0 0 6px 2px #e6e6e6;
+}
+
+.cl-app-badge:hover {
+  background-color: #e6e6e6;
 }
 
 .cl-banner {
