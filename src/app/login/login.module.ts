@@ -9,17 +9,17 @@ import { LayoutModule } from '../shared/layout.module';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginService } from './services/login/login.service';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
-import { CustomRequestOptions } from './utils/custom-request-options';
+
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpModule,
-    LayoutModule,
-    LoginRoutingModule
-  ],
-  declarations: [LoginPageComponent, LoginBoxComponent],
-  providers: [LoginService, AuthGuardService]
+    imports: [
+        CommonModule,
+        FormsModule,
+        HttpModule,
+        LayoutModule,
+        LoginRoutingModule
+    ],
+    declarations: [LoginPageComponent, LoginBoxComponent],
+    providers: [LoginService, AuthGuardService]
 })
 export class LoginModule { }
