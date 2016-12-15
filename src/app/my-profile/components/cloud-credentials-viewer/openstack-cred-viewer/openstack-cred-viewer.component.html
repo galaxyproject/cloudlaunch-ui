@@ -1,0 +1,64 @@
+<div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">OpenStack Credentials</h3>
+        </div>
+        <div class="panel-body">
+            <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
+
+            <div  *ngIf="!editMode && credentials">
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="col-md-2"><p> Name </p></th>
+                                <th class="col-md-4"><p> Username</p></th>
+                                <th class="col-md-4"><p> Tenant Name</p></th>
+                                <th class="col-md-1"><p> Default</p></th>
+                                <th class="col-md-1"><p> Actions</p></th>
+                            </tr>
+                        </thead>
+                    </table>                
+
+                    <div *ngFor="let cloud_grp of groupBy(credentials)">
+                        <div class="list-group-item active">
+                            Credentials for cloud: {{ cloud_grp.cloud_id }}
+                        </div>
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr *ngFor="let cred of cloud_grp.clouds">
+                                    <td class="col-md-2">
+                                        <p>{{ cred.name }}</p>
+                                    </td>
+                                    <td class="col-md-4">
+                                        <p>{{ cred.username }}</p>
+                                    </td>
+                                    <td class="col-md-4">
+                                        <p>{{ cred.tenant_name }}</p>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <div [ngSwitch]="cred.default">
+                                          <p *ngSwitchCase="true" class="text-info"><i class="fa fa-check"></i></p>
+                                        </div>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <a class="text-info" href="javascript:void(0);" (click)="editExisting(cred)" title="Edit"><i class="fa fa-edit"></i></a>
+                                        &nbsp;
+                                        <a class="text-info" href="javascript:void(0);" (click)="deleteCreds(cred)" title="Delete"><i class="fa fa-remove"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                </div>
+            </div>                
+
+            
+            <button *ngIf="!editMode" type="button" class="btn btn-info" (click)="addNew()"><i class="fa fa-plus"></i> Add New Credentials </button>
+            
+            <div *ngIf="editMode">
+                <cloud-credentials-editor [credentials]="currentObject" (onCredentialsChanged)="handleCredentialsChanged($event)"></cloud-credentials-editor>
+            </div>
+        </div>
+    </div>
+</div>
