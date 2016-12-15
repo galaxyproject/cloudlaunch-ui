@@ -1,192 +1,225 @@
-import { Component, Host } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
-   FormBuilder,
-   FormGroup,
-   FormControl,
-   FormGroupDirective,
-   Validators } from '@angular/forms';
+    FormBuilder,
+    FormGroup,
+    FormControl,
+    FormGroupDirective,
+    Validators
+} from '@angular/forms';
 
 import {
-   Cloud,
-   InstanceType,
-   Region,
-   PlacementZone,
-   KeyPair,
-   Network,
-   SubNet,
-   StaticIP } from '../../../shared/models/cloud';
+    Cloud,
+    InstanceType,
+    Region,
+    PlacementZone,
+    KeyPair,
+    Network,
+    SubNet,
+    StaticIP
+} from '../../../shared/models/cloud';
+import { Credentials } from '../../../shared/models/profile';
 import { BasePluginComponent } from '../../plugins/base-plugin.component';
 import { CloudService } from '../../../shared/services/cloud.service';
-import { ConfigPanelComponent } from '../../../shared/layouts/config-panel.component';
+import { ProfileService } from '../../../shared/services/profile.service';
+
 
 @Component({
-   selector: 'cloudlaunch-config-control',
-   templateUrl: './cloudlaunch-config-control.component.html',
-   providers: [CloudService],
-   inputs: ['cloudId', 'initialConfig', 'regionName']
+    selector: 'cloudlaunch-config-control',
+    templateUrl: './cloudlaunch-config-control.component.html',
+    providers: [CloudService]
 })
 
 export class CloudLaunchConfigControlComponent extends BasePluginComponent {
-   _cloudId: string;
-   _regionName: string;
+    _cloud: Cloud;
 
-   set regionName(value) {
-      this._regionName = value;
-      this.getPlacements(this.cloudId, value);
-   }
+    @Input()
+    initialConfig: any;
 
-   get regionName() {
-      return this._regionName;
-   }
+    @Input()
+    set cloud(value) {
+        this._cloud = value;
+        this.onCloudSelect(value);
+    }
 
-   set cloudId(value) {
-      this._cloudId = value;
-      this.onCloudSelect(value);
-   }
+    get cloud() {
+        return this._cloud;
+    }
 
-   get cloudId() {
-      return this._cloudId;
-   }
+    CLOUD_SELECTION_HELP: string = 'Select a target cloud first';
+    errorMessage: string;
+    showAdvanced: boolean = false;
+    cloudFields = true; // Used to reset form fields that are dependent on cloud selection
+    // See 'reset' on https://angular.io/docs/ts/latest/guide/forms.html
 
-   CLOUD_SELECTION_HELP: string = "Select a target cloud first";
-   errorMessage: string;
-   showAdvanced: boolean = false;
-   cloudFields = true; // Used to reset form fields that are dependent on cloud selection
-                       // See 'reset' on https://angular.io/docs/ts/latest/guide/forms.html
+    cloudLaunchForm: FormGroup;
+    storedCredentials: Credentials[] = [];
+    storedCredentialsHelp: string = this.CLOUD_SELECTION_HELP;
+    instanceTypes: InstanceType[] = [];
+    instanceTypeHelp: string = this.CLOUD_SELECTION_HELP;
+    regions: Region[] = [];
+    regionHelp: string = this.CLOUD_SELECTION_HELP;
+    placements: PlacementZone[] = [];
+    placementHelp: string = this.CLOUD_SELECTION_HELP;
+    keypairs: KeyPair[] = [];
+    keypairsHelp: string = this.CLOUD_SELECTION_HELP;
+    networks: Network[] = [];
+    networksHelp: string = this.CLOUD_SELECTION_HELP;
+    subnets: SubNet[] = [];
+    subnetsHelp: string = this.CLOUD_SELECTION_HELP;
+    staticIPs: StaticIP[] = [];
+    staticIPHelp: string = this.CLOUD_SELECTION_HELP;
 
-   cloudLaunchForm: FormGroup;
-   instanceTypes: InstanceType[] = [];
-   instanceTypeHelp: string = this.CLOUD_SELECTION_HELP;
-   regions: Region[] = [];
-   regionHelp: string = this.CLOUD_SELECTION_HELP;
-   placements: PlacementZone[] = [];
-   placementHelp: string = this.CLOUD_SELECTION_HELP;
-   keypairs: KeyPair[] = [];
-   keypairsHelp: string = this.CLOUD_SELECTION_HELP;
-   networks: Network[] = [];
-   networksHelp: string = this.CLOUD_SELECTION_HELP;
-   subnets: SubNet[] = [];
-   subnetsHelp: string = this.CLOUD_SELECTION_HELP;
-   staticIPs: StaticIP[] = [];
-   staticIPHelp: string = this.CLOUD_SELECTION_HELP;
+    get form(): FormGroup {
+        return this.cloudLaunchForm;
+    }
 
-   get form() : FormGroup {
-      return this.cloudLaunchForm;
-   }
+    get configName(): string {
+        return 'config_cloudlaunch';
+    }
 
-   get configName() : string {
-      return "config_cloudlaunch";
-   }
+    constructor(fb: FormBuilder, parentContainer: FormGroupDirective,
+        private _cloudService: CloudService,
+        private _profileService: ProfileService) {
+        super(fb, parentContainer);
+        this.cloudLaunchForm = fb.group({
+            'credentials': [''],
+            'temporary_credentials': ['', Validators.required],
+            'instanceType': ['', Validators.required],
+            'placementZone': [''],
+            'keyPair': [''],
+            'network': [''],
+            'subnet': [''],
+            'staticIP': [''],
+            'provider_settings': fb.group({
+                'ebsOptimised': [''],
+                'volumeIOPS': [''],
+            })
+        });
+    }
 
-   constructor(fb: FormBuilder, parentContainer: FormGroupDirective, private _cloudService: CloudService) {
-      super(fb, parentContainer);
-      this.cloudLaunchForm = fb.group({
-         'instanceType': ['', Validators.required],
-         'placementZone': [''],
-         'keyPair': [''],
-         'network': [''],
-         'subnet': [''],
-         'staticIP': [''],
-         'provider_settings': fb.group({
-            'ebsOptimised': [''],
-            'volumeIOPS': [''],
-         })
-      });
-   }
+    onCloudSelect(cloud: Cloud) {
+        this.cloudFields = false;
+        setTimeout(() => this.cloudFields = true, 0);
+        // Fetch options for the newly selected cloud
+        this.getPlacements(cloud);
+        this.getStoredCredentials(cloud);
+        this.getInstanceTypes(cloud);
+        this.getKeyPairs(cloud);
+        this.getNetworks(cloud);
+        this.getStaticIPs(cloud);
+    }
 
-   onCloudSelect(cloudId: string) {
-      this.cloudFields = false;
-      setTimeout(() => this.cloudFields = true, 0);
-      // Fetch options for the newly selected cloud
-      this.getInstanceTypes(cloudId);
-      this.getKeyPairs(cloudId);
-      this.getNetworks(cloudId);
-      this.getStaticIPs(cloudId);
-   }
+    getStoredCredentials(cloud: Cloud) {
+        this.storedCredentialsHelp = 'Retrieving stored credentials...';
+        this.storedCredentials = [];
+        this._profileService.getCredentialsForCloud(cloud.slug)
+            .subscribe(creds => this.storedCredentials = creds.map((c: any) => { c.text = c.name; return c; }),
+            error => this.errorMessage = <any>error,
+            () => { this.storedCredentialsHelp = 'Use Temporary Credentials'; });
+    }
 
-   getInstanceTypes(cloudId: string) {
-      this.instanceTypeHelp = "Retrieving instance types...";
-      this.instanceTypes = [];
-      this._cloudService.getInstanceTypes(cloudId)
-         .subscribe(instanceTypes => this.instanceTypes = instanceTypes.map(t => { t.id = t.name; t.text = t.name; return t; }),
-         error => this.errorMessage = <any>error,
-         () => { this.instanceTypeHelp = "Select an Instance Type"; console.log('got instance types: ', this.instanceTypes) });
-   }
+    onCredentialsSelect(creds: Credentials) {
+        if (this.storedCredentials && creds) {
+            creds = this.storedCredentials.filter(c => c.id === creds.id)[0];
+        }
+        (<FormControl>this.cloudLaunchForm.controls['credentials']).setValue(creds);
+        if (creds) {
+            (<FormControl>this.cloudLaunchForm.controls['temporary_credentials']).disable();
+        } else {
+            (<FormControl>this.cloudLaunchForm.controls['temporary_credentials']).enable();
+        }
+    }
 
-   onInstanceTypeSelect(instanceType: InstanceType) {
-      (<FormControl>this.cloudLaunchForm.controls['instanceType']).setValue(instanceType.id);
-   }
+    getInstanceTypes(cloud: Cloud) {
+        this.instanceTypeHelp = 'Retrieving instance types...';
+        this.instanceTypes = [];
+        this._cloudService.getInstanceTypes(cloud.slug)
+            .subscribe(instanceTypes => this.instanceTypes = instanceTypes.map(t => { t.id = t.name; t.text = t.name; return t; }),
+            error => this.errorMessage = <any>error,
+            () => { this.instanceTypeHelp = 'Select an Instance Type'; });
+    }
 
-   toggleAdvanced() {
-      this.showAdvanced = !this.showAdvanced;
-   }
+    onInstanceTypeSelect(instanceType: InstanceType) {
+        (<FormControl>this.cloudLaunchForm.controls['instanceType']).setValue(instanceType.id);
+    }
 
-   getPlacements(cloudId: string, region: string) {
-      this.placementHelp = "Retrieving placement options...";
-      this.placements = [];
-      this._cloudService.getPlacementZones(cloudId, region)
-         .subscribe(placements => this.placements = placements.map(p => { p.text = p.name; return p; }),
-         error => this.errorMessage = <any>error,
-         () => { this.placementHelp = "Select a placement" });
-   }
+    getSelectedInstanceType() {
+        if ((<FormControl>this.cloudLaunchForm.controls['instanceType']).value) {
+            return [(<FormControl>this.cloudLaunchForm.controls['instanceType']).value];
+        }
+        return null;
+    }
 
-   onPlacementSelect(placement: PlacementZone) {
-      (<FormControl>this.cloudLaunchForm.controls['placementZone']).setValue(placement.id);
-   }
+    toggleAdvanced() {
+        this.showAdvanced = !this.showAdvanced;
+    }
 
-   getKeyPairs(cloudId: string) {
-      this.keypairsHelp = "Retrieving keypairs...";
-      this.keypairs = [];
-      this._cloudService.getKeyPairs(cloudId)
-         .subscribe(keypairs => this.keypairs = keypairs.map(kp => { kp.text = kp.name; return kp; }),
-         error => this.errorMessage = <any>error,
-         () => { this.keypairsHelp = "Select a keypair" });
-   }
+    getPlacements(cloud: Cloud) {
+        this.placementHelp = 'Retrieving placement options...';
+        this.placements = [];
+        this._cloudService.getPlacementZones(cloud.slug, cloud.region_name)
+            .subscribe(placements => this.placements = placements.map(p => { p.text = p.name; return p; }),
+            error => this.errorMessage = <any>error,
+            () => { this.placementHelp = 'Select a placement'; });
+    }
 
-   onKeyPairSelect(kp: KeyPair) {
-      (<FormControl>this.cloudLaunchForm.controls['keyPair']).setValue(kp.id);
-   }
+    onPlacementSelect(placement: PlacementZone) {
+        (<FormControl>this.cloudLaunchForm.controls['placementZone']).setValue(placement.id);
+    }
 
-   getNetworks(cloudId: string) {
-      this.networksHelp = "Retrieving list of networks...";
-      (<FormControl>this.cloudLaunchForm.controls['network']).setValue(null);
-      this.subnetsHelp = "Select a network first";
-      this.networks = [];
-      this._cloudService.getNetworks(cloudId)
-         .subscribe(networks => this.networks = networks.map(n => { n.text = n.name ? n.name : n.id; return n; }),
-         error => this.errorMessage = <any>error,
-         () => { this.networksHelp = "Select a network" });
-   }
+    getKeyPairs(cloud: Cloud) {
+        this.keypairsHelp = 'Retrieving keypairs...';
+        this.keypairs = [];
+        this._cloudService.getKeyPairs(cloud.slug)
+            .subscribe(keypairs => this.keypairs = keypairs.map(kp => { kp.text = kp.name; return kp; }),
+            error => this.errorMessage = <any>error,
+            () => { this.keypairsHelp = 'Select a keypair'; });
+    }
 
-   onNetworkSelect(network: Network) {
-      (<FormControl>this.cloudLaunchForm.controls['network']).setValue(network.id);
-      this.getSubnets(this.cloudId, network.id);
-   }
+    onKeyPairSelect(kp: KeyPair) {
+        (<FormControl>this.cloudLaunchForm.controls['keyPair']).setValue(kp.id);
+    }
 
-   getSubnets(cloudId: string, networkId: string) {
-      this.subnetsHelp = "Retrieving list of subnets...";
-      this.subnets = [];
-      this._cloudService.getSubNets(cloudId, networkId)
-         .subscribe(subnets => this.subnets = subnets.map(s => { s.text = s.name ? s.name : s.id; return s; }),
-         error => this.errorMessage = <any>error,
-         () => { this.subnetsHelp = "Select a subnet" });
-   }
+    getNetworks(cloud: Cloud) {
+        this.networksHelp = 'Retrieving list of networks...';
+        (<FormControl>this.cloudLaunchForm.controls['network']).setValue(null);
+        this.subnetsHelp = 'Select a network first';
+        this.networks = [];
+        this._cloudService.getNetworks(cloud.slug)
+            .subscribe(networks => this.networks = networks.map(n => { n.text = n.name ? n.name : n.id; return n; }),
+            error => this.errorMessage = <any>error,
+            () => { this.networksHelp = 'Select a network'; });
+    }
 
-   onSubNetSelect(subnet: SubNet) {
-      (<FormControl>this.cloudLaunchForm.controls['subnet']).setValue(subnet.id);
-   }
-   
-   getStaticIPs(cloudId: string) {
-      this.staticIPHelp = "Retrieving static IPs ...";
-      this.staticIPs = [];
-      this._cloudService.getStaticIPs(cloudId)
-         .subscribe(ips => this.staticIPs = ips.map(s => { s.id = s.ip; s.text = s.ip; return s; }),
-         error => this.errorMessage = <any>error,
-         () => { this.staticIPHelp = "Select a static IP" });
-   }
-   
-   onStaticIPSelect(staticIP: StaticIP) {
-      (<FormControl>this.cloudLaunchForm.controls['staticIP']).setValue(staticIP.id);
-   }
+    onNetworkSelect(network: Network) {
+        (<FormControl>this.cloudLaunchForm.controls['network']).setValue(network.id);
+        this.getSubnets(this.cloud, network.id);
+    }
+
+    getSubnets(cloud: Cloud, networkId: string) {
+        this.subnetsHelp = 'Retrieving list of subnets...';
+        this.subnets = [];
+        this._cloudService.getSubNets(cloud.slug, networkId)
+            .subscribe(subnets => this.subnets = subnets.map(s => { s.text = s.name ? s.name : s.id; return s; }),
+            error => this.errorMessage = <any>error,
+            () => { this.subnetsHelp = 'Select a subnet'; });
+    }
+
+    onSubNetSelect(subnet: SubNet) {
+        (<FormControl>this.cloudLaunchForm.controls['subnet']).setValue(subnet.id);
+    }
+
+    getStaticIPs(cloud: Cloud) {
+        this.staticIPHelp = 'Retrieving static IPs ...';
+        this.staticIPs = [];
+        this._cloudService.getStaticIPs(cloud.slug)
+            .subscribe(ips => this.staticIPs = ips.map(s => { s.id = s.ip; s.text = s.ip; return s; }),
+            error => this.errorMessage = <any>error,
+            () => { this.staticIPHelp = 'Select a static IP'; });
+    }
+
+    onStaticIPSelect(staticIP: StaticIP) {
+        (<FormControl>this.cloudLaunchForm.controls['staticIP']).setValue(staticIP.id);
+    }
 
 }
