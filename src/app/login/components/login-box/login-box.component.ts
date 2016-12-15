@@ -27,7 +27,7 @@ export class LoginBoxComponent implements OnInit {
          data  => this._router.navigate(['/marketplace']),
          error => this.errorMessage = <any>error);
    }
-         
+
    getApiRoot() : string {
       return AppSettings.CLOUDLAUNCH_SERVER_ROOT;
    }

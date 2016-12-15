@@ -7,10 +7,13 @@ import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 
 //Pages
 import { LoginPageComponent } from './components/login-page/login-page.component';
+import { LogoutPageComponent } from './components/logout-page/logout-page.component';
 
-          
+
 const appRoutes: Routes = [
-  { path: '', component: LoginPageComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full'},
+  { path: 'login', component: LoginPageComponent },
+  { path: 'logout', component: LogoutPageComponent },
 ];
 
 @NgModule({

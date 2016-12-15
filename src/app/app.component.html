@@ -13,7 +13,7 @@
                 </button>
                 <a class="navbar-brand" href="#"><i class="fa fa-rocket"></i> CloudLaunch</a>
             </div>
-    
+
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
@@ -30,10 +30,27 @@
                             <span class="sr-only">(My Appliances)</span>
                         </a>
                     </li>
-                    <li routerLinkActive="active">
-                        <a routerLink="/profile"><i class="fa fa-user"></i> My Profile
-                            <span class="sr-only">(My Appliances)</span>
+                    <li *ngIf="loggedIn==false">
+                        <a routerLink="/auth/login">
+                            <i class="fa fa-sign-in"></i> Login
+                            <span class="sr-only">(Login)</span>
                         </a>
+                    </li>
+                    <li *ngIf="loggedIn" class="dropdown">
+                        <a class="dropbtn">
+                            <i class="fa fa-user"></i> User
+                            <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-content">
+                            <a routerLink="/profile">
+                                <i class="fa fa-user-circle-o"></i> My Credentials
+                                <span class="sr-only">(My Credentials)</span>
+                            </a>
+                            <a routerLink="/auth/logout">
+                                <i class="fa fa-sign-out"></i> Logout
+                                <span class="sr-only">(Logout)</span>
+                            </a>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -41,7 +58,7 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-    
+
     <div class="container-fluid">
         <!-- The router-outlet displays the template for the current component based on the URL -->
         <router-outlet></router-outlet>

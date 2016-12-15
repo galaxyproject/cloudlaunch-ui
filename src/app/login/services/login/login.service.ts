@@ -15,6 +15,7 @@ export class LoginService {
    private _login_method: string = null;
 
    public isLoggedIn(): Promise<boolean> {
+      console.log("this._login_method at isLoggedIn: '" + this._login_method + "'");
       // When the SPA starts up, _login_method will be null
       let loginService = this;
       if (this._login_method == null) {
@@ -23,7 +24,8 @@ export class LoginService {
                .map(response => response.json())
                .do(function (item) {
                   // Cache the login method
-                  loginService._login_method = "session";
+                  //loginService._login_method = "session";
+                  this._login_method = "session";
                })
                .subscribe(
                   data => resolve(true),
@@ -38,10 +40,12 @@ export class LoginService {
              return Promise.resolve(false);
           }
           else if (sessionStorage.getItem('token') || localStorage.getItem('token')) {
+             console.log("sessionStorage has token");
              return Promise.resolve(true);
           }
           else if (this._login_method == "session") {
               // There's an ongoing session. Could be a token or a cookie
+              console.log("Logged in through a session");
               return Promise.resolve(true);
           }
           else {
@@ -69,6 +73,7 @@ export class LoginService {
 
    public logout(): void {
       this._login_method = "";
+      console.log("Set this._login_method to '" + this._login_method + "'");
       localStorage.removeItem('token');
       sessionStorage.removeItem('token');
    }
