@@ -65,9 +65,9 @@ export class ApplianceDetailControlComponent implements OnInit {
    }
 
    onCloudSelect(cloud: any) {
-      this._targetCloud = this.clouds.filter(c => { return c.id == cloud.id })[0];
+      this._targetCloud = this.clouds.filter(c => { return c.id === cloud.id })[0];
       (<FormControl>this.applianceLaunchForm.controls['target_cloud']).setValue(cloud.id);
-      this.selectedAppCloudConfig = this.selectedVersion.cloud_config.filter(v => { return v.cloud.slug == cloud.id; })[0];
+      this.selectedAppCloudConfig = this.selectedVersion.cloud_config.filter(v => { return v.cloud.slug === cloud.id; })[0];
    }
 
    goBack() {

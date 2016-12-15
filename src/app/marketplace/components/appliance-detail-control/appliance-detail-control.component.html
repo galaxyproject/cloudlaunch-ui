@@ -66,7 +66,7 @@
                                     [componentPath]="selectedVersion.frontend_component_path"
                                     [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
                                 <!-- Cloud launching part of the form -->
-                                <cloudlaunch-config-control [cloudId]="applianceLaunchForm.controls.target_cloud.value" [regionName]="_targetCloud.region_name" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config-control>                                
+                                <cloudlaunch-config-control [cloud]="_targetCloud" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config-control>                                
                             </div>
                         </div>
         			</div>
