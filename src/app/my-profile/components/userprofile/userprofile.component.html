@@ -1,5 +1,5 @@
 <div>
-    <form class="form" [formGroup]="profileForm" (ngSubmit)="onSubmit(cmClusterForm.value)">
+    <form class="form" [formGroup]="profileForm">
 
         <!-- Username -->
         <div class="form-group is-empty">
@@ -34,8 +34,7 @@
             <span class="material-input"></span>
         </div>
 
-        <aws-credentials [profile]="profile"></aws-credentials>
-        <openstack-credentials [profile]="profile"></openstack-credentials>
+        <cloud-credentials-viewer [profile]="profile" (onCredentialsChanged)="refreshProfile($event)"></cloud-credentials-viewer>
         
     </form>
 </div>

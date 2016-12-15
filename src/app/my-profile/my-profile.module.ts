@@ -14,6 +14,14 @@ import { MyProfilePageComponent } from './components/my-profile-page/my-profile-
 import { AWSCredentialsComponent } from './components/credentials-aws/aws-credentials.component';
 import { OpenStackCredentialsComponent } from './components/credentials-openstack/openstack-credentials.component';
 
+import { CloudCredentialsViewerComponent } from './components/cloud-credentials-viewer/cloud-credentials-viewer.component';
+import { OpenStackCredViewerComponent } from './components/cloud-credentials-viewer/openstack-cred-viewer/openstack-cred-viewer.component';
+import { AWSCredViewerComponent } from './components/cloud-credentials-viewer/aws-cred-viewer/aws-cred-viewer.component';
+
+import { CloudCredentialsEditorComponent } from './components/cloud-credentials-editor/cloud-credentials-editor.component';
+import { OpenStackCredEditorComponent } from './components/cloud-credentials-editor/openstack-cred-editor/openstack-cred-editor.component';
+import { AWSCredEditorComponent } from './components/cloud-credentials-editor/aws-cred-editor/aws-cred-editor.component';
+
 // Services
 import { ProfileService } from '../shared/services/profile.service';
 import { CloudService } from '../shared/services/cloud.service';
@@ -28,7 +36,12 @@ import { CloudService } from '../shared/services/cloud.service';
     SelectModule,
     MyProfileRoutingModule
   ],
-  declarations: [MyProfilePageComponent, UserProfileComponent, AWSCredentialsComponent, OpenStackCredentialsComponent],
+  declarations: [
+    MyProfilePageComponent, UserProfileComponent, AWSCredentialsComponent, OpenStackCredentialsComponent,
+    CloudCredentialsViewerComponent, OpenStackCredViewerComponent, AWSCredViewerComponent,
+    CloudCredentialsEditorComponent, OpenStackCredEditorComponent, AWSCredEditorComponent
+  ],
+  exports: [CloudCredentialsViewerComponent, CloudCredentialsEditorComponent],
   providers: [CloudService, ProfileService]
 })
 export class MyProfileModule { }

@@ -3,18 +3,17 @@ import { Cloud } from './cloud';
 export class Credentials {
    id: string;
    name: string;
+   text: string; // satisfy ng2-select
    default: boolean;
    cloud: Cloud;
 }
 
 export class AWSCredentials extends Credentials {
-   id: string;
    access_key: string;
    secret_key: string;
 }
 
 export class OpenStackCredentials extends Credentials {
-   id: string;
    username: string;
    password: string;
    tenant_name: string;
@@ -24,7 +23,7 @@ export class OpenStackCredentials extends Credentials {
    identity_api_version: string;
 }
 
-export interface UserProfile {
+export class UserProfile {
    username: string;
    email: string;
    first_name: string;
