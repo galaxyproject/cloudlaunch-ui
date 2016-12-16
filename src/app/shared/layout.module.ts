@@ -4,23 +4,23 @@ import { StandardLayoutComponent, PageHeader, PageBody } from './layouts/standar
 import { ConfigPanelComponent, PanelHeader, PanelBody } from './layouts/config-panel.component';
 
 @NgModule({
-  declarations: [
-    StandardLayoutComponent,
-    PageHeader,
-    PageBody,
-    ConfigPanelComponent,
-    PanelHeader,
-    PanelBody
-  ],
-  imports: [
-  ],
-  exports: [
-    StandardLayoutComponent,
-    PageHeader,
-    PageBody,
-    ConfigPanelComponent,
-    PanelHeader,
-    PanelBody
-  ]
+    declarations: [
+        StandardLayoutComponent,
+        PageHeader,
+        PageBody,
+        ConfigPanelComponent,
+        PanelHeader,
+        PanelBody
+    ],
+    imports: [
+    ],
+    exports: [
+        StandardLayoutComponent,
+        PageHeader,
+        PageBody,
+        ConfigPanelComponent,
+        PanelHeader,
+        PanelBody
+    ]
 })
 export class LayoutModule { }

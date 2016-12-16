@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login/login.service';
 
 @Component({
-  selector: 'app-logout-page',
-  templateUrl: './logout-page.component.html',
-  styleUrls: ['./logout-page.component.css']
+    selector: 'app-logout-page',
+    templateUrl: './logout-page.component.html',
+    styleUrls: ['./logout-page.component.css']
 })
 export class LogoutPageComponent implements OnInit {
 
-   constructor(
-      private _loginService: LoginService) { }
+    constructor(
+        private _loginService: LoginService) { }
 
-   ngOnInit() {
-      this._loginService.logout();
-   }
+    ngOnInit() {
+        this._loginService.logout();
+    }
 }

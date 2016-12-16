@@ -36,7 +36,7 @@ export class PublicAppliancesMapComponent {
             "elementType": "all",
             "stylers": [{"visibility": "off"}]
         }, {"featureType": "water", "elementType": "all", "stylers": [{"color": "#4f595d"}, {"visibility": "on"}]}];
-    
+
     center_latitude = 18;
     center_longitude = 0;
     zoom = 2;

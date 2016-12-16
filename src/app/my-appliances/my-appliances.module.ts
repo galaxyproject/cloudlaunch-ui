@@ -14,13 +14,13 @@ import { MyAppliancesPageComponent } from './components/my-appliances-page/my-ap
 import { DeploymentService } from '../shared/services/deployment.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    LayoutModule,
-    MyAppliancesRoutingModule
-  ],
-  declarations: [MyAppliancesPageComponent, DeploymentsComponent],
-  providers: [DeploymentService]
+    imports: [
+        CommonModule,
+        FormsModule,
+        LayoutModule,
+        MyAppliancesRoutingModule
+    ],
+    declarations: [MyAppliancesPageComponent, DeploymentsComponent],
+    providers: [DeploymentService]
 })
 export class MyAppliancesModule { }

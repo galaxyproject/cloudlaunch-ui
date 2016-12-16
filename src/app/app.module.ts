@@ -12,20 +12,20 @@ import { RequestOptions } from '@angular/http';
 import { CustomRequestOptions } from './login/utils/custom-request-options';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpModule,
-    AppRoutingModule,
-    LoginModule
-  ],
-  providers: [
-    { provide: RequestOptions, useClass: CustomRequestOptions }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpModule,
+        AppRoutingModule,
+        LoginModule
+    ],
+    providers: [
+        { provide: RequestOptions, useClass: CustomRequestOptions }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

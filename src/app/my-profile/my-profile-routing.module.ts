@@ -8,13 +8,13 @@ import { AuthGuardService } from '../login/services/auth-guard/auth-guard.servic
 //Pages
 import { MyProfilePageComponent } from './components/my-profile-page/my-profile-page.component';
 
-          
+
 const appRoutes: Routes = [
-  { path: '', component: MyProfilePageComponent, canActivate: [AuthGuardService] }
+    { path: '', component: MyProfilePageComponent, canActivate: [AuthGuardService] }
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(appRoutes)],
     exports: [RouterModule]
-  })
-export class MyProfileRoutingModule {}
+})
+export class MyProfileRoutingModule { }

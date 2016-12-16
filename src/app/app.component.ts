@@ -5,30 +5,30 @@ import { LoginService } from './login/services/login/login.service';
 import 'rxjs/add/operator/filter';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent {
     constructor(private _loginService: LoginService, private router: Router) {
-      router.events
-        .filter(event => event instanceof NavigationEnd)
-        .subscribe((event:NavigationEvent) => {
-          this.updateLoggedInStatus();
-      });
+        router.events
+            .filter(event => event instanceof NavigationEnd)
+            .subscribe((event: NavigationEvent) => {
+                this.updateLoggedInStatus();
+            });
     }
 
     loggedIn: boolean;
 
     updateLoggedInStatus(): void {
-      this._loginService.isLoggedIn().then(loggedIn => this.loggedIn = loggedIn);
+        this._loginService.isLoggedIn().then(loggedIn => this.loggedIn = loggedIn);
     }
 
-    getDeveloperAPILink() : string {
+    getDeveloperAPILink(): string {
         return AppSettings.CLOUDLAUNCH_API_ENDPOINT;
     }
 
-    getSupportContactLink() : string {
+    getSupportContactLink(): string {
         return AppSettings.CLOUDLAUNCH_SUPPORT_LINK;
     }
 }

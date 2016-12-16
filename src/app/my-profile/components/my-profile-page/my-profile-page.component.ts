@@ -3,28 +3,28 @@ import { Component, OnInit, trigger, transition, animate,
 
 
 @Component({
-   selector: 'my-profile-page',
-   templateUrl: './my-profile-page.component.html',
-   styleUrls: ['./my-profile-page.component.css'],
-   host: { '[@routeAnimation]': 'true' },
-   animations: [
-     trigger('routeAnimation', [
-       state('*', style({opacity: 1})),
-       transition('void => *', [
-         style({opacity: 0}),
-         animate('0.5s')
-       ])
-     ])
-   ]
+    selector: 'my-profile-page',
+    templateUrl: './my-profile-page.component.html',
+    styleUrls: ['./my-profile-page.component.css'],
+    host: { '[@routeAnimation]': 'true' },
+    animations: [
+        trigger('routeAnimation', [
+            state('*', style({ opacity: 1 })),
+            transition('void => *', [
+                style({ opacity: 0 }),
+                animate('0.5s')
+            ])
+        ])
+    ]
 })
 export class MyProfilePageComponent implements OnInit {
 
-   constructor() { }
+    constructor() { }
 
-   ngOnInit() {
-   }
+    ngOnInit() {
+    }
 
-   onSubmit() {
-      //this.errorMessage = null;
-   }
+    onSubmit() {
+        //this.errorMessage = null;
+    }
 }

@@ -17,16 +17,16 @@ import { PublicAppliancesPageComponent } from './components/public-appliances-pa
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpModule,
-    LayoutModule,
-    PublicAppliancesRoutingModule,
-    AgmCoreModule.forRoot({
-        apiKey: AppSettings.CLOUDLAUNCH_GOOGLE_MAPS_KEY
-      })
-  ],
-  declarations: [PublicAppliancesPageComponent, PublicAppliancesListComponent, PublicAppliancesMapComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        HttpModule,
+        LayoutModule,
+        PublicAppliancesRoutingModule,
+        AgmCoreModule.forRoot({
+            apiKey: AppSettings.CLOUDLAUNCH_GOOGLE_MAPS_KEY
+        })
+    ],
+    declarations: [PublicAppliancesPageComponent, PublicAppliancesListComponent, PublicAppliancesMapComponent],
 })
 export class PublicAppliancesModule { }

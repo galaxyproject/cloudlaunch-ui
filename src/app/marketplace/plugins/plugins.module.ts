@@ -11,15 +11,15 @@ import { GVLConfigComponent } from './gvl/gvl.component.ts'
 import { SelectModule } from 'ng2-select';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpModule,
-    LayoutModule,
-    SelectModule
-  ],
-  declarations: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent],
-  exports: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpModule,
+        LayoutModule,
+        SelectModule
+    ],
+    declarations: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent],
+    exports: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent]
 })
 export class PluginsModule { }

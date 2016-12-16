@@ -13,12 +13,12 @@ import { AboutCloudLaunchPageComponent } from './components/about-cloudlaunch-pa
 import { DeploymentService } from '../shared/services/deployment.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    LayoutModule,
-    AboutRoutingModule
-  ],
-  declarations: [AboutCloudLaunchPageComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        LayoutModule,
+        AboutRoutingModule
+    ],
+    declarations: [AboutCloudLaunchPageComponent]
 })
 export class AboutModule { }

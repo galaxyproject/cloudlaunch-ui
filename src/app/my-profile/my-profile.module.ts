@@ -26,20 +26,20 @@ import { CloudService } from '../shared/services/cloud.service';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    LayoutModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SelectModule,
-    MyProfileRoutingModule
-  ],
-  declarations: [
-    MyProfilePageComponent, UserProfileComponent,
-    CloudCredentialsViewerComponent, OpenStackCredViewerComponent, AWSCredViewerComponent,
-    CloudCredentialsEditorComponent, OpenStackCredEditorComponent, AWSCredEditorComponent
-  ],
-  exports: [CloudCredentialsViewerComponent, CloudCredentialsEditorComponent],
-  providers: [CloudService, ProfileService]
+    imports: [
+        CommonModule,
+        LayoutModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SelectModule,
+        MyProfileRoutingModule
+    ],
+    declarations: [
+        MyProfilePageComponent, UserProfileComponent,
+        CloudCredentialsViewerComponent, OpenStackCredViewerComponent, AWSCredViewerComponent,
+        CloudCredentialsEditorComponent, OpenStackCredEditorComponent, AWSCredEditorComponent
+    ],
+    exports: [CloudCredentialsViewerComponent, CloudCredentialsEditorComponent],
+    providers: [CloudService, ProfileService]
 })
 export class MyProfileModule { }

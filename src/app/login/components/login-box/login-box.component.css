@@ -1,53 +1,54 @@
 .social-button-column {
-    border-right: 1px solid #ccc;
-    padding: 0 0 0 1.2%
+	border-right: 1px solid #ccc;
+	padding: 0 0 0 1.2%
 }
+
 .social-login-btn {
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -o-border-radius: 50%;
-    -ms-border-radius: 50%;
-    border-radius: 50%;
-    float: left;
-    width: 4.8em;
-    height: 4.8em;
-    line-height: 5.5em;
-    text-align: center;
-    color: white;
-
-    transition: all 0.5s ease 0s;
-    -moz-transition: all 0.5s ease 0s;
-    -webkit-transition: all 0.5s ease 0s;
-    -ms-transition: all 0.5s ease 0s;
-    -o-transition: all 0.5s ease 0s;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-o-border-radius: 50%;
+	-ms-border-radius: 50%;
+	border-radius: 50%;
+	float: left;
+	width: 4.8em;
+	height: 4.8em;
+	line-height: 5.5em;
+	text-align: center;
+	color: white;
+	transition: all 0.5s ease 0s;
+	-moz-transition: all 0.5s ease 0s;
+	-webkit-transition: all 0.5s ease 0s;
+	-ms-transition: all 0.5s ease 0s;
+	-o-transition: all 0.5s ease 0s;
 }
 
-.social-login-btn:hover, .social-login-btn:active, .social-login-btn:focus, .social-login-btn:active:focus {
-     -webkit-transform: scale(1.1) rotate(360deg);;
-     -moz-transform: scale(1.1) rotate(360deg);;
-     -o-transform: scale(1.1) rotate(360deg);;
+.social-login-btn:hover, .social-login-btn:active, .social-login-btn:focus,
+	.social-login-btn:active:focus {
+	-webkit-transform: scale(1.1) rotate(360deg);;
+	-moz-transform: scale(1.1) rotate(360deg);;
+	-o-transform: scale(1.1) rotate(360deg);;
 }
 
 .social-login-btn i {
-    font-size: 18pt;
+	font-size: 18pt;
 }
 
 .social-google {
-  background-color: #da573b;
-  border-color: #be5238;
+	background-color: #da573b;
+	border-color: #be5238;
 }
 
 .social-twitter {
-  background-color: #1daee3;
-  border-color: #3997ba;
+	background-color: #1daee3;
+	border-color: #3997ba;
 }
 
 .social-github {
-  background-color: #323233;
-  border-color: #47618d;
+	background-color: #323233;
+	border-color: #47618d;
 }
 
 .social-facebook {
-  background-color: #4c699e;
-  border-color: #47618d;
+	background-color: #4c699e;
+	border-color: #47618d;
 }

@@ -1,11 +1,10 @@
 .banner-image {
-    max-height: 64px;
-    max-width: 256px;
+	max-height: 64px;
+	max-width: 256px;
 }
 
 /* COMPONENT TRANSITION ANIMATIONS */
-
 :host {
-    display: inline-block;
-    width: 100%;
+	display: inline-block;
+	width: 100%;
 }

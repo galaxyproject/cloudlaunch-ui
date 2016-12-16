@@ -11,13 +11,13 @@ import { LogoutPageComponent } from './components/logout-page/logout-page.compon
 
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full'},
-  { path: 'login', component: LoginPageComponent },
-  { path: 'logout', component: LogoutPageComponent },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'login', component: LoginPageComponent },
+    { path: 'logout', component: LogoutPageComponent },
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(appRoutes)],
     exports: [RouterModule]
-  })
-export class LoginRoutingModule {}
+})
+export class LoginRoutingModule { }
