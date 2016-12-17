@@ -17,10 +17,14 @@ import {
     SubNet,
     StaticIP
 } from '../../../shared/models/cloud';
-import { Credentials } from '../../../shared/models/profile';
+
 import { BasePluginComponent } from '../../plugins/base-plugin.component';
+
+// models
+import { Credentials } from '../../../shared/models/profile';
+
+// Services
 import { CloudService } from '../../../shared/services/cloud.service';
-import { ProfileService } from '../../../shared/services/profile.service';
 
 
 @Component({
@@ -52,8 +56,6 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     // See 'reset' on https://angular.io/docs/ts/latest/guide/forms.html
 
     cloudLaunchForm: FormGroup;
-    storedCredentials: Credentials[] = [];
-    storedCredentialsHelp: string = this.CLOUD_SELECTION_HELP;
     instanceTypes: InstanceType[] = [];
     instanceTypeHelp: string = this.CLOUD_SELECTION_HELP;
     regions: Region[] = [];
@@ -78,12 +80,9 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     }
 
     constructor(fb: FormBuilder, parentContainer: FormGroupDirective,
-        private _cloudService: CloudService,
-        private _profileService: ProfileService) {
+        private _cloudService: CloudService) {
         super(fb, parentContainer);
         this.cloudLaunchForm = fb.group({
-            'credentials': [''],
-            'temporary_credentials': ['', Validators.required],
             'instanceType': ['', Validators.required],
             'placementZone': [''],
             'keyPair': [''],
@@ -102,32 +101,10 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
         setTimeout(() => this.cloudFields = true, 0);
         // Fetch options for the newly selected cloud
         this.getPlacements(cloud);
-        this.getStoredCredentials(cloud);
         this.getInstanceTypes(cloud);
         this.getKeyPairs(cloud);
         this.getNetworks(cloud);
         this.getStaticIPs(cloud);
-    }
-
-    getStoredCredentials(cloud: Cloud) {
-        this.storedCredentialsHelp = 'Retrieving stored credentials...';
-        this.storedCredentials = [];
-        this._profileService.getCredentialsForCloud(cloud.slug)
-            .subscribe(creds => this.storedCredentials = creds.map((c: any) => { c.text = c.name; return c; }),
-            error => this.errorMessage = <any>error,
-            () => { this.storedCredentialsHelp = 'Use Temporary Credentials'; });
-    }
-
-    onCredentialsSelect(creds: Credentials) {
-        if (this.storedCredentials && creds) {
-            creds = this.storedCredentials.filter(c => c.id === creds.id)[0];
-        }
-        (<FormControl>this.cloudLaunchForm.controls['credentials']).setValue(creds);
-        if (creds) {
-            (<FormControl>this.cloudLaunchForm.controls['temporary_credentials']).disable();
-        } else {
-            (<FormControl>this.cloudLaunchForm.controls['temporary_credentials']).enable();
-        }
     }
 
     getInstanceTypes(cloud: Cloud) {

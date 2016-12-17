@@ -4,23 +4,6 @@
 
     <div *ngIf="cloudFields">
 
-        <!-- Credentials selection -->
-        <div class="form-group">
-            <label for="id_credentials" class="control-label"> Select saved credentials or
-                use temporary credentials </label>
-            <ng-select id="id_credentials" [allowClear]="true" [items]="storedCredentials"
-                [disabled]="!cloud" (selected)="onCredentialsSelect($event)"
-                (removed)="onCredentialsSelect(null)" placeholder="Use Temporary Credentials">
-            </ng-select>
-
-            <div>
-                <cloud-credentials-editor *ngIf="!cloudLaunchForm.controls['credentials'].value?.id"
-                    [cloud]="cloud"
-                    [formControl]="cloudLaunchForm.controls['temporary_credentials']"
-                    saveIsOptional="true"></cloud-credentials-editor>
-            </div>
-        </div>
-
         <!-- Instance type selection -->
         <div class="form-group">
             <label for="id_instance_type" class="control-label"> What type of virtual

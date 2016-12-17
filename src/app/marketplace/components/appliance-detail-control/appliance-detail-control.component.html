@@ -52,7 +52,22 @@
                             </ng-select>
                         </div>
 
-                        <div *ngIf="applianceLaunchForm.controls['target_cloud'].value">
+                        <!-- Credentials selection -->
+                        <div class="form-group" *ngIf="applianceLaunchForm.controls['target_cloud'].value">
+                            <label for="id_credentials" class="control-label"> Select saved credentials or
+                                use temporary credentials </label>
+                            <ng-select id="id_credentials" [allowClear]="true" [items]="storedCredentials"
+                                [disabled]="!_targetCloud" (selected)="onCredentialsSelect($event)"
+                                (removed)="onCredentialsSelect(null)" placeholder="Use Temporary Credentials">
+                            </ng-select>
+                
+                            <cloud-credentials-editor *ngIf="!applianceLaunchForm.controls['credentials'].value?.id"
+                                [cloud]="_targetCloud"
+                                [formControl]="applianceLaunchForm.controls['temporary_credentials']"
+                                saveIsOptional="true"></cloud-credentials-editor>
+                        </div>
+
+                        <div *ngIf="applianceLaunchForm.controls['credentials'].value || applianceLaunchForm.controls['temporary_credentials'].valid">
                         
                             <div class="form-group">
                                 <label for="id_deployment_name" class="control-label">
