@@ -92,8 +92,11 @@ export class ApplianceDetailControlComponent implements OnInit {
         let tempCreds = (<FormControl>this.applianceLaunchForm.controls['temporary_credentials']);
         if (existingCreds.value) {
             customRequestOptions.setCloudCredentials(existingCreds.value);
-        } else {
+        } else if (tempCreds.value) {
             customRequestOptions.setCloudCredentials(tempCreds.value);
+        }
+        else {
+            throw Exception("Assertion Failure: Either credentials or temporary_credentials must have a value");
         }
     }
 

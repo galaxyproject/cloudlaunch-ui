@@ -12,6 +12,12 @@ export class CustomRequestOptions extends BaseRequestOptions {
     
     addCredentialHeaders(options: RequestOptionsArgs) {
         if (this.credentials && this.credentials.cloud) {
+            if (this.credentials.id) {
+                // Must be a saved set or credentials. Retrieve using ID
+                options.headers.set('cl-credentials-id', this.credentials.id);
+                return;
+            }
+            // Must be an unsaved set of credentials
             switch (this.credentials.cloud.cloud_type) {
                 case 'openstack':
                     let os_creds = <OpenStackCredentials>this.credentials;
