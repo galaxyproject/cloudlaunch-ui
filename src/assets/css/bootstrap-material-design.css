@@ -2910,13 +2910,13 @@ fieldset[disabled] .navbar .btn-link:focus {
   background-color: #3f51b5;
 }
 .panel.panel-primary > .panel-heading {
-  background-color: #2c3143;
+  background: linear-gradient(-50deg, #3c4153 17%, #2c3143 83%);
 }
 .panel.panel-success > .panel-heading {
-  background-color: #4caf50;
+  background: linear-gradient(-50deg, #6ac753 17%, #4caf50 83%);
 }
 .panel.panel-info > .panel-heading {
-  background-color: #03a9f4;
+  background: linear-gradient(-50deg, #28c1f7 17%, #03a9f4 83%);
 }
 .panel.panel-warning > .panel-heading {
   background-color: #ff5722;

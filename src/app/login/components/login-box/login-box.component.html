@@ -5,7 +5,7 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-md-1 col-sm-3 col-xs-3 social-button-column">
-				<form class="form-inline">
+				<div class="form-inline">
 					<div class="form-group">
 						<a href="{{ getApiRoot() }}/accounts/github/login"
 							class="social-login-btn social-github"><i
@@ -26,7 +26,7 @@
 							class="social-login-btn social-facebook"><i
 							class="fa fa-facebook"></i></a>
 					</div>
-				</form>
+				</div>
 			</div>
 			<div class="col-md-11">
 				<form (ngSubmit)="onSubmit()" #loginForm="ngForm">

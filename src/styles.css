@@ -11,7 +11,7 @@
 
 /* FOOTER */
 .footer {
-	background: AliceBlue;
+	background: linear-gradient(50deg, AliceBlue 17%, #e0e8ee 83%);
 	height: 130px;
 	position: relative;
 	width: 100%;
