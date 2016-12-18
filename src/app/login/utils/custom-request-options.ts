@@ -1,3 +1,4 @@
+import {__platform_browser_private__} from '@angular/platform-browser';
 import { RequestOptions, RequestOptionsArgs, BaseRequestOptions, Headers } from '@angular/http';
 import { Cloud } from '../../shared/models/cloud';
 import { Credentials, OpenStackCredentials, AWSCredentials } from '../../shared/models/profile';
@@ -35,10 +36,7 @@ export class CustomRequestOptions extends BaseRequestOptions {
     }
 
     getCookie(name) {
-        let value = "; " + document.cookie;
-        let parts = value.split("; " + name + "=");
-        if (parts.length == 2)
-            return parts.pop().split(";").shift();
+        return __platform_browser_private__.getDOM().getCookie(name);
     }
 
     merge(options?: RequestOptionsArgs): RequestOptions {

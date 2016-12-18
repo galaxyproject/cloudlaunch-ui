@@ -96,7 +96,7 @@ export class ApplianceDetailControlComponent implements OnInit {
             customRequestOptions.setCloudCredentials(tempCreds.value);
         }
         else {
-            throw Exception("Assertion Failure: Either credentials or temporary_credentials must have a value");
+            throw new Error("Assertion Failure: Either credentials or temporary_credentials must have a value");
         }
     }
 
