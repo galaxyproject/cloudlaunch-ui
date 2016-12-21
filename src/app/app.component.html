@@ -36,21 +36,30 @@
                             <span class="sr-only">(Login)</span>
                         </a>
                     </li>
+
+
                     <li *ngIf="loggedIn" class="dropdown">
-                        <a class="dropbtn">
-                            <i class="fa fa-user"></i> User
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="bootstrap-elements.html" data-target="#" aria-expanded="false">
+                            <i class="fa fa-user"></i>
+                            User
                             <span class="caret"></span>
+                            <div class="ripple-container"></div>
                         </a>
-                        <div class="dropdown-content">
-                            <a routerLink="/profile">
-                                <i class="fa fa-user-circle-o"></i> My Credentials
-                                <span class="sr-only">(My Credentials)</span>
-                            </a>
-                            <a routerLink="/auth/logout">
-                                <i class="fa fa-sign-out"></i> Logout
-                                <span class="sr-only">(Logout)</span>
-                            </a>
-                        </div>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a routerLink="/profile">
+                                    <i class="fa fa-user-circle-o"></i> My Credentials
+                                    <span class="sr-only">(My Credentials)</span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a routerLink="/auth/logout">
+                                    <i class="fa fa-sign-out"></i> Logout
+                                    <span class="sr-only">(Logout)</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
