@@ -134,10 +134,7 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
         if (this.ctrl_credentials_type.value == CredentialsType.SAVED)
             this.notifyCredentialsChanged(this.ctrl_stored_credentials.value);
         else {
-            //if (this.ctrl_temporary_credentials.valid)
             this.notifyCredentialsChanged(this.ctrl_temporary_credentials.value);
-            //else
-              //  this.notifyCredentialsChanged(null);
         }
     }
 
@@ -160,15 +157,24 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
             () => { this.storedCredentialsHelp = 'Select Credentials'; });
     }
 
+    getSelectedCredentials() {
+        if (this.ctrl_stored_credentials.value) {
+            return [this.ctrl_stored_credentials.value];
+        }
+        return null;
+    }
+
     processStoredCredentials(creds: Credentials[]) {
-        this.storedCredentials = creds.map((c: any) => { c.text = c.name; return c; });
-        if (this.storedCredentials) { // Activate the correct tab
+        if (creds)
+            this.storedCredentials = creds.map((c: any) => { c.text = c.name; return c; });
+        if (this.storedCredentials && this.storedCredentials.length > 0) { // Activate the correct tab
             this.ctrl_credentials_type.setValue(CredentialsType.SAVED);
             let defaultCreds = this.storedCredentials.filter(c => c.default === true);
             if (defaultCreds)
                 this.ctrl_stored_credentials.setValue(defaultCreds[0]);
         } else {
             this.ctrl_credentials_type.setValue(CredentialsType.TEMPORARY);
+            this.ctrl_stored_credentials.setValue('');
         }
     }
 
