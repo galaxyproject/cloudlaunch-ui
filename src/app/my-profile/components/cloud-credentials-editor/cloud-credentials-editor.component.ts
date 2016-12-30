@@ -40,8 +40,9 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     credentialsForm: FormGroup;
     availableClouds: Cloud[];
     errorMessage: string;
-    private _saveIsOptional: boolean = false;
+    _saveIsOptional: boolean = false;
     saveIsPressed: boolean = false;
+    useCredsIsPressed: boolean = false;
     // Form Controls
     ctrl_id: FormControl = new FormControl(null);
     ctrl_name: FormControl = new FormControl(null, Validators.required);
@@ -54,7 +55,6 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     set credentials(creds: Credentials) {
         if (creds) {
             this.credentialsForm.patchValue(creds);
-            this.ctrl_creds.patchValue(creds);
             if (creds.cloud) {
                 this.onCloudSelect(creds.cloud);
             }
@@ -88,6 +88,10 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         this.ctrl_name.disable();
     }
     get saveIsOptional() { return this._saveIsOptional; }
+    
+    @Output()
+    onCredentialsChanged = new EventEmitter<Credentials>();
+    
 
     // implementation of ControlValueAccessor
 
@@ -139,7 +143,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             'cloud': this.ctrl_cloud,
             'credentials': this.ctrl_creds
         });
-        this.credentialsForm.valueChanges.subscribe(data => { this.handleCredentialsChanged(this.formDataToCredentials(data)); });
+        //this.credentialsForm.valueChanges.subscribe(data => { this.handleCredentialsChanged(this.formDataToCredentials(data)); });
     }
 
     ngOnInit() {
@@ -178,8 +182,23 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
 
     handleCredentialsChanged(creds: Credentials) {
         this.propagateChange(creds);
+        this.onCredentialsChanged.emit(creds);
     }
 
+    useCredentials() {
+        this.useCredsIsPressed = !this.useCredsIsPressed;
+        if (this.useCredsIsPressed) {
+            this.credentialsForm.disable();
+            this.ctrl_name.disable();
+            this.handleCredentialsChanged(this.credentials);
+        }
+        else {
+            this.credentialsForm.enable();
+            this.ctrl_name.disable();
+            this.handleCredentialsChanged(null);
+        }
+    }
+    
     setSaveIsPressed() {
         this.ctrl_name.enable();
         this.saveIsPressed = true;

@@ -51,23 +51,16 @@
                               placeholder="No cloud selected">
                             </ng-select>
                         </div>
-
+                        
                         <!-- Credentials selection -->
                         <div class="form-group" *ngIf="applianceLaunchForm.controls['target_cloud'].value">
-                            <label for="id_credentials" class="control-label"> Select saved credentials or
-                                use temporary credentials </label>
-                            <ng-select id="id_credentials" [allowClear]="true" [items]="storedCredentials"
-                                [disabled]="!_targetCloud" (selected)="onCredentialsSelect($event)"
-                                (removed)="onCredentialsSelect(null)" placeholder="Use Temporary Credentials">
-                            </ng-select>
-                
-                            <cloud-credentials-editor *ngIf="!applianceLaunchForm.controls['credentials'].value?.id"
+                            <cloud-credentials-selector
                                 [cloud]="_targetCloud"
-                                [formControl]="applianceLaunchForm.controls['temporary_credentials']"
-                                saveIsOptional="true"></cloud-credentials-editor>
+                                [formControl]="applianceLaunchForm.controls['credentials']">
+                            </cloud-credentials-selector>
                         </div>
 
-                        <div *ngIf="applianceLaunchForm.controls['credentials'].value || applianceLaunchForm.controls['temporary_credentials'].valid">
+                        <div *ngIf="applianceLaunchForm.controls['credentials'].value">
                         
                             <div class="form-group">
                                 <label for="id_deployment_name" class="control-label">
@@ -81,7 +74,7 @@
                                     [componentPath]="selectedVersion.frontend_component_path"
                                     [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
                                 <!-- Cloud launching part of the form -->
-                                <cloudlaunch-config-control [cloud]="_targetCloud" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config-control>                                
+                                <cloudlaunch-config-control [cloud]="applianceLaunchForm.controls['credentials']?.cloud" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config-control>                                
                             </div>
                         </div>
         			</div>

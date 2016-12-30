@@ -35,9 +35,6 @@ export class ApplianceDetailControlComponent implements OnInit {
     public errorMessage: string;
     private submitPending: boolean = false;
 
-    storedCredentials: Credentials[] = [];
-    storedCredentialsHelp: string = 'Select a target cloud first';
-    
     constructor(
         fb: FormBuilder,
         private _router: Router,
@@ -51,11 +48,10 @@ export class ApplianceDetailControlComponent implements OnInit {
             'name': ['', Validators.required],
             'application_version': ['', Validators.required],
             'target_cloud': ['', Validators.required],
-            'credentials': [''],
-            'temporary_credentials': ['', Validators.required],
+            'credentials': ['', Validators.required],
             'config_app': this.appConfigForm
         });
-        (<FormControl>this.applianceLaunchForm.controls['temporary_credentials']).registerOnChange(this.setRequestCredentials);
+        (<FormControl>this.applianceLaunchForm.controls['credentials']).registerOnChange(this.setRequestCredentials);
     }
 
     ngOnInit() {
@@ -82,46 +78,18 @@ export class ApplianceDetailControlComponent implements OnInit {
         this._targetCloud = this.clouds.filter(c => { return c.id === cloud.id })[0];
         (<FormControl>this.applianceLaunchForm.controls['target_cloud']).setValue(cloud.id);
         this.selectedAppCloudConfig = this.selectedVersion.cloud_config.filter(v => { return v.cloud.slug === cloud.id; })[0];
-        this.getStoredCredentials(this._targetCloud);
     }
 
     /* Set global request credentials based on user entered data */
     setRequestCredentials() {
         let customRequestOptions = <CustomRequestOptions>this._requestOptions;
         let existingCreds = (<FormControl>this.applianceLaunchForm.controls['credentials']);
-        let tempCreds = (<FormControl>this.applianceLaunchForm.controls['temporary_credentials']);
         if (existingCreds.value) {
             customRequestOptions.setCloudCredentials(existingCreds.value);
-        } else if (tempCreds.value) {
-            customRequestOptions.setCloudCredentials(tempCreds.value);
-        }
-        else {
-            throw new Error("Assertion Failure: Either credentials or temporary_credentials must have a value");
-        }
-    }
-
-    getStoredCredentials(cloud: Cloud) {
-        this.storedCredentialsHelp = 'Retrieving stored credentials...';
-        this.storedCredentials = [];
-        this._profileService.getCredentialsForCloud(cloud.slug)
-            .subscribe(creds => this.storedCredentials = creds.map((c: any) => { c.text = c.name; return c; }),
-            error => this.errorMessage = <any>error,
-            () => { this.storedCredentialsHelp = 'Use Temporary Credentials'; });
-    }
-
-    onCredentialsSelect(creds: Credentials) {
-        if (this.storedCredentials && creds) {
-            creds = this.storedCredentials.filter(c => c.id === creds.id)[0];
-        }
-        (<FormControl>this.applianceLaunchForm.controls['credentials']).setValue(creds);
-        if (creds) {
-            (<FormControl>this.applianceLaunchForm.controls['temporary_credentials']).disable();
         } else {
-            (<FormControl>this.applianceLaunchForm.controls['temporary_credentials']).enable();
+            customRequestOptions.setCloudCredentials(null);
         }
-        this.setRequestCredentials();
     }
-
 
     goBack() {
         window.history.back();
