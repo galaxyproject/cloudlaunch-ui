@@ -42,7 +42,10 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     @Input()
     set cloud(value) {
         this._cloud = value;
-        this.onCloudSelect(value);
+        if (value)
+            this.onCloudSelect(value);
+        else
+            this.cloudLaunchForm.reset();
     }
 
     get cloud() {
@@ -97,8 +100,6 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     }
 
     onCloudSelect(cloud: Cloud) {
-        this.cloudFields = false;
-        setTimeout(() => this.cloudFields = true, 0);
         // Fetch options for the newly selected cloud
         this.getPlacements(cloud);
         this.getInstanceTypes(cloud);
