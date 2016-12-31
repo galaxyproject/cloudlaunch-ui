@@ -106,6 +106,10 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
         this.getKeyPairs(cloud);
         this.getNetworks(cloud);
         this.getStaticIPs(cloud);
+        
+        // Reapply initial config on cloud change
+        this.initialConfig = this.initialConfig;
+
     }
 
     getInstanceTypes(cloud: Cloud) {
