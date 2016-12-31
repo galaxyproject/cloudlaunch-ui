@@ -155,11 +155,11 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
 
 
     onCloudSelect(cloud: any) {
+        this.ng2SelectAdjust(cloud);
         if (this.availableClouds && cloud) {
-            let matching_cloud = this.availableClouds.filter(c => c.slug === cloud.slug);
+            let matching_cloud = this.availableClouds.filter(c => c.slug === cloud.id);
             this.ctrl_cloud.setValue(matching_cloud[0]);
         } else {
-            this.ng2SelectAdjust(cloud);
             this.ctrl_cloud.setValue(cloud);
         }
     }
@@ -173,7 +173,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
 
     ng2SelectAdjust(cloud: Cloud) {
         // Satisfy ng2-select requirements
-        if (cloud) {
+        if (cloud && cloud.slug) {
             cloud.id = cloud.slug;
             cloud.text = cloud.name;
         }
@@ -217,16 +217,18 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
 
     saveEdit() {
         let creds = <any>this.credentials;
+        creds.cloud_id = creds.cloud.id;
+        creds.default = creds.default || false;
 
         if (creds.id) { // Has an id, therefore, it's an existing record
             switch (this.cloud.cloud_type) {
                 case 'aws':
                     this._profileService.saveCredentialsAWS(creds)
-                        .subscribe(result => { this.handleCredentialsChanged(creds); });
+                        .subscribe(result => { this.handleCredentialsChanged(result); });
                     break;
                 case 'openstack':
                     this._profileService.saveCredentialsOpenStack(creds)
-                        .subscribe(result => { this.handleCredentialsChanged(creds); });
+                        .subscribe(result => { this.handleCredentialsChanged(result); });
                     break;
             }
 
@@ -234,11 +236,11 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             switch (this.cloud.cloud_type) {
                 case 'aws':
                     this._profileService.createCredentialsAWS(creds)
-                        .subscribe(result => { this.handleCredentialsChanged(creds); });
+                        .subscribe(result => { this.handleCredentialsChanged(result); });
                     break;
                 case 'openstack':
                     this._profileService.createCredentialsOpenStack(creds)
-                        .subscribe(result => { this.handleCredentialsChanged(creds); });
+                        .subscribe(result => { this.handleCredentialsChanged(result); });
                     break;
             }
         }

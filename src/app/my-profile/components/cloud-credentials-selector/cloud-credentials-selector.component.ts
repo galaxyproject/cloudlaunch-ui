@@ -53,7 +53,7 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     @Input()
     set cloud(cloud: Cloud) {
         this._currentCloud = cloud;
-        this.getStoredCredentials(cloud);
+        this.getStoredCredentials(cloud, null);
     }
     get cloud() { return this._currentCloud; }
     
@@ -145,14 +145,20 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     }
 
     handleTempCredChange(creds: Credentials) {
-        this.ctrl_temporary_credentials.setValue(creds);
+        debugger;
+        if (creds && creds.id) {
+            // Has an id, must have been saved to profile
+            this.getStoredCredentials(creds.cloud, creds);
+        }
+        else
+            this.ctrl_temporary_credentials.setValue(creds);
     }
 
-    getStoredCredentials(cloud: Cloud) {
+    getStoredCredentials(cloud: Cloud, highlight_creds: Credentials) {
         this.storedCredentialsHelp = 'Retrieving stored credentials...';
         this.storedCredentials = [];
         this._profileService.getCredentialsForCloud(cloud.slug)
-            .subscribe(creds => this.processStoredCredentials(creds),
+            .subscribe(creds => this.processStoredCredentials(creds, highlight_creds),
             error => this.errorMessage = <any>error,
             () => { this.storedCredentialsHelp = 'Select Credentials'; });
     }
@@ -164,17 +170,23 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
         return null;
     }
 
-    processStoredCredentials(creds: Credentials[]) {
+    processStoredCredentials(creds: Credentials[], highlight_creds: Credentials) {
         if (creds)
             this.storedCredentials = creds.map((c: any) => { c.text = c.name; return c; });
         if (this.storedCredentials && this.storedCredentials.length > 0) { // Activate the correct tab
             this.ctrl_credentials_type.setValue(CredentialsType.SAVED);
-            let defaultCreds = this.storedCredentials.filter(c => c.default === true);
-            if (defaultCreds)
-                this.ctrl_stored_credentials.setValue(defaultCreds[0]);
+            if (highlight_creds) {
+                highlight_creds.text = highlight_creds.name; // Adjustments to keep ng2 select happy
+                this.ctrl_stored_credentials.setValue(highlight_creds);
+            }
+            else {
+                let defaultCreds = this.storedCredentials.filter(c => c.default === true);
+                if (defaultCreds)
+                    this.ctrl_stored_credentials.setValue(defaultCreds[0]);
+            }
         } else {
             this.ctrl_credentials_type.setValue(CredentialsType.TEMPORARY);
-            this.ctrl_stored_credentials.setValue('');
+            this.ctrl_stored_credentials.patchValue(null);
         }
     }
 
