@@ -51,7 +51,7 @@ export class ApplianceDetailControlComponent implements OnInit {
             'credentials': ['', Validators.required],
             'config_app': this.appConfigForm
         });
-        (<FormControl>this.applianceLaunchForm.controls['credentials']).valueChanges.subscribe(data => { this.setRequestCredentials(); });
+        (<FormControl>this.applianceLaunchForm.controls['credentials']).valueChanges.subscribe(creds => { this.setRequestCredentials(creds); });
     }
 
     ngOnInit() {

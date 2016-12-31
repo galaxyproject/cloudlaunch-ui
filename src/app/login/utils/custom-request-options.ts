@@ -28,8 +28,8 @@ export class CustomRequestOptions extends BaseRequestOptions {
                     break;
                 case 'aws':
                     let aws_creds = <AWSCredentials>this.credentials;
-                    options.headers.set('cl-aws-access_key', aws_creds.access_key);
-                    options.headers.set('cl-aws-secret_key', aws_creds.secret_key);
+                    options.headers.set('cl-aws-access-key', aws_creds.access_key);
+                    options.headers.set('cl-aws-secret-key', aws_creds.secret_key);
                     break;
             }
         }
