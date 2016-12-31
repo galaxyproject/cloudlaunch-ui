@@ -51,7 +51,7 @@ export class ApplianceDetailControlComponent implements OnInit {
             'credentials': ['', Validators.required],
             'config_app': this.appConfigForm
         });
-        (<FormControl>this.applianceLaunchForm.controls['credentials']).registerOnChange(this.setRequestCredentials);
+        (<FormControl>this.applianceLaunchForm.controls['credentials']).valueChanges.subscribe(data => { this.setRequestCredentials(); });
     }
 
     ngOnInit() {
@@ -77,18 +77,14 @@ export class ApplianceDetailControlComponent implements OnInit {
     onCloudSelect(cloud: any) {
         this._targetCloud = this.clouds.filter(c => { return c.id === cloud.id })[0];
         (<FormControl>this.applianceLaunchForm.controls['target_cloud']).setValue(cloud.id);
+        (<FormControl>this.applianceLaunchForm.controls['credentials']).patchValue(null);
         this.selectedAppCloudConfig = this.selectedVersion.cloud_config.filter(v => { return v.cloud.slug === cloud.id; })[0];
     }
 
     /* Set global request credentials based on user entered data */
-    setRequestCredentials() {
+    setRequestCredentials(creds: Credentials) {
         let customRequestOptions = <CustomRequestOptions>this._requestOptions;
-        let existingCreds = (<FormControl>this.applianceLaunchForm.controls['credentials']);
-        if (existingCreds.value) {
-            customRequestOptions.setCloudCredentials(existingCreds.value);
-        } else {
-            customRequestOptions.setCloudCredentials(null);
-        }
+        customRequestOptions.setCloudCredentials(creds);
     }
 
     goBack() {
