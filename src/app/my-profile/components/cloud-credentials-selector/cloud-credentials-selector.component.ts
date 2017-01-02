@@ -145,7 +145,6 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     }
 
     handleTempCredChange(creds: Credentials) {
-        debugger;
         if (creds && creds.id) {
             // Has an id, must have been saved to profile
             this.getStoredCredentials(creds.cloud, creds);
