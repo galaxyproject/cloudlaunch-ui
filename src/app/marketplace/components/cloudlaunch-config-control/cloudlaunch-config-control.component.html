@@ -18,6 +18,36 @@
     </div>
 
     <div *ngIf="showAdvanced">
+        <!-- Root volume type selection -->
+       <div class="form-group">
+          <label>Root Volume Storage</label>
+          <div class="radio">
+             <label>
+                <input type="radio" value='instance' formControlName="rootStorageType" />
+                Instance Storage
+             </label>
+          </div>
+          <div class="radio">
+             <label>
+                <input type="radio" value='volume' formControlName="rootStorageType" />
+                Volume Storage
+             </label>
+          </div>
+       </div>
+
+       <!-- Root storage size -->
+       <div class="form-group" *ngIf="rootStorageType.value=='volume'">
+          <label for="id_storage_size" class="control-label">
+             Root volume size
+          </label>
+          <input type="number" class="form-control input-md" formControlName="rootStorageSize" />
+          <span class="help-block">
+             How big should the root volume be?
+          </span>
+          <span class="material-input"></span>
+       </div>
+        
+        
         <!-- Placement selection -->
         <div class="form-group">
             <label for="id_placement" class="control-label"> In which placement zone

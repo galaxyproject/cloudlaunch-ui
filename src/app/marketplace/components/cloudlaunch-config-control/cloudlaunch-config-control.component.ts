@@ -73,6 +73,9 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     subnetsHelp: string = this.CLOUD_SELECTION_HELP;
     staticIPs: StaticIP[] = [];
     staticIPHelp: string = this.CLOUD_SELECTION_HELP;
+    
+    // Form Controls
+    rootStorageType = new FormControl('instance', Validators.required);
 
     get form(): FormGroup {
         return this.cloudLaunchForm;
@@ -87,6 +90,8 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
         super(fb, parentContainer);
         this.cloudLaunchForm = fb.group({
             'instanceType': ['', Validators.required],
+            'rootStorageType': this.rootStorageType,
+            'rootStorageSize': [''],
             'placementZone': [''],
             'keyPair': [''],
             'network': [''],
