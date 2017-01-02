@@ -54,6 +54,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     @Input()
     set credentials(creds: Credentials) {
         if (creds) {
+            this.ctrl_creds.patchValue(creds);
             this.credentialsForm.patchValue(creds);
             if (creds.cloud) {
                 this.onCloudSelect(creds.cloud);
@@ -124,10 +125,10 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     // Begin: implementation of Validator interface
     public validate(c: FormControl) {
         // Delegate to form
-        if (this.credentialsForm.valid) {
+        if (this.credentialsForm.disabled || this.credentialsForm.valid) {
             return null;
         } else {
-            return { 'credentials': 'invalid' };
+            return { 'credentials_editor': 'invalid' };
         }
     }
 

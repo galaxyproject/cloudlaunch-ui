@@ -105,11 +105,14 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     // Begin: implementation of Validator interface
     public validate(c: FormControl) {
         // Delegate to form
-        if (this.credentialsSelectionForm.valid) {
+        if (this.ctrl_credentials_type.value == CredentialsType.SAVED &&
+            this.ctrl_stored_credentials.valid)
             return null;
-        } else {
-            return { 'credentials': 'invalid' };
-        }
+        else if (this.ctrl_credentials_type.value == CredentialsType.TEMPORARY &&
+            this.ctrl_temporary_credentials.valid)
+            return null;
+        else
+            return { 'credentials_selector': 'invalid' };
     }
 
     // End: implementation of Validator interface

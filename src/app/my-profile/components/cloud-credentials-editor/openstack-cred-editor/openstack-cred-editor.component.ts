@@ -77,10 +77,10 @@ export class OpenStackCredEditorComponent implements ControlValueAccessor, Valid
     // Begin: implementation of Validator interface
     public validate(c: FormControl) {
         // Delegate to form
-        if (this.openstackCredentialsForm.valid) {
+        if (this.openstackCredentialsForm.disabled || this.openstackCredentialsForm.valid) {
             return null;
         } else {
-            return { 'credentials': 'invalid' };
+            return { 'openstack_credentials': 'invalid' };
         }
     }
     // End: implementation of Validator interface

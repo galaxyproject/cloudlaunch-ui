@@ -77,10 +77,10 @@ export class AWSCredEditorComponent implements ControlValueAccessor, Validator {
     // Begin: implementation of Validator interface
     public validate(c: FormControl) {
         // Delegate to form
-        if (this.awsCredentialsForm.valid) {
+        if (this.awsCredentialsForm.disabled || this.awsCredentialsForm.valid) {
             return null;
         } else {
-            return { 'credentials': 'invalid' };
+            return { 'aws_credentials': 'invalid' };
         }
     }
     // End: implementation of Validator interface
