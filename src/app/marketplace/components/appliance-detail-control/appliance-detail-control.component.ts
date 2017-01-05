@@ -14,7 +14,7 @@ import { Credentials } from '../../../shared/models/profile';
 //Services
 import { ApplicationService } from '../../../shared/services/application.service';
 import { DeploymentService } from '../../../shared/services/deployment.service';
-import { ProfileService } from '../../../shared/services/profile.service';
+import { LoginService } from '../../../login/services/login/login.service';
 
 
 @Component({
@@ -40,7 +40,7 @@ export class ApplianceDetailControlComponent implements OnInit {
         private _router: Router,
         private _applicationService: ApplicationService,
         private _deploymentService: DeploymentService,
-        private _profileService: ProfileService,
+        private _loginService: LoginService,
         private _requestOptions: RequestOptions
         ) {
         this.appConfigForm = fb.group({});
@@ -56,7 +56,8 @@ export class ApplianceDetailControlComponent implements OnInit {
 
     ngOnInit() {
         // Generate a default name for the deployment
-        (<FormControl>this.applianceLaunchForm.controls['name']).setValue(this.application.slug + "-" + new Date().toJSON());
+        let deployment_name = this._loginService.getCurrentUser().username + "'s-" + this.application.slug + "-" + new Date().toJSON(); 
+        (<FormControl>this.applianceLaunchForm.controls['name']).setValue(deployment_name);
     }
 
     getApplicationVersions() {
