@@ -48,17 +48,19 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     ctrl_name: FormControl = new FormControl(null, Validators.required);
     ctrl_default: FormControl = new FormControl(null);
     ctrl_cloud: FormControl = new FormControl(null, Validators.required);
-    ctrl_creds: FormControl = new FormControl(null, Validators.required);
+    ctrl_aws_creds: FormControl = new FormControl(null, Validators.required);
+    ctrl_openstack_creds: FormControl = new FormControl(null, Validators.required);
 
 
     @Input()
     set credentials(creds: Credentials) {
         if (creds) {
-            this.ctrl_creds.patchValue(creds);
-            this.credentialsForm.patchValue(creds);
-            if (creds.cloud) {
+            if (!this.cloud && creds.cloud) {
                 this.onCloudSelect(creds.cloud);
             }
+            this.ctrl_creds.patchValue(creds);
+            this.credentialsForm.patchValue(creds);
+            
         } else {
             this.credentialsForm.patchValue(new Credentials());
         }
@@ -92,6 +94,18 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     
     @Output()
     onCredentialsChanged = new EventEmitter<Credentials>();
+    
+    get ctrl_creds() : FormControl {
+        let cloud_type = "";
+        if (this.cloud)
+            cloud_type = this.cloud.cloud_type;
+        if (cloud_type == "aws")
+            return this.ctrl_aws_creds;
+        else if (cloud_type == "openstack")
+            return this.ctrl_openstack_creds;
+        else
+            return new FormControl(null, Validators.required);
+    }
     
 
     // implementation of ControlValueAccessor
@@ -163,6 +177,9 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         } else {
             this.ctrl_cloud.setValue(cloud);
         }
+        this.saveIsPressed = false;
+        this.useCredsIsPressed = false;
+        this.credentialsForm.setControl('credentials', this.ctrl_creds);
     }
 
     getSelectedCloud() {

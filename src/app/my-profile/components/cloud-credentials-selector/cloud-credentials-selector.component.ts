@@ -83,7 +83,6 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
             this.ctrl_credentials_type.setValue(CredentialsType.TEMPORARY);
             this.ctrl_temporary_credentials.patchValue(obj);
         }
-        //this.credentials = obj;
     }
 
     public registerOnChange(fn: any) {
