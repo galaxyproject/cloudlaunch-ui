@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { ClipboardModule } from 'ngx-clipboard';
+
 import { LayoutModule } from '../shared/layout.module';
 import { MyAppliancesRoutingModule } from './my-appliances-routing.module';
 
@@ -18,6 +20,7 @@ import { DeploymentService } from '../shared/services/deployment.service';
         CommonModule,
         FormsModule,
         LayoutModule,
+        ClipboardModule,
         MyAppliancesRoutingModule
     ],
     declarations: [MyAppliancesPageComponent, DeploymentsComponent],
