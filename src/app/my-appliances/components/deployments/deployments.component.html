@@ -38,7 +38,7 @@
                     </div>
                 </td>
                 <td>{{  calculateUptime(deploy, currentTimer | async) }}</td>
-                <td><a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.applicationURL }}" target="_blank">{{ deploy.task_result?.cloudLaunch?.applicationURL }}</a></td>
+                <td><a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.instancePublicIP }}" target="_blank">{{ deploy.task_result?.cloudLaunch?.instancePublicIP }}</a></td>
             </tr>
         </tbody>
     </table>
