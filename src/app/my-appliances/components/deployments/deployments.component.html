@@ -42,13 +42,14 @@
                     <a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.applicationURL }}" target="_blank">
                         <span #inputTarget>{{ deploy.task_result?.cloudLaunch?.applicationURL }}</span>
                     </a>
+                    <br/><button *ngIf=deploy.task_result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
                 </td>
                 <td *ngIf="!deploy.task_result?.cloudLaunch?.applicationURL">
                     <a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.publicIP }}" target="_blank">
                         <span #inputTarget>{{ deploy.task_result?.cloudLaunch?.publicIP }}</span>
                     </a>
+                    <br/><button *ngIf=deploy.task_result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
                 </td>
-                <button *ngIf=deploy.task_result?.cloudLaunch?.instancePublicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
             </tr>
         </tbody>
     </table>
