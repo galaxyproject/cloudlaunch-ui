@@ -38,12 +38,17 @@
                     </div>
                 </td>
                 <td>{{  calculateUptime(deploy, currentTimer | async) }}</td>
-                <td>
-                    <a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.instancePublicIP }}" target="_blank">
-                        <span #inputTarget>{{ deploy.task_result?.cloudLaunch?.instancePublicIP }}</span>
+                <td *ngIf="deploy.task_result?.cloudLaunch?.applicationURL">
+                    <a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.applicationURL }}" target="_blank">
+                        <span #inputTarget>{{ deploy.task_result?.cloudLaunch?.applicationURL }}</span>
                     </a>
-                        <button *ngIf=deploy.task_result?.cloudLaunch?.instancePublicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
                 </td>
+                <td *ngIf="!deploy.task_result?.cloudLaunch?.applicationURL">
+                    <a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.publicIP }}" target="_blank">
+                        <span #inputTarget>{{ deploy.task_result?.cloudLaunch?.publicIP }}</span>
+                    </a>
+                </td>
+                <button *ngIf=deploy.task_result?.cloudLaunch?.instancePublicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
             </tr>
         </tbody>
     </table>
