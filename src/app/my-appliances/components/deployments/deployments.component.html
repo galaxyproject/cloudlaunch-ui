@@ -3,9 +3,9 @@
         <thead>
             <tr>
                 <th class="col-md-1"><p></p></th>
-                <th class="col-md-6"><p> Name </p></th>
+                <th class="col-md-5"><p> Name </p></th>
                 <th class="col-md-2"><p> Status</p></th>
-                <th class="col-md-1"><p> Time since created</p></th>
+                <th class="col-md-2"><p> Time since created</p></th>
                 <th class="col-md-2"><p> Access URL</p></th>
             </tr>
         </thead>
@@ -14,9 +14,17 @@
                 <td><img src="{{ deploy.app_version_details?.application?.icon_url }}"  style="max-width: 64px; max-height: 64px;" /></td>
                 <td>
                     <p><strong>{{ deploy.name }}</strong></p>
-                    <p><span class="text-muted">Application:</span> {{ deploy.app_version_details?.application?.name }}
-                    <br /><span class="text-muted">Version:</span> {{ deploy.app_version_details?.version }}
-                    <br /><span class="text-muted">Cloud:</span> {{ deploy.target_cloud }}</p>
+                    <p>
+                    <span class="col-xs-12 col-md-6">
+                        <span class="text-muted">Appliance:</span> {{ deploy.app_version_details?.application?.name }}
+                    </span>
+                    <span class="col-xs-12 col-md-6">
+                        <span class="text-muted">Version:</span> {{ deploy.app_version_details?.version }}
+                    </span><br />
+                    <span class="col-xs-12 col-md-12">
+                        <span class="text-muted">Cloud:</span> {{ deploy.target_cloud }}
+                    </span>
+                    </p>
                 </td>
                 <td class="text-left">
                     <div [ngSwitch]="deploy.task_status.status">
