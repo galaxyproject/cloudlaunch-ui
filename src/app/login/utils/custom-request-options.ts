@@ -24,7 +24,9 @@ export class CustomRequestOptions extends BaseRequestOptions {
                     let os_creds = <OpenStackCredentials>this.credentials;
                     options.headers.set('cl-os-username', os_creds.username);
                     options.headers.set('cl-os-password', os_creds.password);
-                    options.headers.set('cl-os-tenant-name', os_creds.tenant_name);
+                    options.headers.set('cl-os-project-name', os_creds.project_name);
+                    options.headers.set('cl-os-project-domain-name', os_creds.project_domain_name);
+                    options.headers.set('cl-os-user-domain-name', os_creds.user_domain_name);
                     break;
                 case 'aws':
                     let aws_creds = <AWSCredentials>this.credentials;

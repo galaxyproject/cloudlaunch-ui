@@ -16,7 +16,6 @@ export class AWSCredentials extends Credentials {
 export class OpenStackCredentials extends Credentials {
     username: string;
     password: string;
-    tenant_name: string;
     project_name: string;
     project_domain_name: string;
     user_domain_name: string;

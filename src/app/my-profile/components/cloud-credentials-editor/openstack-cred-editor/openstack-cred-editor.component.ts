@@ -40,7 +40,9 @@ export class OpenStackCredEditorComponent implements ControlValueAccessor, Valid
     // Form Controls
     username: FormControl = new FormControl(null, Validators.required);
     password: FormControl = new FormControl(null, Validators.required);
-    tenant_name: FormControl = new FormControl(null, Validators.required);
+    project_name: FormControl = new FormControl(null, Validators.required);
+    project_domain_name: FormControl = new FormControl(null);
+    user_domain_name: FormControl = new FormControl(null);
 
     // Begin: implementation of ControlValueAccessor
 
@@ -91,7 +93,9 @@ export class OpenStackCredEditorComponent implements ControlValueAccessor, Valid
         this.openstackCredentialsForm = fb.group({
             'username': this.username,
             'password': this.password,
-            'tenant_name': this.tenant_name,
+            'project_name': this.project_name,
+            'project_domain_name': this.project_domain_name,
+            'user_domain_name': this.user_domain_name,
         });
         this.openstackCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
     }
