@@ -30,6 +30,8 @@ const CREDENTIALS_CONTROL_VALIDATOR = {
     multi: true
 };
 
+declare type FileParserCallback = (string, CloudCredentialsEditorComponent) => void;
+
 @Component({
     selector: 'cloud-credentials-editor',
     templateUrl: './cloud-credentials-editor.component.html',
@@ -158,7 +160,6 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             'cloud': this.ctrl_cloud,
             'credentials': this.ctrl_creds
         });
-        //this.credentialsForm.valueChanges.subscribe(data => { this.handleCredentialsChanged(this.formDataToCredentials(data)); });
     }
 
     ngOnInit() {
@@ -232,6 +233,73 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             this.handleCredentialsChanged(this.credentialsForm.value);
         }
     }
+    
+    // BEGIN: Credential File Parsing Functions
+
+    loadCredentialsFromFile($event: Event) {
+        let parserFunc: FileParserCallback;
+        if (this.cloud && this.cloud.cloud_type) {
+            if (this.cloud.cloud_type == "openstack")
+                parserFunc = this.parseOpenstackCreds;
+            else if (this.cloud.cloud_type == "aws")
+                parserFunc = this.parseAWSCreds;
+        }        
+        this.readCredentialsFile((<HTMLInputElement>$event.target).files[0], parserFunc);
+    }
+    
+    readCredentialsFile(file: File, parserFunc: FileParserCallback) : void {
+        var reader: FileReader = new FileReader();
+        
+        let self = this;
+
+        reader.onloadend = function(e) { parserFunc(reader.result, self); }
+        reader.onerror = function(e) { console.log(e); }
+        reader.readAsText(file);
+    }
+    
+    static extractValueByKey(key: string, content: string) : string {
+        /* Regex description:
+        Match the key, value part of a string like
+        export OS_TENANT_NAME="<value>" or
+        AWS_ACCESS_KEY: "<value>"
+        
+        With the result being <value>, without quotes.
+        
+        Begins by matching full text of keyname, followed by optional = or : symbols,
+        followed by an optional whitespace, followed by an optional capture group (1)
+        for the double quote, followed by any text other than doule-quotes. $ symbols
+        and new lines, followed by capture group (1) again if it existed (this make
+         sure that either both beginning and ending double-quotes are present, or
+        none are). The value corresponding to the key will end up in match group 2.
+        */
+        let regex = new RegExp(key + '[=:]\\s?(")?([^"\\n\\$]+)\\1?');
+        let match = regex.exec(content);
+        if (match)
+            return match[2];
+        else
+            return null;
+    }
+    
+    parseOpenstackCreds(content: string, editor: CloudCredentialsEditorComponent) {
+        let creds = {
+            'project_name': CloudCredentialsEditorComponent.extractValueByKey("OS_PROJECT_NAME", content) ||
+                CloudCredentialsEditorComponent.extractValueByKey("OS_TENANT_NAME", content),
+            'username': CloudCredentialsEditorComponent.extractValueByKey("OS_USERNAME", content),
+            'password': CloudCredentialsEditorComponent.extractValueByKey("OS_PASSWORD", content),
+            'user_domain_name': CloudCredentialsEditorComponent.extractValueByKey("OS_USER_DOMAIN_NAME", content),
+            'project_domain_name': CloudCredentialsEditorComponent.extractValueByKey("OS_PROJECT_DOMAIN_NAME", content)
+        }
+        editor.ctrl_openstack_creds.patchValue(creds);
+    }
+    
+    parseAWSCreds(content: string, editor: CloudCredentialsEditorComponent) {
+        let creds = {
+            'access_key': CloudCredentialsEditorComponent.extractValueByKey("ACCESS_KEY", content),
+            'secret_key': CloudCredentialsEditorComponent.extractValueByKey("SECRET_KEY", content)
+        }
+        editor.ctrl_aws_creds.patchValue(creds);
+    }
+    // END: Credential File Parsing Functions
 
     saveEdit() {
         let creds = <any>this.credentials;
