@@ -29,8 +29,12 @@
                 <td class="text-left">
                     <div [ngSwitch]="deploy.task_status.status">
                       <p *ngSwitchCase="'SUCCESS'" class="text-success">SUCCESS</p>
-                      <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE</p>
-                      <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE</p>
+                      <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE
+                         <br />{{ deploy.task_status?.result?.exc_message }}
+                      </p>
+                      <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE
+                         <br />{{ deploy.task_status?.result?.exc_message }}
+                      </p>
                       <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
                       <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
                         <br />{{ deploy.task_status?.result?.action }}
