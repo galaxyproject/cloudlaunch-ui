@@ -13,8 +13,6 @@ import {
 // models
 import { Cloud } from '../../../../shared/models/cloud';
 
-// services
-import { CloudService } from '../../../../shared/services/cloud.service';
 
 const AWS_CREDENTIALS_CONTROL_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
@@ -35,7 +33,6 @@ const AWS_CREDENTIALS_CONTROL_VALIDATOR = {
 })
 export class AWSCredEditorComponent implements ControlValueAccessor, Validator {
     awsCredentialsForm: FormGroup;
-    availableClouds: Cloud[];
 
     // Form Controls
     access_key: FormControl = new FormControl(null, Validators.required);
@@ -85,9 +82,7 @@ export class AWSCredEditorComponent implements ControlValueAccessor, Validator {
     }
     // End: implementation of Validator interface
 
-    constructor(
-        private _cloudService: CloudService,
-        fb: FormBuilder) {
+    constructor(fb: FormBuilder) {
         this.awsCredentialsForm = fb.group({
             'access_key': this.access_key,
             'secret_key': this.secret_key

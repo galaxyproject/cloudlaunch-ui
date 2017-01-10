@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -13,8 +13,6 @@ import {
 // models
 import { Cloud } from '../../../../shared/models/cloud';
 
-// services
-import { CloudService } from '../../../../shared/services/cloud.service';
 
 const OPENSTACK_CREDENTIALS_CONTROL_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
@@ -35,7 +33,8 @@ const OPENSTACK_CREDENTIALS_CONTROL_VALIDATOR = {
 })
 export class OpenStackCredEditorComponent implements ControlValueAccessor, Validator {
     openstackCredentialsForm: FormGroup;
-    availableClouds: Cloud[];
+
+    @Input() cloud: Cloud;
 
     // Form Controls
     username: FormControl = new FormControl(null, Validators.required);
@@ -87,9 +86,7 @@ export class OpenStackCredEditorComponent implements ControlValueAccessor, Valid
     }
     // End: implementation of Validator interface
 
-    constructor(
-        private _cloudService: CloudService,
-        fb: FormBuilder) {
+    constructor(fb: FormBuilder) {
         this.openstackCredentialsForm = fb.group({
             'username': this.username,
             'password': this.password,
