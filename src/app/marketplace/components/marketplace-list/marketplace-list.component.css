@@ -1,13 +1,16 @@
 .cl-app-badge {
 	padding: 10px;
-	cursor: pointer;
 	height: 90px;
 	vertical-align: middle;
-	box-shadow: 0 0 6px 2px #e6e6e6;
 }
 
-.cl-app-badge:hover {
-	background-color: #e6e6e6;
+.list-group-item {
+    cursor: pointer;
+	
+}
+
+.list-group-item:hover {
+    background-color: #e6e6e6;
 }
 
 .cl-banner {
@@ -21,3 +24,21 @@
 	display: table-cell;
 	vertical-align: middle;
 }
+
+.row-height {
+  display: table;
+  table-layout: fixed;
+  height: 100%;
+  width: 100%;
+}
+.col-height {
+  display: table-cell;
+  float: none;
+  height: 100%;
+  vertical-align: top;
+}
+
+.full-height {
+    height: 100%;
+}
+

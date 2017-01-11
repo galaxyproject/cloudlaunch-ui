@@ -1,13 +1,39 @@
-<div class="list-group">
-	<div *ngFor="let app of apps" [routerLink]="['appliance', app.slug]" class="col-md-4 list-group">
-		<div class="list-group-item cl-app-badge">
-			<div class="row-picture">
-				<img class="circle" src="{{ app.icon_url }}" alt="Logo">
-			</div>
-			<div class="row-content">
-				<h4 class="list-group-item-heading">{{ app.name }}</h4>
-				<p class="list-group-item-text">{{ app.summary }}</p>
-			</div>
-		</div>
-	</div>
+<div class="row">
+    <div class="row-height">
+        <div class="col-lg-6 col-md-6 col-height">
+            <ul class="list-group">
+                <ng-container *ngFor="let app of apps">
+                	<li class="list-group-item" [routerLink]="['appliance', app.slug]" (mouseenter)="currentApp = app">
+                        <div class="row-action-primary cl-app-badge">
+                		  <img class="circle" src="{{ app.icon_url }}" alt="Logo">
+                        </div>
+                		<div class="row-content">
+                		    <h4 class="list-group-item-heading">{{ app.name }}</h4>
+                			<p class="list-group-item-text">{{ app.summary }}</p>
+                        </div>
+                	</li>
+                    <div class="list-group-separator"></div>
+                </ng-container>
+            </ul>
+        </div>
+        <div class="col-lg-6 col-md-6 col-height">
+            <div class="panel panel-info full-height" *ngIf="currentApp">
+                <div class="panel-heading">{{ currentApp.name }}</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ currentApp.description }}
+                            <br /><br />
+                        </div>
+                        <div class="col-md-6">
+                            <span class="text-muted">Maintainer:</span> {{ currentApp.maintainer }}
+                        </div>
+                        <div class="col-md-6">
+                            <span class="text-muted">Support URL:</span> <a href="{{ currentApp.info_url }}"> {{ currentApp.info_url }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
