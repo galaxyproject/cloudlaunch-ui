@@ -1,12 +1,13 @@
 /* Global config panel styles to make fonts proportionate */
 config-panel h3 {
-	font-size: 200%;
+	font-size: 150%;
 }
 
 config-panel config-panel h3 {
-	font-size: 150%;
+	font-size: 125%;
 }
 
 config-panel config-panel config-panel h3 {
 	font-size: 100%;
 }
+

@@ -1,20 +1,25 @@
 <div>
-    <div class="form" [formGroup]="awsCredentialsForm">
+    <div class=form [formGroup]="awsCredentialsForm">
 
-        <!-- Access Key -->
-        <div class="form-group is-empty">
-            <label for="id_access_key" class="control-label">Access Key</label> <input id="id_access_key"
-                name="access_key" type="text" class="form-control input-md" formControlName="access_key">
-            <span class="help-block"> Your AWS Access Key </span>
-            <span class="material-input"></span>
-        </div>
-
-        <!-- Secret Key -->
-        <div class="form-group is-empty">
-            <label for="id_secret_key" class="control-label">Secret Key</label> <input id="id_secret_key"
-                name="secret_key" type="password" class="form-control input-md" formControlName="secret_key">
-            <span class="help-block"> Your AWS Secret Key </span>
-            <span class="material-input"></span>
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Access Key -->
+                <div class="form-group is-empty">
+                    <label for="id_access_key" class="control-label">Access Key</label> <input id="id_access_key"
+                        name="access_key" type="text" class="form-control input-md" formControlName="access_key">
+                    <span class="help-block"> Your AWS Access Key </span>
+                    <span class="material-input"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Secret Key -->
+                <div class="form-group is-empty">
+                    <label for="id_secret_key" class="control-label">Secret Key</label> <input id="id_secret_key"
+                        name="secret_key" type="password" class="form-control input-md" formControlName="secret_key">
+                    <span class="help-block"> Your AWS Secret Key </span>
+                    <span class="material-input"></span>
+                </div>
+            </div>
         </div>
 
     </div>

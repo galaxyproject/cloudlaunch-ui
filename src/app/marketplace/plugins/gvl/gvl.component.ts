@@ -13,8 +13,8 @@ import { BasePluginComponent } from '../base-plugin.component';
     inputs: ['initialConfig']
 })
 export class GVLConfigComponent extends BasePluginComponent {
-
     gvlLaunchForm: FormGroup;
+    showAdvanced: boolean = false;
 
     get form(): FormGroup {
         return this.gvlLaunchForm;
@@ -30,5 +30,9 @@ export class GVLConfigComponent extends BasePluginComponent {
             'gvl_cmdline_utilities': [''],
             'smrt_portal': ['']
         });
+    }
+    
+    toggleAdvanced() {
+        this.showAdvanced = !this.showAdvanced;
     }
 }

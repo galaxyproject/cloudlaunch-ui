@@ -1,11 +1,20 @@
 <config-panel>
+    <panel-header>GVL Settings</panel-header>
     <panel-body>
         <div [formGroup]="form">
-            <!--  GVL Component Selection -->
+            <!--  CloudMan settings -->
+            <cloudman-config [initialConfig]="initialConfig.config_gvl"></cloudman-config>
+            
             <config-panel>
-                <panel-header>GVL Settings</panel-header>
+                <panel-header>Additional GVL Settings</panel-header>
                 <panel-body>
-                    <div class="form-group">
+                    <div class="togglebutton">
+                      <label>
+                         <input type="checkbox" (click)="toggleAdvanced()">Advanced options
+                      </label>
+                   </div>
+                    <!--  GVL Component Selection -->
+                    <div class="form-group" *ngIf="showAdvanced">
                         <label>Auto-start the selected applications</label>
                         <div class="checkbox">
                             <label>
@@ -23,10 +32,8 @@
                         </div>
                     </div>
                 </panel-body>
+            
             </config-panel>
-
-            <!--  CloudMan settings -->
-            <cloudman-config [initialConfig]="initialConfig.config_gvl"></cloudman-config>
         </div>
     </panel-body>
 </config-panel>

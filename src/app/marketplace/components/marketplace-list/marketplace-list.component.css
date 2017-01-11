@@ -42,3 +42,13 @@
     height: 100%;
 }
 
+.bottom-align {
+	position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+.banner-image {
+    max-height: 64px;
+    max-width: 256px;
+    display: table;
+}
