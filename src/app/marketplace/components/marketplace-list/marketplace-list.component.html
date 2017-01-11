@@ -25,11 +25,14 @@
                             {{ currentApp.description }}
                             <br /><br />
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <span class="text-muted">Maintainer:</span> {{ currentApp.maintainer }}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <span class="text-muted">Support URL:</span> <a href="{{ currentApp.info_url }}"> {{ currentApp.info_url }}</a>
+                        </div>
+                        <div class="col-md-12">
+                            <span class="text-muted">Added:</span> <a href="{{ currentApp.added }}"> {{ currentApp.added | date }}</a>
                         </div>
                         <div class="col-md-12 bottom-align">
                             <img class="banner-image pull-right" src="{{ currentApp.icon_url }}" />
