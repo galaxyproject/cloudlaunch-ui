@@ -37,6 +37,7 @@
                             <ng-select id="target_version"
                               [items]="getApplicationVersions()"
                               (selected)="onVersionSelect($event)"
+                              [active]="getSelectedVersion()"
                               placeholder="No version selected">
                             </ng-select>
                         </div>
@@ -48,6 +49,7 @@
                             <ng-select id="target_cloud"
                               [items]="clouds"
                               (selected)="onCloudSelect($event)"
+                              [active]="getSelectedCloud()"
                               placeholder="No cloud selected">
                             </ng-select>
                         </div>

@@ -13,6 +13,7 @@ export interface ApplicationVersion {
     cloud_config: ApplicationVersionCloudConfig[];
     frontend_component_path: string;
     frontend_component_name: string;
+    default_cloud: string;
 }
 
 export interface Application {
@@ -24,4 +25,5 @@ export interface Application {
     info_url: string;
     icon_url: string;
     versions: ApplicationVersion[];
+    default_version: string;
 }
