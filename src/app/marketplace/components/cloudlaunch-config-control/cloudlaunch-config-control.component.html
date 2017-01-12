@@ -13,10 +13,12 @@
                     [placeholder]="instanceTypeHelp"> </ng-select>
             </div>
         
-            <div class="togglebutton">
-                <label> <input name="toggleAdvancedOptions" type="checkbox"
-                    (click)="toggleAdvanced()">Advanced options
-                </label>
+            <div class="form-group label-floating is-empty">
+                <div class="togglebutton">
+                    <label> <input name="toggleAdvancedOptions" type="checkbox"
+                        (click)="toggleAdvanced()">Advanced options
+                    </label>
+                </div>
             </div>
         
             <div *ngIf="showAdvanced">

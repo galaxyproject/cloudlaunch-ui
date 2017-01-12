@@ -11,33 +11,27 @@
                             aria-hidden="true"></span> <span class="sr-only">Error:</span> {{ errorMessage }}
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="id_target_version" class="control-label">
-                                    Which version of this appliance would you like to launch?
-                                </label>
-                                <ng-select id="target_version"
-                                  [items]="getApplicationVersions()"
-                                  (selected)="onVersionSelect($event)"
-                                  [active]="getSelectedVersion()"
-                                  placeholder="No version selected">
-                                </ng-select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group" *ngIf="applianceLaunchForm.value['application_version']">
-                                <label for="id_target_cloud" class="control-label">
-                                    On which cloud would you like to launch your appliance?
-                                </label>
-                                <ng-select id="target_cloud"
-                                  [items]="clouds"
-                                  (selected)="onCloudSelect($event)"
-                                  [active]="getSelectedCloud()"
-                                  placeholder="No cloud selected">
-                                </ng-select>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="id_target_version" class="control-label">
+                            Which version of this appliance would you like to launch?
+                        </label>
+                        <ng-select id="target_version"
+                          [items]="getApplicationVersions()"
+                          (selected)="onVersionSelect($event)"
+                          [active]="getSelectedVersion()"
+                          placeholder="No version selected">
+                        </ng-select>
+                    </div>
+                    <div class="form-group" *ngIf="applianceLaunchForm.value['application_version']">
+                        <label for="id_target_cloud" class="control-label">
+                            On which cloud would you like to launch your appliance?
+                        </label>
+                        <ng-select id="target_cloud"
+                          [items]="clouds"
+                          (selected)="onCloudSelect($event)"
+                          [active]="getSelectedCloud()"
+                          placeholder="No cloud selected">
+                        </ng-select>
                     </div>
                     
                     <!-- Credentials selection -->
@@ -55,6 +49,10 @@
                                 Provide a name for your deployment
                             </label>
                             <input id="id_deployment_name" name="name" type="text" class="form-control input-md" formControlName="name">
+                            <span class="help-block">
+                                 A deployment name helps to identify your appliance
+                              </span>
+                              <span class="material-input"></span>
                         </div>
                     
                         <div class="form-group" [formGroup]="appConfigForm">
