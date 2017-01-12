@@ -36,13 +36,4 @@ export class GVLConfigComponent extends BasePluginComponent {
     toggleAdvanced() {
         this.showAdvanced = !this.showAdvanced;
     }
-    
-    getPasswordControl(): FormControl {
-        if (this.form.contains('config_cloudman')) {
-           let control = this.form.controls['config_cloudman'].controls['clusterPassword'];
-           return control;
-        }
-        else
-            return new FormControl(null);
-    }
 }
