@@ -3,7 +3,7 @@
    <panel-body>
       <div [formGroup]="form">
            <!-- Access password -->
-           <div class="form-group label-floating is-empty">
+           <div class="form-group label-floating is-empty" *ngIf="!hidePassword">
               <label for="id_password" class="control-label">Access password</label>
               <input id="id_password" type="password"
                  class="form-control input-md"

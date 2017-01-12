@@ -15,6 +15,7 @@ import { BasePluginComponent } from '../base-plugin.component';
 export class GVLConfigComponent extends BasePluginComponent {
     gvlLaunchForm: FormGroup;
     showAdvanced: boolean = false;
+    gvlPasswordControl: FormControl = new FormControl(null, Validators.required);
 
     get form(): FormGroup {
         return this.gvlLaunchForm;
@@ -34,5 +35,14 @@ export class GVLConfigComponent extends BasePluginComponent {
     
     toggleAdvanced() {
         this.showAdvanced = !this.showAdvanced;
+    }
+    
+    getPasswordControl(): FormControl {
+        if (this.form.contains('config_cloudman')) {
+           let control = this.form.controls['config_cloudman'].controls['clusterPassword'];
+           return control;
+        }
+        else
+            return new FormControl(null);
     }
 }

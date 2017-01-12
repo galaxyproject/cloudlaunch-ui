@@ -2,38 +2,55 @@
     <panel-header>GVL Settings</panel-header>
     <panel-body>
         <div [formGroup]="form">
-            <!--  CloudMan settings -->
-            <cloudman-config [initialConfig]="initialConfig.config_gvl"></cloudman-config>
+            <!-- Access password -->
+            <div>
+                <label for="id_password" class="control-label">Access password</label>
+                <input id="id_password" type="password" class="form-control input-md"
+                    [formControl]="gvlPasswordControl">
+                <span class="help-block">
+                    Your choice of password for accessing GVL services.
+                </span>
+                <span class="material-input"></span>
+            </div>
+
             
-            <config-panel>
-                <panel-header>Additional GVL Settings</panel-header>
-                <panel-body>
-                    <div class="togglebutton">
-                      <label>
-                         <input type="checkbox" (click)="toggleAdvanced()">Advanced options
-                      </label>
-                   </div>
-                    <!--  GVL Component Selection -->
-                    <div class="form-group" *ngIf="showAdvanced">
-                        <label>Auto-start the selected applications</label>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="gvl_cmdline_utilities"
-                                 formControlName="gvl_cmdline_utilities" />
-                                GVL Commandline Utilities
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="smrt_portal"
-                                 formControlName="smrt_portal" />
-                                PacBio SMRT Analysis
-                            </label>
-                        </div>
-                    </div>
-                </panel-body>
+            <div class="form-group label-floating is-empty">
+                <div class="togglebutton">
+                    <label>
+                        <input type="checkbox" (click)="toggleAdvanced()">Advanced options
+                    </label>
+                </div>
+            </div>
+
+            <div [hidden]="!showAdvanced">
+                <!--  CloudMan settings -->
+                <cloudman-config [initialConfig]="initialConfig.config_gvl" [password]="gvlPasswordControl.value" ></cloudman-config>
             
-            </config-panel>
+                <!--  Additional GVL settings -->
+                <config-panel>
+                    <panel-header>Additional GVL Settings</panel-header>
+                    <panel-body>
+                        <!--  GVL Component Selection -->
+                        <div class="form-group">
+                            <label>Auto-start the selected applications</label>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="gvl_cmdline_utilities"
+                                     formControlName="gvl_cmdline_utilities" />
+                                    GVL Commandline Utilities
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="smrt_portal"
+                                     formControlName="smrt_portal" />
+                                    PacBio SMRT Analysis
+                                </label>
+                            </div>
+                        </div>
+                    </panel-body>
+                </config-panel>
+            </div>
         </div>
     </panel-body>
 </config-panel>

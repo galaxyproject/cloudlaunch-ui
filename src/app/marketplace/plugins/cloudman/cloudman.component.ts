@@ -15,6 +15,11 @@ import { BasePluginComponent } from '../base-plugin.component';
 })
 
 export class CloudManConfigComponent extends BasePluginComponent {
+    hidePassword = false;
+    @Input()
+    set password (value: string) { this.hidePassword = true; this.cmClusterForm.controls['clusterPassword'].setValue(value); }
+    get password(): string { return this.cmClusterForm.controls['clusterPassword'].value; }
+
     cluster: Object = {};
     clusterTypes: Object[] = [  // First element in the list if the default choice
         { 'id': 'Galaxy', 'text': 'SLURM cluster with Galaxy' },
