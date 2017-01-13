@@ -1,5 +1,4 @@
 <config-panel>
-   <panel-header>CloudMan Settings</panel-header>
    <panel-body>
       <div [formGroup]="form">
            <!-- Access password -->
@@ -49,7 +48,7 @@
 
            <div class="togglebutton">
               <label>
-                 <input type="checkbox" (click)="toggleAdvanced()">Advanced options
+                 <input type="checkbox" (click)="toggleAdvanced()">Advanced CloudMan options
               </label>
            </div>
 
@@ -84,7 +83,7 @@
                  <label for="id_post_start_script" class="control-label">
                     Post-start
                  </label>
-                 <input id="id_post_start_script" 
+                 <input id="id_post_start_script"
                     type="text" class="form-control input-md"
                     formControlName="masterPostStartScript" />
                  <span class="help-block">
