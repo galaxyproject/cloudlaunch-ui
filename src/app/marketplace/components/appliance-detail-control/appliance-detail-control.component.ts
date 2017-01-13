@@ -66,7 +66,7 @@ export class ApplianceDetailControlComponent implements OnInit {
 
     ngOnInit() {
         // Generate a default name for the deployment
-        let deployment_name = this._loginService.getCurrentUser().username + "'s-" + this.application.slug + "-" + new Date().toJSON(); 
+        let deployment_name = this._loginService.getCurrentUser().username + "'s-" + this.application.slug + "-" + new Date().toJSON().slice(0, 16);
         (<FormControl>this.applianceLaunchForm.controls['name']).setValue(deployment_name);
     }
 
@@ -80,17 +80,17 @@ export class ApplianceDetailControlComponent implements OnInit {
         this.selectedVersion = applicationVersion;
         this.getCloudsForVersion(applicationVersion);
     }
-    
+
     onVersionSelectById(version_id: string) {
         let applicationVersion = this.getApplicationVersions().filter(v => { return v.version == version_id; })[0];
         this.onVersionSelect(applicationVersion);
     }
-    
+
     getSelectedVersion() {
         let selected_version_id = (<FormControl>this.applianceLaunchForm.controls['application_version']).value;
         return this.getApplicationVersions().filter(v => { return v.version == selected_version_id; });
     }
-    
+
     getCloudsForVersion(version: ApplicationVersion) {
         this.clouds = version.cloud_config.map(cfg => { let r = cfg.cloud; r.id = r.slug; r.text = r.name; return r; });
         if (version.default_cloud)
@@ -103,7 +103,7 @@ export class ApplianceDetailControlComponent implements OnInit {
         (<FormControl>this.applianceLaunchForm.controls['credentials']).patchValue(null);
         this.selectedAppCloudConfig = this.selectedVersion.cloud_config.filter(v => { return v.cloud.slug === cloud.id; })[0];
     }
-    
+
     onCloudSelectById(slug: string) {
         let cloud = this.clouds.filter(c => { return c.id === slug })[0];
         this.onCloudSelect(cloud);
