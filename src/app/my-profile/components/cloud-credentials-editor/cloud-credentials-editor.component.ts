@@ -52,6 +52,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     ctrl_cloud: FormControl = new FormControl(null, Validators.required);
     ctrl_aws_creds: FormControl = new FormControl(null, Validators.required);
     ctrl_openstack_creds: FormControl = new FormControl(null, Validators.required);
+    ctrl_credential_terms: FormControl = new FormControl(null, this.validateCredentialsTerms);
 
 
     @Input()
@@ -91,6 +92,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     set saveIsOptional(isOptional: boolean) {
         this._saveIsOptional = isOptional;
         this.ctrl_name.disable();
+        this.ctrl_credential_terms.disable()
     }
     get saveIsOptional() { return this._saveIsOptional; }
     
@@ -158,7 +160,8 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             'name': this.ctrl_name,
             'default': this.ctrl_default,
             'cloud': this.ctrl_cloud,
-            'credentials': this.ctrl_creds
+            'credentials': this.ctrl_creds,
+            'credential_terms': this.ctrl_credential_terms
         });
     }
 
@@ -209,17 +212,20 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         if (this.useCredsIsPressed) {
             this.credentialsForm.disable();
             this.ctrl_name.disable();
+            this.ctrl_credential_terms.disable()
             this.handleCredentialsChanged(this.credentials);
         }
         else {
             this.credentialsForm.enable();
             this.ctrl_name.disable();
+            this.ctrl_credential_terms.disable()
             this.handleCredentialsChanged(null);
         }
     }
     
     setSaveIsPressed() {
         this.ctrl_name.enable();
+        this.ctrl_credential_terms.enable()
         this.saveIsPressed = true;
     }
 
@@ -228,11 +234,18 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         if (this.saveIsOptional) {
             this.saveIsPressed = false;
             this.ctrl_name.disable();
+            this.ctrl_credential_terms.disable()
         } else {
             this.credentialsForm.reset();
             this.handleCredentialsChanged(this.credentialsForm.value);
         }
     }
+    
+    validateCredentialsTerms(control: FormControl) {
+        if (!control.value)
+            return {"terms_note_accepted": true}
+    }
+        
     
     // BEGIN: Credential File Parsing Functions
 
@@ -333,6 +346,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         if (this.saveIsOptional) {
             this.saveIsPressed = false;
             this.ctrl_name.disable();
+            this.ctrl_credential_terms.disable()
         }
     }
 }
