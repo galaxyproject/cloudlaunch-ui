@@ -25,6 +25,17 @@
                         <span class="text-muted">Cloud:</span> {{ deploy.target_cloud }}
                     </span>
                     </p>
+                    <div *ngIf=deploy.task_status?.result?.cloudLaunch?.keyPair?.material>
+                        <p class="text-info" style="padding-top: 25px;">
+                            A new SSH key pair was created when this instance
+                            was launched. The key will be available for
+                            retrieval only here for up to one hour after the
+                            instance was launched. <a id="kpLink"
+                            target="_blank" download="kp.txt"
+                            (click)="getKP(deploy)"> Download the key</a> and
+                            keep it secure.
+                        </p>
+                    </div>
                 </td>
                 <td class="text-left">
                     <div [ngSwitch]="deploy.task_status.status">
@@ -41,9 +52,9 @@
                       </p>
                     </div>
                 </td>
-                <td>{{  calculateUptime(deploy, currentTimer | async) }}</td>
+                <td>{{ calculateUptime(deploy, currentTimer | async) }}</td>
                 <td *ngIf="deploy.task_status?.result?.cloudLaunch?.applicationURL">
-                    <a class="btn-link" href="{{ deploy.task_result?.cloudLaunch?.applicationURL }}" target="_blank">
+                    <a class="btn-link" href="{{ deploy.task_status?.result?.cloudLaunch?.applicationURL }}" target="_blank">
                         <span #inputTarget>{{ deploy.task_status?.result?.cloudLaunch?.applicationURL }}</span>
                     </a>
                     <br/><button *ngIf=deploy.task_status?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
@@ -57,5 +68,4 @@
             </tr>
         </tbody>
     </table>
-
 </div>

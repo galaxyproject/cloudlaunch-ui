@@ -49,4 +49,13 @@ export class DeploymentsComponent implements OnInit {
                 return moment();
             });
     }
+
+    getKP(dep: Deployment) {
+        let data = [];
+        data.push(dep.task_status.result.cloudLaunch.keyPair.material);
+        let properties = {type: 'plain/text'};
+        let file = new Blob(data, properties);
+        let url = URL.createObjectURL(file);
+        document.getElementById('kpLink').href = url;
+    }
 }
