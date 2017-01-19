@@ -16,4 +16,10 @@ import { Component, OnInit, trigger, transition, animate,
         ])
     ]
 })
-export class MyAppliancesPageComponent {}
+export class MyAppliancesPageComponent {
+    moreInfo: boolean = false;
+
+    toggleInfo() {
+        this.moreInfo = !this.moreInfo;
+    }
+}

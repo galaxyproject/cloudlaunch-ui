@@ -6,6 +6,23 @@
     </page-header>
     <page-body>
         <div class="col-md-12">
+            <p class="text-muted">
+                This page is a log of the appliances you have launched.
+                <i class="fa fa-info-circle" (click)="toggleInfo()"
+                 style="cursor: pointer;"></i>
+            </p>
+            <div *ngIf="moreInfo">
+                <p class="text-muted">
+                    Each log entry keeps key appliance and instance
+                    information, also giving you a link to access a web
+                    interface that the given appliance may offer. This log is
+                    kept forever. <br/>
+                    Note that you cannot shut down or delete any instances from
+                    this page but need to use the appliance or the cloud
+                    provider interface instead. Even after an appliance has
+                    been shut down, its access URL will remain shown here.
+                </p>
+            </div>
             <deployments></deployments>
         </div>
     </page-body>

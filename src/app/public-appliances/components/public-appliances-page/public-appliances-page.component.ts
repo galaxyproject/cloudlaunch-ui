@@ -17,4 +17,9 @@ import { Component, trigger, transition, animate,
     ]
 })
 export class PublicAppliancesPageComponent {
+    moreInfo: boolean = false;
+
+    toggleInfo() {
+        this.moreInfo = !this.moreInfo;
+    }
 }
