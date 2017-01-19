@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 import { Observable } from 'rxjs/Rx';
 
@@ -15,6 +15,7 @@ import * as moment from 'moment';
 export class DeploymentsComponent implements OnInit {
     deployments: Observable<Deployment[]>;
     currentTimer: Observable<any>;
+    @ViewChild('kpLink') a;
 
     constructor(
         private _deploymentService: DeploymentService) {
@@ -56,6 +57,6 @@ export class DeploymentsComponent implements OnInit {
         let properties = {type: 'plain/text'};
         let file = new Blob(data, properties);
         let url = URL.createObjectURL(file);
-        document.getElementById('kpLink').href = url;
+        this.a.nativeElement.href = url;
     }
 }
