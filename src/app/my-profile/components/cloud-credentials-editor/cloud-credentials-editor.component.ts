@@ -12,7 +12,7 @@ import {
 
 // models
 import { Cloud } from '../../../shared/models/cloud';
-import { Credentials } from '../../../shared/models/profile';
+import { Credentials, AWSCredentials, OpenStackCredentials } from '../../../shared/models/profile';
 
 // services
 import { CloudService } from '../../../shared/services/cloud.service';
@@ -31,6 +31,8 @@ const CREDENTIALS_CONTROL_VALIDATOR = {
 };
 
 declare type FileParserCallback = (string, CloudCredentialsEditorComponent) => void;
+declare type VerificationSuccessCallback = (CloudCredentialsEditorComponent, Credentials) => void;
+declare type VerificationFailureCallback = (CloudCredentialsEditorComponent, Credentials, error: string) => void;
 
 @Component({
     selector: 'cloud-credentials-editor',
@@ -45,6 +47,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     _saveIsOptional: boolean = false;
     saveIsPressed: boolean = false;
     useCredsIsPressed: boolean = false;
+    credVerificationInProgress = false;
     // Form Controls
     ctrl_id: FormControl = new FormControl(null);
     ctrl_name: FormControl = new FormControl(null, Validators.required);
@@ -208,19 +211,57 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     }
 
     useCredentials() {
-        this.useCredsIsPressed = !this.useCredsIsPressed;
-        if (this.useCredsIsPressed) {
-            this.credentialsForm.disable();
-            this.ctrl_name.disable();
-            this.ctrl_credential_terms.disable()
-            this.handleCredentialsChanged(this.credentials);
+        this.verifyCredentials(this.credentials, this.continueUseCredentials, this.cancelUseCredentials);
+    }
+    
+    verifyCredentials(creds: any, successCallBack: VerificationSuccessCallback,
+            failureCallBack: VerificationFailureCallback) {
+        this.errorMessage = null;
+        this.credVerificationInProgress = true;
+        switch (this.cloud.cloud_type) {
+            case 'aws':
+                this._profileService.verifyCredentialsAWS(creds)
+                    .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
+                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });        
+                break;
+            case 'openstack':
+                this._profileService.verifyCredentialsOpenStack(creds)
+                    .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
+                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });        
+                break;
         }
-        else {
-            this.credentialsForm.enable();
-            this.ctrl_name.disable();
-            this.ctrl_credential_terms.disable()
-            this.handleCredentialsChanged(null);
+    }
+    
+    handleVerificationResult(creds: Credentials, result: any, successCallback: VerificationSuccessCallback,
+            failureCallback: VerificationFailureCallback) {
+        this.credVerificationInProgress = false;
+        if (result.result === "SUCCESS") {
+            successCallback(this, creds);
         }
+        else
+            this.handleVerificationFailure(creds, "The credentials you have entered are invalid.", failureCallback)
+    }
+    
+    handleVerificationFailure(creds: Credentials, error: any, callback: VerificationFailureCallback) {
+        this.credVerificationInProgress = false;
+        this.errorMessage = error;
+        callback(this, creds, error);
+    }
+    
+    continueUseCredentials(editor: CloudCredentialsEditorComponent, creds: Credentials) {
+        editor.useCredsIsPressed = true;
+        editor.credentialsForm.disable();
+        editor.ctrl_name.disable();
+        editor.ctrl_credential_terms.disable()
+        editor.handleCredentialsChanged(creds);        
+    }
+    
+    cancelUseCredentials(editor: CloudCredentialsEditorComponent, error: string) {
+        editor.useCredsIsPressed = false;
+        editor.credentialsForm.enable();
+        editor.ctrl_name.disable();
+        editor.ctrl_credential_terms.disable();
+        editor.handleCredentialsChanged(null);
     }
     
     setSaveIsPressed() {
@@ -243,13 +284,14 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     
     validateCredentialsTerms(control: FormControl) {
         if (!control.value)
-            return {"terms_note_accepted": true}
+            return {"terms_not_accepted": true}
     }
         
     
     // BEGIN: Credential File Parsing Functions
 
     loadCredentialsFromFile($event: Event) {
+        this.errorMessage = null;
         let parserFunc: FileParserCallback;
         if (this.cloud && this.cloud.cloud_type) {
             if (this.cloud.cloud_type == "openstack")
@@ -319,34 +361,43 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         creds.cloud_id = creds.cloud.id;
         creds.default = creds.default || false;
 
+        this.verifyCredentials(creds, this.continueSaveCredentials, this.endSaveCredentials);
+
+    }
+    
+    continueSaveCredentials(editor: CloudCredentialsEditorComponent, creds: Credentials) {
         if (creds.id) { // Has an id, therefore, it's an existing record
-            switch (this.cloud.cloud_type) {
+            switch (editor.cloud.cloud_type) {
                 case 'aws':
-                    this._profileService.saveCredentialsAWS(creds)
-                        .subscribe(result => { this.handleCredentialsChanged(result); });
+                    editor._profileService.saveCredentialsAWS(<AWSCredentials>creds)
+                        .subscribe(result => { editor.handleCredentialsChanged(result); });
                     break;
                 case 'openstack':
-                    this._profileService.saveCredentialsOpenStack(creds)
-                        .subscribe(result => { this.handleCredentialsChanged(result); });
+                    editor._profileService.saveCredentialsOpenStack(<OpenStackCredentials>creds)
+                        .subscribe(result => { editor.handleCredentialsChanged(result); });
                     break;
             }
 
         } else { // Must be a new record
-            switch (this.cloud.cloud_type) {
+            switch (editor.cloud.cloud_type) {
                 case 'aws':
-                    this._profileService.createCredentialsAWS(creds)
-                        .subscribe(result => { this.handleCredentialsChanged(result); });
+                    editor._profileService.createCredentialsAWS(<AWSCredentials>creds)
+                        .subscribe(result => { editor.handleCredentialsChanged(result); });
                     break;
                 case 'openstack':
-                    this._profileService.createCredentialsOpenStack(creds)
-                        .subscribe(result => { this.handleCredentialsChanged(result); });
+                    editor._profileService.createCredentialsOpenStack(<OpenStackCredentials>creds)
+                        .subscribe(result => { editor.handleCredentialsChanged(result); });
                     break;
             }
         }
-        if (this.saveIsOptional) {
-            this.saveIsPressed = false;
-            this.ctrl_name.disable();
-            this.ctrl_credential_terms.disable()
-        }
+        editor.endSaveCredentials(editor, null);
     }
+    
+    endSaveCredentials(editor: CloudCredentialsEditorComponent, error: string) {
+        if (editor.saveIsOptional) {
+            editor.saveIsPressed = false;
+            editor.ctrl_name.disable();
+            editor.ctrl_credential_terms.disable()
+        }
+    }    
 }

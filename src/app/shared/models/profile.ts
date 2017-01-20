@@ -30,3 +30,8 @@ export class UserProfile {
     aws_creds: AWSCredentials[];
     openstack_creds: OpenStackCredentials[];
 }
+
+export class CredVerificationResult {
+    result: string;
+    details: string;
+}
