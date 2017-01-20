@@ -33,7 +33,14 @@
 
                 <!-- Credentials selection -->
                 <div class="form-group" *ngIf="applianceLaunchForm.controls['target_cloud'].value">
-                    <cloud-credentials-selector
+                    <label for="id_cred_selector" class="control-label">
+                            Enter your credentials (API keys) for this cloud.
+                            <ng-container *ngIf="_targetCloud.access_instructions_url">
+                            For detailed instructions on how to obtain credentials for this cloud, click 
+                            <a target="_blank" [href]="_targetCloud.access_instructions_url">here</a>.
+                            </ng-container> 
+                    </label>
+                    <cloud-credentials-selector id="id_cred_selector"
                         [cloud]="_targetCloud"
                         [formControl]="applianceLaunchForm.controls['credentials']">
                     </cloud-credentials-selector>
@@ -66,7 +73,7 @@
     		<a (click)="goBack()" class="btn btn-raised btn-default"> <i
     			class="material-icons">navigate_before</i> Back
     		</a>
-            <button type="submit" class="btn btn-raised btn-default pull-right" [disabled]="submitPending || !applianceLaunchForm.valid">
+            <button type="submit" class="btn btn-raised btn-primary pull-right" [disabled]="submitPending || !applianceLaunchForm.valid">
                 Launch <span *ngIf="submitPending" class="fa fa fa-spinner fa-spin fa-fw"></span></button>
 
     	</div>
