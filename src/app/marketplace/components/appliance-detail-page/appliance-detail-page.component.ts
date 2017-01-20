@@ -26,6 +26,11 @@ import { Application } from '../../../shared/models/application';
 })
 export class ApplianceDetailPageComponent implements OnInit {
     application: Application;
+    moreInfo: boolean = false;
+
+    toggleInfo() {
+        this.moreInfo = !this.moreInfo;
+    }
 
     constructor(
         private _applicationService: ApplicationService,
