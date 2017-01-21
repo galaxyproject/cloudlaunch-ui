@@ -44,6 +44,7 @@ export class ApplianceDetailControlComponent implements OnInit {
     private _targetCloud: Cloud;
     public errorMessage: string;
     private submitPending: boolean = false;
+    page2: boolean = false;  // Wizard page 2
 
     constructor(
         fb: FormBuilder,
@@ -120,8 +121,8 @@ export class ApplianceDetailControlComponent implements OnInit {
         customRequestOptions.setCloudCredentials(creds);
     }
 
-    goBack() {
-        window.history.back();
+    pageChange() {
+        this.page2 = !this.page2;
     }
 
     onSubmit(formValues: any): void {
