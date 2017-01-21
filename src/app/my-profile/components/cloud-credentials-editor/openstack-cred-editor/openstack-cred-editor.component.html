@@ -3,44 +3,44 @@
 
         <!-- Username -->
         <div class="form-group is-empty">
-            <label for="id_username" class="control-label">Username</label> <input id="id_username"
+            <label for="id_username" class="control-label">What is your OpenStack API Username?</label> <input id="id_username"
                 name="username" type="text" class="form-control input-md" formControlName="username">
-            <span class="help-block"> Your OpenStack Username </span>
+            <span class="help-block"> Your OpenStack Username can be obtained by following the instructions in the link above.</span>
             <span class="material-input"></span>
         </div>
         <!-- Password -->
         <div class="form-group is-empty">
-            <label for="id_password" class="control-label">Password</label> <input id="id_password"
+            <label for="id_password" class="control-label">What is your OpenStack API Password?</label> <input id="id_password"
                 name="password" type="password" class="form-control input-md" formControlName="password">
-            <span class="help-block"> Your OpenStack Password </span>
+            <span class="help-block"> Your OpenStack Password can be obtained by following the instructions in the link above.</span>
             <span class="material-input"></span>
         </div>
 
         <!-- Project name -->
         <div class="form-group is-empty">
-            <label for="id_project_name" class="control-label">Project Name</label> <input id="id_project_name"
+            <label for="id_project_name" class="control-label">Which OpenStack Project/Tenancy do you want to deploy into?</label> <input id="id_project_name"
                 name="project_name" type="text" class="form-control input-md"
                 formControlName="project_name">
-            <span class="help-block"> Your OpenStack Project Name </span>
+            <span class="help-block"> You must provide the OpenStack Project or Tenancy Name here, not the id. Any appliance you launch will be created within this project.</span>
             <span class="material-input"></span>
         </div>
 
         <ng-container *ngIf="cloud?.extra_data?.identity_api_version != 'v2.0'">
             <!-- Project domain name -->
             <div class="form-group is-empty">
-                <label for="id_project_domain_name" class="control-label">Project Domain Name</label> <input id="id_project_domain_name"
+                <label for="id_project_domain_name" class="control-label">What is your OpenStack Project Domain Name?</label> <input id="id_project_domain_name"
                     name="project_domain_name" type="text" class="form-control input-md"
                     formControlName="project_domain_name">
-                <span class="help-block"> Your OpenStack Project Domain Name</span>
+                <span class="help-block"> Your OpenStack Project Domain Name (required to access some OpenStack clouds)</span>
                 <span class="material-input"></span>
             </div>
     
             <!-- User domain name -->
             <div class="form-group is-empty">
-                <label for="id_user_domain_name" class="control-label">User Domain Name</label> <input id="id_user_domain_name"
+                <label for="id_user_domain_name" class="control-label">What is your OpenStack User Domain Name?</label> <input id="id_user_domain_name"
                     name="user_domain_name" type="text" class="form-control input-md"
                     formControlName="user_domain_name">
-                <span class="help-block"> Your OpenStack User Domain Name</span>
+                <span class="help-block"> Your OpenStack User Domain Name (required to access some OpenStack clouds)</span>
                 <span class="material-input"></span>
             </div>
         </ng-container>

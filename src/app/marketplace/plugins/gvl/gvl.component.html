@@ -1,11 +1,11 @@
 <div [formGroup]="form">
     <!-- Access password -->
     <div>
-        <label for="id_password" class="control-label">Access password</label>
+        <label for="id_password" class="control-label">What password would you like to use for this GVL instance?</label>
         <input id="id_password" type="password" class="form-control input-md"
             [formControl]="gvlPasswordControl">
         <span class="help-block">
-            Your choice of password for accessing GVL services.
+            The password you set here can be used to access all services provided by this GVL, including ssh access.
         </span>
         <span class="material-input"></span>
     </div>
