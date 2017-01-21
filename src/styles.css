@@ -80,6 +80,10 @@ footer, .push {
 	margin-bottom: 0;
 }
 
+.form-group {
+	margin: 0;
+}
+
 .control-label {
     font-size: 16px !important;
     color: black !important;
