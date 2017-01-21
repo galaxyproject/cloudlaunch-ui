@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <p class="lead">
                 This page is a log of the appliances you have launched.
-                <i class="fa fa-info-circle" (click)="toggleInfo()"
+                <i class="fa" [ngClass]="{'fa-toggle-down': !moreInfo, 'fa-toggle-up': moreInfo}" (click)="toggleInfo()"
                  style="cursor: pointer;"></i>
             </p>
             <div *ngIf="moreInfo">
@@ -20,7 +20,7 @@
                     Note that you cannot shut down or delete any instances from
                     this page but need to use the appliance or the cloud
                     provider interface instead. Even after an appliance has
-                    been shut down, its access URL will remain shown here.
+                    been shut down, its access URL will remain visible here.
                 </p>
             </div>
             <deployments></deployments>

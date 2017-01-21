@@ -12,16 +12,17 @@
 	        <div class="col-md-12">
 	        	<p class="lead">
 	                Fill out the form below to launch the selected appliance.
-	                <i class="fa fa-info-circle" (click)="toggleInfo()"
+	                <i class="fa" [ngClass]="{'fa-toggle-down': !moreInfo, 'fa-toggle-up': moreInfo}" (click)="toggleInfo()"
 	                 style="cursor: pointer;"></i>
 	            </p>
 	            <div *ngIf="moreInfo">
-	                <p class="lead">
+	                <p class="lead lead-top-margin">
 	                In order to launch the selected appliance, you need to
 	                choose the desired version and a target cloud. You will
 	                then need to supply access credentials for that cloud.
-	                Those credentials can be obtained from the cloud dashboard.
-	                Note that you can also save your credentials under your
+	                A link to a page with instructions on how to obtain these
+                    credentials will be shown once a cloud is selected.
+	                Note that you can also save your credentials in your
 	                user profile. Lastly, you have an option of selecting
 	                application and cloud-specific choices.
 	                </p>

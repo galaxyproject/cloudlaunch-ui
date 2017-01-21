@@ -8,3 +8,11 @@
 	display: inline-block;
 	width: 100%;
 }
+
+.lead {
+    margin-bottom: 0px;
+}
+
+.lead-top-margin {
+    margin-top: 20px;
+}

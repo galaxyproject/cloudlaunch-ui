@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <p class="lead">
                 Below is a list of public appliances that are ready for use.
-                <i class="fa fa-info-circle" (click)="toggleInfo()"
+                <i class="fa" [ngClass]="{'fa-toggle-down': !moreInfo, 'fa-toggle-up': moreInfo}" (click)="toggleInfo()"
                  style="cursor: pointer;"></i>
             </p>
             <div *ngIf="moreInfo">

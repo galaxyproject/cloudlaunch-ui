@@ -3,89 +3,87 @@
         [formGroup]="applianceLaunchForm"
         (ngSubmit)="onSubmit(applianceLaunchForm.value)">
     	<div class="col-md-12">
-			<div class="panel-body">
-                <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
-                    <span class="glyphicon glyphicon-exclamation-sign"
-                        aria-hidden="true"></span> <span class="sr-only">Error:</span> {{ errorMessage }}
+            <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+                <span class="glyphicon glyphicon-exclamation-sign"
+                    aria-hidden="true"></span> <span class="sr-only">Error:</span> {{ errorMessage }}
+            </div>
+
+            <div *ngIf="!page2">
+                <div class="form-group">
+                    <label for="id_target_version" class="control-label">
+                        Which version of this appliance would you like to launch?
+                    </label>
+                    <ng-select id="target_version"
+                      [items]="getApplicationVersions()"
+                      (selected)="onVersionSelect($event)"
+                      [active]="getSelectedVersion()"
+                      placeholder="No version selected">
+                    </ng-select>
+                </div>
+                <div class="form-group" *ngIf="applianceLaunchForm.value['application_version']">
+                    <label for="id_target_cloud" class="control-label">
+                        On which cloud would you like to launch your appliance?
+                    </label>
+                    <ng-select id="target_cloud"
+                      [items]="clouds"
+                      (selected)="onCloudSelect($event)"
+                      [active]="getSelectedCloud()"
+                      placeholder="No cloud selected">
+                    </ng-select>
                 </div>
 
-                <div *ngIf="!page2">
-                    <div class="form-group">
-                        <label for="id_target_version" class="control-label">
-                            Which version of this appliance would you like to launch?
-                        </label>
-                        <ng-select id="target_version"
-                          [items]="getApplicationVersions()"
-                          (selected)="onVersionSelect($event)"
-                          [active]="getSelectedVersion()"
-                          placeholder="No version selected">
-                        </ng-select>
-                    </div>
-                    <div class="form-group" *ngIf="applianceLaunchForm.value['application_version']">
-                        <label for="id_target_cloud" class="control-label">
-                            On which cloud would you like to launch your appliance?
-                        </label>
-                        <ng-select id="target_cloud"
-                          [items]="clouds"
-                          (selected)="onCloudSelect($event)"
-                          [active]="getSelectedCloud()"
-                          placeholder="No cloud selected">
-                        </ng-select>
-                    </div>
-
-                    <!-- Credentials selection -->
-                    <div class="form-group" *ngIf="applianceLaunchForm.controls['target_cloud'].value">
-                        <label for="id_cred_selector" class="control-label">
-                                Enter your credentials (API keys) for this cloud.
-                                <ng-container *ngIf="_targetCloud.access_instructions_url">
-                                For detailed instructions on how to obtain credentials for this cloud, click
-                                <a target="_blank" [href]="_targetCloud.access_instructions_url">here</a>.
-                                </ng-container>
-                        </label>
-                        <cloud-credentials-selector id="id_cred_selector"
-                            [cloud]="_targetCloud"
-                            [formControl]="applianceLaunchForm.controls['credentials']">
-                        </cloud-credentials-selector>
-                    </div>
-
-                    <div>
-                        <button class="btn btn-raised btn-info pull-right"
-                         [disabled]="!applianceLaunchForm.controls['credentials'].value"
-                         (click)="pageChange()">
-                            Next <i class="fa fa-chevron-right"></i>
-                        </button>
-                    </div>
+                <!-- Credentials selection -->
+                <div class="form-group" *ngIf="applianceLaunchForm.controls['target_cloud'].value">
+                    <p>
+                            Enter your credentials (API keys) for this cloud.
+                            <ng-container *ngIf="_targetCloud.access_instructions_url">
+                            For detailed instructions on how to obtain credentials for this cloud, click
+                            <a target="_blank" [href]="_targetCloud.access_instructions_url">here</a>.
+                            </ng-container>
+                    </p>
+                    <cloud-credentials-selector id="id_cred_selector"
+                        [cloud]="_targetCloud"
+                        [formControl]="applianceLaunchForm.controls['credentials']">
+                    </cloud-credentials-selector>
                 </div>
 
-                <div *ngIf="page2">
-                    <div class="form-group">
-                        <label for="id_deployment_name" class="control-label">
-                            Provide a name for your deployment
-                        </label>
-                        <input id="id_deployment_name" name="name" type="text" class="form-control input-md" formControlName="name">
-                        <span class="help-block">
-                             A deployment name helps to identify your appliance
-                          </span>
-                          <span class="material-input"></span>
-                    </div>
-
-                    <div class="form-group" [formGroup]="appConfigForm">
-                        <app-placeholder [initialConfig]="selectedAppCloudConfig.default_launch_config"
-                            [componentPath]="selectedVersion.frontend_component_path"
-                            [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
-                        <!-- Cloud launching part of the form -->
-                        <cloudlaunch-config-control [cloud]="applianceLaunchForm.controls['credentials'].value?.cloud" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config-control>
-                    </div>
-
-                    <a (click)="pageChange()" class="btn btn-info">
-                        <i class="fa fa-chevron-left"></i> Previous
-                    </a>
-                    <button type="submit" class="btn btn-raised btn-success pull-right"
-                     *ngIf="page2" [disabled]="submitPending || !applianceLaunchForm.valid">
-                        Launch <span *ngIf="submitPending" class="fa fa fa-spinner fa-spin fa-fw"></span>
+                <div>
+                    <button class="btn btn-raised btn-info pull-right"
+                     [disabled]="!applianceLaunchForm.controls['credentials'].value"
+                     (click)="pageChange()">
+                        Next <i class="fa fa-chevron-right"></i>
                     </button>
                 </div>
-			</div>
+            </div>
+
+            <div *ngIf="page2">
+                <div class="form-group">
+                    <label for="id_deployment_name" class="control-label">
+                        Provide a name for your deployment
+                    </label>
+                    <input id="id_deployment_name" name="name" type="text" class="form-control input-md" formControlName="name">
+                    <span class="help-block">
+                         A deployment name helps to identify your appliance
+                      </span>
+                      <span class="material-input"></span>
+                </div>
+
+                <div class="form-group" [formGroup]="appConfigForm">
+                    <app-placeholder [initialConfig]="selectedAppCloudConfig.default_launch_config"
+                        [componentPath]="selectedVersion.frontend_component_path"
+                        [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
+                    <!-- Cloud launching part of the form -->
+                    <cloudlaunch-config-control [cloud]="applianceLaunchForm.controls['credentials'].value?.cloud" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config-control>
+                </div>
+
+                <a (click)="pageChange()" class="btn btn-info">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+                <button type="submit" class="btn btn-raised btn-success pull-right"
+                 *ngIf="page2" [disabled]="submitPending || !applianceLaunchForm.valid">
+                    Launch <span *ngIf="submitPending" class="fa fa fa-spinner fa-spin fa-fw"></span>
+                </button>
+            </div>
     	</div>
     </form>
 </div>
