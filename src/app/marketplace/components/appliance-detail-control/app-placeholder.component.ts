@@ -10,8 +10,7 @@ declare var System: any;
     inputs: ['initialConfig', 'componentPath', 'componentName'],
 })
 export class AppPlaceHolderComponent {
-    initialConfig: any;
-
+    _initialConfig: any;
     _componentPath: string;
     _componentName: string;
     _currentComponent: ComponentRef<any>;
@@ -32,6 +31,16 @@ export class AppPlaceHolderComponent {
     set componentName(value) {
         this.reloadComponentIfNeeded(this.componentPath, value);
         this._componentName = value;
+    }
+    
+    get initialConfig() {
+        return this._initialConfig;
+    }
+    
+    set initialConfig(value) {
+        this._initialConfig = value;
+        if (this._currentComponent)
+            this._currentComponent.instance.initialConfig = value;
     }
 
     constructor(
