@@ -32,11 +32,11 @@ export class AppPlaceHolderComponent {
         this.reloadComponentIfNeeded(this.componentPath, value);
         this._componentName = value;
     }
-    
+
     get initialConfig() {
         return this._initialConfig;
     }
-    
+
     set initialConfig(value) {
         this._initialConfig = value;
         if (this._currentComponent)

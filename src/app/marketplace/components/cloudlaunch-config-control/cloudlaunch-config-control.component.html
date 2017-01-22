@@ -90,6 +90,19 @@
             </ng-select>
         </div>
 
+          <!-- Custom Image ID -->
+          <div class="form-group is-empty">
+             <label for="id_custom_image" class="control-label">Custom Image ID</label>
+             <input id="id_custom_image"
+                type="text"
+                class="form-control input-md"
+                formControlName="customImageID" />
+             <span class="help-block">
+                A custom image ID if you want to override the preconfigured Image ID
+             </span>
+             <span class="material-input"></span>
+          </div>
+      
         <!-- EBS optimized selection (AWS only) -->
         <div class="checkbox">
             <label> <input type="checkbox" id="ebs_optimized" name="ebs_optimized"

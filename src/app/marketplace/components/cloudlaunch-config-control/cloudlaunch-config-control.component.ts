@@ -97,6 +97,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
             'network': [''],
             'subnet': [''],
             'staticIP': [''],
+            'customImageID': [null],
             'provider_settings': fb.group({
                 'ebsOptimised': [''],
                 'volumeIOPS': [''],

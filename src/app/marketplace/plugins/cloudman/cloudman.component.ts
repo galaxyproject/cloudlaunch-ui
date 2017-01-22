@@ -48,7 +48,8 @@ export class CloudManConfigComponent extends BasePluginComponent {
             'defaultBucket': [null, Validators.required],
             'masterPostStartScript': [null],
             'workerPostStartScript': [null],
-            'clusterSharedString': [null]
+            'clusterSharedString': [null],
+            'extraUserData': [null]
         });
     }
 

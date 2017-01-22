@@ -121,5 +121,22 @@
          </span>
          <span class="material-input"></span>
       </div>
+
+      <!-- Extra User Data -->
+      <div class="form-group is-empty">
+         <label for="id_extra_user_data" class="control-label">
+            Extra User-Data
+         </label>
+         <textarea id="id_extra_user_data"
+            rows="5"
+            class="form-control"
+            formControlName="extraUserData"></textarea>
+         <span class="help-block">
+            Pass advanced properties to CloudMan via the the cloud infrastructure's user-data mechanism.
+            Properties should be in YAML formatted key-value pairs.
+         </span>
+         <span class="material-input"></span>
+      </div>
+
    </div>
 </div>
