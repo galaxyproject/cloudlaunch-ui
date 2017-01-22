@@ -103,21 +103,23 @@
              <span class="material-input"></span>
           </div>
       
-        <!-- EBS optimized selection (AWS only) -->
-        <div class="checkbox">
-            <label> <input type="checkbox" id="ebs_optimized" name="ebs_optimized"
-                [formControl]="cloudLaunchForm.controls['provider_settings'].controls['ebsOptimised']" />
-                If checked, use dedicated disk bandwidth (i.e., EBS-optimized)
-            </label>
-        </div>
-
-        <!-- Volume IOPS selection (AWS only) -->
-        <!--  Add *ngIf="storageType=='volume'" once variable is propagated -->
-        <div class="form-group">
-            <label for="id_iops" class="control-label">Volume IOPS</label> <input type="number"
-                name="volume_iops" class="form-control input-md"
-                [formControl]="cloudLaunchForm.controls['provider_settings'].controls['volumeIOPS']" />
-            <span class="help-block"> Min: 100; max: 20000; max 30:1 IOPS to size ratio </span>
-        </div>
+        <ng-container *ngIf="cloud.cloud_type === 'aws'">
+            <!-- EBS optimized selection (AWS only) -->
+            <div class="checkbox">
+                <label> <input type="checkbox" id="ebs_optimized" name="ebs_optimized"
+                    [formControl]="cloudLaunchForm.controls['provider_settings'].controls['ebsOptimised']" />
+                    If checked, use dedicated disk bandwidth (i.e., EBS-optimized)
+                </label>
+            </div>
+    
+            <!-- Volume IOPS selection (AWS only) -->
+            <!--  Add *ngIf="storageType=='volume'" once variable is propagated -->
+            <div class="form-group">
+                <label for="id_iops" class="control-label">Volume IOPS</label> <input type="number"
+                    name="volume_iops" class="form-control input-md"
+                    [formControl]="cloudLaunchForm.controls['provider_settings'].controls['volumeIOPS']" />
+                <span class="help-block"> Min: 100; max: 20000; max 30:1 IOPS to size ratio </span>
+            </div>
+        </ng-container>
     </div>
 </div>
