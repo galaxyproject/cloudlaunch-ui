@@ -57,6 +57,10 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     ctrl_openstack_creds: FormControl = new FormControl(null, Validators.required);
     ctrl_credential_terms: FormControl = new FormControl(null, this.validateCredentialsTerms);
 
+    moreCredsInfo: boolean = false;
+    toggleCredsInfo() {
+        this.moreCredsInfo = !this.moreCredsInfo;
+    }
 
     @Input()
     set credentials(creds: Credentials) {
@@ -66,7 +70,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             }
             this.ctrl_creds.patchValue(creds);
             this.credentialsForm.patchValue(creds);
-            
+
         } else {
             this.credentialsForm.patchValue(new Credentials());
         }
@@ -98,10 +102,10 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         this.ctrl_credential_terms.disable()
     }
     get saveIsOptional() { return this._saveIsOptional; }
-    
+
     @Output()
     onCredentialsChanged = new EventEmitter<Credentials>();
-    
+
     get ctrl_creds() : FormControl {
         let cloud_type = "";
         if (this.cloud)
@@ -113,12 +117,12 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         else
             return new FormControl(null, Validators.required);
     }
-    
+
 
     // implementation of ControlValueAccessor
 
-    // the method set in registerOnChange, it is just 
-    // a placeholder for a method that takes one parameter, 
+    // the method set in registerOnChange, it is just
+    // a placeholder for a method that takes one parameter,
     // we use it to emit changes back to the form
     private propagateChange = (_: any) => { };
 
@@ -213,7 +217,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     useCredentials() {
         this.verifyCredentials(this.credentials, this.continueUseCredentials, this.cancelUseCredentials);
     }
-    
+
     verifyCredentials(creds: any, successCallBack: VerificationSuccessCallback,
             failureCallBack: VerificationFailureCallback) {
         this.errorMessage = null;
@@ -222,16 +226,16 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             case 'aws':
                 this._profileService.verifyCredentialsAWS(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });        
+                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });
                 break;
             case 'openstack':
                 this._profileService.verifyCredentialsOpenStack(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });        
+                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });
                 break;
         }
     }
-    
+
     handleVerificationResult(creds: Credentials, result: any, successCallback: VerificationSuccessCallback,
             failureCallback: VerificationFailureCallback) {
         this.credVerificationInProgress = false;
@@ -241,21 +245,21 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         else
             this.handleVerificationFailure(creds, "The credentials you have entered are invalid.", failureCallback)
     }
-    
+
     handleVerificationFailure(creds: Credentials, error: any, callback: VerificationFailureCallback) {
         this.credVerificationInProgress = false;
         this.errorMessage = error;
         callback(this, creds, error);
     }
-    
+
     continueUseCredentials(editor: CloudCredentialsEditorComponent, creds: Credentials) {
         editor.useCredsIsPressed = true;
         editor.credentialsForm.disable();
         editor.ctrl_name.disable();
         editor.ctrl_credential_terms.disable()
-        editor.handleCredentialsChanged(creds);        
+        editor.handleCredentialsChanged(creds);
     }
-    
+
     cancelUseCredentials(editor: CloudCredentialsEditorComponent, error: string) {
         editor.useCredsIsPressed = false;
         editor.credentialsForm.enable();
@@ -263,7 +267,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         editor.ctrl_credential_terms.disable();
         editor.handleCredentialsChanged(null);
     }
-    
+
     setSaveIsPressed() {
         this.ctrl_name.enable();
         this.ctrl_credential_terms.enable()
@@ -281,13 +285,13 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             this.handleCredentialsChanged(this.credentialsForm.value);
         }
     }
-    
+
     validateCredentialsTerms(control: FormControl) {
         if (!control.value)
             return {"terms_not_accepted": true}
     }
-        
-    
+
+
     // BEGIN: Credential File Parsing Functions
 
     loadCredentialsFromFile($event: Event) {
@@ -298,28 +302,28 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
                 parserFunc = this.parseOpenstackCreds;
             else if (this.cloud.cloud_type == "aws")
                 parserFunc = this.parseAWSCreds;
-        }        
+        }
         this.readCredentialsFile((<HTMLInputElement>$event.target).files[0], parserFunc);
     }
-    
+
     readCredentialsFile(file: File, parserFunc: FileParserCallback) : void {
         var reader: FileReader = new FileReader();
-        
+
         let self = this;
 
         reader.onloadend = function(e) { parserFunc(reader.result, self); }
         reader.onerror = function(e) { console.log(e); }
         reader.readAsText(file);
     }
-    
+
     static extractValueByKey(key: string, content: string) : string {
         /* Regex description:
         Match the key, value part of a string like
         export OS_TENANT_NAME="<value>" or
         AWS_ACCESS_KEY: "<value>"
-        
+
         With the result being <value>, without quotes.
-        
+
         Begins by matching full text of keyname, followed by optional = or : symbols,
         followed by an optional whitespace, followed by an optional capture group (1)
         for the double quote, followed by any text other than doule-quotes. $ symbols
@@ -334,7 +338,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         else
             return null;
     }
-    
+
     parseOpenstackCreds(content: string, editor: CloudCredentialsEditorComponent) {
         let creds = {
             'project_name': CloudCredentialsEditorComponent.extractValueByKey("OS_PROJECT_NAME", content) ||
@@ -346,7 +350,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         }
         editor.ctrl_openstack_creds.patchValue(creds);
     }
-    
+
     parseAWSCreds(content: string, editor: CloudCredentialsEditorComponent) {
         let creds = {
             'access_key': CloudCredentialsEditorComponent.extractValueByKey("ACCESS_KEY", content),
@@ -364,7 +368,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         this.verifyCredentials(creds, this.continueSaveCredentials, this.endSaveCredentials);
 
     }
-    
+
     continueSaveCredentials(editor: CloudCredentialsEditorComponent, creds: Credentials) {
         if (creds.id) { // Has an id, therefore, it's an existing record
             switch (editor.cloud.cloud_type) {
@@ -392,12 +396,12 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         }
         editor.endSaveCredentials(editor, null);
     }
-    
+
     endSaveCredentials(editor: CloudCredentialsEditorComponent, error: string) {
         if (editor.saveIsOptional) {
             editor.saveIsPressed = false;
             editor.ctrl_name.disable();
             editor.ctrl_credential_terms.disable()
         }
-    }    
+    }
 }

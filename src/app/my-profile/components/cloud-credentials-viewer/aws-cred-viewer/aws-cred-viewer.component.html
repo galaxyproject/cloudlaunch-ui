@@ -16,7 +16,7 @@
                             <th class="col-md-1"><p> Actions</p></th>
                         </tr>
                     </thead>
-                </table>                
+                </table>
 
                 <div *ngFor="let cloud_grp of groupBy(credentials)">
                     <div class="list-group-item active">
@@ -46,10 +46,10 @@
                     </table>
 
                 </div>
-            </div>                
+            </div>
 
             <button *ngIf="!editMode" type="button" class="btn btn-info" (click)="addNew()"><i class="fa fa-plus"></i> Add New Credentials </button>
-            
+
             <div *ngIf="editMode">
                 <cloud-credentials-editor [credentials]="currentObject" (onCredentialsChanged)="handleCredentialsChanged($event)"></cloud-credentials-editor>
             </div>

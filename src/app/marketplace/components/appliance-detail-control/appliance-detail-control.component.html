@@ -35,7 +35,6 @@
                 <!-- Credentials selection -->
                 <div class="form-group" *ngIf="applianceLaunchForm.controls['target_cloud'].value">
                     <p>
-                            Enter your credentials (API keys) for this cloud.
                             <ng-container *ngIf="_targetCloud.access_instructions_url">
                             For detailed instructions on how to obtain credentials for this cloud, click
                             <a target="_blank" [href]="_targetCloud.access_instructions_url">here</a>.
