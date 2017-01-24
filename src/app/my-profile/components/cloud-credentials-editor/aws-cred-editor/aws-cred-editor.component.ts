@@ -41,8 +41,8 @@ export class AWSCredEditorComponent implements ControlValueAccessor, Validator {
 
     // Begin: implementation of ControlValueAccessor
 
-    // the method set in registerOnChange, it is just 
-    // a placeholder for a method that takes one parameter, 
+    // the method set in registerOnChange, it is just
+    // a placeholder for a method that takes one parameter,
     // we use it to emit changes back to the form
     private propagateChange = (_: any) => { };
 
@@ -88,5 +88,7 @@ export class AWSCredEditorComponent implements ControlValueAccessor, Validator {
             'secret_key': this.secret_key
         });
         this.awsCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
+        console.log(this.awsCredentialsForm);
+        console.log(this.access_key);
     }
 }

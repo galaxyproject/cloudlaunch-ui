@@ -47,7 +47,7 @@
                 </div>
 
                 <div>
-                    <button class="btn btn-raised btn-info pull-right"
+                    <button class="btn btn-raised btn-info pull-right btn-lg"
                      [disabled]="!applianceLaunchForm.controls['credentials'].value"
                      (click)="pageChange()">
                         Next <i class="fa fa-chevron-right"></i>
@@ -78,7 +78,7 @@
                 <a (click)="pageChange()" class="btn btn-info">
                     <i class="fa fa-chevron-left"></i> Previous
                 </a>
-                <button type="submit" class="btn btn-raised btn-success pull-right"
+                <button type="submit" class="btn btn-raised btn-success pull-right btn-lg"
                  *ngIf="page2" [disabled]="submitPending || !applianceLaunchForm.valid">
                     Launch <span *ngIf="submitPending" class="fa fa fa-spinner fa-spin fa-fw"></span>
                 </button>
