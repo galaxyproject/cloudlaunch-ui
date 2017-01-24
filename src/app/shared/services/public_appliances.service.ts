@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { CLAuthHttp } from '../../login/utils/cloudlaunch-http';
 import { AppSettings } from '../../app.settings';
 import { PublicService } from '../models/public_service';
 
 @Injectable()
 export class PublicAppliancesService {
-    constructor(private _http: Http) { }
+    constructor(private _http: CLAuthHttp) { }
 
     private _public_services_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/public_services/`;
 

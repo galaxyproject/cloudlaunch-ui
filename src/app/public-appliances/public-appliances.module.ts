@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { AgmCoreModule } from 'angular2-google-maps/core';
 
@@ -20,7 +19,6 @@ import { PublicAppliancesPageComponent } from './components/public-appliances-pa
     imports: [
         CommonModule,
         FormsModule,
-        HttpModule,
         LayoutModule,
         PublicAppliancesRoutingModule,
         AgmCoreModule.forRoot({

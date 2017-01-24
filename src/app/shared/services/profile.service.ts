@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions } from '@angular/http';
+import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { CLAuthHttp } from '../../login/utils/cloudlaunch-http';
 import { AppSettings } from '../../app.settings';
 import { UserProfile } from '../models/profile';
 import { Credentials } from '../models/profile';
 import { AWSCredentials } from '../models/profile';
 import { OpenStackCredentials } from '../models/profile';
 import { CredVerificationResult } from '../models/profile';
-import { CustomRequestOptions } from '../../login/utils/custom-request-options';
 
 
 @Injectable()
@@ -19,7 +19,7 @@ export class ProfileService {
     private _creds_url_openstack = `${this._profile_url}credentials/openstack/`;
     private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/infrastructure/clouds/`;
 
-    constructor(private _http: Http) { }
+    constructor(private _http: CLAuthHttp) { }
 
     public getProfile(): Observable<UserProfile> {
         return this._http.get(this._profile_url)
@@ -52,11 +52,8 @@ export class ProfileService {
     
     public verifyCredentialsAWS(creds: AWSCredentials): Observable<CredVerificationResult> {
         let body = JSON.stringify(creds);
-        let custom_options = new CustomRequestOptions();
-        custom_options.setCloudCredentials(creds);
-        let options = new RequestOptions();
-        options = custom_options.merge(options);
-        return this._http.post(`${this._application_url}${creds.cloud.slug}/authenticate/`, body, options)
+        this._http.setCloudCredentials(creds);
+        return this._http.post(`${this._application_url}${creds.cloud.slug}/authenticate/`, body)
             .map(response => response.json())
             .catch(this.handleError);
     }
@@ -82,11 +79,8 @@ export class ProfileService {
     
     public verifyCredentialsOpenStack(creds: OpenStackCredentials): Observable<CredVerificationResult> {
         let body = JSON.stringify(creds);
-        let custom_options = new CustomRequestOptions();
-        custom_options.setCloudCredentials(creds);
-        let options = new RequestOptions();
-        options = custom_options.merge(options);
-        return this._http.post(`${this._application_url}${creds.cloud.slug}/authenticate/`, body, options)
+        this._http.setCloudCredentials(creds);
+        return this._http.post(`${this._application_url}${creds.cloud.slug}/authenticate/`, body)
             .map(response => response.json())
             .catch(this.handleError);
     }

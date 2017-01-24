@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { CLAuthHttp } from '../../login/utils/cloudlaunch-http';
 import { AppSettings } from '../../app.settings';
 import { Cloud } from '../models/cloud';
 import { InstanceType } from '../models/cloud';
@@ -15,7 +16,7 @@ import { StaticIP } from '../models/cloud';
 
 @Injectable()
 export class CloudService {
-    constructor(private _http: Http) { }
+    constructor(private _http: CLAuthHttp) { }
 
     // TODO: This needs to be obtained from some global config
     private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/infrastructure/clouds/`;

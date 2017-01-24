@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { LayoutModule } from '../shared/layout.module';
 import { AboutRoutingModule } from './about-routing.module';

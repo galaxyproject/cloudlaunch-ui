@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { CLAuthHttp } from '../../login/utils/cloudlaunch-http';
 import { AppSettings } from '../../app.settings';
 import { Deployment } from '../models/deployment';
 
 @Injectable()
 export class DeploymentService {
-    constructor(private _http: Http) { }
+    constructor(private _http: CLAuthHttp) { }
 
     private _deployment_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/deployments/`;
 

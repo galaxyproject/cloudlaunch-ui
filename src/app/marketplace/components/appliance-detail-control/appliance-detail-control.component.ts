@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
-import { RequestOptions } from '@angular/http';
 
-import { CustomRequestOptions } from '../../../login/utils/custom-request-options';
+import { CLAuthHttp } from '../../../login/utils/cloudlaunch-http';
 import { AppPlaceHolderComponent } from './app-placeholder.component';
 
 // Models
@@ -52,7 +51,7 @@ export class ApplianceDetailControlComponent implements OnInit {
         private _applicationService: ApplicationService,
         private _deploymentService: DeploymentService,
         private _loginService: LoginService,
-        private _requestOptions: RequestOptions
+        private _http: CLAuthHttp
         ) {
         this.appConfigForm = fb.group({});
         this.applianceLaunchForm = fb.group({
@@ -117,8 +116,7 @@ export class ApplianceDetailControlComponent implements OnInit {
 
     /* Set global request credentials based on user entered data */
     setRequestCredentials(creds: Credentials) {
-        let customRequestOptions = <CustomRequestOptions>this._requestOptions;
-        customRequestOptions.setCloudCredentials(creds);
+        this._http.setCloudCredentials(creds);
     }
 
     pageChange() {
