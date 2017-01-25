@@ -6,6 +6,7 @@
         <label for="id_instance_type" class="control-label">
         What type of virtual hardware would you like to use? </label>
         <ng-select id="id_instance_type" [items]="instanceTypes" [disabled]="!cloud"
+            [ngClass]="{'has-error': '!cloudLaunchForm.controls[\'instanceType\'].valid'}"
             [active]="getSelectedInstanceType()" (selected)="onInstanceTypeSelect($event)"
             [placeholder]="instanceTypeHelp"> </ng-select>
     </div>
