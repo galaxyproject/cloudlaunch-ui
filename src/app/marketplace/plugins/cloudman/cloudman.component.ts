@@ -78,13 +78,14 @@ export class CloudManConfigComponent extends BasePluginComponent {
         this.savedClustersHelp = "Retrieving saved clusters..."
         this.savedClusters = []
         this._cloudService.getSavedClusters(this.cloud.slug)
-            .subscribe(savedClusters => this.savedClusters = savedClusters.map( sc => { sc.id = arguments[1]; sc.text = sc.cluster_name; return sc; }),
+            .subscribe(savedClusters => this.savedClusters = savedClusters.map( (sc, i) => { sc.id = i; sc.text = sc.cluster_name; return sc; }),
             error => this.errorMessage = <any>error,
             () => {this.savedClustersHelp = 'Select a saved cluster'; });
         this.showSavedClusters = true;
     }
 
-    onClusterSelect(cluster: string) {
-        (<FormControl>)this.cmClusterForm.controls['restartCluster'].setValue(this.savedClusters[cluster.id]);
+    onClusterSelect(cluster: CloudManCluster) {
+        this.cmClusterForm.controls['restartCluster'].setValue(this.savedClusters[cluster.id]);
+        this.cmClusterForm.controls['storageType'].setValue('volume');
     }
 }
