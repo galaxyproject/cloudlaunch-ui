@@ -8,6 +8,7 @@
          Which saved cluster would you like to start?
       </label>
       <ng-select id="id-saved-clusters" [items]="savedClusters"
+       (selected)="onClusterSelect($event)"
        *ngIf="showSavedClusters" [placeholder]="savedClustersHelp"></ng-select>
    </div>
 
@@ -25,7 +26,7 @@
    </div>
 
    <!--  Storage Type Selection -->
-   <div class="form-group">
+   <div class="form-group" *ngIf="!showSavedClusters">
       <label>Storage Type</label>
       <div class="radio">
          <label>
@@ -44,7 +45,7 @@
    </div>
 
    <!--  Storage size -->
-   <div class="form-group" *ngIf="storageType.value=='volume'">
+   <div class="form-group" *ngIf="storageType.value=='volume' && !showSavedClusters">
       <label for="id_storage_size" class="control-label">
          Storage size
       </label>
@@ -64,7 +65,7 @@
 
    <div *ngIf="showAdvanced">
       <!--  Cluster Type Selection -->
-      <div class="form-group">
+      <div class="form-group" *ngIf="!showSavedClusters">
          <label for="cluster_type">Cluster Type</label>
          <ng-select id="id_cluster_type" [items]="clusterTypes"
             [active]="getInitialClusterType()"

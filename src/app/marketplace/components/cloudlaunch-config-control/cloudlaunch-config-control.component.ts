@@ -73,7 +73,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     subnetsHelp: string = this.CLOUD_SELECTION_HELP;
     staticIPs: StaticIP[] = [];
     staticIPHelp: string = this.CLOUD_SELECTION_HELP;
-    
+
     // Form Controls
     rootStorageType = new FormControl('instance', Validators.required);
 
@@ -112,7 +112,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
         this.getKeyPairs(cloud);
         this.getNetworks(cloud);
         this.getStaticIPs(cloud);
-        
+
         // Reapply initial config on cloud change
         this.initialConfig = this.initialConfig;
 

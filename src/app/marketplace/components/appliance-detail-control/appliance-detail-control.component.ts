@@ -127,7 +127,6 @@ export class ApplianceDetailControlComponent implements OnInit {
         this.errorMessage = null;
         this.submitPending = true;
         formValues['application'] = this.application.slug;
-        console.log(JSON.stringify(formValues));
         this._deploymentService.createDeployment(formValues).subscribe(
             data => this._router.navigate(['appliances']),
             error => this.handleErrors(error));

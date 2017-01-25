@@ -49,6 +49,7 @@ export class CloudManConfigComponent extends BasePluginComponent {
                 private _cloudService: CloudService) {
         super(fb, parentContainer);
         this.cmClusterForm = fb.group({
+            'restartCluster': [null],
             'clusterPassword': [null, Validators.required],
             'storageType': this.storageType,
             'storageSize': [null],
@@ -77,9 +78,13 @@ export class CloudManConfigComponent extends BasePluginComponent {
         this.savedClustersHelp = "Retrieving saved clusters..."
         this.savedClusters = []
         this._cloudService.getSavedClusters(this.cloud.slug)
-            .subscribe(savedClusters => this.savedClusters = savedClusters.map( sc => { sc.id = sc.cluster_name; sc.text = sc.cluster_name; return sc; }),
+            .subscribe(savedClusters => this.savedClusters = savedClusters.map( sc => { sc.id = arguments[1]; sc.text = sc.cluster_name; return sc; }),
             error => this.errorMessage = <any>error,
             () => {this.savedClustersHelp = 'Select a saved cluster'; });
         this.showSavedClusters = true;
+    }
+
+    onClusterSelect(cluster: string) {
+        (<FormControl>)this.cmClusterForm.controls['restartCluster'].setValue(this.savedClusters[cluster.id]);
     }
 }
