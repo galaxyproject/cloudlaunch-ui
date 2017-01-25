@@ -88,7 +88,5 @@ export class AWSCredEditorComponent implements ControlValueAccessor, Validator {
             'secret_key': this.secret_key
         });
         this.awsCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
-        console.log(this.awsCredentialsForm);
-        console.log(this.access_key);
     }
 }

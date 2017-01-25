@@ -69,6 +69,7 @@
 
                 <div class="form-group" [formGroup]="appConfigForm">
                     <app-placeholder [initialConfig]="selectedAppCloudConfig.default_launch_config"
+                        [cloud]="applianceLaunchForm.controls['credentials'].value?.cloud"
                         [componentPath]="selectedVersion.frontend_component_path"
                         [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
                     <!-- Cloud launching part of the form -->

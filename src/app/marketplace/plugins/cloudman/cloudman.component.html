@@ -1,4 +1,16 @@
 <div [formGroup]="form">
+   <!-- Fetch saved clusters -->
+   <div class="form-group control-label is-empty">
+      <button class="btn btn-primary" (click)=fetchSavedClusters() *ngIf="!showSavedClusters">
+         Or fetch saved clusters
+      </button>
+      <label for="id-saved-clusters" class="control-label" *ngIf="showSavedClusters">
+         Which saved cluster would you like to start?
+      </label>
+      <ng-select id="id-saved-clusters" [items]="savedClusters"
+       *ngIf="showSavedClusters" placeholder="No saved cluster selected"></ng-select>
+   </div>
+
    <!-- Access password -->
    <div class="form-group control-label is-empty" [ngClass]="{'has-error': '!cmClusterForm.valid'}" *ngIf="!hidePassword">
       <label for="id_password" class="control-label">What password would you like to use for this CloudMan instance?</label>

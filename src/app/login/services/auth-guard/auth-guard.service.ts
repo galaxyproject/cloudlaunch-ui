@@ -16,11 +16,9 @@ export class AuthGuardService implements CanActivate {
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         let loginPromise: any = this._loginService.isLoggedIn().then((loggedIn) => {
             if (loggedIn) {
-                console.log("Logged in?!");
                 return true;
             }
             else {
-                console.log("Routing to /auth/login");
                 this.router.navigate(['/auth/login']);
             }
         });

@@ -7,7 +7,7 @@ declare var System: any;
 @Component({
     selector: 'app-placeholder',
     template: `<span #content></span>`,
-    inputs: ['initialConfig', 'componentPath', 'componentName'],
+    inputs: ['initialConfig', 'componentPath', 'componentName', 'cloud'],
 })
 export class AppPlaceHolderComponent {
     _initialConfig: any;

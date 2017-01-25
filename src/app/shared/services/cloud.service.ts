@@ -13,6 +13,7 @@ import { KeyPair } from '../models/cloud';
 import { Network } from '../models/cloud';
 import { SubNet } from '../models/cloud';
 import { StaticIP } from '../models/cloud';
+import { CloudManCluster } from '../models/cloud';
 
 @Injectable()
 export class CloudService {
@@ -72,6 +73,13 @@ export class CloudService {
     public getStaticIPs(slug: string): Observable<StaticIP[]> {
         return this._http.get(this._application_url + slug + '/static_ips/')
             .map(response => <StaticIP[]>response.json().results)
+            .catch(this.handleError);
+    }
+
+    public getSavedClusters(): Observable<CloudManCluster[]> {
+        let slug = 'amazon-us-east-n-virginia';
+        return this._http.get(this._application_url + slug + '/cloudman/')
+            .map(response => <CloudManCluster[]>response.json().saved_clusters)
             .catch(this.handleError);
     }
 

@@ -48,3 +48,9 @@ export interface StaticIP {
     text: string;
     ip: string;
 }
+
+export interface CloudManCluster {
+    cluster_name: string;
+    placement: string;
+    bucket_name: string;
+}
