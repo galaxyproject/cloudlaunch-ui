@@ -29,43 +29,43 @@ export class CloudService {
     }
 
     public getCloud(slug: string): Observable<Cloud> {
-        return this._http.get(this._application_url + slug + '/')
+        return this._http.get(`${this._application_url}${slug}/`)
             .map(response => <Cloud>response.json())
             .catch(this.handleError);
     }
 
     public getInstanceTypes(slug: string): Observable<InstanceType[]> {
-        return this._http.get(this._application_url + slug + '/compute/instance_types/')
+        return this._http.get(`${this._application_url}${slug}/compute/instance_types/`)
             .map(response => <InstanceType[]>response.json().results)
             .catch(this.handleError);
     }
 
     public getRegions(slug: string): Observable<Region[]> {
-        return this._http.get(this._application_url + slug + '/compute/regions/')
+        return this._http.get(`${this._application_url}${slug}/compute/regions/`)
             .map(response => <Region[]>response.json().results)
             .catch(this.handleError);
     }
 
     public getPlacementZones(slug: string, region: string): Observable<PlacementZone[]> {
-        return this._http.get(this._application_url + slug + '/compute/regions/' + region + '/zones/')
+        return this._http.get(`${this._application_url}${slug}/compute/regions/${region}/zones/`)
             .map(response => <PlacementZone[]>response.json().results)
             .catch(this.handleError);
     }
 
     public getKeyPairs(slug: string): Observable<KeyPair[]> {
-        return this._http.get(this._application_url + slug + '/security/keypairs/')
+        return this._http.get(`${this._application_url}${slug}/security/keypairs/`)
             .map(response => <KeyPair[]>response.json().results)
             .catch(this.handleError);
     }
 
     public getNetworks(slug: string): Observable<Network[]> {
-        return this._http.get(this._application_url + slug + '/networks/')
+        return this._http.get(`${this._application_url}${slug}/networks/`)
             .map(response => <Network[]>response.json().results)
             .catch(this.handleError);
     }
 
     public getSubNets(slug: string, network_id: string): Observable<SubNet[]> {
-        return this._http.get(this._application_url + slug + '/networks/' + network_id + '/subnets/')
+        return this._http.get(`${this._application_url}${slug}/networks/${network_id}/subnets/`)
             .map(response => <SubNet[]>response.json().results)
             .catch(this.handleError);
     }
@@ -77,7 +77,7 @@ export class CloudService {
     }
 
     public getSavedClusters(slug: string): Observable<CloudManCluster[]> {
-        return this._http.get(this._application_url + slug + '/cloudman/')
+        return this._http.get(`${this._application_url}${slug}/cloudman/`)
             .map(response => <CloudManCluster[]>response.json().saved_clusters)
             .catch(this.handleError);
     }

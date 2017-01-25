@@ -20,7 +20,7 @@ export class ApplicationService {
     }
 
     public getApplication(slug: string): Observable<Application> {
-        return this._http.get(this._application_url + slug + '/')
+        return this._http.get(`${this._application_url}${slug}/`)
             .map(response => response.json());
     }
 }
