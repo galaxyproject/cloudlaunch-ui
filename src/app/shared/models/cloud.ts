@@ -50,6 +50,8 @@ export interface StaticIP {
 }
 
 export interface CloudManCluster {
+    id: string;
+    text: string;
     cluster_name: string;
     placement: string;
     bucket_name: string;

@@ -7,13 +7,13 @@ import {
     FormGroupDirective } from '@angular/forms';
 
 import { BasePluginComponent } from '../base-plugin.component';
-import { Cloud } from '../../../shared/models/cloud';
+import { Cloud, CloudManCluster } from '../../../shared/models/cloud';
 import { CloudService } from '../../../shared/services/cloud.service';
 
 @Component({
     selector: 'cloudman-config',
     templateUrl: './cloudman.component.html',
-    inputs: ['initialConfig', 'cloud'],
+    inputs: ['cloud', 'initialConfig'],
     providers: [CloudService]
 })
 
@@ -30,9 +30,9 @@ export class CloudManConfigComponent extends BasePluginComponent {
         { 'id': 'None', 'text': 'Do not set cluster type now' }]
     showAdvanced: boolean = false;
     showSavedClusters: boolean = false;
-    savedClusters: any[] = [];
+    savedClustersHelp: string = "Select a saved cluster";
+    savedClusters: CloudManCluster[] = [];
     errorMessage: string;
-    _cloud: Cloud;
 
     cmClusterForm: FormGroup;
     storageType = new FormControl('', Validators.required);
@@ -43,14 +43,6 @@ export class CloudManConfigComponent extends BasePluginComponent {
 
     get configName(): string {
         return "config_cloudman";
-    }
-
-    get cloud() {
-        return this._cloud;
-    }
-
-    set cloud(value) {
-        this._cloud = value;
     }
 
     constructor(fb: FormBuilder, @Host() parentContainer: FormGroupDirective,
@@ -82,12 +74,12 @@ export class CloudManConfigComponent extends BasePluginComponent {
     }
 
     fetchSavedClusters() {
+        this.savedClustersHelp = "Retrieving saved clusters..."
         this.savedClusters = []
-        //this._cloudService.getSavedClusters(this._cloud.slug)
-        this._cloudService.getSavedClusters()
-            .subscribe(savedClusters => this.savedClusters = savedClusters.map( sc => { sc.id = sc.cluster_name; sc.text = sc.cluster_name; return sc; })
+        this._cloudService.getSavedClusters(this.cloud.slug)
+            .subscribe(savedClusters => this.savedClusters = savedClusters.map( sc => { sc.id = sc.cluster_name; sc.text = sc.cluster_name; return sc; }),
             error => this.errorMessage = <any>error,
-            () => {this.savedClusters = 'Select a saved cluster'; });
+            () => {this.savedClustersHelp = 'Select a saved cluster'; });
         this.showSavedClusters = true;
     }
 }

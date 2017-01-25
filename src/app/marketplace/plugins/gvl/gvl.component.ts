@@ -10,7 +10,7 @@ import { BasePluginComponent } from '../base-plugin.component';
 @Component({
     selector: 'gvl-config',
     templateUrl: './gvl.component.html',
-    inputs: ['initialConfig']
+    inputs: ['cloud', 'initialConfig']
 })
 export class GVLConfigComponent extends BasePluginComponent {
     gvlLaunchForm: FormGroup;

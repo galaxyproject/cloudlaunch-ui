@@ -2,13 +2,13 @@
    <!-- Fetch saved clusters -->
    <div class="form-group control-label is-empty">
       <button class="btn btn-primary" (click)=fetchSavedClusters() *ngIf="!showSavedClusters">
-         Or fetch saved clusters
+         Fetch saved clusters
       </button>
       <label for="id-saved-clusters" class="control-label" *ngIf="showSavedClusters">
          Which saved cluster would you like to start?
       </label>
       <ng-select id="id-saved-clusters" [items]="savedClusters"
-       *ngIf="showSavedClusters" placeholder="No saved cluster selected"></ng-select>
+       *ngIf="showSavedClusters" [placeholder]="savedClustersHelp"></ng-select>
    </div>
 
    <!-- Access password -->

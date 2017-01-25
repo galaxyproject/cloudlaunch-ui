@@ -71,13 +71,12 @@ export class CloudService {
     }
 
     public getStaticIPs(slug: string): Observable<StaticIP[]> {
-        return this._http.get(this._application_url + slug + '/static_ips/')
+        return this._http.get(`${this._application_url}${slug}/static_ips/`)
             .map(response => <StaticIP[]>response.json().results)
             .catch(this.handleError);
     }
 
-    public getSavedClusters(): Observable<CloudManCluster[]> {
-        let slug = 'amazon-us-east-n-virginia';
+    public getSavedClusters(slug: string): Observable<CloudManCluster[]> {
         return this._http.get(this._application_url + slug + '/cloudman/')
             .map(response => <CloudManCluster[]>response.json().saved_clusters)
             .catch(this.handleError);

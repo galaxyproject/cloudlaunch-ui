@@ -5,9 +5,8 @@ import { BasePluginComponent } from '../base-plugin.component';
 @Component({
     selector: 'ubuntu-config',
     template: ``,
+    inputs: ['cloud', 'initialConfig']
 })
-export class UbuntuConfigComponent {
+export class UbuntuConfigComponent extends BasePluginComponent {
 
-    @Input()
-    initialConfig: any;
 }
