@@ -64,7 +64,7 @@ export class DockerRunConfiguration {
     command: string;
     work_dir: string;
     user: string;        
-    port_mappings: PortMapping[];
-    env_vars: EnvironmentVariable[];
-    volumes: VolumeMapping[];
+    port_mappings: PortMapping[] = [];
+    env_vars: EnvironmentVariable[] = [];
+    volumes: VolumeMapping[] = [];
 }
