@@ -10,7 +10,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { BasePluginComponent } from '../base-plugin.component';
 import { AppSettings } from '../../../app.settings';
-import { DockerRepositoryOverview, DockerRepositoryDetail } from './models/docker';
+import { DockerRepositoryOverview } from './models/docker';
+import { DockerRepositoryDetail } from './models/docker';
+import { DockerRunConfiguration } from './models/docker';
 import { DockerService } from './services/docker_service';
 
 @Component({
@@ -23,10 +25,12 @@ import { DockerService } from './services/docker_service';
 export class DockerConfigComponent extends BasePluginComponent {
     dockerLaunchForm: FormGroup;
     searchTerm = new FormControl();
-    searchResults: Observable<Array<DockerRepositoryOverview>>;
-    selectedRepo: DockerRepositoryOverview;
-    selectedDockerFile: string;
+    searchResults: Array<DockerRepositoryOverview>;
+    selectedRepoOverview: DockerRepositoryOverview;
+    selectedRepoDetail: DockerRepositoryDetail;
     showAdvanced: boolean = false;
+    fetchInProgress: boolean = false;
+    _selectedDockerFile: string;
 
 
     get form(): FormGroup {
@@ -37,6 +41,19 @@ export class DockerConfigComponent extends BasePluginComponent {
         return "config_docker";
     }
 
+    get selectedDockerFile(): string {
+        return this._selectedDockerFile;
+    }
+    
+    set selectedDockerFile(value) {
+        this._selectedDockerFile = value;
+        if (value) {
+            let config = this._dockerService.parseDockerFile(value);
+            config.repo_name = this.selectedRepoOverview.repo_name;
+            this.setDockerConfigFormValues(config);
+        }
+    }
+
     constructor(private fb: FormBuilder,
             parentContainer: FormGroupDirective,
             private _http: Http,
@@ -45,22 +62,26 @@ export class DockerConfigComponent extends BasePluginComponent {
         this.dockerLaunchForm = fb.group({
             'repo_name': ['', Validators.required],
             'entrypoint': [''],
+            'command': [''],
             'work_dir': [''],
             'user': [''],
             'port_mappings': fb.array([this.initPortMapping()]),
             'env_vars': fb.array([this.initEnvVar()]),
             'volumes': fb.array([this.initVolumeMapping()])
         });
-        this.searchResults = this.searchTerm.valueChanges
+        this.searchTerm.valueChanges
             .debounceTime(300)
             .distinctUntilChanged()
-            .switchMap(term => this.onDockerSearch(term));
+            .switchMap(term => this.onDockerSearch(term))
+            .subscribe(
+                    data => { this.fetchInProgress = false; this.searchResults = data; },
+                    error => { this.fetchInProgress = false; console.log(error) });
     }
 
     initPortMapping() {
         return this.fb.group({
             'container_port': ['', Validators.required],
-            'host_port': ['', Validators.required]
+            'host_port': ['']
         });
     }
 
@@ -73,11 +94,21 @@ export class DockerConfigComponent extends BasePluginComponent {
 
     initVolumeMapping() {
         return this.fb.group({
-            'host_path': ['', Validators.required],
             'container_path': ['', Validators.required],
+            'host_path': [''],
             'read_write': [''],
             'nocopy': ['']
         });
+    }
+    
+    setDockerConfigFormValues(config: DockerRunConfiguration) {
+        this.dockerLaunchForm.setControl('port_mappings',
+                this.fb.array(config.port_mappings.map(x => this.initPortMapping())));
+        this.dockerLaunchForm.setControl('env_vars',
+                this.fb.array(config.env_vars.map(x => this.initEnvVar())));
+        this.dockerLaunchForm.setControl('volumes',
+                this.fb.array(config.volumes.map(x => this.initVolumeMapping())));
+        this.dockerLaunchForm.patchValue(config);
     }
 
     toggleAdvanced() {
@@ -85,16 +116,31 @@ export class DockerConfigComponent extends BasePluginComponent {
     }
     
     onDockerSearch(term: string): Observable<Array<DockerRepositoryOverview>> {
-        this.selectedRepo = null;
+        this.fetchInProgress = true;
+        this.selectedRepoOverview = null;
+        this.selectedRepoDetail = null;
+        this.selectedDockerFile = null;
+        this.dockerLaunchForm.reset();
         return this._dockerService.searchDockerHub(term);
     }
     
     onRepositorySelect(repo: DockerRepositoryOverview) {
-        this._dockerService.getRepoDetail(repo).subscribe(
-                data => this.selectedRepo = data,
-                error => console.log(error));
-        this._dockerService.getDockerFile(repo).subscribe(
-                data => this.selectedDockerFile = data,
-                error => console.log(error));
+        this.selectedRepoOverview = repo;
+        this.selectedRepoDetail = null;
+        this.fetchInProgress = true;
+        this.selectedDockerFile = null;
+        this.dockerLaunchForm.reset();
+        
+        Observable.forkJoin(
+                this._dockerService.getRepoDetail(repo),
+                this._dockerService.getDockerFile(repo)
+        ).subscribe(
+                data => {
+                    this.fetchInProgress = false;
+                    this.selectedRepoDetail = data[0];
+                    this.selectedDockerFile = data[1];
+                },
+                error => { this.fetchInProgress = false; console.log(error); }
+        );
     }
 }

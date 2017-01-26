@@ -27,14 +27,22 @@ export class DockerService {
     }
 
     getRepoDetail(repo: DockerRepositoryOverview) {
-        let url = `${this.docker_repo_url}repositories/${repo.repo_name}`;
+        let url = '';
+        if (repo.is_official)
+            url = `${this.docker_repo_url}repositories/library/${repo.repo_name}`;
+        else
+            url = `${this.docker_repo_url}repositories/${repo.repo_name}`;
         return this._http.get(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
             .map(response => <Array<DockerRepositoryDetail>>response.json())
             .catch(error => Observable.throw(error.json().error || 'Server error'));
     }
 
     getDockerFile(repo: DockerRepositoryOverview) {
-        let url = `${this.docker_repo_url}repositories/${repo.repo_name}/dockerfile`;
+        let url = '';
+        if (repo.is_official)
+            url = `${this.docker_repo_url}repositories/library/${repo.repo_name}/dockerfile`;
+        else
+            url = `${this.docker_repo_url}repositories/${repo.repo_name}/dockerfile`;
         return this._http.get(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
             .map(response => <Array<DockerRepositoryDetail>>response.json().contents)
             .catch(error => Observable.throw(error.json().error || 'Server error'));
@@ -71,7 +79,7 @@ export class DockerService {
                     break;
                 case 'VOLUME':
                     for (let vol of command.args) {
-                        config.volumes.push(new VolumeMapping(vol, vol));
+                        config.volumes.push(new VolumeMapping('', vol));
                     }
                     break;
             }
