@@ -50,10 +50,14 @@ export abstract class BasePluginComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         // Add child form to parent so that validations roll up
-        this.parentContainer.form.addControl(this.configName, this.form);
+        if (this.parentContainer != null) {
+            this.parentContainer.form.addControl(this.configName, this.form);
+        }
     }
 
     ngOnDestroy() {
-        this.parentContainer.form.removeControl(this.configName);
+        if (this.parentContainer != null) {
+            this.parentContainer.form.removeControl(this.configName);
+        }
     }
 }
