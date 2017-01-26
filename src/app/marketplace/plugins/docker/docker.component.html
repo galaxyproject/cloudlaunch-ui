@@ -1,0 +1,127 @@
+<div [formGroup]="form">
+    <!-- Search Docker Hub -->
+    <div class="form-group">
+        <label for="id_docker_hub_search" class="control-label">Search docker hub for a container</label>
+        <input id="id_docker_hub_search" type="text" class="form-control input-md"
+            [formControl]="searchTerm">
+        <span class="help-block">
+            Enter a search term to find a container within Docker Hub
+        </span>
+        <span class="material-input"></span>
+    </div>
+    
+    <div class="row form-group" [hidden]="selectedRepo">
+        <div *ngFor="let repo of searchResults | async" class="col-md-4 list-group">
+            <div class="list-group-item cl-app-badge" (click)="onRepositorySelect(repo)">
+                <div class="row-picture">
+                    <img class="circle" src="https://hub.docker.com/public/images/logos/mini-logo-white-inset.png" alt="Logo">
+                </div>
+                <div class="row-content">
+                    <strong>{{ repo.repo_name }}</strong>
+                    <p class="list-group-item-text">{{ repo.short_description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form-group" *ngIf="selectedRepo">
+        <h4><strong>Configure: {{ selectedRepo.name }}</strong></h4>
+        <hr />
+        
+        <div class="col-md-6" style="text-overflow: ellipsis; overflow: scroll; white-space: wrap; max-height: 500px">
+            <markdown >
+                {{ selectedRepo.full_description }}
+            </markdown>
+        </div>
+        <div class="col-md-6" style="height: 100%; max-height: 500px">
+            <pre style="height: 100%; max-height: 500px">
+                {{ selectedDockerFile }}
+            </pre>
+        </div>
+    </div>
+
+    <div class="form-group" hidden>
+        <label for="id_repo_name" class="control-label">
+            Repository Name
+        </label>
+        <input id="id_repo_name" type="text" class="form-control input-md" formControlName="repo_name" [value]="selectedRepo?.name">
+          <span class="material-input"></span>
+    </div>
+
+    <div class="form-group" formArrayName="port_mappings">
+        <div *ngFor="let mapping of form.controls.port_mappings.controls; let i=index">
+            <div class="row" [formGroupName]="i">
+                <div class="col-md-6 form-group">
+                    <label for="id_host_port_{{ i }}" class="control-label">
+                        Container Port
+                    </label>
+                    <input id="id_host_port_{{ i }}" type="text" class="form-control input-md" formControlName="container_port" readonly>
+                    <span class="help-block">
+                         Exposed port in container
+                      </span>
+                      <span class="material-input"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="id_host_port_{{ i }}" class="control-label">
+                        Host Port
+                    </label>
+                    <input id="id_host_port_{{ i }}" type="text" class="form-control input-md" formControlName="host_port">
+                    <span class="help-block">
+                         Port to expost in host
+                      </span>
+                      <span class="material-input"></span>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+
+    <div class="row form-group label-floating is-empty">
+        <div class="togglebutton">
+            <label>
+                <input type="checkbox" (click)="toggleAdvanced()">Advanced Docker options
+            </label>
+        </div>
+    </div>
+
+    <div [hidden]="!showAdvanced">
+        <!--  Additional GVL settings -->
+        <config-panel>
+            <panel-header>Advanced Docker Settings</panel-header>
+            <panel-body>
+                <div class="form-group">
+                    <label for="id_entrypoint" class="control-label">
+                        Entry Point
+                    </label>
+                    <input id="id_entrypoint" type="text" class="form-control input-md" formControlName="entrypoint">
+                    <span class="help-block">
+                         Entry-point for the application.
+                      </span>
+                      <span class="material-input"></span>
+                </div>
+            
+                <div class="form-group">
+                    <label for="id_work_dir" class="control-label">
+                        Working Directory
+                    </label>
+                    <input id="id_work_dir" type="text" class="form-control input-md" formControlName="work_dir">
+                    <span class="help-block">
+                         Working directory for the container
+                      </span>
+                      <span class="material-input"></span>
+                </div>
+            
+                <div class="form-group">
+                    <label for="id_docker_user" class="control-label">
+                        User
+                    </label>
+                    <input id="id_docker_user" type="text" class="form-control input-md" formControlName="user">
+                    <span class="help-block">
+                         OS User to run this container as. Can be of the format userid:gid
+                      </span>
+                      <span class="material-input"></span>
+                </div>
+            
+            </panel-body>
+        </config-panel>
+    </div>
+</div>

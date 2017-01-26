@@ -1,0 +1,19 @@
+.cl-app-badge {
+    padding: 10px;
+    height: 90px;
+    vertical-align: middle;
+}
+
+.list-group-item {
+    cursor: pointer;
+    
+}
+
+.list-group:hover {
+    background-color: #e6e6e6;
+}
+
+.row-picture, .row-content {
+    display: table-cell;
+    vertical-align: middle;
+}

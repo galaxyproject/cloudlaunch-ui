@@ -8,7 +8,9 @@ import { LayoutModule } from '../../shared/layout.module';
 import { UbuntuConfigComponent } from './ubuntu/ubuntu.component.ts'
 import { CloudManConfigComponent } from './cloudman/cloudman.component.ts'
 import { GVLConfigComponent } from './gvl/gvl.component.ts'
+import { DockerConfigComponent } from './docker/docker.component.ts'
 import { SelectModule } from 'ng2-select';
+import { MarkdownModule } from 'angular2-markdown';
 
 @NgModule({
     imports: [
@@ -17,9 +19,10 @@ import { SelectModule } from 'ng2-select';
         ReactiveFormsModule,
         HttpModule,
         LayoutModule,
-        SelectModule
+        SelectModule,
+        MarkdownModule
     ],
-    declarations: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent],
-    exports: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent]
+    declarations: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent, DockerConfigComponent],
+    exports: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent, DockerConfigComponent]
 })
 export class PluginsModule { }
