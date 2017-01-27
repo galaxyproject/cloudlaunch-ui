@@ -9,6 +9,7 @@ import { UbuntuConfigComponent } from './ubuntu/ubuntu.component.ts'
 import { CloudManConfigComponent } from './cloudman/cloudman.component.ts'
 import { GVLConfigComponent } from './gvl/gvl.component.ts'
 import { DockerConfigComponent } from './docker/docker.component.ts'
+import { DockerFileEditorComponent } from './docker/components/docker-file-editor.component.ts'
 import { SelectModule } from 'ng2-select';
 import { MarkdownModule } from 'angular2-markdown';
 
@@ -22,7 +23,9 @@ import { MarkdownModule } from 'angular2-markdown';
         SelectModule,
         MarkdownModule
     ],
-    declarations: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent, DockerConfigComponent],
-    exports: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent, DockerConfigComponent]
+    declarations: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,
+                   DockerConfigComponent, DockerFileEditorComponent],
+    exports: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,
+              DockerConfigComponent]
 })
 export class PluginsModule { }

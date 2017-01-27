@@ -1,0 +1,133 @@
+<div>
+    <div class="form row" [formGroup]="dockerFileForm">
+
+        <div class="col-md-4">
+            <h4>Port Mappings</h4>
+            <table formArrayName="port_mappings">
+                <thead>
+                    <th>Container Port</th>
+                    <th>Host Port</th>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let mapping of dockerFileForm.controls.port_mappings.controls; let i=index">
+                        
+                        <tr [formGroupName]="i">
+                            <td><input id="id_container_port_{{ i }}" type="text" class="form-control input-md" formControlName="container_port" readonly></td>
+                            <td><input id="id_host_port_{{ i }}" type="text" class="form-control input-md" formControlName="host_port"></td>
+                        </tr>
+
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-8">
+            <h4>Environment Variables</h4>
+            <table formArrayName="env_vars" style="width: 100%">
+                <thead>
+                    <th>Variable</th>
+                    <th>Value</th>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let env of dockerFileForm.controls.env_vars.controls; let i=index">
+                        
+                        <tr [formGroupName]="i">
+                            <td><input id="id_var_{{ i }}" type="text" class="form-control input-md" formControlName="variable" readonly></td>
+                            <td><input id="id_value_{{ i }}" type="text" class="form-control input-md" formControlName="value"></td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-4">
+            <h4>Volumes</h4>
+            <table formArrayName="volumes" style="width: 100%">
+                <thead>
+                    <th>Container Path</th>
+                    <th>Host Path</th>
+                    <th>Writable</th>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let env of dockerFileForm.controls.volumes.controls; let i=index">
+
+                        <tr [formGroupName]="i">
+                            <td><input id="id_vol_cont_{{ i }}" type="text" class="form-control input-md" formControlName="container_path" readonly></td>
+                            <td><input id="id_vol_host_{{ i }}" type="text" class="form-control input-md" formControlName="host_path"></td>
+                            <td>
+                                <div class="checkbox">
+                                    <label> <input type="checkbox" id="id_vol_writable_{{ i }}"
+                                        formControlName="read_write" />
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12 form-group label-floating is-empty">
+            <div class="togglebutton">
+                <label>
+                    <input type="checkbox" (click)="toggleAdvanced()">Advanced Docker options
+                </label>
+            </div>
+        </div>
+
+        <div [hidden]="!showAdvanced">
+            <!--  Additional GVL settings -->
+            <config-panel>
+                <panel-header>Advanced Docker Settings</panel-header>
+                <panel-body>
+                    <div class="form-group">
+                        <label for="id_entrypoint" class="control-label">
+                            Entry Point
+                        </label>
+                        <input id="id_entrypoint" type="text" class="form-control input-md" formControlName="entrypoint">
+                        <span class="help-block">
+                             Entry-point for the application.
+                          </span>
+                          <span class="material-input"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_command" class="control-label">
+                            Command
+                        </label>
+                        <input id="id_command" type="text" class="form-control input-md" formControlName="command">
+                        <span class="help-block">
+                             Command to run
+                          </span>
+                          <span class="material-input"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_work_dir" class="control-label">
+                            Working Directory
+                        </label>
+                        <input id="id_work_dir" type="text" class="form-control input-md" formControlName="work_dir">
+                        <span class="help-block">
+                             Working directory for the container
+                          </span>
+                          <span class="material-input"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_docker_user" class="control-label">
+                            User
+                        </label>
+                        <input id="id_docker_user" type="text" class="form-control input-md" formControlName="user">
+                        <span class="help-block">
+                             OS User to run this container as. Can be of the format userid:gid
+                          </span>
+                          <span class="material-input"></span>
+                    </div>
+
+                </panel-body>
+            </config-panel>
+        </div>
+
+    </div>
+</div>
