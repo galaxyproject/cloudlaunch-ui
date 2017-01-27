@@ -66,9 +66,8 @@ export class DockerFileEditorComponent implements ControlValueAccessor, Validato
 
     // this is the initial value set to the component
     public writeValue(obj: any) {
-        if (obj) {
-            this.dockerFileForm.patchValue(obj);
-        }
+        // Ignore, we only emit values based on the current
+        // dockerFile
     }
 
     public registerOnChange(fn: any) {
@@ -108,7 +107,27 @@ export class DockerFileEditorComponent implements ControlValueAccessor, Validato
             'env_vars': fb.array([this.initEnvVar()]),
             'volumes': fb.array([this.initVolumeMapping()])
         });
-        this.dockerFileForm.valueChanges.subscribe(data => this.propagateChange(data));
+        this.dockerFileForm.valueChanges.subscribe(data => this.propagateChangedValues());
+    }
+    
+    propagateChangedValues() {
+        let changedVals = this.getDirtyValues(this.dockerFileForm);
+        this.propagateChange(changedVals);
+    }
+
+    getDirtyValues(control_group) {
+        let dirtyValues = {};
+        Object.keys(control_group.controls).forEach((control_name) => {
+            let control = control_group.controls[control_name];
+            if (control.dirty){
+                if (control.controls) //check for nested controlGroups
+                    dirtyValues[control_name] = this.getDirtyValues(control);  //recurse
+                else    
+                    dirtyValues[control_name] = control.value; //simple control
+            }
+
+        });
+        return dirtyValues;
     }
 
     initPortMapping() {
