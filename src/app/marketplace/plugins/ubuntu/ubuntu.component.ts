@@ -9,4 +9,7 @@ import { BasePluginComponent } from '../base-plugin.component';
 })
 export class UbuntuConfigComponent extends BasePluginComponent {
 
+    get configName(): string {
+        return "config_ubuntu";
+    }
 }
