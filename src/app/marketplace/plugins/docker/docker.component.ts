@@ -46,7 +46,7 @@ export class DockerConfigComponent extends BasePluginComponent {
         super(fb, parentContainer);
         this.dockerLaunchForm = fb.group({
             'repo_name': ['', Validators.required],
-            'docker_config': ['']
+            'docker_file': ['']
         });
         this.searchTerm.valueChanges
             .debounceTime(300)

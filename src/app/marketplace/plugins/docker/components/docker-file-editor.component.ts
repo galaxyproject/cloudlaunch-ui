@@ -3,6 +3,7 @@ import {
     FormBuilder,
     FormGroup,
     FormControl,
+    FormArray,
     Validators,
     NG_VALUE_ACCESSOR,
     ControlValueAccessor,
@@ -116,37 +117,52 @@ export class DockerFileEditorComponent implements ControlValueAccessor, Validato
     }
 
     getDirtyValues(control_group) {
-        let dirtyValues = {};
-        Object.keys(control_group.controls).forEach((control_name) => {
-            let control = control_group.controls[control_name];
-            if (control.dirty){
-                if (control.controls) //check for nested controlGroups
-                    dirtyValues[control_name] = this.getDirtyValues(control);  //recurse
-                else    
-                    dirtyValues[control_name] = control.value; //simple control
-            }
+        if (control_group instanceof FormArray) {
+            let dirtyValues = []
+            Object.keys(control_group.controls).forEach((control_name) => {
+                let control = control_group.controls[control_name];
+                if (control.dirty) {
+                    // Send the complete control value
+                    dirtyValues.push(control.value);
+                }
+    
+            });
+            return dirtyValues;
+        }
+        else {
+            let dirtyValues = {};
+            Object.keys(control_group.controls).forEach((control_name) => {
+                let control = control_group.controls[control_name];
+                if (control.dirty){
+                    if (control.controls) // check for nested controlGroups
+                        dirtyValues[control_name] = this.getDirtyValues(control);  // recurse
+                    else    
+                        dirtyValues[control_name] = control.value; // simple control
+                }
 
-        });
-        return dirtyValues;
+            });
+            return dirtyValues;
+        }
     }
+
 
     initPortMapping() {
         return this.fb.group({
-            'container_port': [{value: '', disabled: true}, Validators.required],
+            'container_port': [{value: ''}, Validators.required],
             'host_port': ['']
         });
     }
 
     initEnvVar() {
         return this.fb.group({
-            'variable': [{value: '', disabled: true}, Validators.required],
+            'variable': [{value: ''}, Validators.required],
             'value': ['', Validators.required]
         });
     }
 
     initVolumeMapping() {
         return this.fb.group({
-            'container_path': [{value: '', disabled: true}, Validators.required],
+            'container_path': [{value: ''}, Validators.required],
             'host_path': [''],
             'read_write': [''],
             'nocopy': ['']
