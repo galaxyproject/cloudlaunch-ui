@@ -13,6 +13,7 @@ export class LoginService {
     constructor(private _http: CLAuthHttp) { }
 
     private _loginUrl = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/login/`;
+    private _logoutUrl = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/logout/`;
     private _currentUserUrl = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/user/`;
     private _login_method: string = null;
     private _current_user: User = null;
@@ -53,7 +54,7 @@ export class LoginService {
             }
         }
     }
-    
+
     public getCurrentUser() {
         return this._current_user;
     }
@@ -75,10 +76,13 @@ export class LoginService {
             .catch(this.handleError);
     }
 
-    public logout(): void {
-        this._login_method = "";
+    public logout(): Observable<string> {
+        let loginService = this;
+        loginService._login_method = null;
         localStorage.removeItem('token');
         sessionStorage.removeItem('token');
+        return this._http.post(this._logoutUrl, "")
+            .catch(this.handleError);
     }
 
     private handleError(error: Response) {

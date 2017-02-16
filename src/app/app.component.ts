@@ -31,4 +31,8 @@ export class AppComponent {
     getSupportContactLink(): string {
         return AppSettings.CLOUDLAUNCH_SUPPORT_LINK;
     }
+
+    logout() {
+        this._loginService.logout().subscribe();
+    }
 }
