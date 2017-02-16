@@ -3,7 +3,7 @@
         <public-appliances-map [public_services]="public_services"></public-appliances-map>
     </div>
 	<div *ngFor="let svc of public_services" class="col-md-4 list-group">
-		<div class="list-group-item cl-app-badge">
+		<div class="list-group-item cl-app-badge" style="overflow: auto">
 			<div class="col-md-2 row-picture">
 				<img class="circle" src="{{ svc.logo }}" alt="Logo">
 			</div>
