@@ -26,6 +26,8 @@ import { MarkdownModule } from 'angular2-markdown';
     declarations: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,
                    DockerConfigComponent, DockerFileEditorComponent],
     exports: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,
-              DockerConfigComponent]
+              DockerConfigComponent],
+    entryComponents: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,
+                      DockerConfigComponent]
 })
 export class PluginsModule { }
