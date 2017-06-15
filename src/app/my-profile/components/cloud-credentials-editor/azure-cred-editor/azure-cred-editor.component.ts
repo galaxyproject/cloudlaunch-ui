@@ -86,8 +86,10 @@ export class AzureCredEditorComponent implements ControlValueAccessor, Validator
 
     constructor(fb: FormBuilder) {
         this.azureCredentialsForm = fb.group({
-            'access_key': this.access_key,
-            'secret_key': this.secret_key
+            'azure_subscription_id': this.azure_subscription_id,
+            'azure_client_id': this.azure_client_id,
+            'azure_secret': this.azure_secret,
+            'azure_tenant': this.azure_tenant
         });
         this.azureCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
     }

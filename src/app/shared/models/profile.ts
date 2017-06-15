@@ -22,6 +22,13 @@ export class OpenStackCredentials extends Credentials {
     identity_api_version: string;
 }
 
+export class AzureCredentials extends Credentials {
+    azure_subscription_id: string;
+    azure_client_id: string;
+    azure_secret: string;
+    azure_tenant: string;
+}
+
 export class UserProfile {
     username: string;
     email: string;
@@ -29,6 +36,7 @@ export class UserProfile {
     last_name: string;
     aws_creds: AWSCredentials[];
     openstack_creds: OpenStackCredentials[];
+    azure_creds: AzureCredentials[];
 }
 
 export class CredVerificationResult {
