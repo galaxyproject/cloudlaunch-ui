@@ -35,10 +35,10 @@ export class AzureCredEditorComponent implements ControlValueAccessor, Validator
     azureCredentialsForm: FormGroup;
 
     // Form Controls
-    azure_subscription_id: FormControl = new FormControl(null, Validators.required);
-    azure_client_id: FormControl = new FormControl(null, Validators.required);
-    azure_secret: FormControl = new FormControl(null, Validators.required);
-    azure_tenant: FormControl = new FormControl(null, Validators.required);
+    subscription_id: FormControl = new FormControl(null, Validators.required);
+    client_id: FormControl = new FormControl(null, Validators.required);
+    secret: FormControl = new FormControl(null, Validators.required);
+    tenant: FormControl = new FormControl(null, Validators.required);
 
 
     // Begin: implementation of ControlValueAccessor
@@ -86,10 +86,10 @@ export class AzureCredEditorComponent implements ControlValueAccessor, Validator
 
     constructor(fb: FormBuilder) {
         this.azureCredentialsForm = fb.group({
-            'azure_subscription_id': this.azure_subscription_id,
-            'azure_client_id': this.azure_client_id,
-            'azure_secret': this.azure_secret,
-            'azure_tenant': this.azure_tenant
+            'subscription_id': this.subscription_id,
+            'client_id': this.client_id,
+            'secret': this.secret,
+            'tenant': this.tenant
         });
         this.azureCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
     }

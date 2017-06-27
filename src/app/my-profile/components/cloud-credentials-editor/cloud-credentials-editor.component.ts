@@ -371,10 +371,10 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
 
     parseAzureCreds(content: string, editor: CloudCredentialsEditorComponent) {
         let creds = {
-            'azure_subscription_id': CloudCredentialsEditorComponent.extractValueByKey("AZURE_SUBSCRIPTION_ID", content),
-            'azure_client_id': CloudCredentialsEditorComponent.extractValueByKey("AZURE_CLIENT_id", content),
-            'azure_secret': CloudCredentialsEditorComponent.extractValueByKey("AZURE_SECRET", content),
-            'azure_tenant': CloudCredentialsEditorComponent.extractValueByKey("AZURE_TENANT", content)
+            'subscription_id': CloudCredentialsEditorComponent.extractValueByKey("AZURE_SUBSCRIPTION_ID", content),
+            'client_id': CloudCredentialsEditorComponent.extractValueByKey("AZURE_CLIENT_ID", content),
+            'secret': CloudCredentialsEditorComponent.extractValueByKey("AZURE_SECRET", content),
+            'tenant': CloudCredentialsEditorComponent.extractValueByKey("AZURE_TENANT", content)
         }
         editor.ctrl_azure_creds.patchValue(creds);
     }

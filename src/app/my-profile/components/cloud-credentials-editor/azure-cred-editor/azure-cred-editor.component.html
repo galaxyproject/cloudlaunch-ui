@@ -2,42 +2,42 @@
     <div class=form [formGroup]="azureCredentialsForm">
 
         <!-- Azure Subscription Id-->
-        <div class="form-group is-empty" [ngClass]="{'has-error': '!azure_subscription_id.valid'}">
-            <label for="id_azure_subscription_id" class="control-label">
+        <div class="form-group is-empty" [ngClass]="{'has-error': '!subscription_id.valid'}">
+            <label for="id_subscription_id" class="control-label">
                 What is your Azure Subscription ID?
             </label>
-            <input id="id_azure_subscription_id" name="azure_subscription_id" type="text"
-             class="form-control input-md" formControlName="azure_subscription_id" />
+            <input id="id_subscription_id" name="subscription_id" type="text"
+             class="form-control input-md" formControlName="subscription_id" />
             <span class="help-block"> Your Azure subscription Id can be obtained by following the instructions in the link above.</span>
             <span class="material-input"></span>
         </div>
         <!-- Azure Client Id-->
-        <div class="form-group is-empty" [ngClass]="{'has-error': '!azure_client_id.valid'}">
-            <label for="id_azure_client_id" class="control-label">
+        <div class="form-group is-empty" [ngClass]="{'has-error': '!client_id.valid'}">
+            <label for="id_client_id" class="control-label">
                 What is your Azure Client ID?
             </label>
-            <input id="id_azure_client_id" name="azure_client_id" type="text"
-             class="form-control input-md" formControlName="azure_client_id" />
+            <input id="id_client_id" name="client_id" type="text"
+             class="form-control input-md" formControlName="client_id" />
             <span class="help-block"> Your Azure client Id can be obtained by following the instructions in the link above.</span>
             <span class="material-input"></span>
         </div>
         <!-- Azure Secret -->
-        <div class="form-group is-empty" [ngClass]="{'has-error': '!azure_secret.valid'}">
-            <label for="id_azure_secret" class="control-label">
+        <div class="form-group is-empty" [ngClass]="{'has-error': '!secret.valid'}">
+            <label for="id_secret" class="control-label">
                 What is your Azure secret key?
             </label>
-            <input id="id_azure_secret" name="azure_secret" type="password"
-             class="form-control input-md" formControlName="azure_secret" />
+            <input id="id_secret" name="secret" type="password"
+             class="form-control input-md" formControlName="secret" />
             <span class="help-block"> Your Azure Secret Key can be obtained by following the instructions in the link above.</span>
             <span class="material-input"></span>
         </div>
         <!-- Azure Tenant-->
-        <div class="form-group is-empty" [ngClass]="{'has-error': '!azure_tenant.valid'}">
-            <label for="id_azure_tenant" class="control-label">
+        <div class="form-group is-empty" [ngClass]="{'has-error': '!tenant.valid'}">
+            <label for="id_tenant" class="control-label">
                 What is your Azure Tenant?
             </label>
-            <input id="id_azure_tenant" name="azure_tenant" type="text"
-             class="form-control input-md" formControlName="azure_tenant" />
+            <input id="id_tenant" name="tenant" type="text"
+             class="form-control input-md" formControlName="tenant" />
             <span class="help-block"> Your Azure Tenant can be obtained by following the instructions in the link above.</span>
             <span class="material-input"></span>
         </div>
