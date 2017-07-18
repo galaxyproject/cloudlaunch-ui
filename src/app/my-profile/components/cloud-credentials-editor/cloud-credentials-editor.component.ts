@@ -12,7 +12,7 @@ import {
 
 // models
 import { Cloud } from '../../../shared/models/cloud';
-import { Credentials, AWSCredentials, OpenStackCredentials } from '../../../shared/models/profile';
+import { Credentials, AWSCredentials, OpenStackCredentials, AzureCredentials } from '../../../shared/models/profile';
 
 // services
 import { CloudService } from '../../../shared/services/cloud.service';
@@ -55,6 +55,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     ctrl_cloud: FormControl = new FormControl(null, Validators.required);
     ctrl_aws_creds: FormControl = new FormControl(null, Validators.required);
     ctrl_openstack_creds: FormControl = new FormControl(null, Validators.required);
+    ctrl_azure_creds: FormControl = new FormControl(null, Validators.required);
     ctrl_credential_terms: FormControl = new FormControl(null, this.validateCredentialsTerms);
 
     moreCredsInfo: boolean = false;
@@ -114,6 +115,8 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             return this.ctrl_aws_creds;
         else if (cloud_type == "openstack")
             return this.ctrl_openstack_creds;
+        else if (cloud_type == "azure")
+            return this.ctrl_azure_creds;
         else
             return new FormControl(null, Validators.required);
     }
@@ -233,6 +236,11 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
                                error => { this.handleVerificationFailure(creds, error, failureCallBack); });
                 break;
+            case 'azure':
+                this._profileService.verifyCredentialsAzure(creds)
+                    .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
+                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });
+                break;
         }
     }
 
@@ -302,6 +310,8 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
                 parserFunc = this.parseOpenstackCreds;
             else if (this.cloud.cloud_type == "aws")
                 parserFunc = this.parseAWSCreds;
+            else if (this.cloud.cloud_type == "azure")
+                parserFunc = this.parseAzureCreds;
         }
         this.readCredentialsFile((<HTMLInputElement>$event.target).files[0], parserFunc);
     }
@@ -358,6 +368,17 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         }
         editor.ctrl_aws_creds.patchValue(creds);
     }
+
+    parseAzureCreds(content: string, editor: CloudCredentialsEditorComponent) {
+        let creds = {
+            'subscription_id': CloudCredentialsEditorComponent.extractValueByKey("AZURE_SUBSCRIPTION_ID", content),
+            'client_id': CloudCredentialsEditorComponent.extractValueByKey("AZURE_CLIENT_ID", content),
+            'secret': CloudCredentialsEditorComponent.extractValueByKey("AZURE_SECRET", content),
+            'tenant': CloudCredentialsEditorComponent.extractValueByKey("AZURE_TENANT", content)
+        }
+        editor.ctrl_azure_creds.patchValue(creds);
+    }
+
     // END: Credential File Parsing Functions
 
     saveEdit() {
@@ -380,6 +401,10 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
                     editor._profileService.saveCredentialsOpenStack(<OpenStackCredentials>creds)
                         .subscribe(result => { editor.handleCredentialsChanged(result); });
                     break;
+                case 'azure':
+                    editor._profileService.saveCredentialsAzure(<AzureCredentials>creds)
+                        .subscribe(result => { editor.handleCredentialsChanged(result); });
+                    break;
             }
 
         } else { // Must be a new record
@@ -390,6 +415,10 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
                     break;
                 case 'openstack':
                     editor._profileService.createCredentialsOpenStack(<OpenStackCredentials>creds)
+                        .subscribe(result => { editor.handleCredentialsChanged(result); });
+                    break;
+                case 'azure':
+                    editor._profileService.createCredentialsAzure(<AzureCredentials>creds)
                         .subscribe(result => { editor.handleCredentialsChanged(result); });
                     break;
             }
