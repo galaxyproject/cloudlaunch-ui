@@ -1,7 +1,7 @@
 import {__platform_browser_private__} from '@angular/platform-browser';
 import { RequestOptions, RequestOptionsArgs, BaseRequestOptions, Headers } from '@angular/http';
 import { Cloud } from '../../shared/models/cloud';
-import { Credentials, OpenStackCredentials, AWSCredentials } from '../../shared/models/profile';
+import { Credentials, OpenStackCredentials, AWSCredentials, AzureCredentials } from '../../shared/models/profile';
 
 export class CustomRequestOptions extends BaseRequestOptions {
     // Partially based on: http://stackoverflow.com/questions/34494876/what-is-the-right-way-to-use-angular2-http-requests-with-django-csrf-protection
@@ -32,6 +32,13 @@ export class CustomRequestOptions extends BaseRequestOptions {
                     let aws_creds = <AWSCredentials>this.credentials;
                     options.headers.set('cl-aws-access-key', aws_creds.access_key);
                     options.headers.set('cl-aws-secret-key', aws_creds.secret_key);
+                    break;
+                case 'azure':
+                    let azure_creds = <AzureCredentials>this.credentials;
+                    options.headers.set('cl-azure-subscription-id', azure_creds.azure_subscription_id);
+                    options.headers.set('cl-azure-client-id', azure_creds.azure_client_id);
+                    options.headers.set('cl-azure-secret', azure_creds.azure_secret);
+                    options.headers.set('cl-azure-tenant', azure_creds.azure_tenant);
                     break;
             }
         }
