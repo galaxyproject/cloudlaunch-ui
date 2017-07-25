@@ -35,10 +35,10 @@ export class CustomRequestOptions extends BaseRequestOptions {
                     break;
                 case 'azure':
                     let azure_creds = <AzureCredentials>this.credentials;
-                    options.headers.set('cl-azure-subscription-id', azure_creds.azure_subscription_id);
-                    options.headers.set('cl-azure-client-id', azure_creds.azure_client_id);
-                    options.headers.set('cl-azure-secret', azure_creds.azure_secret);
-                    options.headers.set('cl-azure-tenant', azure_creds.azure_tenant);
+                    options.headers.set('cl-azure-subscription-id', azure_creds.subscription_id);
+                    options.headers.set('cl-azure-client-id', azure_creds.client_id);
+                    options.headers.set('cl-azure-secret', azure_creds.secret);
+                    options.headers.set('cl-azure-tenant', azure_creds.tenant);
                     break;
             }
         }
@@ -66,3 +66,4 @@ export class CustomRequestOptions extends BaseRequestOptions {
         return super.merge(options);
     }
 }
+
