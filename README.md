@@ -5,18 +5,23 @@ A public server can be accessed at https://beta.launch.usegalaxy.org/.
 
 ### Setup development environment
 
-To install dependencies run the following commands:
+Make sure you have `node` (version 6.*) installed. Then install dependencies with the following commands:
 
     # Install typescript development support if necessary
     npm install -g tsd
     # Install angular-cli
-    npm install -g angular-cli
+    npm install -g angular-cli@1.0.0-beta.26
     # Install dependencies
     npm install
+    npm install @ngtools/webpack@1.1.2
 
 ## Start the development server
 
-Run `npm start` for a dev server. Navigate to `http://localhost:4200/`.
+To start the dev server, run:
+
+    npm start
+
+Access the server at `http://localhost:4200/`.
 The app will automatically reload if you change any of the source files.
 
 Alongside this development server, it's necessary to run the CloudLaunch app
