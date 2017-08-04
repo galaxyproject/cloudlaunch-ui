@@ -10,10 +10,9 @@ Make sure you have `node` (version 6.*) installed. Then install dependencies wit
     # Install typescript development support if necessary
     npm install -g tsd
     # Install angular-cli
-    npm install -g angular-cli@1.0.0-beta.26
+    npm install -g angular-cli
     # Install dependencies
     npm install
-    npm install @ngtools/webpack@1.1.2
 
 ## Start the development server
 
