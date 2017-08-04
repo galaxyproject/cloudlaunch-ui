@@ -29,6 +29,10 @@ export class AzureCredentials extends Credentials {
     tenant: string;
 }
 
+export class GCECredentials extends Credentials {
+    credentials: string;
+}
+
 export class UserProfile {
     username: string;
     email: string;
@@ -37,6 +41,7 @@ export class UserProfile {
     aws_creds: AWSCredentials[];
     openstack_creds: OpenStackCredentials[];
     azure_creds: AzureCredentials[];
+    gce_creds: GCECredentials[];
 }
 
 export class CredVerificationResult {

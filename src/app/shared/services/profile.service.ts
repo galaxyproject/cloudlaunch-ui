@@ -9,6 +9,7 @@ import { Credentials } from '../models/profile';
 import { AWSCredentials } from '../models/profile';
 import { OpenStackCredentials } from '../models/profile';
 import { AzureCredentials } from '../models/profile';
+import { GCECredentials } from '../models/profile';
 import { CredVerificationResult } from '../models/profile';
 
 
@@ -19,6 +20,7 @@ export class ProfileService {
     private _creds_url_aws = `${this._profile_url}credentials/aws/`;
     private _creds_url_openstack = `${this._profile_url}credentials/openstack/`;
     private _creds_url_azure = `${this._profile_url}credentials/azure/`;
+    private _creds_url_gce = `${this._profile_url}credentials/gce/`;
     private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/infrastructure/clouds/`;
 
     constructor(private http: HttpClient) { }
@@ -28,7 +30,7 @@ export class ProfileService {
     }
 
     public getCredentialsForCloud(cloud_id: string): Observable<Credentials[]> {
-        const all_creds = this.getProfile().map(p => [].concat(p.aws_creds).concat(p.openstack_creds).concat(p.azure_creds));
+        const all_creds = this.getProfile().map(p => [].concat(p.aws_creds).concat(p.openstack_creds).concat(p.azure_creds).concat(p.gce_creds));
         return all_creds.map(creds => creds.filter(c => c && c.cloud.slug === cloud_id));
     }
 
@@ -108,6 +110,28 @@ export class ProfileService {
             .catch(this.handleError);
     }
 
+    public saveCredentialsGCE(creds: GCECredentials): Observable<GCECredentials> {
+        return this.http.post<GCECredentials>(`${this._creds_url_gce}${creds.id}/`, creds)
+            .catch(this.handleError);
+    }
+
+    public deleteCredentialsGCE(creds: GCECredentials): Observable<GCECredentials> {
+        return this.http.delete<GCECredentials>(`${this._creds_url_gce}${creds.id}/`)
+            .catch(this.handleError);
+    }
+
+    public createCredentialsGCE(creds: GCECredentials): Observable<GCECredentials> {
+        return this.http.post<GCECredentials>(`${this._creds_url_gce}`, creds)
+            .catch(this.handleError);
+    }
+
+    public verifyCredentialsGCE(creds: GCECredentials): Observable<CredVerificationResult> {
+        let headers = {};
+        addCredentialHeaders(headers, creds);
+        return this.http.post<GCECredentials>(`${this._application_url}${creds.cloud.slug}/authenticate/`, creds, { headers: new HttpHeaders(headers) })
+            .catch(this.handleError);
+    }
+
     private handleError(err: HttpErrorResponse) {
         console.error(err);
         if (err.error instanceof Error) {
@@ -153,4 +177,3 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
         }
     }
 }
-
