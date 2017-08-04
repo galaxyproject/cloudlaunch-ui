@@ -160,7 +160,7 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
         this.storedCredentials = [];
         this._profileService.getCredentialsForCloud(cloud.slug)
             .subscribe(creds => this.processStoredCredentials(creds, highlight_creds),
-            error => this.errorMessage = <any>error,
+            error => console.log(<any>error),
             () => { this.storedCredentialsHelp = 'Select Credentials'; });
     }
 

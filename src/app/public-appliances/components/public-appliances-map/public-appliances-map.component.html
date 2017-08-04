@@ -2,9 +2,9 @@
 <!-- the component as the initial center of the map: -->
 
 <div class="list-group">
-    <sebm-google-map [zoom]="zoom" [latitude]="center_latitude" [longitude]="center_longitude" [styles]="styles">
-        <sebm-google-map-marker *ngFor="let svc of public_services" [latitude]="svc.location?.latitude" [longitude]="svc.location?.longitude">
-            <sebm-google-map-info-window>
+    <agm-map [zoom]="zoom" [latitude]="center_latitude" [longitude]="center_longitude" [styles]="styles">
+        <agm-marker *ngFor="let svc of public_services" [latitude]="svc.location?.latitude" [longitude]="svc.location?.longitude">
+            <agm-info-window>
                 <div class="row list-group-item cl-app-badge" style="overflow: auto">
                     <div class="col-md-2 row-picture">
                         <img class="circle" src="{{ svc.logo }}" alt="Logo">
@@ -25,7 +25,7 @@
                         <p class="list-group-item-text text-muted">Quotas: {{ svc.quotas }}</p>
                     </div>
                 </div>
-            </sebm-google-map-info-window>
-        </sebm-google-map-marker>
-    </sebm-google-map>
+            </agm-info-window>
+        </agm-marker>
+    </agm-map>
 </div>

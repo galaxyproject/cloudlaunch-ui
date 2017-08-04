@@ -9,7 +9,7 @@
                     <th>Host Port</th>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let mapping of dockerFileForm.controls.port_mappings.controls; let i=index">
+                    <ng-container *ngFor="let mapping of dockerFileForm.get('port_mappings.controls'); let i=index">
                         
                         <tr [formGroupName]="i">
                             <td><input id="id_container_port_{{ i }}" type="text" class="form-control input-md" formControlName="container_port" readonly></td>
@@ -29,7 +29,7 @@
                     <th>Value</th>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let env of dockerFileForm.controls.env_vars.controls; let i=index">
+                    <ng-container *ngFor="let env of dockerFileForm.get('env_vars.controls'); let i=index">
                         
                         <tr [formGroupName]="i">
                             <td><input id="id_var_{{ i }}" type="text" class="form-control input-md" formControlName="variable" readonly></td>
@@ -49,7 +49,7 @@
                     <th>Writable</th>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let env of dockerFileForm.controls.volumes.controls; let i=index">
+                    <ng-container *ngFor="let env of dockerFileForm.get('volumes.controls'); let i=index">
 
                         <tr [formGroupName]="i">
                             <td><input id="id_vol_cont_{{ i }}" type="text" class="form-control input-md" formControlName="container_path" readonly></td>

@@ -5,12 +5,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { LayoutModule } from '../../shared/layout.module';
-import { UbuntuConfigComponent } from './ubuntu/ubuntu.component.ts'
-import { CloudManConfigComponent } from './cloudman/cloudman.component.ts'
-import { GVLConfigComponent } from './gvl/gvl.component.ts'
-import { DockerConfigComponent } from './docker/docker.component.ts'
-import { DockerFileEditorComponent } from './docker/components/docker-file-editor.component.ts'
-import { SelectModule } from 'ng2-select';
+import { UbuntuConfigComponent } from './ubuntu/ubuntu.component'
+import { CloudManConfigComponent } from './cloudman/cloudman.component'
+import { GVLConfigComponent } from './gvl/gvl.component'
+import { DockerConfigComponent } from './docker/docker.component'
+import { DockerFileEditorComponent } from './docker/components/docker-file-editor.component'
+import { SelectModule } from 'ng2-select-compat';
 import { MarkdownModule } from 'angular2-markdown';
 
 @NgModule({

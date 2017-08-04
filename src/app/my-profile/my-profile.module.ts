@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { SelectModule } from 'ng2-select';
+import { SelectModule } from 'ng2-select-compat';
 
 import { LayoutModule } from '../shared/layout.module';
 import { MyProfileRoutingModule } from './my-profile-routing.module';

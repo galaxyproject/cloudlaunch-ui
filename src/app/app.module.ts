@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +14,10 @@ import { RequestOptions } from '@angular/http';
 import { CLAuthHttp } from './login/utils/cloudlaunch-http';
 
 
+export function httpFactory(backend: XHRBackend) {
+    return new CLAuthHttp(backend);
+}
+
 @NgModule({
     declarations: [
         AppComponent
@@ -24,14 +29,13 @@ import { CLAuthHttp } from './login/utils/cloudlaunch-http';
         HttpModule,
         AppRoutingModule,
         LoginModule,
-        MarkdownModule
+        MarkdownModule,
+        BrowserAnimationsModule
     ],
     providers: [
         {
             provide: CLAuthHttp,
-            useFactory: (backend: XHRBackend) => {
-                return new CLAuthHttp(backend);
-            },
+            useFactory: httpFactory,
             deps: [XHRBackend]
         }
     ],

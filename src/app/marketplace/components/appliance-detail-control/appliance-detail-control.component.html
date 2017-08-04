@@ -1,7 +1,7 @@
 <div class="row">
     <form class="form"
         [formGroup]="applianceLaunchForm"
-        (ngSubmit)="onSubmit(applianceLaunchForm.value)">
+        (ngSubmit)="onSubmit(applianceLaunchForm.value)" autocomplete="off">
     	<div class="col-md-12">
             <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
                 <span class="glyphicon glyphicon-exclamation-sign"

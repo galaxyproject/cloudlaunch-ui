@@ -30,7 +30,7 @@ export class ProfileService {
 
     public getCredentialsForCloud(cloud_id: string): Observable<Credentials[]> {
         let all_creds = this.getProfile().map(p => [].concat(p.aws_creds).concat(p.openstack_creds).concat(p.azure_creds));
-        return all_creds.map(creds => creds.filter(c => c.cloud.slug === cloud_id));
+        return all_creds.map(creds => creds.filter(c => c && c.cloud.slug === cloud_id));
     }
 
     public saveCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {

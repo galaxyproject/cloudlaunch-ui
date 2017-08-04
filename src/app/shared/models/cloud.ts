@@ -5,6 +5,7 @@ export interface Cloud {
     name: string;
     cloud_type: string;
     region_name: string;
+    extra_data: {};
 }
 
 export interface InstanceType {

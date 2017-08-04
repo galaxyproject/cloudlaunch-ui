@@ -1,6 +1,6 @@
 import { Component, ComponentRef, ViewContainerRef, ViewChild } from '@angular/core';
 import { ComponentFactoryResolver } from '@angular/core/src/linker/component_factory_resolver';
-import { RuntimeCompiler } from '@angular/compiler';
+import { JitCompilerFactory } from '@angular/compiler';
 
 declare var System: any;
 
@@ -57,8 +57,7 @@ export class AppPlaceHolderComponent {
     }
 
     constructor(
-        private viewContainerRef: ViewContainerRef,
-        private compiler: RuntimeCompiler) {
+        private viewContainerRef: ViewContainerRef) {
     }
 
     private reloadComponentIfNeeded(componentPath: string, componentName: string) {
@@ -72,13 +71,17 @@ export class AppPlaceHolderComponent {
             this.viewContainerRef.remove(0);
         }
         // Add new component
-        System.import(this.componentPath)
+
+        // Workaround so webpack has context for the chunk - hardcoded import of module
+        // System.import(this.componentPath)
+        System.import('app/marketplace/plugins/plugins.module')
             .then((module: any) => {
                 let [moduleName, componentClass] = this.componentName.split("#");
                 return module[moduleName];
             })
             .then((type: any) => {
-                return this.compiler.compileModuleAndAllComponentsAsync(type)
+                let compiler = new JitCompilerFactory([{useDebug: false, useJit: true}]).createCompiler();
+                return compiler.compileModuleAndAllComponentsAsync(type)
             })
             .then((moduleWithFactories => {
                 let [moduleName, componentClass] = this.componentName.split("#");
