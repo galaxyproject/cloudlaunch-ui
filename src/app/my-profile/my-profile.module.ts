@@ -27,6 +27,7 @@ import { CloudCredentialsEditorComponent } from './components/cloud-credentials-
 import { OpenStackCredEditorComponent } from './components/cloud-credentials-editor/openstack-cred-editor/openstack-cred-editor.component';
 import { AWSCredEditorComponent } from './components/cloud-credentials-editor/aws-cred-editor/aws-cred-editor.component';
 import { AzureCredEditorComponent } from './components/cloud-credentials-editor/azure-cred-editor/azure-cred-editor.component';
+import { GCECredEditorComponent } from './components/cloud-credentials-editor/gce-cred-editor/gce-cred-editor.component';
 
 import { CloudCredentialsSelectorComponent } from './components/cloud-credentials-selector/cloud-credentials-selector.component';
 
@@ -53,7 +54,7 @@ import { CloudService } from '../shared/services/cloud.service';
     declarations: [
         MyProfilePageComponent, UserProfileComponent,
         CloudCredentialsViewerComponent, OpenStackCredViewerComponent, AWSCredViewerComponent, AzureCredViewerComponent, GCECredViewerComponent,
-        CloudCredentialsEditorComponent, OpenStackCredEditorComponent, AWSCredEditorComponent, AzureCredEditorComponent,
+        CloudCredentialsEditorComponent, OpenStackCredEditorComponent, AWSCredEditorComponent, AzureCredEditorComponent, GCECredEditorComponent,
         CloudCredentialsSelectorComponent
     ],
     exports: [CloudCredentialsViewerComponent, CloudCredentialsEditorComponent, CloudCredentialsSelectorComponent],

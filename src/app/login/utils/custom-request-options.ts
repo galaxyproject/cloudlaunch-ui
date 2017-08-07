@@ -42,7 +42,8 @@ export class CustomRequestOptions extends BaseRequestOptions {
                     break;
                 case 'gce':
                     let gce_creds = <GCECredentials>this.credentials;
-                    options.headers.set('cl-gce-credentials-json', JSON.stringify(gce_creds));
+                    // Parse then stringify credentials to remove any new lines
+                    options.headers.set('cl-gce-credentials-json', JSON.stringify(JSON.parse(gce_creds.credentials)));
                     break;
             }
         }

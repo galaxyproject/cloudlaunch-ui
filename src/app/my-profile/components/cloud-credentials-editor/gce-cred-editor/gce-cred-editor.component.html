@@ -1,0 +1,13 @@
+<div>
+    <div class="form" [formGroup]="gceCredentialsForm">
+
+        <!-- Credentials -->
+        <div class="form-group is-empty"
+         [ngClass]="{'has-error': '!credentials.valid'}">
+            <label for="id_credentials" class="control-label">GCE Credentials</label>
+            <textarea id="id_credentials" name="credentials" class="form-control input-md" formControlName="credentials"></textarea>
+            <span class="help-block"> Copy your GCE credentials json file into the form above, or upload the file below.</span>
+            <span class="material-input"></span>
+        </div>
+    </div>
+</div>
