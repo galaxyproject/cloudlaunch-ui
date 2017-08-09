@@ -111,7 +111,7 @@ export class ProfileService {
     }
 
     public saveCredentialsGCE(creds: GCECredentials): Observable<GCECredentials> {
-        return this.http.post<GCECredentials>(`${this._creds_url_gce}${creds.id}/`, creds)
+        return this.http.put<GCECredentials>(`${this._creds_url_gce}${creds.id}/`, creds)
             .catch(this.handleError);
     }
 
