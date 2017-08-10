@@ -219,6 +219,8 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             return this.azureCredsCtrl;
         } else if (cloudType === 'openstack') {
             return this.openstackCredsCtrl;
+        } else if (cloudType == "gce") {
+            return this.gceCredsCtrl;
         } else {
             return null;
         }
@@ -349,6 +351,9 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             this.azureCredsCtrl.patchValue(creds);
         } else if (creds instanceof OpenStackCredentials) {
             this.openstackCredsCtrl.patchValue(creds);
+        }
+        else if (creds instanceof GCECredentials) {
+            this.gceCredsCtrl.patchValue(creds);
         }
     }
 
