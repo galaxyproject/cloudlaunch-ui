@@ -7,7 +7,9 @@ import {
     NG_VALUE_ACCESSOR,
     ControlValueAccessor,
     NG_VALIDATORS,
-    Validator
+    Validator,
+    ValidatorFn,
+    AbstractControl
 } from '@angular/forms';
 
 
@@ -32,7 +34,7 @@ export class GCECredEditorComponent implements ControlValueAccessor, Validator {
     gceCredentialsForm: FormGroup;
 
     // Form Controls
-    credentials: FormControl = new FormControl(null, Validators.required);
+    credentials: FormControl = new FormControl(null, [Validators.required, this.jsonValidator()]);
 
     // Begin: implementation of ControlValueAccessor
 
@@ -82,6 +84,17 @@ export class GCECredEditorComponent implements ControlValueAccessor, Validator {
             'credentials': this.credentials,
         });
         this.gceCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
+    }
+
+    private jsonValidator(): ValidatorFn {
+        return (control: AbstractControl): {[key: string]: any} => {
+            try {
+                JSON.parse(control.value);
+                return null;
+            } catch (e) {
+                return {'json': {value: control.value}};
+            }
+        };
     }
 
 }

@@ -1,6 +1,10 @@
 <div>
     <div class="form" [formGroup]="gceCredentialsForm">
 
+        <div class="alert alert-danger" role="alert" *ngIf="credentials.errors && credentials.errors.json">
+            <span class="glyphicon glyphicon-exclamation-sign"
+                aria-hidden="true"></span> <span class="sr-only">Error:</span> The provided credentials are not valid JSON.
+        </div>
         <!-- Credentials -->
         <div class="form-group is-empty"
          [ngClass]="{'has-error': '!credentials.valid'}">
