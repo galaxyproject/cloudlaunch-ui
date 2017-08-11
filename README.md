@@ -10,7 +10,7 @@ Make sure you have `node` (version 6.*) installed. Then install dependencies wit
     # Install typescript development support if necessary
     npm install -g tsd
     # Install angular-cli
-    npm install -g angular-cli
+    npm install -g @angular/cli
     # Install dependencies
     npm install
 
