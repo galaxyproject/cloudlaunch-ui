@@ -53,7 +53,7 @@ export class DeploymentsComponent implements OnInit {
 
     getKP(dep: Deployment) {
         let data = [];
-        data.push(dep.task_status.result.cloudLaunch.keyPair.material);
+        data.push(dep.latest_task.status.result.cloudLaunch.keyPair.material);
         let properties = {type: 'plain/text'};
         let file = new Blob(data, properties);
         let url = URL.createObjectURL(file);

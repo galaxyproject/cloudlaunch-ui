@@ -10,5 +10,5 @@ export interface Deployment {
     application_config: any;
     target_cloud: string;
     config_app: any;
-    task_status: any;
+    latest_task: any;
 }
