@@ -3,6 +3,8 @@ import { Router, NavigationEnd, Event as NavigationEvent } from '@angular/router
 import { AppSettings } from './app.settings'
 import { LoginService } from './login/services/login/login.service';
 import 'rxjs/add/operator/filter';
+import { User } from './shared/models/user';
+
 
 @Component({
     selector: 'app-root',
@@ -19,9 +21,13 @@ export class AppComponent {
     }
 
     loggedIn: boolean;
+    currentUser: User = null;
 
     updateLoggedInStatus(): void {
-        this._loginService.isLoggedIn().then(loggedIn => this.loggedIn = loggedIn);
+        this._loginService.isLoggedIn().then(loggedIn => {
+            this.loggedIn = loggedIn;
+            this.currentUser = this._loginService.getCurrentUser();
+        });
     }
 
     getDeveloperAPILink(): string {

@@ -20,36 +20,36 @@ export class LoginService {
 
     public isLoggedIn(): Promise<boolean> {
         // When the SPA starts up, _login_method will be null
-        let loginService = this;
+        const loginService = this;
         if (this._login_method == null) {
             return new Promise((resolve: any) => {
                 this._http.get(this._currentUserUrl)
                     .map(response => response.json())
+                    .catch((err: Response) => {
+                        loginService._current_user = null;
+                        return Observable.throw(err.json());
+                    })
                     .do(function (item) {
                         // Cache the login method
                         loginService._current_user = item;
-                        loginService._login_method = "session";
+                        loginService._login_method = 'session';
                     })
                     .subscribe(
-                    data => resolve(true),
-                    error => resolve(false)
+                        data => resolve(true),
+                        error => resolve(false)
                     );
             });
-        }
-        else { // _login_method is not null, figure out which case it is
-            // _login_method will be empty when the SPA has started up, but the user has
-            // manually logged out,
-            if (this._login_method == "") {
+        } else { // _login_method is not null; figure out which case it is.
+            // _login_method will be empty when the SPA has started up, but the
+            // user has manually logged out.
+            if (this._login_method === '') {
                 return Promise.resolve(false);
-            }
-            else if (sessionStorage.getItem('token') || localStorage.getItem('token')) {
+            } else if (sessionStorage.getItem('token') || localStorage.getItem('token')) {
                 return Promise.resolve(true);
-            }
-            else if (this._login_method == "session") {
+            } else if (this._login_method === 'session') {
                 // There's an ongoing session. Could be a token or a cookie
                 return Promise.resolve(true);
-            }
-            else {
+            } else {
                 return Promise.resolve(false);
             }
         }

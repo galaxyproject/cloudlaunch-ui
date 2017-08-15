@@ -42,6 +42,9 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="bootstrap-elements.html" data-target="#" aria-expanded="false">
                             <i class="fa fa-user"></i>
                             User
+                            <span *ngIf="currentUser?.username">
+                                ({{ currentUser?.username }})
+                            </span>
                             <span class="caret"></span>
                             <div class="ripple-container"></div>
                         </a>
