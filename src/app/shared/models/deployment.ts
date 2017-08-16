@@ -1,4 +1,5 @@
 import { ApplicationVersion } from './application';
+import { Task } from './task';
 
 export interface Deployment {
     name: string;
@@ -10,5 +11,6 @@ export interface Deployment {
     application_config: any;
     target_cloud: string;
     config_app: any;
-    latest_task: any;
+    latest_task: Task;
+    tasks: Task[];
 }

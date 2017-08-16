@@ -25,7 +25,7 @@
                         <span class="text-muted">Cloud:</span> {{ deploy.target_cloud }}
                     </span>
                     </p>
-                    <div *ngIf=deploy.latest_task?.status?.result?.cloudLaunch?.keyPair?.material>
+                    <div *ngIf=deploy.latest_task?.status?.result?.cloudLaunch?.keyPair?.material> 
                         <p class="text-info" style="padding-top: 25px;">
                             A new SSH key pair was created when this instance
                             was launched. The key will be available for
