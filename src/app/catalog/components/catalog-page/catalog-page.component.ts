@@ -1,11 +1,11 @@
 import { Component, trigger, transition, animate,
     style, state } from '@angular/core';
-import { MarketplaceListComponent } from '../marketplace-list/marketplace-list.component';
+import { CatalogListComponent } from '../catalog-list/catalog-list.component';
 
 @Component({
-    selector: 'app-marketplace-page',
-    templateUrl: './marketplace-page.component.html',
-    styleUrls: ['./marketplace-page.component.css'],
+    selector: 'app-catalog-page',
+    templateUrl: './catalog-page.component.html',
+    styleUrls: ['./catalog-page.component.css'],
     host: { '[@routeAnimation]': 'true' },
     animations: [
         trigger('routeAnimation', [
@@ -17,5 +17,5 @@ import { MarketplaceListComponent } from '../marketplace-list/marketplace-list.c
         ])
     ]
 })
-export class MarketplacePageComponent {
+export class CatalogPageComponent {
 }

@@ -7,13 +7,13 @@ import { SelectModule } from 'ng2-select-compat';
 
 import { LayoutModule } from '../shared/layout.module';
 
-import { MarketplaceListComponent } from './components/marketplace-list/marketplace-list.component';
-import { MarketplacePageComponent } from './components/marketplace-page/marketplace-page.component';
+import { CatalogListComponent } from './components/catalog-list/catalog-list.component';
+import { CatalogPageComponent } from './components/catalog-page/catalog-page.component';
 import { ApplianceDetailPageComponent } from './components/appliance-detail-page/appliance-detail-page.component';
 import { ApplianceDetailControlComponent } from './components/appliance-detail-control/appliance-detail-control.component';
 import { AppPlaceHolderComponent } from './components/appliance-detail-control/app-placeholder.component';
 import { CloudLaunchConfigControlComponent } from './components/cloudlaunch-config-control/cloudlaunch-config-control.component';
-import { MarketplaceRoutingModule } from './marketplace-routing.module';
+import { CatalogRoutingModule } from './catalog-routing.module';
 import { MyProfileModule } from '../my-profile/my-profile.module';
 import { PluginsModule } from './plugins/plugins.module';
 
@@ -31,14 +31,14 @@ import { ProfileService } from '../shared/services/profile.service';
         FormsModule,
         ReactiveFormsModule,
         SelectModule,
-        MarketplaceRoutingModule,
+        CatalogRoutingModule,
         MyProfileModule,
         PluginsModule
     ],
     declarations: [
-        MarketplacePageComponent, MarketplaceListComponent, ApplianceDetailPageComponent, ApplianceDetailControlComponent,
+        CatalogPageComponent, CatalogListComponent, ApplianceDetailPageComponent, ApplianceDetailControlComponent,
         AppPlaceHolderComponent, CloudLaunchConfigControlComponent
     ],
     providers: [ApplicationService, DeploymentService, CloudService, ProfileService]
 })
-export class MarketplaceModule { }
+export class CatalogModule { }

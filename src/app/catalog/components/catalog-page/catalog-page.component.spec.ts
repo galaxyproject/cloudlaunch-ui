@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async } from '@angular/core/testing';
-import { MarketplacePageComponent } from './marketplace-page.component';
+import { CatalogPageComponent } from './catalog-page.component';
 
-describe('Component: Marketplace', () => {
+describe('Component: Catalog', () => {
     it('should create an instance', () => {
-        let component = new MarketplacePageComponent();
+        let component = new CatalogPageComponent();
         expect(component).toBeTruthy();
     });
 });
