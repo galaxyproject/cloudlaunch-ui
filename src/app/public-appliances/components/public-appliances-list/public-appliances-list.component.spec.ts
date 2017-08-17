@@ -3,7 +3,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { PublicAppliancesListComponent } from './public-appliances-list.component';
 
-describe('Component: Marketplace', () => {
+describe('Component: Catalog', () => {
     it('should create an instance', () => {
         let component = new PublicAppliancesListComponent();
         expect(component).toBeTruthy();

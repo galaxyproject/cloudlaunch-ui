@@ -5,18 +5,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from '../login/services/auth-guard/auth-guard.service';
 
 //Pages
-import { MarketplacePageComponent } from './components/marketplace-page/marketplace-page.component';
+import { CatalogPageComponent } from './components/catalog-page/catalog-page.component';
 import { ApplianceDetailPageComponent } from './components/appliance-detail-page/appliance-detail-page.component';
 
 
 const appRoutes: Routes = [
-    { path: '', component: MarketplacePageComponent },
+    { path: '', component: CatalogPageComponent },
     { path: 'appliance/:slug', component: ApplianceDetailPageComponent, canActivate: [AuthGuardService] },
-    { path: 'plugins', loadChildren: 'app/marketplace/plugins/plugins.module#PluginsModule' }
+    { path: 'plugins', loadChildren: 'app/catalog/plugins/plugins.module#PluginsModule' }
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(appRoutes)],
     exports: [RouterModule]
 })
-export class MarketplaceRoutingModule { }
+export class CatalogRoutingModule { }

@@ -5,9 +5,9 @@ import { Application } from '../../../shared/models/application';
 import { ApplicationService } from '../../../shared/services/application.service';
 
 @Component({
-    selector: 'app-marketplace-list',
-    templateUrl: './marketplace-list.component.html',
-    styleUrls: ['./marketplace-list.component.css'],
+    selector: 'app-catalog-list',
+    templateUrl: './catalog-list.component.html',
+    styleUrls: ['./catalog-list.component.css'],
     host: { '[@routeAnimation]': 'true' },
     animations: [
         trigger('routeAnimation', [
@@ -20,7 +20,7 @@ import { ApplicationService } from '../../../shared/services/application.service
     ]
 })
 
-export class MarketplaceListComponent implements OnInit {
+export class CatalogListComponent implements OnInit {
     apps: Application[] = [];
     currentApp: Application;
 

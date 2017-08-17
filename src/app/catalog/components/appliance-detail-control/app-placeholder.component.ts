@@ -74,7 +74,7 @@ export class AppPlaceHolderComponent {
 
         // Workaround so webpack has context for the chunk - hardcoded import of module
         // System.import(this.componentPath)
-        System.import('app/marketplace/plugins/plugins.module')
+        System.import('app/catalog/plugins/plugins.module')
             .then((module: any) => {
                 let [moduleName, componentClass] = this.componentName.split("#");
                 return module[moduleName];
