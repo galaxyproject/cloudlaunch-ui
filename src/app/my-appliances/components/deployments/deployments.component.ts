@@ -55,7 +55,7 @@ export class DeploymentsComponent implements OnInit {
         const data = [];
         // Only LAUNCH tasks can have the key pair data
         if (dep.latest_task.action == 'LAUNCH') {
-            data.push(dep.latest_task.status.result.cloudLaunch.keyPair.material);
+            data.push(dep.latest_task.result.cloudLaunch.keyPair.material);
             const properties = {type: 'plain/text'};
             const file = new Blob(data, properties);
             const url = URL.createObjectURL(file);
