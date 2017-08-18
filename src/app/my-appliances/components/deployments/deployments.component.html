@@ -25,7 +25,7 @@
                         <span class="text-muted">Cloud:</span> {{ deploy.target_cloud }}
                     </span>
                     </p>
-                    <div *ngIf=deploy.task_status?.result?.cloudLaunch?.keyPair?.material>
+                    <div *ngIf=deploy.latest_task?.result?.cloudLaunch?.keyPair?.material>
                         <p class="text-info" style="padding-top: 25px;">
                             A new SSH key pair was created when this instance
                             was launched. The key will be available for
@@ -38,32 +38,32 @@
                     </div>
                 </td>
                 <td class="text-left">
-                    <div [ngSwitch]="deploy.task_status.status">
+                    <div [ngSwitch]="deploy.latest_task?.status">
                       <p *ngSwitchCase="'SUCCESS'" class="text-success">SUCCESS</p>
                       <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE
-                         <br />{{ deploy.task_status?.result?.exc_message }}
+                         <br />{{ deploy.latest_task?.result?.exc_message }}
                       </p>
                       <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE
-                         <br />{{ deploy.task_status?.result?.exc_message }}
+                         <br />{{ deploy.latest_task?.result?.exc_message }}
                       </p>
                       <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
                       <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
-                        <br />{{ deploy.task_status?.result?.action }}
+                        <br />{{ deploy.latest_task?.result?.action }}
                       </p>
                     </div>
                 </td>
                 <td>{{ calculateUptime(deploy, currentTimer | async) }}</td>
-                <td *ngIf="deploy.task_status?.result?.cloudLaunch?.applicationURL">
-                    <a class="btn-link" href="{{ deploy.task_status?.result?.cloudLaunch?.applicationURL }}" target="_blank">
-                        <span #inputTarget>{{ deploy.task_status?.result?.cloudLaunch?.applicationURL }}</span>
+                <td *ngIf="deploy.latest_task?.result?.cloudLaunch?.applicationURL">
+                    <a class="btn-link" href="{{ deploy.latest_task?.result?.cloudLaunch?.applicationURL }}" target="_blank">
+                        <span #inputTarget>{{ deploy.latest_task?.result?.cloudLaunch?.applicationURL }}</span>
                     </a>
-                    <br/><button *ngIf=deploy.task_status?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
+                    <br/><button *ngIf=deploy.latest_task?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
                 </td>
-                <td *ngIf="!deploy.task_status?.result?.cloudLaunch?.applicationURL">
-                    <a class="btn-link" href="{{ deploy.task_status?.result?.cloudLaunch?.publicIP }}" target="_blank">
-                        <span #inputTarget>{{ deploy.task_status?.result?.cloudLaunch?.publicIP }}</span>
+                <td *ngIf="!deploy.latest_task?.result?.cloudLaunch?.applicationURL">
+                    <a class="btn-link" href="{{ deploy.latest_task?.result?.cloudLaunch?.publicIP }}" target="_blank">
+                        <span #inputTarget>{{ deploy.latest_task?.result?.cloudLaunch?.publicIP }}</span>
                     </a>
-                    <br/><button *ngIf=deploy.task_status?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
+                    <br/><button *ngIf=deploy.latest_task?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
                 </td>
             </tr>
         </tbody>

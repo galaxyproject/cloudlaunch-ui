@@ -27,12 +27,12 @@ export class DeploymentsComponent implements OnInit {
     }
 
     calculateUptime(dep: Deployment, currentTime) {
-        let launchTime = moment(dep.added);
+        const launchTime = moment(dep.added);
         return moment.duration(currentTime.diff(launchTime)).humanize();
     }
 
     initializePolling(): Observable<Deployment[]> {
-        let self = this;
+        const self = this;
         return Observable
             .interval(5000)
             .startWith(0)
@@ -42,7 +42,7 @@ export class DeploymentsComponent implements OnInit {
     }
 
     initializeClock(): Observable<any> {
-        let self = this;
+        const self = this;
         return Observable
             .interval(1000)
             .startWith(0)
@@ -52,11 +52,15 @@ export class DeploymentsComponent implements OnInit {
     }
 
     getKP(dep: Deployment) {
-        let data = [];
-        data.push(dep.task_status.result.cloudLaunch.keyPair.material);
-        let properties = {type: 'plain/text'};
-        let file = new Blob(data, properties);
-        let url = URL.createObjectURL(file);
-        this.a.nativeElement.href = url;
+        const data = [];
+        // Only LAUNCH tasks can have the key pair data
+        if (dep.latest_task.action == 'LAUNCH') {
+            data.push(dep.latest_task.result.cloudLaunch.keyPair.material);
+            const properties = {type: 'plain/text'};
+            const file = new Blob(data, properties);
+            const url = URL.createObjectURL(file);
+            this.a.nativeElement.href = url;
+        }
+
     }
 }
