@@ -62,9 +62,12 @@
                     </label>
                     <input id="id_deployment_name" name="name" type="text" class="form-control input-md" formControlName="name">
                     <span class="help-block">
-                         A deployment name helps to identify your appliance
-                      </span>
-                      <span class="material-input"></span>
+                         A deployment name helps you identify your appliance.
+                         The name must be at most 63 characters long and can
+                         consist of lowercase letters, numbers, underscores,
+                         and dashes.
+                    </span>
+                    <span class="material-input"></span>
                 </div>
 
                 <div class="form-group" [formGroup]="appConfigForm">

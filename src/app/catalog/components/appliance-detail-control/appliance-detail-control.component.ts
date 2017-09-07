@@ -66,7 +66,9 @@ export class ApplianceDetailControlComponent implements OnInit {
 
     ngOnInit() {
         // Generate a default name for the deployment
-        let deployment_name = this._loginService.getCurrentUser().username + "'s-" + this.application.slug + "-" + new Date().toJSON().slice(0, 16);
+        const deployment_name = (this._loginService.getCurrentUser().username + '-' +
+                                 this.application.slug + '-' + new Date().toJSON()
+                                 .slice(2, 16).replace(':', '-')).toLowerCase();
         (<FormControl>this.applianceLaunchForm.controls['name']).setValue(deployment_name);
     }
 
