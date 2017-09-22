@@ -23,6 +23,13 @@
                     </span><br />
                     <span class="col-xs-12 col-md-12">
                         <span class="text-muted">Cloud:</span> {{ deploy.target_cloud }}
+                        <!-- TODO: temporary, just to test whether credentials for cloud can be determined -->
+                        <div *ngIf="credentialsPerCloud.has(deploy.target_cloud)">
+                          Has Credentials
+                        </div>
+                        <div *ngIf="!credentialsPerCloud.has(deploy.target_cloud)">
+                          No Credentials
+                        </div>
                     </span>
                     </p>
                     <div *ngIf=deploy.latest_task?.result?.cloudLaunch?.keyPair?.material>

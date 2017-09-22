@@ -13,6 +13,7 @@ import { MyAppliancesPageComponent } from './components/my-appliances-page/my-ap
 
 // Services
 import { DeploymentService } from '../shared/services/deployment.service';
+import { ProfileService } from '../shared/services/profile.service';
 
 @NgModule({
     imports: [
@@ -23,6 +24,6 @@ import { DeploymentService } from '../shared/services/deployment.service';
         MyAppliancesRoutingModule
     ],
     declarations: [MyAppliancesPageComponent, DeploymentsComponent],
-    providers: [DeploymentService]
+    providers: [DeploymentService, ProfileService]
 })
 export class MyAppliancesModule { }
