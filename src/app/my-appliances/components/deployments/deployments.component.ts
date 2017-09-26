@@ -17,7 +17,8 @@ import * as moment from 'moment';
 export class DeploymentsComponent implements OnInit {
     deployments: Observable<Deployment[]>;
     currentTimer: Observable<any>;
-    cloudCredentials: Observable<Credentials[]>;
+    cloudCredentials: Observable<Credentials>;
+    // TODO: should this map only hold the default credential per cloud?
     credentialsPerCloud: Map<string, Credentials> = new Map();
     @ViewChild('kpLink') a;
 
@@ -31,9 +32,7 @@ export class DeploymentsComponent implements OnInit {
         this.currentTimer = this.initializeClock();
         this.cloudCredentials = this.initializeCloudCredentials(this.deployments);
         this.cloudCredentials.subscribe(credentials => {
-          credentials.map(credential => {
-            this.credentialsPerCloud.set(credential.cloud.slug, credential);
-          })
+            this.credentialsPerCloud.set(credentials.cloud.slug, credentials);
         });
     }
 
@@ -62,14 +61,16 @@ export class DeploymentsComponent implements OnInit {
             });
     }
 
-    initializeCloudCredentials(deployments: Observable<Deployment[]>): Observable<Credentials[]> {
+    initializeCloudCredentials(deployments: Observable<Deployment[]>): Observable<Credentials> {
         return deployments
             .flatMap(deploymentsArray => Observable.from(deploymentsArray))
             .map(deployment => deployment.target_cloud)
             .distinct()
             .flatMap((slug: string) => {
-              return this._profileService.getCredentialsForCloud(slug);
-            });
+                return this._profileService.getCredentialsForCloud(slug);
+            })
+            .flatMap(credentialsArray => Observable.from(credentialsArray))
+            .filter(credential => credential.default);
     }
 
     getKP(dep: Deployment) {

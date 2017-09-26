@@ -23,13 +23,9 @@
                     </span><br />
                     <span class="col-xs-12 col-md-12">
                         <span class="text-muted">Cloud:</span> {{ deploy.target_cloud }}
-                        <!-- TODO: temporary, just to test whether credentials for cloud can be determined -->
-                        <div *ngIf="credentialsPerCloud.has(deploy.target_cloud)">
-                          Has Credentials
-                        </div>
-                        <div *ngIf="!credentialsPerCloud.has(deploy.target_cloud)">
-                          No Credentials
-                        </div>
+                    </span>
+                    <span class="col-xs-12 col-md-12" *ngIf="credentialsPerCloud.has(deploy.target_cloud)">
+                        <span class="text-muted">Credentials:</span> {{ credentialsPerCloud.get(deploy.target_cloud).name }}
                     </span>
                     </p>
                     <div *ngIf=deploy.latest_task?.result?.cloudLaunch?.keyPair?.material>
@@ -45,18 +41,35 @@
                     </div>
                 </td>
                 <td class="text-left">
-                    <div [ngSwitch]="deploy.latest_task?.status">
-                      <p *ngSwitchCase="'SUCCESS'" class="text-success">SUCCESS</p>
-                      <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE
-                         <br />{{ deploy.latest_task?.result?.exc_message }}
-                      </p>
-                      <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE
-                         <br />{{ deploy.latest_task?.result?.exc_message }}
-                      </p>
-                      <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
-                      <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
-                        <br />{{ deploy.latest_task?.result?.action }}
-                      </p>
+                    <div *ngIf="credentialsPerCloud.has(deploy.target_cloud)">
+                        <div [ngSwitch]="deploy.latest_task?.status">
+                          <p *ngSwitchCase="'SUCCESS'" class="text-success"><i class="fa fa-bolt fa-fw"></i> RUNNING</p>
+                          <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE
+                             <br />{{ deploy.latest_task?.result?.exc_message }}
+                          </p>
+                          <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE
+                             <br />{{ deploy.latest_task?.result?.exc_message }}
+                          </p>
+                          <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
+                          <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
+                            <br />{{ deploy.latest_task?.result?.action }}
+                          </p>
+                        </div>
+                    </div>
+                    <div *ngIf="!credentialsPerCloud.has(deploy.target_cloud)">
+                        <div [ngSwitch]="deploy.latest_task?.status">
+                          <p *ngSwitchCase="'SUCCESS'" class="text-success"><i class="fa fa-question-circle fa-fw" title="Application was launched successfully but current status is unknown since CloudLaunch does not have saved credentials for {{deploy.target_cloud}}"></i> <em>LAUNCHED</em></p>
+                          <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE
+                             <br />{{ deploy.latest_task?.result?.exc_message }}
+                          </p>
+                          <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE
+                             <br />{{ deploy.latest_task?.result?.exc_message }}
+                          </p>
+                          <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
+                          <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
+                            <br />{{ deploy.latest_task?.result?.action }}
+                          </p>
+                        </div>
                     </div>
                 </td>
                 <td>{{ calculateUptime(deploy, currentTimer | async) }}</td>
