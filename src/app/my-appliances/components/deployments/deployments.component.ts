@@ -85,4 +85,8 @@ export class DeploymentsComponent implements OnInit {
         }
 
     }
+
+    runHealthCheckTask(deployment: Deployment) {
+        this._deploymentService.createTask(deployment.id, "HEALTH_CHECK").subscribe();
+    }
 }

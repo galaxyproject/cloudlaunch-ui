@@ -3,10 +3,11 @@
         <thead>
             <tr>
                 <th class="col-md-1"><p></p></th>
-                <th class="col-md-5"><p> Name </p></th>
+                <th class="col-md-4"><p> Name </p></th>
                 <th class="col-md-2"><p> Status</p></th>
-                <th class="col-md-2"><p> Time since created</p></th>
+                <th class="col-md-1"><p> Created</p></th>
                 <th class="col-md-2"><p> Access URL</p></th>
+                <th class="col-md-2"><p> Actions</p></th>
             </tr>
         </thead>
         <tbody>
@@ -72,7 +73,7 @@
                         </div>
                     </div>
                 </td>
-                <td>{{ calculateUptime(deploy, currentTimer | async) }}</td>
+                <td>{{ calculateUptime(deploy, currentTimer | async) }} ago</td>
                 <td *ngIf="deploy.latest_task?.result?.cloudLaunch?.applicationURL">
                     <a class="btn-link" href="{{ deploy.latest_task?.result?.cloudLaunch?.applicationURL }}" target="_blank">
                         <span #inputTarget>{{ deploy.latest_task?.result?.cloudLaunch?.applicationURL }}</span>
@@ -84,6 +85,11 @@
                         <span #inputTarget>{{ deploy.latest_task?.result?.cloudLaunch?.publicIP }}</span>
                     </a>
                     <br/><button *ngIf=deploy.latest_task?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
+                </td>
+                <td>
+                    <button class="btn btn-info" type="button" (click)="runHealthCheckTask(deploy)">
+                        <i class="fa fa-refresh"></i> Refresh Status
+                    </button>
                 </td>
             </tr>
         </tbody>

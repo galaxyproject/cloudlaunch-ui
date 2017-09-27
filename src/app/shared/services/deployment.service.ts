@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { CLAuthHttp } from '../../login/utils/cloudlaunch-http';
 import { AppSettings } from '../../app.settings';
 import { Deployment } from '../models/deployment';
+import { Task } from '../models/task';
 
 @Injectable()
 export class DeploymentService {
@@ -29,6 +30,14 @@ export class DeploymentService {
     public createDeployment(deployment: Deployment): Observable<Deployment> {
         let body = JSON.stringify(deployment);
         return this._http.post(this._deployment_url, body)
+            .map(response => response.json())
+            .catch(this.handleError);
+    }
+
+    public createTask(slug: string, task: string): Observable<Task> {
+        // TODO: make this an enum?
+        let body = {'action': task};
+        return this._http.post(`${this._deployment_url}${slug}/tasks/`, body)
             .map(response => response.json())
             .catch(this.handleError);
     }
