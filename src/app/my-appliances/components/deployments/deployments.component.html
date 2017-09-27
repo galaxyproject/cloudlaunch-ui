@@ -43,18 +43,47 @@
                 </td>
                 <td class="text-left">
                     <div *ngIf="credentialsPerCloud.has(deploy.target_cloud)">
-                        <div [ngSwitch]="deploy.latest_task?.status">
-                          <p *ngSwitchCase="'SUCCESS'" class="text-success"><i class="fa fa-bolt fa-fw"></i> RUNNING</p>
-                          <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE
-                             <br />{{ deploy.latest_task?.result?.exc_message }}
-                          </p>
-                          <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE
-                             <br />{{ deploy.latest_task?.result?.exc_message }}
-                          </p>
-                          <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
-                          <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
-                            <br />{{ deploy.latest_task?.result?.action }}
-                          </p>
+                        <div [ngSwitch]="deploy.latest_task?.action">
+                            <div *ngSwitchCase="'LAUNCH'">
+                                <div [ngSwitch]="deploy.latest_task?.status">
+                                  <p *ngSwitchCase="'SUCCESS'" class="text-success"><i class="fa fa-bolt fa-fw"></i> RUNNING</p>
+                                  <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE
+                                     <br />{{ deploy.latest_task?.result?.exc_message }}
+                                  </p>
+                                  <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE
+                                     <br />{{ deploy.latest_task?.result?.exc_message }}
+                                  </p>
+                                  <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
+                                  <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
+                                    <br />{{ deploy.latest_task?.result?.action }}
+                                  </p>
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="'HEALTH_CHECK'">
+                                <div [ngSwitch]="deploy.latest_task?.status">
+                                  <p *ngSwitchCase="'SUCCESS'">
+                                    <span [ngSwitch]="getInstanceStatus(deploy)">
+                                      <!-- TODO: add more cases -->
+                                      <span *ngSwitchCase="'terminated'" class="text-danger">
+                                        <i class="fa fa-stop fa-fw"></i> TERMINATED
+                                      </span>
+                                      <span *ngSwitchDefault class="text-info">
+                                        UNKNOWN: {{ getInstanceStatus(deploy) }}
+                                      </span>
+                                    </span>
+                                  </p>
+                                  <p *ngSwitchCase="'FAILURE'" class="text-danger">UNABLE TO CHECK STATUS
+                                     <br />{{ deploy.latest_task?.result?.exc_message }}
+                                  </p>
+                                  <p *ngSwitchCase="'UNKNOWN'" class="text-warning">UNABLE TO CHECK STATUS
+                                     <br />{{ deploy.latest_task?.result?.exc_message }}
+                                  </p>
+                                  <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
+                                  <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
+                                    <br />{{ deploy.latest_task?.result?.action }}
+                                  </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div *ngIf="!credentialsPerCloud.has(deploy.target_cloud)">
