@@ -97,4 +97,8 @@ export class DeploymentsComponent implements OnInit {
           return null;
         }
     }
+
+    isLatestTaskRunning(deployment: Deployment) {
+        return deployment.latest_task.status == 'PENDING' || deployment.latest_task.status == 'PROGRESSING';
+    }
 }

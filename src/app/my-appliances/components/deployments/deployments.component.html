@@ -116,7 +116,8 @@
                     <br/><button *ngIf=deploy.latest_task?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
                 </td>
                 <td>
-                    <button class="btn btn-info" type="button" (click)="runHealthCheckTask(deploy)">
+                    <!-- TODO: set a flag in the UI component to disable this button as soon as it is clicked, but we'll wait until the refactor into a separate component -->
+                    <button class="btn btn-info" type="button" (click)="runHealthCheckTask(deploy)" [disabled]="isLatestTaskRunning(deploy)">
                         <i class="fa fa-refresh"></i> Refresh Status
                     </button>
                 </td>
