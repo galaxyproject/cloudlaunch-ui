@@ -35,7 +35,7 @@ export class CloudService {
     }
 
     public getInstanceTypes(slug: string): Observable<InstanceType[]> {
-        return this._http.get(`${this._application_url}${slug}/compute/instance_types/`)
+        return this._http.get(`${this._application_url}${slug}/compute/vm_types/`)
             .map(response => <InstanceType[]>response.json().results)
             .catch(this.handleError);
     }
