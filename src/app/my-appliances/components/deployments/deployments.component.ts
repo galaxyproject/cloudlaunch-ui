@@ -44,4 +44,8 @@ export class DeploymentsComponent implements OnInit {
                 return moment();
             });
     }
+
+    trackByDeploymentId(index: number, deployment: Deployment): string {
+        return deployment.id;
+    }
 }

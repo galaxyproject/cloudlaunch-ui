@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="deployment" *ngFor="let deploy of deployments | async" [deployment]="deploy" [currentTimer]="currentTimer"></tr>
+            <tr class="deployment" *ngFor="let deploy of deployments | async; trackBy: trackByDeploymentId" [deployment]="deploy" [currentTimer]="currentTimer"></tr>
         </tbody>
     </table>
 </div>
