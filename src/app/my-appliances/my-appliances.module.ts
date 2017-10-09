@@ -9,6 +9,7 @@ import { MyAppliancesRoutingModule } from './my-appliances-routing.module';
 
 // Components
 import { DeploymentsComponent } from './components/deployments/deployments.component';
+import { DeploymentComponent } from './components/deployments/deployment/deployment.component';
 import { MyAppliancesPageComponent } from './components/my-appliances-page/my-appliances-page.component';
 
 // Services
@@ -23,7 +24,7 @@ import { ProfileService } from '../shared/services/profile.service';
         ClipboardModule,
         MyAppliancesRoutingModule
     ],
-    declarations: [MyAppliancesPageComponent, DeploymentsComponent],
+    declarations: [MyAppliancesPageComponent, DeploymentsComponent, DeploymentComponent],
     providers: [DeploymentService, ProfileService]
 })
 export class MyAppliancesModule { }
