@@ -11,7 +11,7 @@ import { PublicService } from '../models/public_service';
 export class PublicAppliancesService {
     constructor(private _http: CLAuthHttp) { }
 
-    private _public_services_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/public_services/`;
+    private _public_services_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/public_services/services/`;
 
 
     public getPublicServices(): Observable<PublicService[]> {
