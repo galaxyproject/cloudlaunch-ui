@@ -1,0 +1,23 @@
+<div [ngSwitch]="task.status">
+  <p *ngSwitchCase="'SUCCESS'">
+    <span [ngSwitch]="getInstanceStatus()">
+      <!-- TODO: add more cases -->
+      <span *ngSwitchCase="'terminated'" class="text-danger">
+        <i class="fa fa-stop fa-fw"></i> TERMINATED
+      </span>
+      <span *ngSwitchDefault class="text-info">
+        UNKNOWN: {{ getInstanceStatus() }}
+      </span>
+    </span>
+  </p>
+  <p *ngSwitchCase="'FAILURE'" class="text-danger">UNABLE TO CHECK STATUS
+     <br />{{ task.result?.exc_message }}
+  </p>
+  <p *ngSwitchCase="'UNKNOWN'" class="text-warning">UNABLE TO CHECK STATUS
+     <br />{{ task.result?.exc_message }}
+  </p>
+  <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
+  <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
+    <br />{{ task.result?.action }}
+  </p>
+</div>

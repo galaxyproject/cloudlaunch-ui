@@ -10,6 +10,8 @@ import { MyAppliancesRoutingModule } from './my-appliances-routing.module';
 // Components
 import { DeploymentsComponent } from './components/deployments/deployments.component';
 import { DeploymentComponent } from './components/deployments/deployment/deployment.component';
+import { HealthCheckTaskStatusRenderer } from './components/deployments/task-status-renderers/health-check-task-status-renderer/health-check-task-status-renderer.component';
+import { LaunchTaskStatusRenderer } from './components/deployments/task-status-renderers/launch-task-status-renderer/launch-task-status-renderer.component';
 import { MyAppliancesPageComponent } from './components/my-appliances-page/my-appliances-page.component';
 
 // Services
@@ -24,7 +26,8 @@ import { ProfileService } from '../shared/services/profile.service';
         ClipboardModule,
         MyAppliancesRoutingModule
     ],
-    declarations: [MyAppliancesPageComponent, DeploymentsComponent, DeploymentComponent],
+    declarations: [MyAppliancesPageComponent, DeploymentsComponent,
+      DeploymentComponent, HealthCheckTaskStatusRenderer, LaunchTaskStatusRenderer],
     providers: [DeploymentService, ProfileService]
 })
 export class MyAppliancesModule { }

@@ -74,14 +74,6 @@ export class DeploymentComponent implements OnInit {
         this._deploymentService.createTask(deployment.id, "HEALTH_CHECK").subscribe();
     }
 
-    getInstanceStatus(deployment: Deployment) {
-        try {
-          return deployment.latest_task.result.instance_status;
-        } catch (e) {
-          return null;
-        }
-    }
-
     isLatestTaskRunning(deployment: Deployment) {
         return deployment.latest_task.status == 'PENDING' || deployment.latest_task.status == 'PROGRESSING';
     }
