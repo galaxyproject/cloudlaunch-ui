@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { Deployment } from '../../../../shared/models/deployment';
 import { Credentials } from '../../../../shared/models/profile';
+import { Task } from '../../../../shared/models/task';
 import { DeploymentService } from '../../../../shared/services/deployment.service';
 import { ProfileService } from '../../../../shared/services/profile.service';
 import * as moment from 'moment';
@@ -20,6 +21,7 @@ export class DeploymentComponent implements OnInit {
     _currentTimer: Observable<any>;
     credentials: Credentials;
     isLatestTaskRunning: boolean;
+    launchTask: Task;
 
     @ViewChild('kpLink') a;
 
@@ -31,6 +33,7 @@ export class DeploymentComponent implements OnInit {
     ngOnInit() {
         this.initializeCloudCredentials(this.deployment);
         this.currentTimer = this.initializeClock();
+        this.initializeLaunchTask();
     }
 
     @Input()
@@ -93,5 +96,12 @@ export class DeploymentComponent implements OnInit {
             const url = URL.createObjectURL(file);
             this.a.nativeElement.href = url;
         }
+    }
+
+    initializeLaunchTask() {
+        this._deploymentService.getTasks(this.deployment.id)
+            .flatMap(tasksArray => Observable.from(tasksArray))
+            .filter(task => task.action == 'LAUNCH')
+            .subscribe(launchTask => this.launchTask = launchTask);
     }
 }

@@ -42,6 +42,12 @@ export class DeploymentService {
             .catch(this.handleError);
     }
 
+    public getTasks(slug: string): Observable<Task[]> {
+        return this._http.get(`${this._deployment_url}${slug}/tasks/`)
+            .map(response => response.json().results)
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response) {
         return Observable.throw(error.json() || 'Server error');
     }

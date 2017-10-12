@@ -15,7 +15,7 @@
         <span class="text-muted">Credentials:</span> {{ credentials.name }}
     </span>
     </p>
-    <div *ngIf=deployment.latest_task?.result?.cloudLaunch?.keyPair?.material>
+    <div *ngIf=launchTask?.result?.cloudLaunch?.keyPair?.material>
         <p class="text-info" style="padding-top: 25px;">
             A new SSH key pair was created when this instance
             was launched. The key will be available for
@@ -34,17 +34,17 @@
     </div>
 </td>
 <td>{{ calculateUptime(deployment, currentTimer | async) }} ago</td>
-<td *ngIf="deployment.latest_task?.result?.cloudLaunch?.applicationURL">
-    <a class="btn-link" href="{{ deployment.latest_task?.result?.cloudLaunch?.applicationURL }}" target="_blank">
-        <span #inputTarget>{{ deployment.latest_task?.result?.cloudLaunch?.applicationURL }}</span>
+<td *ngIf="launchTask?.result?.cloudLaunch?.applicationURL">
+    <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL }}" target="_blank">
+        <span #inputTarget>{{ launchTask?.result?.cloudLaunch?.applicationURL }}</span>
     </a>
-    <br/><button *ngIf=deployment.latest_task?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
+    <br/><button *ngIf=launchTask?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
 </td>
-<td *ngIf="!deployment.latest_task?.result?.cloudLaunch?.applicationURL">
-    <a class="btn-link" href="{{ deployment.latest_task?.result?.cloudLaunch?.publicIP }}" target="_blank">
-        <span #inputTarget>{{ deployment.latest_task?.result?.cloudLaunch?.publicIP }}</span>
+<td *ngIf="!launchTask?.result?.cloudLaunch?.applicationURL">
+    <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.publicIP }}" target="_blank">
+        <span #inputTarget>{{ launchTask?.result?.cloudLaunch?.publicIP }}</span>
     </a>
-    <br/><button *ngIf=deployment.latest_task?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
+    <br/><button *ngIf=launchTask?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
 </td>
 <td>
     <button *ngIf="credentials" class="btn btn-info" type="button" (click)="runHealthCheckTask(deployment)" [disabled]="isLatestTaskRunning">
