@@ -47,7 +47,7 @@
     <br/><button *ngIf=deployment.latest_task?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
 </td>
 <td>
-    <button class="btn btn-info" type="button" (click)="runHealthCheckTask(deployment)" [disabled]="isLatestTaskRunning">
+    <button *ngIf="credentials" class="btn btn-info" type="button" (click)="runHealthCheckTask(deployment)" [disabled]="isLatestTaskRunning">
         <i class="fa fa-refresh"></i> Refresh Status
     </button>
 </td>
