@@ -19,6 +19,7 @@ export class DeploymentComponent implements OnInit {
     _deployment: Deployment;
     _currentTimer: Observable<any>;
     credentials: Credentials;
+    isLatestTaskRunning: boolean;
 
     @ViewChild('kpLink') a;
 
@@ -35,6 +36,7 @@ export class DeploymentComponent implements OnInit {
     @Input()
     set deployment(deployment: Deployment) {
         this._deployment = deployment;
+        this.isLatestTaskRunning = this.computeIsLatestTaskRunning();
     }
     get deployment(): Deployment {
         return this._deployment;
@@ -71,11 +73,14 @@ export class DeploymentComponent implements OnInit {
     }
 
     runHealthCheckTask(deployment: Deployment) {
-        this._deploymentService.createTask(deployment.id, "HEALTH_CHECK").subscribe();
+        this._deploymentService.createTask(deployment.id, "HEALTH_CHECK").subscribe(newTask => {
+            this.isLatestTaskRunning = true;
+            this.deployment.latest_task = newTask;
+        });
     }
 
-    isLatestTaskRunning(deployment: Deployment) {
-        return deployment.latest_task.status == 'PENDING' || deployment.latest_task.status == 'PROGRESSING';
+    computeIsLatestTaskRunning() {
+        return this.deployment.latest_task.status == 'PENDING' || this.deployment.latest_task.status == 'PROGRESSING';
     }
 
     getKP(dep: Deployment) {
