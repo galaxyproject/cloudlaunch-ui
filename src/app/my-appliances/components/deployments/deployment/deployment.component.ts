@@ -10,11 +10,12 @@ import { ProfileService } from '../../../../shared/services/profile.service';
 import * as moment from 'moment';
 
 
+const AUTOMATIC_HEALTH_CHECK_MINUTES = 10;
+
 @Component({
     selector: '.deployment',
     templateUrl: './deployment.component.html',
 })
-
 export class DeploymentComponent implements OnInit {
 
     _deployment: Deployment;
@@ -31,7 +32,9 @@ export class DeploymentComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.initializeCloudCredentials(this.deployment);
+        let cred = this.initializeCloudCredentialsObservable(this.deployment);
+        this.initializeCloudCredentials(cred);
+        this.initializeAutomaticHealthCheck(cred);
         this.currentTimer = this.initializeClock();
         this.initializeLaunchTask();
     }
@@ -53,11 +56,31 @@ export class DeploymentComponent implements OnInit {
         return this._currentTimer;
     }
 
-    initializeCloudCredentials(deployment: Deployment): void {
-        this._profileService.getCredentialsForCloud(deployment.target_cloud)
+    initializeCloudCredentialsObservable(deployment: Deployment): Observable<Credentials> {
+        return this._profileService.getCredentialsForCloud(deployment.target_cloud)
             .flatMap(credentialsArray => Observable.from(credentialsArray))
-            .filter(credential => credential.default)
-            .subscribe(credentials => this.credentials = credentials);
+            .filter(credential => credential.default);
+    }
+
+    initializeCloudCredentials(cred: Observable<Credentials>) {
+        cred.subscribe(credentials => this.credentials = credentials);
+    }
+
+    // If deployment has default credentials and latest task with status
+    // information was over 10 minutes ago, then automatically kick off a
+    // HEALTH_CHECK task
+    initializeAutomaticHealthCheck(cred: Observable<Credentials>) {
+        cred.subscribe(credentials => {
+            if (credentials) {
+                let latest_task = this.deployment.latest_task;
+                if (latest_task.action == 'LAUNCH' || latest_task.action == 'HEALTH_CHECK') {
+                    let addedMoment = moment(latest_task.added);
+                    if (addedMoment.isBefore(moment().subtract(AUTOMATIC_HEALTH_CHECK_MINUTES, 'minutes'))) {
+                        this.runHealthCheckTask(this.deployment);
+                    }
+                }
+            }
+        })
     }
 
     calculateUptime(dep: Deployment, currentTime) {
