@@ -15,8 +15,12 @@ export class DeploymentService {
     private _deployment_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/deployments/`;
 
 
-    public getDeployments(): Observable<Deployment[]> {
-        return this._http.get(this._deployment_url)
+    public getDeployments(archived = null): Observable<Deployment[]> {
+        let url = `${this._deployment_url}`;
+        if (archived !== null) {
+            url = `${url}?archived=${archived}`;
+        }
+        return this._http.get(url)
             .map(response => response.json().results)
             .catch(this.handleError);
     }
@@ -30,6 +34,13 @@ export class DeploymentService {
     public createDeployment(deployment: Deployment): Observable<Deployment> {
         let body = JSON.stringify(deployment);
         return this._http.post(this._deployment_url, body)
+            .map(response => response.json())
+            .catch(this.handleError);
+    }
+
+    public updateDeployment(deployment: Deployment): Observable<Deployment> {
+        let body = JSON.stringify(deployment);
+        return this._http.put(`${this._deployment_url}${deployment.id}/`, body)
             .map(response => response.json())
             .catch(this.handleError);
     }

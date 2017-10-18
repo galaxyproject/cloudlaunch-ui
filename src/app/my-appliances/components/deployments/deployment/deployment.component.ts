@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 import { Observable } from 'rxjs/Rx';
 
@@ -15,6 +15,7 @@ const AUTOMATIC_HEALTH_CHECK_MINUTES = 10;
 @Component({
     selector: '.deployment',
     templateUrl: './deployment.component.html',
+    styleUrls: ['./deployment.component.css']
 })
 export class DeploymentComponent implements OnInit {
 
@@ -23,12 +24,15 @@ export class DeploymentComponent implements OnInit {
     credentials: Credentials;
     isLatestTaskRunning: boolean;
     launchTask: Task;
+    _hostElement: ElementRef;
 
     @ViewChild('kpLink') a;
 
     constructor(
+        private elRef:ElementRef,
         private _deploymentService: DeploymentService,
         private _profileService: ProfileService) {
+        this._hostElement = elRef;
     }
 
     ngOnInit() {
@@ -126,5 +130,17 @@ export class DeploymentComponent implements OnInit {
             .flatMap(tasksArray => Observable.from(tasksArray))
             .filter(task => task.action == 'LAUNCH')
             .subscribe(launchTask => this.launchTask = launchTask);
+    }
+
+    archiveDeployment() {
+        // Put a translucent grey mask over view while archive operation is running
+        this._hostElement.nativeElement.classList.add('archived');
+
+        let deploymentCopy = Object.assign({}, this.deployment);
+        deploymentCopy.archived = true;
+        this._deploymentService.updateDeployment(deploymentCopy)
+          .subscribe(deployment => this.deployment.archived = deployment.archived,
+              null,
+              () => this._hostElement.nativeElement.classList.remove('archived'));
     }
 }

@@ -50,4 +50,7 @@
     <button *ngIf="credentials" class="btn btn-info" type="button" (click)="runHealthCheckTask(deployment)" [disabled]="isLatestTaskRunning">
         <i class="fa fa-refresh"></i> Refresh Status
     </button>
+    <button class="btn btn-danger" type="button" (click)="archiveDeployment()">
+        <i class="fa fa-trash"></i> Delete
+    </button>
 </td>

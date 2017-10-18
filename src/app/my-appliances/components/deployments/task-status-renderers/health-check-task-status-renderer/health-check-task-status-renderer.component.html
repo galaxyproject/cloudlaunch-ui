@@ -2,6 +2,9 @@
   <p *ngSwitchCase="'SUCCESS'">
     <span [ngSwitch]="getInstanceStatus()">
       <!-- TODO: add more cases -->
+      <span *ngSwitchCase="'running'" class="text-success">
+        <i class="fa fa-bolt fa-fw"></i> RUNNING
+      </span>
       <span *ngSwitchCase="'terminated'" class="text-danger">
         <i class="fa fa-stop fa-fw"></i> TERMINATED
       </span>

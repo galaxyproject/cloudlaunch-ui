@@ -13,4 +13,5 @@ export interface Deployment {
     config_app: any;
     latest_task: Task;
     tasks: Task[];
+    archived: boolean;
 }
