@@ -27,18 +27,23 @@
         </p>
     </div>
 </td>
-<td class="text-left">
+<td class="infodata">{{ calculateUptime(deployment, currentTimer | async) }} ago</td>
+<td class="text-left infodata">
     <div [ngSwitch]="deployment.latest_task?.action">
         <launch-task-status-renderer *ngSwitchCase="'LAUNCH'" [task]="deployment.latest_task" hasCredentials="!!credentials"></launch-task-status-renderer>
         <health-check-task-status-renderer *ngSwitchCase="'HEALTH_CHECK'" [task]="deployment.latest_task" hasCredentials="!!credentials"></health-check-task-status-renderer>
     </div>
 </td>
-<td>{{ calculateUptime(deployment, currentTimer | async) }} ago</td>
-<td *ngIf="launchTask?.result?.cloudLaunch?.applicationURL">
-    <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL }}" target="_blank">
-        <span #inputTarget>{{ launchTask?.result?.cloudLaunch?.applicationURL }}</span>
-    </a>
-    <br/><button *ngIf=launchTask?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
+<td *ngIf="launchTask?.result?.cloudLaunch?.applicationURL" class="infodata">
+  <div [ngSwitch]="deployment.latest_task?.result?.instance_status">
+    <span *ngSwitchCase="'running'">
+      <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL }}" target="_blank">
+          <span #inputTarget>{{ launchTask?.result?.cloudLaunch?.applicationURL }}</span>
+      </a>
+    </span>
+
+    <span *ngSwitchDefault class="dim" #inputTarget>{{ launchTask?.result?.cloudLaunch?.applicationURL }}</span>
+  </div>
 </td>
 <td *ngIf="!launchTask?.result?.cloudLaunch?.applicationURL">
     <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.publicIP }}" target="_blank">
@@ -47,10 +52,15 @@
     <br/><button *ngIf=launchTask?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
 </td>
 <td>
-    <button *ngIf="credentials" class="btn btn-info" type="button" (click)="runHealthCheckTask(deployment)" [disabled]="isLatestTaskRunning">
-        <i class="fa fa-refresh"></i> Refresh Status
+  <div class="btn-group" role="group" aria-label="Actions">
+    <button *ngIf=launchTask?.result?.cloudLaunch?.publicIP class="btn btn-secondary pill" type="button" [ngxClipboard]="inputTarget">
+      <i class="fa fa-copy"></i>
     </button>
-    <button class="btn btn-danger" type="button" (click)="archiveDeployment()">
-        <i class="fa fa-trash"></i> Delete
+    <button *ngIf="credentials" class="btn btn-secondary pill" type="button" (click)="runHealthCheckTask(deployment)" [disabled]="isLatestTaskRunning">
+        <i class="fa fa-refresh"></i>
     </button>
+    <button class="btn btn-secondary pill" type="button" (click)="archiveDeployment()">
+        <i class="fa fa-trash"></i>
+    </button>
+  </div>
 </td>
