@@ -31,7 +31,7 @@
 <td class="text-left infodata">
     <div [ngSwitch]="deployment.latest_task?.action">
         <launch-task-status-renderer *ngSwitchCase="'LAUNCH'" [task]="deployment.latest_task" hasCredentials="!!credentials"></launch-task-status-renderer>
-        <health-check-task-status-renderer *ngSwitchCase="'HEALTH_CHECK'" [task]="deployment.latest_task" hasCredentials="!!credentials"></health-check-task-status-renderer>
+        <health-check-task-status-renderer *ngSwitchDefault [task]="deployment.latest_task" hasCredentials="!!credentials"></health-check-task-status-renderer>
     </div>
 </td>
 <td *ngIf="launchTask?.result?.cloudLaunch?.applicationURL" class="infodata">
@@ -56,11 +56,40 @@
     <button *ngIf=launchTask?.result?.cloudLaunch?.publicIP class="btn btn-secondary pill" type="button" [ngxClipboard]="inputTarget">
       <i class="fa fa-copy"></i>
     </button>
-    <button *ngIf="credentials" class="btn btn-secondary pill" type="button" (click)="runHealthCheckTask(deployment)" [disabled]="isLatestTaskRunning">
+    <button *ngIf="credentials" class="btn btn-secondary pill" type="button" (click)="runTask(deployment, 'HEALTH_CHECK')" [disabled]="isLatestTaskRunning">
         <i class="fa fa-refresh"></i>
     </button>
-    <button class="btn btn-secondary pill" type="button" (click)="archiveDeployment()">
-        <i class="fa fa-trash"></i>
+    <button type="button" class="btn btn-secondary pill" data-toggle="modal" data-target="#deleteModal" [disabled]="isLatestTaskRunning">
+      <i class="fa fa-trash"></i>
     </button>
   </div>
 </td>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="deleteModalLabel">Archive or delete this deployment?</h4>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li><b>Archive</b>: Remove from the <i>current instances</i> list and move into the launch log list.<br/></li>
+            <li><b>Delete</b>: Permanently delete the virtual machine(s) for this deployment. This is irreversible action.</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="archiveDeployment()" data-dismiss="modal">
+            Archive
+          </button>
+          <button type="button" class="btn btn-primary" (click)="runTask(deployment, 'DELETE')" data-dismiss="modal">
+            Delete permanently
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

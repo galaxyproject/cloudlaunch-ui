@@ -80,11 +80,11 @@ export class DeploymentComponent implements OnInit {
                 if (latest_task.action == 'LAUNCH' || latest_task.action == 'HEALTH_CHECK') {
                     let addedMoment = moment(latest_task.added);
                     if (addedMoment.isBefore(moment().subtract(AUTOMATIC_HEALTH_CHECK_MINUTES, 'minutes'))) {
-                        this.runHealthCheckTask(this.deployment);
+                        this.runTask(this.deployment, 'HEALTH_CHECK');
                     }
                 }
             }
-        })
+        });
     }
 
     calculateUptime(dep: Deployment, currentTime) {
@@ -102,8 +102,8 @@ export class DeploymentComponent implements OnInit {
             });
     }
 
-    runHealthCheckTask(deployment: Deployment) {
-        this._deploymentService.createTask(deployment.id, "HEALTH_CHECK").subscribe(newTask => {
+    runTask(deployment: Deployment, action: string) {
+        this._deploymentService.createTask(deployment.id, action).subscribe(newTask => {
             this.isLatestTaskRunning = true;
             this.deployment.latest_task = newTask;
         });

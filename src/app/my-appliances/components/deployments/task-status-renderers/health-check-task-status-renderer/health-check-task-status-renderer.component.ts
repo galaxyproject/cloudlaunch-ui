@@ -28,13 +28,18 @@ export class HealthCheckTaskStatusRenderer {
     set hasCredentials(hasCredentials: boolean) {
         this._hasCredentials = hasCredentials;
     }
-    get hasCredentials():boolean {
+    get hasCredentials(): boolean {
         return this._hasCredentials;
     }
 
-    getInstanceStatus():string {
+    getInstanceStatus(): string {
         try {
-          return this.task.result.instance_status;
+          if (this.task.action === 'HEALTH_CHECK') {
+            return this.task.result.instance_status;
+           } else if (this.task.action === 'DELETE' && this.task.result.result === true) {
+            // We may want to actually run a separate HEALTH_CHECK task instead?
+            return 'deleted';
+           }
         } catch (e) {
           return null;
         }
