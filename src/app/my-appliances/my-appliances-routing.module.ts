@@ -6,10 +6,12 @@ import { AuthGuardService } from '../login/services/auth-guard/auth-guard.servic
 
 //Pages
 import { MyAppliancesPageComponent } from './components/my-appliances-page/my-appliances-page.component';
+import { LaunchHistoryPageComponent } from './components/launch-history-page/launch-history-page.component';
 
 
 const appRoutes: Routes = [
     { path: '', component: MyAppliancesPageComponent, canActivate: [AuthGuardService] },
+    { path: 'history', component: LaunchHistoryPageComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

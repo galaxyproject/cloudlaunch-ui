@@ -13,6 +13,7 @@ import { DeploymentComponent } from './components/deployments/deployment/deploym
 import { HealthCheckTaskStatusRenderer } from './components/deployments/task-status-renderers/health-check-task-status-renderer/health-check-task-status-renderer.component';
 import { LaunchTaskStatusRenderer } from './components/deployments/task-status-renderers/launch-task-status-renderer/launch-task-status-renderer.component';
 import { MyAppliancesPageComponent } from './components/my-appliances-page/my-appliances-page.component';
+import { LaunchHistoryPageComponent } from './components/launch-history-page/launch-history-page.component';
 
 // Services
 import { DeploymentService } from '../shared/services/deployment.service';
@@ -26,7 +27,7 @@ import { ProfileService } from '../shared/services/profile.service';
         ClipboardModule,
         MyAppliancesRoutingModule
     ],
-    declarations: [MyAppliancesPageComponent, DeploymentsComponent,
+    declarations: [MyAppliancesPageComponent, LaunchHistoryPageComponent, DeploymentsComponent,
       DeploymentComponent, HealthCheckTaskStatusRenderer, LaunchTaskStatusRenderer],
     providers: [DeploymentService, ProfileService]
 })
