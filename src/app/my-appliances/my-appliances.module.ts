@@ -7,12 +7,16 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { LayoutModule } from '../shared/layout.module';
 import { MyAppliancesRoutingModule } from './my-appliances-routing.module';
 
+import { MatDialogModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material';
+
 // Components
 import { DeploymentsComponent } from './components/deployments/deployments.component';
 import { DeploymentComponent } from './components/deployments/deployment/deployment.component';
 import { HealthCheckTaskStatusRenderer } from './components/deployments/task-status-renderers/health-check-task-status-renderer/health-check-task-status-renderer.component';
 import { LaunchTaskStatusRenderer } from './components/deployments/task-status-renderers/launch-task-status-renderer/launch-task-status-renderer.component';
 import { MyAppliancesPageComponent } from './components/my-appliances-page/my-appliances-page.component';
+import { ArchiveDeleteConfirmDialog } from './components/deployments/dialogs/archive-delete-confirm.component';
 
 // Services
 import { DeploymentService } from '../shared/services/deployment.service';
@@ -24,10 +28,12 @@ import { ProfileService } from '../shared/services/profile.service';
         FormsModule,
         LayoutModule,
         ClipboardModule,
-        MyAppliancesRoutingModule
+        MyAppliancesRoutingModule,
+        MatDialogModule,
+        MatButtonModule
     ],
     declarations: [MyAppliancesPageComponent, DeploymentsComponent,
-      DeploymentComponent, HealthCheckTaskStatusRenderer, LaunchTaskStatusRenderer],
+      DeploymentComponent, HealthCheckTaskStatusRenderer, LaunchTaskStatusRenderer, ArchiveDeleteConfirmDialog],
     providers: [DeploymentService, ProfileService]
 })
 export class MyAppliancesModule { }

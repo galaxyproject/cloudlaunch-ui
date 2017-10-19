@@ -8,7 +8,8 @@ import { Task } from '../../../../shared/models/task';
 import { DeploymentService } from '../../../../shared/services/deployment.service';
 import { ProfileService } from '../../../../shared/services/profile.service';
 import * as moment from 'moment';
-
+import { MatDialog } from '@angular/material';
+import { ArchiveDeleteConfirmDialog } from '../dialogs/archive-delete-confirm.component';
 
 const AUTOMATIC_HEALTH_CHECK_MINUTES = 10;
 
@@ -31,7 +32,8 @@ export class DeploymentComponent implements OnInit {
     constructor(
         private elRef:ElementRef,
         private _deploymentService: DeploymentService,
-        private _profileService: ProfileService) {
+        private _profileService: ProfileService,
+        private dialog: MatDialog) {
         this._hostElement = elRef;
     }
 
@@ -130,6 +132,17 @@ export class DeploymentComponent implements OnInit {
             .flatMap(tasksArray => Observable.from(tasksArray))
             .filter(task => task.action == 'LAUNCH')
             .subscribe(launchTask => this.launchTask = launchTask);
+    }
+
+    openArchiveConfirmDialog(deployment: Deployment): void {
+        let dialogRef = this.dialog.open(ArchiveDeleteConfirmDialog);
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result == 'delete')
+                this.runTask(deployment, 'DELETE')
+            else if (result == 'archive')
+                this.archiveDeployment();
+          });
     }
 
     archiveDeployment() {
