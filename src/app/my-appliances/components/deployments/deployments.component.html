@@ -13,7 +13,7 @@
         <tbody>
             <ng-container *ngFor="let deploy of deployments | async; trackBy: trackByDeploymentId">
               <!-- deployments are already filtered to only unarchived, but this allows us to immediately filter items when they are archived -->
-              <tr *ngIf="!deploy.archived" class="deployment" [deployment]="deploy" [currentTimer]="currentTimer"></tr>
+              <tr deployment-component *ngIf="!deploy.archived" [deployment]="deploy" [currentTimer]="currentTimer"></tr>
             </ng-container>
         </tbody>
     </table>

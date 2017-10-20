@@ -14,7 +14,7 @@ import { ArchiveDeleteConfirmDialog } from '../dialogs/archive-delete-confirm.co
 const AUTOMATIC_HEALTH_CHECK_MINUTES = 10;
 
 @Component({
-    selector: '.deployment',
+    selector: '[deployment-component]',
     templateUrl: './deployment.component.html',
     styleUrls: ['./deployment.component.css']
 })
