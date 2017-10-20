@@ -78,7 +78,7 @@ export class DeploymentComponent implements OnInit {
         cred.subscribe(credentials => {
             if (credentials) {
                 let latest_task = this.deployment.latest_task;
-                if (latest_task.action == 'LAUNCH' || latest_task.action == 'HEALTH_CHECK') {
+                if (latest_task.status != 'PENDING' && latest_task.status != 'PROGRESSING' && latest_task.action != 'DELETE') {
                     let addedMoment = moment(latest_task.added);
                     if (addedMoment.isBefore(moment().subtract(AUTOMATIC_HEALTH_CHECK_MINUTES, 'minutes'))) {
                         this.runTask(this.deployment, 'HEALTH_CHECK');
