@@ -1,0 +1,16 @@
+<div [ngSwitch]="task.status">
+  <div *ngSwitchCase="'SUCCESS'">
+    <p *ngIf="hasCredentials" class="text-success"><i class="fa fa-bolt fa-fw"></i> RUNNING</p>
+    <p *ngIf="!hasCredentials" class="text-success"><i class="fa fa-question-circle fa-fw" title="Application was launched successfully but current status is unknown since CloudLaunch does not have saved credentials for this cloud"></i> <em>LAUNCHED</em></p>
+  </div>
+  <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE
+     <br />{{ task.result?.exc_message }}
+  </p>
+  <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE
+     <br />{{ task.result?.exc_message }}
+  </p>
+  <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
+  <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
+    <br />{{ task.result?.action }}
+  </p>
+</div>

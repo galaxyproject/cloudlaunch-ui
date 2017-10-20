@@ -13,6 +13,8 @@ import { AppRoutingModule }  from './app-routing.module';
 import { RequestOptions } from '@angular/http';
 import { CLAuthHttp } from './login/utils/cloudlaunch-http';
 
+import { MyAppliancesModule } from './my-appliances/my-appliances.module';
+import { ArchiveDeleteConfirmDialog } from './my-appliances/components/deployments/dialogs/archive-delete-confirm.component';
 
 export function httpFactory(backend: XHRBackend) {
     return new CLAuthHttp(backend);
@@ -30,7 +32,8 @@ export function httpFactory(backend: XHRBackend) {
         AppRoutingModule,
         LoginModule,
         MarkdownModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MyAppliancesModule
     ],
     providers: [
         {
@@ -39,6 +42,7 @@ export function httpFactory(backend: XHRBackend) {
             deps: [XHRBackend]
         }
     ],
+    entryComponents: [ArchiveDeleteConfirmDialog],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

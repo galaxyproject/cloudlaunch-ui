@@ -1,0 +1,15 @@
+<!-- Modal -->
+<h1 mat-dialog-title>Archive or delete this deployment?</h1>
+
+<div mat-dialog-content>
+    <ul>
+        <li><b>Archive</b>: Remove from the <i>current appliances</i> list and move into the launch log list.<br/></li>
+        <li><b>Delete</b>: Permanently delete the virtual machine(s) for this appliance. This is an <i class="text-warning">irreversible</i> action.</li>
+    </ul>
+</div>
+
+<div mat-dialog-actions class="pull-right">
+      <button mat-button mat-dialog-close="archive" tabindex="2">Archive</button>
+      <button mat-button mat-dialog-close="delete" tabindex="3">Delete Permanently and Archive</button>
+      <button mat-button mat-dialog-close="cancel" tabindex="1">Cancel</button>
+</div>

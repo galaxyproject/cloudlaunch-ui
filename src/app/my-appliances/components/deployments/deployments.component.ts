@@ -10,12 +10,16 @@ import * as moment from 'moment';
 @Component({
     selector: 'deployments',
     templateUrl: './deployments.component.html',
+    styles: [`
+               .archiving {
+                  background-color: red;
+               }
+             `]
 })
 
 export class DeploymentsComponent implements OnInit {
     deployments: Observable<Deployment[]>;
     currentTimer: Observable<any>;
-    @ViewChild('kpLink') a;
 
     constructor(
         private _deploymentService: DeploymentService) {
@@ -26,18 +30,13 @@ export class DeploymentsComponent implements OnInit {
         this.currentTimer = this.initializeClock();
     }
 
-    calculateUptime(dep: Deployment, currentTime) {
-        const launchTime = moment(dep.added);
-        return moment.duration(currentTime.diff(launchTime)).humanize();
-    }
-
     initializePolling(): Observable<Deployment[]> {
         const self = this;
         return Observable
             .interval(5000)
             .startWith(0)
             .flatMap(() => {
-                return this._deploymentService.getDeployments();
+                return this._deploymentService.getDeployments({archived: false});
             });
     }
 
@@ -51,16 +50,7 @@ export class DeploymentsComponent implements OnInit {
             });
     }
 
-    getKP(dep: Deployment) {
-        const data = [];
-        // Only LAUNCH tasks can have the key pair data
-        if (dep.latest_task.action == 'LAUNCH') {
-            data.push(dep.latest_task.result.cloudLaunch.keyPair.material);
-            const properties = {type: 'plain/text'};
-            const file = new Blob(data, properties);
-            const url = URL.createObjectURL(file);
-            this.a.nativeElement.href = url;
-        }
-
+    trackByDeploymentId(index: number, deployment: Deployment): string {
+        return deployment.id;
     }
 }

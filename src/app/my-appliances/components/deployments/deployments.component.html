@@ -3,69 +3,18 @@
         <thead>
             <tr>
                 <th class="col-md-1"><p></p></th>
-                <th class="col-md-5"><p> Name </p></th>
+                <th class="col-md-4"><p> Name </p></th>
+                <th class="col-md-1"><p> Created</p></th>
                 <th class="col-md-2"><p> Status</p></th>
-                <th class="col-md-2"><p> Time since created</p></th>
-                <th class="col-md-2"><p> Access URL</p></th>
+                <th class="col-md-3"><p> Access URL</p></th>
+                <th class="col-md-1"><p> Actions</p></th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let deploy of deployments | async">
-                <td><img src="{{ deploy.app_version_details?.application?.icon_url }}"  style="max-width: 64px; max-height: 64px;" /></td>
-                <td>
-                    <p><strong>{{ deploy.name }}</strong></p>
-                    <p>
-                    <span class="col-xs-12 col-md-6">
-                        <span class="text-muted">Appliance:</span> {{ deploy.app_version_details?.application?.name }}
-                    </span>
-                    <span class="col-xs-12 col-md-6">
-                        <span class="text-muted">Version:</span> {{ deploy.app_version_details?.version }}
-                    </span><br />
-                    <span class="col-xs-12 col-md-12">
-                        <span class="text-muted">Cloud:</span> {{ deploy.target_cloud }}
-                    </span>
-                    </p>
-                    <div *ngIf=deploy.latest_task?.result?.cloudLaunch?.keyPair?.material>
-                        <p class="text-info" style="padding-top: 25px;">
-                            A new SSH key pair was created when this instance
-                            was launched. The key will be available for
-                            retrieval only here for up to one hour after the
-                            instance was launched. <a #kpLink
-                            target="_blank" download="kp.txt"
-                            (click)="getKP(deploy)"> Download the key</a> and
-                            keep it secure.
-                        </p>
-                    </div>
-                </td>
-                <td class="text-left">
-                    <div [ngSwitch]="deploy.latest_task?.status">
-                      <p *ngSwitchCase="'SUCCESS'" class="text-success">SUCCESS</p>
-                      <p *ngSwitchCase="'FAILURE'" class="text-danger">FAILURE
-                         <br />{{ deploy.latest_task?.result?.exc_message }}
-                      </p>
-                      <p *ngSwitchCase="'UNKNOWN'" class="text-warning">FAILURE
-                         <br />{{ deploy.latest_task?.result?.exc_message }}
-                      </p>
-                      <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
-                      <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
-                        <br />{{ deploy.latest_task?.result?.action }}
-                      </p>
-                    </div>
-                </td>
-                <td>{{ calculateUptime(deploy, currentTimer | async) }}</td>
-                <td *ngIf="deploy.latest_task?.result?.cloudLaunch?.applicationURL">
-                    <a class="btn-link" href="{{ deploy.latest_task?.result?.cloudLaunch?.applicationURL }}" target="_blank">
-                        <span #inputTarget>{{ deploy.latest_task?.result?.cloudLaunch?.applicationURL }}</span>
-                    </a>
-                    <br/><button *ngIf=deploy.latest_task?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
-                </td>
-                <td *ngIf="!deploy.latest_task?.result?.cloudLaunch?.applicationURL">
-                    <a class="btn-link" href="{{ deploy.latest_task?.result?.cloudLaunch?.publicIP }}" target="_blank">
-                        <span #inputTarget>{{ deploy.latest_task?.result?.cloudLaunch?.publicIP }}</span>
-                    </a>
-                    <br/><button *ngIf=deploy.latest_task?.result?.cloudLaunch?.publicIP class="btn btn-sm" type="button" [ngxClipboard]="inputTarget">Copy URL</button>
-                </td>
-            </tr>
+            <ng-container *ngFor="let deploy of deployments | async; trackBy: trackByDeploymentId">
+              <!-- deployments are already filtered to only unarchived, but this allows us to immediately filter items when they are archived -->
+              <tr deployment-component *ngIf="!deploy.archived" [deployment]="deploy" [currentTimer]="currentTimer"></tr>
+            </ng-container>
         </tbody>
     </table>
 </div>
