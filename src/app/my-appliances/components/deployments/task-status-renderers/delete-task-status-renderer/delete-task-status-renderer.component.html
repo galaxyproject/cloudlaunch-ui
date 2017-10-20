@@ -1,0 +1,17 @@
+<div [ngSwitch]="task.status">
+  <p *ngSwitchCase="'SUCCESS'">
+      <span class="text-danger">
+        <i class="fa fa-trash fa-fw"></i> DELETED
+      </span>
+  </p>
+  <p *ngSwitchCase="'FAILURE'" class="text-danger">UNABLE TO CHECK STATUS
+     <br />{{ task.result?.exc_message }}
+  </p>
+  <p *ngSwitchCase="'UNKNOWN'" class="text-warning">UNABLE TO CHECK STATUS
+     <br />{{ task.result?.exc_message }}
+  </p>
+  <p *ngSwitchCase="'PENDING'" class="text-danger"><i class="fa fa-spinner fa-spin fa-fw"></i> DELETING </p>
+  <p *ngSwitchCase="'PROGRESSING'" class="text-danger"><i class="fa fa-spinner fa-spin fa-fw"></i> PROGRESSING
+    <br />{{ task.result?.action }}
+  </p>
+</div>

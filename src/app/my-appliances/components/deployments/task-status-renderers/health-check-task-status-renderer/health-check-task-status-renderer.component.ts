@@ -11,7 +11,6 @@ import { Task } from '../../../../../shared/models/task';
 export class HealthCheckTaskStatusRenderer {
 
     _task: Task;
-    _hasCredentials: boolean;
 
     constructor() {
     }
@@ -22,14 +21,6 @@ export class HealthCheckTaskStatusRenderer {
     }
     get task(): Task {
         return this._task;
-    }
-
-    @Input()
-    set hasCredentials(hasCredentials: boolean) {
-        this._hasCredentials = hasCredentials;
-    }
-    get hasCredentials(): boolean {
-        return this._hasCredentials;
     }
 
     getInstanceStatus(): string {

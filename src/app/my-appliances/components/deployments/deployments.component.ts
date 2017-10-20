@@ -10,6 +10,11 @@ import * as moment from 'moment';
 @Component({
     selector: 'deployments',
     templateUrl: './deployments.component.html',
+    styles: [`
+               .archiving {
+                  background-color: red;
+               }
+             `]
 })
 
 export class DeploymentsComponent implements OnInit {

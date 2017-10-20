@@ -1,18 +1,3 @@
-:host(.deployment) {
-  position: relative;
-}
-/* put a translucent grey mask over .deployment when it is archived */
-:host(.deployment.archived)::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
 .pill {
   padding: 0px 4px;
 }
@@ -20,7 +5,3 @@
 .dim {
   color: darkgray;
 }
-
-/* .infodata {
-  padding-top: 25px;
-} */

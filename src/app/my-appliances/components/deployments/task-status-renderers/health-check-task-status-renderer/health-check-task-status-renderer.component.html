@@ -4,8 +4,8 @@
       <span *ngSwitchCase="'running'" class="text-success">
         <i class="fa fa-bolt fa-fw"></i> RUNNING
       </span>
-      <span *ngSwitchCase="'terminated'" class="text-danger">
-        <i class="fa fa-stop fa-fw"></i> TERMINATED
+      <span *ngSwitchCase="'deleted'" class="text-danger">
+        <i class="fa fa-stop fa-fw"></i> DELETED
       </span>
       <span *ngSwitchCase="'unknown'" class="text-info">
         <i class="fa fa-question-circle fa-fw"></i> UNKNOWN
@@ -18,9 +18,6 @@
       </span>
       <span *ngSwitchCase="'rebooting'" class="text-info">
         <i class="fa fa-refresh fa-fw"></i> REBOOTING
-      </span>
-      <span *ngSwitchCase="'deleted'" class="text-danger">
-        <i class="fa fa-trash fa-fw"></i> DELETED
       </span>
       <span *ngSwitchCase="'stopped'" class="text-danger">
         <i class="fa fa-stop fa-fw"></i> STOPPED
@@ -39,8 +36,8 @@
   <p *ngSwitchCase="'UNKNOWN'" class="text-warning">UNABLE TO CHECK STATUS
      <br />{{ task.result?.exc_message }}
   </p>
-  <p *ngSwitchCase="'PENDING'" class="text-info">PENDING</p>
-  <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-cog fa-spin fa-fw"></i> PROGRESSING
+  <p *ngSwitchCase="'PENDING'" class="text-info"><i class="fa fa-refresh fa-spin fa-fw"></i> CHECKING HEALTH </p>
+  <p *ngSwitchCase="'PROGRESSING'" class="text-info"><i class="fa fa-refresh fa-spin fa-fw"></i> PROGRESSING
     <br />{{ task.result?.action }}
   </p>
 </div>

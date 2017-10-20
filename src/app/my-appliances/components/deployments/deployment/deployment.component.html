@@ -31,11 +31,14 @@
 <td class="text-left">
     <div [ngSwitch]="deployment.latest_task?.action">
         <launch-task-status-renderer *ngSwitchCase="'LAUNCH'" [task]="deployment.latest_task" hasCredentials="!!credentials"></launch-task-status-renderer>
-        <health-check-task-status-renderer *ngSwitchDefault [task]="deployment.latest_task" hasCredentials="!!credentials"></health-check-task-status-renderer>
+        <delete-task-status-renderer *ngSwitchCase="'DELETE'" [task]="deployment.latest_task"></delete-task-status-renderer>
+        <health-check-task-status-renderer *ngSwitchDefault [task]="deployment.latest_task"></health-check-task-status-renderer>
     </div>
 </td>
 <td>
-    <button class="btn btn-secondary pill" style="margin-top: 0px" type="button" ngxClipboard cbContent="{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}">
+    <button class="btn btn-secondary pill" style="margin-top: 0px" type="button"
+     ngxClipboard cbContent="{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}"
+     matTooltip="Copy to Clipboard">
         <i class="fa fa-copy"></i>
     </button>
     <span [ngSwitch]="deployment.latest_task?.result?.instance_status">
@@ -49,12 +52,11 @@
 </td>
 <td>
   <div class="btn-group" style="margin-top: 0px" role="group" aria-label="Actions">
-    <button *ngIf="credentials" class="btn btn-secondary pill" type="button" (click)="runTask(deployment, 'HEALTH_CHECK')" [disabled]="isLatestTaskRunning">
+    <button *ngIf="credentials" class="btn btn-secondary pill" type="button" (click)="runTask(deployment, 'HEALTH_CHECK')" [disabled]="isLatestTaskRunning" matTooltip="Run Health Check">
         <i class="fa fa-refresh"></i>
     </button>
-    <button type="button" class="btn btn-secondary pill" (click)="openArchiveConfirmDialog(deployment)" [disabled]="isLatestTaskRunning">
+    <button type="button" class="btn btn-secondary pill" (click)="openArchiveConfirmDialog(deployment)" [disabled]="isLatestTaskRunning" matTooltip="Archive/Delete">
       <i class="fa fa-trash"></i>
     </button>
   </div>
 </td>
-
