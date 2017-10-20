@@ -36,11 +36,6 @@
     </div>
 </td>
 <td>
-    <button class="btn btn-secondary pill" style="margin-top: 0px" type="button"
-     ngxClipboard cbContent="{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}"
-     matTooltip="Copy to Clipboard">
-        <i class="fa fa-copy"></i>
-    </button>
     <span [ngSwitch]="deployment.latest_task?.result?.instance_status">
         <span *ngSwitchCase="'running'">
             <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}" target="_blank">
@@ -49,6 +44,12 @@
         </span>
         <span *ngSwitchDefault class="dim">{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}</span>
     </span>
+    <button *ngIf="launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP"
+     class="btn btn-secondary pill" style="margin: 0 5px" type="button"
+     ngxClipboard cbContent="{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}"
+     matTooltip="Copy access URL to clipboard">
+       <i class="fa fa-copy"></i>
+   </button>
 </td>
 <td>
   <div class="btn-group" style="margin-top: 0px" role="group" aria-label="Actions">
