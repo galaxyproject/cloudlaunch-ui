@@ -17,6 +17,7 @@ import { HealthCheckTaskStatusRenderer } from './components/deployments/task-sta
 import { LaunchTaskStatusRenderer } from './components/deployments/task-status-renderers/launch-task-status-renderer/launch-task-status-renderer.component';
 import { MyAppliancesPageComponent } from './components/my-appliances-page/my-appliances-page.component';
 import { ArchiveDeleteConfirmDialog } from './components/deployments/dialogs/archive-delete-confirm.component';
+import { LaunchHistoryPageComponent } from './components/launch-history-page/launch-history-page.component';
 
 // Services
 import { DeploymentService } from '../shared/services/deployment.service';
@@ -32,7 +33,7 @@ import { ProfileService } from '../shared/services/profile.service';
         MatDialogModule,
         MatButtonModule
     ],
-    declarations: [MyAppliancesPageComponent, DeploymentsComponent,
+    declarations: [MyAppliancesPageComponent, LaunchHistoryPageComponent, DeploymentsComponent,
       DeploymentComponent, HealthCheckTaskStatusRenderer, LaunchTaskStatusRenderer, ArchiveDeleteConfirmDialog],
     providers: [DeploymentService, ProfileService]
 })

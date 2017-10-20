@@ -15,10 +15,14 @@ export class DeploymentService {
     private _deployment_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/deployments/`;
 
 
-    public getDeployments(archived = null): Observable<Deployment[]> {
+    public getDeployments(options = {}): Observable<Deployment[]> {
+        let defaultOptions = {
+            archived: null,
+        };
+        let finalOptions = Object.assign({}, defaultOptions, options);
         let url = `${this._deployment_url}`;
-        if (archived !== null) {
-            url = `${url}?archived=${archived}`;
+        if (finalOptions.archived !== null) {
+            url = `${url}?archived=${finalOptions.archived}`;
         }
         return this._http.get(url)
             .map(response => response.json().results)

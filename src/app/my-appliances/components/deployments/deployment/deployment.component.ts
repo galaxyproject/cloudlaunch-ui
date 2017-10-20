@@ -115,16 +115,14 @@ export class DeploymentComponent implements OnInit {
         return this.deployment.latest_task.status == 'PENDING' || this.deployment.latest_task.status == 'PROGRESSING';
     }
 
-    getKP(dep: Deployment) {
+    getKP(launchTask: Task) {
         const data = [];
         // Only LAUNCH tasks can have the key pair data
-        if (dep.latest_task.action == 'LAUNCH') {
-            data.push(dep.latest_task.result.cloudLaunch.keyPair.material);
-            const properties = {type: 'plain/text'};
-            const file = new Blob(data, properties);
-            const url = URL.createObjectURL(file);
-            this.a.nativeElement.href = url;
-        }
+        data.push(launchTask.result.cloudLaunch.keyPair.material);
+        const properties = {type: 'plain/text'};
+        const file = new Blob(data, properties);
+        const url = URL.createObjectURL(file);
+        this.a.nativeElement.href = url;
     }
 
     initializeLaunchTask() {

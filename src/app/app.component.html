@@ -25,10 +25,26 @@
                         <a routerLink="/public_appliances"><i class="fa fa-share-alt"></i> Public Appliances
                             <span class="sr-only">(Public Appliances)</span></a>
                     </li>
-                    <li routerLinkActive="active">
-                        <a routerLink="/appliances"><i class="fa fa-plug"></i> My Appliances
-                            <span class="sr-only">(My Appliances)</span>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="bootstrap-elements.html" data-target="#" aria-expanded="false">
+                            <i class="fa fa-plug"></i> My Appliances
+                              <span class="sr-only">(My Appliances)</span>
+                            <span class="caret"></span>
+                            <div class="ripple-container"></div>
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a routerLink="/appliances"><i class="fa fa-bolt"></i> Current Instances
+                                    <span class="sr-only">(Current Instances)</span>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a routerLink="/appliances/history"><i class="fa fa-history"></i> Launch History
+                                    <span class="sr-only">(Launch History)</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li *ngIf="loggedIn==false">
                         <a routerLink="/login">

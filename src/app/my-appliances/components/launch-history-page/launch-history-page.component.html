@@ -1,0 +1,45 @@
+<standard-layout>
+    <page-header>
+        <div class="col-md-12">
+            <h1>Launch History</h1>
+        </div>
+    </page-header>
+    <page-body>
+        <div class="col-md-12">
+            <p class="lead">
+                This page is a log of all appliances you have launched.
+            </p>
+            <div class="list-group">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2"><p></p></th>
+                            <th class="col-md-6"><p> Name </p></th>
+                            <th class="col-md-4"><p> Created</p></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let deploy of deployments | async; trackBy: trackByDeploymentId">
+                        <td><img src="{{ deploy.app_version_details?.application?.icon_url }}"  style="max-width: 64px; max-height: 64px;" /></td>
+                        <td>
+                          <p><strong>{{ deploy.name }}</strong></p>
+                          <p>
+                            <span class="col-xs-12 col-md-6">
+                              <span class="text-muted">Appliance:</span> {{ deploy.app_version_details?.application?.name }}
+                            </span>
+                            <span class="col-xs-12 col-md-6">
+                              <span class="text-muted">Version:</span> {{ deploy.app_version_details?.version }}
+                            </span><br />
+                            <span class="col-xs-12 col-md-12">
+                              <span class="text-muted">Cloud:</span> {{ deploy.target_cloud }}
+                            </span>
+                          </p>
+                        </td>
+                        <td>{{ deploy.added | date:'medium' }}</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </page-body>
+</standard-layout>

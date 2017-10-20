@@ -31,7 +31,7 @@ export class DeploymentsComponent implements OnInit {
             .interval(5000)
             .startWith(0)
             .flatMap(() => {
-                return this._deploymentService.getDeployments();
+                return this._deploymentService.getDeployments({archived: false});
             });
     }
 
