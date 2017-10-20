@@ -30,4 +30,8 @@ export class LaunchHistoryPageComponent {
     ngOnInit() {
         this.deployments = this._deploymentService.getDeployments();
     }
+
+    trackByDeploymentId(index: number, deployment: Deployment): string {
+        return deployment.id;
+    }
 }
