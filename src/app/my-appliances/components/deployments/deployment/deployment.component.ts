@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild, Input, HostBinding } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 import { Observable } from 'rxjs/Rx';
 
@@ -11,7 +11,7 @@ import * as moment from 'moment';
 import { MatDialog } from '@angular/material';
 import { ArchiveDeleteConfirmDialog } from '../dialogs/archive-delete-confirm.component';
 
-const AUTOMATIC_HEALTH_CHECK_MINUTES = 10;
+const AUTOMATIC_HEALTH_CHECK_MINUTES = 5;
 
 @Component({
     selector: '[deployment-component]',
@@ -25,16 +25,15 @@ export class DeploymentComponent implements OnInit {
     credentials: Credentials;
     isLatestTaskRunning: boolean;
     launchTask: Task;
-    _hostElement: ElementRef;
+
+    @HostBinding('class.archiving') archiveInProgress: boolean = false;
 
     @ViewChild('kpLink') a;
 
     constructor(
-        private elRef:ElementRef,
         private _deploymentService: DeploymentService,
         private _profileService: ProfileService,
         private dialog: MatDialog) {
-        this._hostElement = elRef;
     }
 
     ngOnInit() {
@@ -145,13 +144,13 @@ export class DeploymentComponent implements OnInit {
 
     archiveDeployment() {
         // Put a translucent grey mask over view while archive operation is running
-        this._hostElement.nativeElement.classList.add('archived');
+        this.archiveInProgress = true;
 
         let deploymentCopy = Object.assign({}, this.deployment);
         deploymentCopy.archived = true;
         this._deploymentService.updateDeployment(deploymentCopy)
           .subscribe(deployment => this.deployment.archived = deployment.archived,
               null,
-              () => this._hostElement.nativeElement.classList.remove('archived'));
+              () => this.archiveInProgress = false);
     }
 }
