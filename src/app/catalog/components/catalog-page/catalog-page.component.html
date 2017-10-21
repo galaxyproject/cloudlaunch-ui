@@ -8,11 +8,20 @@
                 An online depot to discover and launch pre-configured
                 software for a variety of clouds.
             </h4>
+            <br />
+
+              <div class="form-group label-floating is-empty">
+                 <label for="id_search" class="control-label">
+                    <i class="fa fa-search"></i> Search here for an appliance
+                 </label>
+                 <input id="id_search" type="text" class="form-control" [(ngModel)]="search_text" />
+              </div>
+
         </div>
     </page-header>
     <page-body>
         <div class="col-md-12">
-            <app-catalog-list></app-catalog-list>
+            <app-catalog-list [filter]="search_text"></app-catalog-list>
         </div>
     </page-body>
 </standard-layout>

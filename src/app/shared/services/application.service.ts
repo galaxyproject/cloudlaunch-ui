@@ -14,8 +14,16 @@ export class ApplicationService {
     private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/applications/`;
 
 
-    public getApplications(): Observable<Application[]> {
-        return this._http.get(this._application_url)
+    public getApplications(filter?: string, page?: number, page_size = 6): Observable<Application[]> {
+        console.log(`Searching for: ${filter}`)
+        let query_url = `${this._application_url}?`;
+        if (filter)
+            query_url = `${query_url}search=${filter}&`;
+        if (page)
+            query_url = `${query_url}page=${page}&`;
+        if (page_size)
+            query_url = `${query_url}page_size=${page_size}&`;
+        return this._http.get(query_url)
             .map(response => response.json().results);
     }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, trigger, transition, animate,
-    style, state, HostListener } from '@angular/core';
+    style, state, HostListener, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import { Application } from '../../../shared/models/application';
 import { ApplicationService } from '../../../shared/services/application.service';
@@ -23,16 +24,33 @@ import { ApplicationService } from '../../../shared/services/application.service
 export class CatalogListComponent implements OnInit {
     apps: Application[] = [];
     currentApp: Application;
+    searchTerm = new FormControl();
+    fetchInProgress: boolean = false;
+
+    @Input()
+    set filter(value: string) {
+        this.searchTerm.setValue(value);
+    }
+
+    get filter() : string {
+        return this.searchTerm.value;
+    }
 
     constructor(
         private _appService: ApplicationService) { }
 
     ngOnInit() {
-        this._appService.getApplications()
-            .subscribe(apps => this.apps = apps);
+        this.searchTerm.valueChanges
+            .startWith('')
+            .debounceTime(300)
+            .switchMap(term => this._appService.getApplications(term))
+            .subscribe(
+                    apps => { this.fetchInProgress = false; this.apps = apps; },
+                    error => { this.fetchInProgress = false; console.log(error) });
     }
 
     @HostListener('mouseleave') onMouseLeave() {
         this.currentApp = null;
-      }
+    }
+
 }
