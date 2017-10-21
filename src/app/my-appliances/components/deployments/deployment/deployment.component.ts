@@ -48,6 +48,8 @@ export class DeploymentComponent implements OnInit {
     set deployment(deployment: Deployment) {
         this._deployment = deployment;
         this.isLatestTaskRunning = this.computeIsLatestTaskRunning();
+        // If not (re)initialized, task status doesn’t get updated until a page refresh
+        this.initializeLaunchTask();
     }
     get deployment(): Deployment {
         return this._deployment;
