@@ -45,7 +45,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
         if (value)
             this.onCloudSelect(value);
         else
-            this.cloudLaunchForm.reset();
+            this.cloudLaunchForm.reset({rootStorageType: 'instance'});
     }
 
     get cloud() {
@@ -115,7 +115,6 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
 
         // Reapply initial config on cloud change
         this.initialConfig = this.initialConfig;
-
     }
 
     getInstanceTypes(cloud: Cloud) {

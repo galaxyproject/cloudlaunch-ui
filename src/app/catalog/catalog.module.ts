@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { MatStepperModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material';
+
 import { SelectModule } from 'ng2-select-compat';
 
 import { LayoutModule } from '../shared/layout.module';
@@ -30,6 +33,8 @@ import { ProfileService } from '../shared/services/profile.service';
         LayoutModule,
         FormsModule,
         ReactiveFormsModule,
+        MatStepperModule,
+        MatProgressSpinnerModule,
         SelectModule,
         CatalogRoutingModule,
         MyProfileModule,
