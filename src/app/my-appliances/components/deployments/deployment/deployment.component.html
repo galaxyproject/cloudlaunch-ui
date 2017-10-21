@@ -36,19 +36,19 @@
     </div>
 </td>
 <td>
-    <span [ngSwitch]="deployment.latest_task?.result?.instance_status">
-        <span *ngSwitchCase="'running'">
-            <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}" target="_blank">
-                <span>{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}</span>
-            </a>
-        </span>
-        <span *ngSwitchDefault class="dim">{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}</span>
+    <span *ngIf="deployment.latest_task?.status == 'SUCCESS' && deployment.latest_task?.action !== 'DELETE' && deployment.latest_task?.result?.instance_status !== 'unknown'; else elseBlock">
+        <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}" target="_blank">
+            <span>{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}</span>
+        </a>
     </span>
+    <ng-template #elseBlock>
+        <span class="dim">{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}</span>
+    </ng-template>
     <button *ngIf="launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP"
      class="btn btn-secondary pill" style="margin: 0 5px" type="button"
      ngxClipboard cbContent="{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}"
      matTooltip="Copy access URL to clipboard">
-       <i class="fa fa-copy"></i>
+        <i class="fa fa-copy"></i>
    </button>
 </td>
 <td>
@@ -57,7 +57,7 @@
         <i class="fa fa-refresh"></i>
     </button>
     <button type="button" class="btn btn-secondary pill" (click)="openArchiveConfirmDialog(deployment)" [disabled]="isLatestTaskRunning" matTooltip="Archive/Delete">
-      <i class="fa fa-trash"></i>
+        <i class="fa fa-trash"></i>
     </button>
   </div>
 </td>
