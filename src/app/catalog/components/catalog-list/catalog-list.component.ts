@@ -25,7 +25,10 @@ export class CatalogListComponent implements OnInit {
     apps: Application[] = [];
     currentApp: Application;
     searchTerm = new FormControl();
+    totalApps: number = 0;
+    currentPage: number = 0;
     fetchInProgress: boolean = false;
+    PAGE_SIZE: number = 6;
 
     @Input()
     set filter(value: string) {
@@ -40,17 +43,30 @@ export class CatalogListComponent implements OnInit {
         private _appService: ApplicationService) { }
 
     ngOnInit() {
+        this.currentPage = 0;
+        this.totalApps = 0;
+        this.fetchInProgress = true;
         this.searchTerm.valueChanges
             .startWith('')
             .debounceTime(300)
-            .switchMap(term => this._appService.getApplications(term))
+            .switchMap(term => this._appService.queryApplications(term, this.currentPage, this.PAGE_SIZE))
             .subscribe(
-                    apps => { this.fetchInProgress = false; this.apps = apps; },
+                    result => { this.fetchInProgress = false; this.totalApps = 0; this.currentPage = 0; this.totalApps = result.count; this.apps = result.results; },
                     error => { this.fetchInProgress = false; console.log(error) });
     }
 
     @HostListener('mouseleave') onMouseLeave() {
         this.currentApp = null;
+    }
+
+    onPageChange(event) {
+        this.fetchInProgress = true;
+        this.currentPage = event.pageIndex;
+        this._appService.queryApplications(this.filter, event.pageIndex+1, this.PAGE_SIZE)
+        .subscribe(
+                result => { this.fetchInProgress = false; this.totalApps = result.count; this.apps = result.results; },
+                error => { this.fetchInProgress = false; console.log(error) }
+                );
     }
 
 }

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { CLAuthHttp } from '../../login/utils/cloudlaunch-http';
 import { AppSettings } from '../../app.settings';
 import { Application } from '../models/application';
+import { QueryResult } from '../models/query';
 
 @Injectable()
 export class ApplicationService {
@@ -14,8 +15,12 @@ export class ApplicationService {
     private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/applications/`;
 
 
-    public getApplications(filter?: string, page?: number, page_size = 6): Observable<Application[]> {
-        console.log(`Searching for: ${filter}`)
+    public getApplications(): Observable<Application[]> {
+        return this._http.get(this._application_url)
+            .map(response => response.json().results);
+    }
+
+    public queryApplications(filter?: string, page?: number, page_size?: number): Observable<QueryResult<Application>> {
         let query_url = `${this._application_url}?`;
         if (filter)
             query_url = `${query_url}search=${filter}&`;
@@ -24,7 +29,7 @@ export class ApplicationService {
         if (page_size)
             query_url = `${query_url}page_size=${page_size}&`;
         return this._http.get(query_url)
-            .map(response => response.json().results);
+            .map(response => response.json());
     }
 
     public getApplication(slug: string): Observable<Application> {

@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatStepperModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material';
+import { MatPaginatorModule } from '@angular/material'
 
 import { SelectModule } from 'ng2-select-compat';
 
@@ -35,6 +36,7 @@ import { ProfileService } from '../shared/services/profile.service';
         ReactiveFormsModule,
         MatStepperModule,
         MatProgressSpinnerModule,
+        MatPaginatorModule,
         SelectModule,
         CatalogRoutingModule,
         MyProfileModule,

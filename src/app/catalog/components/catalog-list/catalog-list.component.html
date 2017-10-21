@@ -15,6 +15,11 @@
                     <div class="list-group-separator"></div>
                 </ng-container>
             </ul>
+            <mat-paginator [length]="totalApps"
+              [pageSize]="PAGE_SIZE"
+              [pageIndex]="currentPage"
+              (page)="onPageChange($event)">
+            </mat-paginator>
         </div>
         <div class="col-lg-6 col-md-6 col-height">
             <div class="panel panel-info full-height" *ngIf="currentApp">
