@@ -57,10 +57,8 @@
       <span class="material-input"></span>
    </div>
 
-   <div class="togglebutton form-group">
-      <label>
-         <input type="checkbox" (click)="toggleAdvanced()">Advanced CloudMan options
-      </label>
+   <div class="form-group">
+      <mat-slide-toggle (change)="toggleAdvanced()">Advanced CloudMan options</mat-slide-toggle>
    </div>
 
    <div *ngIf="showAdvanced">

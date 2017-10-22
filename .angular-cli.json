@@ -21,7 +21,8 @@
       "prefix": "app",
       "styles": [
         "../node_modules/bootstrap-material-design/dist/css/ripples.min.css",
-        "styles.css"
+        "styles.css",
+        "./assets/scss/angular2-material-custom-theme.scss"
       ],
       "scripts": [
         "../node_modules/arrive/minified/arrive.min.js",

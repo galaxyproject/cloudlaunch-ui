@@ -12,11 +12,7 @@
     </div>
 
     <div class="form-group label-floating is-empty">
-        <div class="togglebutton">
-            <label> <input name="toggleAdvancedOptions" type="checkbox"
-                (click)="toggleAdvanced()">Advanced cloud launch options
-            </label>
-        </div>
+        <mat-slide-toggle (change)="toggleAdvanced()">Advanced cloud launch options</mat-slide-toggle>
     </div>
 
     <div *ngIf="showAdvanced">

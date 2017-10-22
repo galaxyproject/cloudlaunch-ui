@@ -12,11 +12,7 @@
 
 
     <div class="form-group label-floating is-empty">
-        <div class="togglebutton">
-            <label>
-                <input type="checkbox" (click)="toggleAdvanced()">Advanced GVL options
-            </label>
-        </div>
+        <mat-slide-toggle (change)="toggleAdvanced()">Advanced GVL options</mat-slide-toggle>
     </div>
 
     <div [hidden]="!showAdvanced">
