@@ -37,9 +37,10 @@
 </td>
 <td>
     <span *ngIf="deployment.latest_task?.status == 'SUCCESS' && deployment.latest_task?.action !== 'DELETE' && deployment.latest_task?.result?.instance_status !== 'unknown'; else elseBlock">
-        <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}" target="_blank">
-            <span>{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}</span>
+        <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL }}" target="_blank">
+            <span>{{ launchTask?.result?.cloudLaunch?.applicationURL }}</span>
         </a>
+        <span *ngIf="launchTask?.result?.cloudLaunch?.publicIP">{{ launchTask?.result?.cloudLaunch?.publicIP }}</span>
     </span>
     <ng-template #elseBlock>
         <span class="dim">{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}</span>
