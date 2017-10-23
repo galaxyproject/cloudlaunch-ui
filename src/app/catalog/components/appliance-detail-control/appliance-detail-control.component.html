@@ -2,50 +2,53 @@
     <form class="form"
         [formGroup]="applianceLaunchForm"
         (ngSubmit)="onSubmit(applianceLaunchForm.value)" autocomplete="off">
-    	<div class="col-md-12">
+        <div class="col-md-12">
             <mat-horizontal-stepper linear="true">
                 <mat-step [stepControl]="applianceLaunchForm.controls['credentials']">
                     <ng-template matStepLabel>Select Target Cloud</ng-template>
                     <div class="form-group">
-                        <label for="id_target_version" class="control-label">
-                            Which version of this appliance would you like to launch?
-                        </label>
-                        <ng-select id="target_version"
-                          [items]="getApplicationVersions()"
-                          (selected)="onVersionSelect($event)"
-                          [active]="getSelectedVersion()"
-                          placeholder="No version selected">
-                        </ng-select>
+                        <div class="full-width-container" [style.fontSize.px]="16">
+                            <mat-form-field>
+                                <mat-select id="target_version"
+                                    placeholder="Which version of this appliance would you like to launch?"
+                                    [formControl]="appVerControl">
+                                    <mat-option *ngFor="let appver of application.versions" [value]="appver">
+                                        {{ appver.version }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <div class="form-group" *ngIf="applianceLaunchForm.value['application_version']">
-                        <label for="id_target_cloud" class="control-label">
-                            On which cloud would you like to launch your appliance?
-                        </label>
-                        <ng-select id="target_cloud"
-                          [items]="clouds"
-                          (selected)="onCloudSelect($event)"
-                          [active]="getSelectedCloud()"
-                          placeholder="No cloud selected">
-                        </ng-select>
+                    <div class="form-group" *ngIf="appVerControl?.value">
+                        <div class="full-width-container" [style.fontSize.px]="16">
+                            <mat-form-field>
+                                <mat-select id="target_cloud"
+                                    placeholder="On which cloud would you like to launch your appliance?"
+                                    [formControl]="targetCloudControl">
+                                    <mat-option *ngFor="let cloud of getCloudsForSelectedVersion()" [value]="cloud">
+                                        {{ cloud.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
-
                     <!-- Credentials selection -->
-                    <div class="form-group" *ngIf="applianceLaunchForm.controls['target_cloud'].value">
+                    <div class="form-group" *ngIf="targetCloudControl?.value">
                         <p>
-                                <ng-container *ngIf="_targetCloud.access_instructions_url">
+                            <ng-container *ngIf="targetCloudControl.value?.access_instructions_url">
                                 For detailed instructions on how to obtain credentials for this cloud, click
-                                <a target="_blank" [href]="_targetCloud.access_instructions_url">here</a>.
-                                </ng-container>
+                                <a target="_blank" [href]="targetCloudControl.value.access_instructions_url">here</a>.
+                            </ng-container>
                         </p>
                         <cloud-credentials-selector id="id_cred_selector"
-                            [cloud]="_targetCloud"
-                            [formControl]="applianceLaunchForm.controls['credentials']">
+                            [cloud]="targetCloudControl.value"
+                            [formControl]="credentialsControl">
                         </cloud-credentials-selector>
                     </div>
 
                     <div>
                         <button mat-button matStepperNext class="btn btn-raised btn-info pull-right btn-lg"
-                         [disabled]="!applianceLaunchForm.controls['credentials'].value" type="button">
+                         [disabled]="!credentialsControl.value" type="button">
                             Next <i class="fa fa-chevron-right"></i>
                         </button>
                     </div>
@@ -66,14 +69,13 @@
                         </span>
                         <span class="material-input"></span>
                     </div>
-
-                    <div class="form-group" [formGroup]="appConfigForm">
-                        <app-placeholder [initialConfig]="selectedAppCloudConfig.default_launch_config"
-                            [cloud]="applianceLaunchForm.controls['credentials'].value?.cloud"
-                            [componentPath]="selectedVersion.frontend_component_path"
-                            [componentName]="selectedVersion.frontend_component_name"></app-placeholder>
+                    <div class="form-group" [formGroup]="appConfigForm" *ngIf="getCurrentAppCloudConfig()?.default_launch_config">
+                        <app-placeholder [initialConfig]="getCurrentAppCloudConfig()?.default_launch_config"
+                            [cloud]="credentialsControl.value?.cloud"
+                            [componentPath]="appVerControl.value.frontend_component_path"
+                            [componentName]="appVerControl.value.frontend_component_name"></app-placeholder>
                         <!-- Cloud launching part of the form -->
-                        <cloudlaunch-config-control [cloud]="applianceLaunchForm.controls['credentials'].value?.cloud" [initialConfig]="selectedAppCloudConfig.default_launch_config"></cloudlaunch-config-control>
+                        <cloudlaunch-config-control [cloud]="credentialsControl.value?.cloud" [initialConfig]="getCurrentAppCloudConfig()?.default_launch_config"></cloudlaunch-config-control>
                     </div>
 
                     <div>

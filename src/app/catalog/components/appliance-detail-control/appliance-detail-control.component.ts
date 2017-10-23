@@ -8,6 +8,7 @@ import { AppPlaceHolderComponent } from './app-placeholder.component';
 // Models
 import { Application, ApplicationVersion, ApplicationVersionCloudConfig } from '../../../shared/models/application';
 import { Cloud } from '../../../shared/models/cloud';
+import { Deployment } from '../../../shared/models/deployment';
 import { Credentials } from '../../../shared/models/profile';
 
 //Services
@@ -22,28 +23,27 @@ import { LoginService } from '../../../login/services/login/login.service';
     styleUrls: ['./appliance-detail-control.component.css']
 })
 export class ApplianceDetailControlComponent implements OnInit {
-    private _application: Application;
 
     @Input()
     set application(value: Application) {
-        this._application = value;
-        if (value && value.default_version)
-            this.onVersionSelectById(value.default_version);
+        this.appControl.patchValue(value);
     }
 
     get application() : Application {
-        return this._application;
+        return this.appControl.value;
     }
 
-    selectedVersion: ApplicationVersion;
-    selectedAppCloudConfig: ApplicationVersionCloudConfig;
+    // Form controls
     applianceLaunchForm: FormGroup;
     appConfigForm: FormGroup;
-    clouds: any[] = [];
-    private _targetCloud: Cloud;
+    nameControl = new FormControl('', Validators.required);
+    appControl = new FormControl('', Validators.required);
+    appVerControl = new FormControl('', Validators.required);
+    credentialsControl = new FormControl('', Validators.required);
+    targetCloudControl = new FormControl('', Validators.required);
+
     public errorMessage: string;
     private submitPending: boolean = false;
-    page2: boolean = false;  // Wizard page 2
 
     constructor(
         fb: FormBuilder,
@@ -55,13 +55,17 @@ export class ApplianceDetailControlComponent implements OnInit {
         ) {
         this.appConfigForm = fb.group({});
         this.applianceLaunchForm = fb.group({
-            'name': ['', Validators.required],
-            'application_version': ['', Validators.required],
-            'target_cloud': ['', Validators.required],
-            'credentials': ['', Validators.required],
+            'name': this.nameControl,
+            'application': this.appControl,
+            'application_version': this.appVerControl,
+            'target_cloud': this.targetCloudControl,
+            'credentials': this.credentialsControl,
             'config_app': this.appConfigForm
         });
-        (<FormControl>this.applianceLaunchForm.controls['credentials']).valueChanges.subscribe(creds => { this.setRequestCredentials(creds); });
+        this.appControl.valueChanges.subscribe(app => { this.onApplicationChange(app); });
+        this.appVerControl.valueChanges.subscribe(appVer => { this.onVersionChange(appVer); });
+        this.targetCloudControl.valueChanges.subscribe(cloud => { this.onTargetCloudChange(cloud); });
+        this.credentialsControl.valueChanges.subscribe(creds => { this.setRequestCredentials(creds); });
     }
 
     ngOnInit() {
@@ -69,51 +73,53 @@ export class ApplianceDetailControlComponent implements OnInit {
         const deployment_name = (this._loginService.getCurrentUser().username + '-' +
                                  this.application.slug + '-' + new Date().toJSON()
                                  .slice(2, 16).replace(':', '-')).toLowerCase();
-        (<FormControl>this.applianceLaunchForm.controls['name']).setValue(deployment_name);
+        this.nameControl.setValue(deployment_name);
     }
 
-    getApplicationVersions() {
-        return this.application.versions.map(v => { v.id = v.version; v.text = v.version; return v; });
-    }
-
-    onVersionSelect(version: ApplicationVersion) {
-        let applicationVersion = this.application.versions.filter(v => { return v.version == version.id; })[0];
-        (<FormControl>this.applianceLaunchForm.controls['application_version']).setValue(applicationVersion.id);
-        this.selectedVersion = applicationVersion;
-        this.getCloudsForVersion(applicationVersion);
+    /*
+     * The fields have dependencies in the following order:
+     * Application -> Version -> Cloud -> Credentials
+     */
+    onApplicationChange(app: Application) {
+        this.onVersionSelectById(app ? app.default_version : null);
     }
 
     onVersionSelectById(version_id: string) {
-        let applicationVersion = this.getApplicationVersions().filter(v => { return v.version == version_id; })[0];
-        this.onVersionSelect(applicationVersion);
+        if (version_id) {
+            let applicationVersion = this.application.versions.filter(v => { return v.version == version_id; })[0];
+            this.appVerControl.setValue(applicationVersion);
+        }
+        else
+            this.appVerControl.patchValue(null);
     }
 
-    getSelectedVersion() {
-        let selected_version_id = (<FormControl>this.applianceLaunchForm.controls['application_version']).value;
-        return this.getApplicationVersions().filter(v => { return v.version == selected_version_id; });
+    onVersionChange(version: ApplicationVersion) {
+        if (version.default_cloud) {
+            let default_cloud = this.getVersionConfigForCloud(version.default_cloud).cloud;
+            this.targetCloudControl.setValue(default_cloud);
+        }
+        else
+            this.targetCloudControl.patchValue(null);
     }
 
-    getCloudsForVersion(version: ApplicationVersion) {
-        this.clouds = version.cloud_config.map(cfg => { let r = cfg.cloud; r.id = r.slug; r.text = r.name; return r; });
-        if (version.default_cloud)
-            this.onCloudSelectById(version.default_cloud);
+    onTargetCloudChange(cloud: Cloud) {
+        this.credentialsControl.patchValue(null);
     }
 
-    onCloudSelect(cloud: any) {
-        this._targetCloud = this.clouds.filter(c => { return c.id === cloud.id })[0];
-        (<FormControl>this.applianceLaunchForm.controls['target_cloud']).setValue(cloud.id);
-        (<FormControl>this.applianceLaunchForm.controls['credentials']).patchValue(null);
-        this.selectedAppCloudConfig = this.selectedVersion.cloud_config.filter(v => { return v.cloud.slug === cloud.id; })[0];
+    getCurrentAppCloudConfig() : ApplicationVersionCloudConfig {
+        let cloud = this.targetCloudControl.value;
+        if (cloud)
+            return this.getVersionConfigForCloud(cloud.slug);
+        else
+            return null;
     }
 
-    onCloudSelectById(slug: string) {
-        let cloud = this.clouds.filter(c => { return c.id === slug })[0];
-        this.onCloudSelect(cloud);
+    getVersionConfigForCloud(slug: string) : ApplicationVersionCloudConfig {
+        return this.appVerControl.value.cloud_config.filter(v => { return v.cloud.slug === slug; })[0];
     }
 
-    getSelectedCloud() {
-        let selected_cloud_id = (<FormControl>this.applianceLaunchForm.controls['target_cloud']).value;
-        return this.clouds.filter(c => { return c.id === selected_cloud_id });
+    getCloudsForSelectedVersion(): Cloud {
+        return this.appVerControl.value.cloud_config.map(c => c.cloud);
     }
 
     /* Set global request credentials based on user entered data */
@@ -121,17 +127,23 @@ export class ApplianceDetailControlComponent implements OnInit {
         this._http.setCloudCredentials(creds);
     }
 
-    pageChange() {
-        this.page2 = !this.page2;
-    }
-
     onSubmit(formValues: any): void {
         this.errorMessage = null;
         this.submitPending = true;
-        formValues['application'] = this.application.slug;
-        this._deploymentService.createDeployment(formValues).subscribe(
+        let deployment = this.formToDeployment(formValues);
+        this._deploymentService.createDeployment(deployment).subscribe(
             data => this._router.navigate(['appliances']),
             error => this.handleErrors(error));
+    }
+
+    formToDeployment(formValues: any) : Deployment {
+        let d = new Deployment();
+        d.name = formValues['name'];
+        d.application = formValues['application'].slug;
+        d.application_version = formValues['application_version'].version;
+        d.target_cloud = formValues['target_cloud'].id;
+        d.config_app = formValues['config_app'];
+        return d;
     }
 
     handleErrors(errors) {

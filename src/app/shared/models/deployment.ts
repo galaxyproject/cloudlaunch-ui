@@ -1,11 +1,11 @@
 import { ApplicationVersion } from './application';
 import { Task } from './task';
 
-export interface Deployment {
+export class Deployment {
     name: string;
     id: string;
-    text: string;
     added: string;
+    application: string;
     application_version: string;
     app_version_details: ApplicationVersion;
     application_config: any;
