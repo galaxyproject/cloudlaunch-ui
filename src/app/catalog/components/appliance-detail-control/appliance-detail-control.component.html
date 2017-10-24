@@ -7,7 +7,7 @@
                 <mat-step [stepControl]="applianceLaunchForm.controls['credentials']">
                     <ng-template matStepLabel>Select Target Cloud</ng-template>
                     <div class="form-group">
-                        <div class="full-width-container" [style.fontSize.px]="16">
+                        <div class="full-width-container">
                             <mat-form-field>
                                 <mat-select id="target_version"
                                     placeholder="Which version of this appliance would you like to launch?"
@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <div class="form-group" *ngIf="appVerControl?.value">
-                        <div class="full-width-container" [style.fontSize.px]="16">
+                        <div class="full-width-container">
                             <mat-form-field>
                                 <mat-select id="target_cloud"
                                     placeholder="On which cloud would you like to launch your appliance?"
@@ -56,32 +56,29 @@
 
                 <mat-step [stepControl]="applianceLaunchForm">
                     <ng-template matStepLabel>Select Appliance Settings</ng-template>
-                    <div class="form-group">
-                        <label for="id_deployment_name" class="control-label">
-                            Provide a name for your deployment
-                        </label>
-                        <input id="id_deployment_name" name="name" type="text" class="form-control input-md" formControlName="name">
-                        <span class="help-block">
-                             A deployment name helps you identify your appliance.
-                             The name must be at most 63 characters long and can
-                             consist of lowercase letters, numbers, underscores,
-                             and dashes.
-                        </span>
-                        <span class="material-input"></span>
+                    <div class="form-group full-width-container">
+                        <mat-form-field>
+                            <input matInput id="id_deployment_name" type="text"
+                                placeholder="Provide a name for your deployment" formControlName="name" />
+                            <mat-hint>A deployment name helps you identify your appliance.
+                                    The name must be at most 63 characters long and can
+                                    consist of lowercase letters, numbers, underscores,
+                                    and dashes.</mat-hint>
+                        </mat-form-field>
                     </div>
                     <div class="form-group" [formGroup]="appConfigForm" *ngIf="getCurrentAppCloudConfig()?.default_launch_config">
                         <app-placeholder [initialConfig]="getCurrentAppCloudConfig()?.default_launch_config"
-                            [cloud]="credentialsControl.value?.cloud"
+                            [cloud]="targetCloudControl.value"
                             [componentPath]="appVerControl.value.frontend_component_path"
                             [componentName]="appVerControl.value.frontend_component_name"></app-placeholder>
                         <!-- Cloud launching part of the form -->
-                        <cloudlaunch-config-control [cloud]="credentialsControl.value?.cloud" [initialConfig]="getCurrentAppCloudConfig()?.default_launch_config"></cloudlaunch-config-control>
+                        <cloudlaunch-config-control [cloud]="targetCloudControl.value" [initialConfig]="getCurrentAppCloudConfig()?.default_launch_config"></cloudlaunch-config-control>
                     </div>
 
                     <div>
                         <button mat-button matStepperPrevious type="button" class="btn btn-info"><i class="fa fa-chevron-left"></i> Previous</button>
                         <button mat-button matStepperNext type="submit" class="btn btn-raised btn-success pull-right btn-lg" [disabled]="submitPending || !applianceLaunchForm.valid">
-                            Launch <span *ngIf="submitPending" class="fa fa fa-spinner fa-spin fa-fw"></span>
+                            Launch <span *ngIf="submitPending" class="fa fa-spinner fa-spin fa-fw"></span>
                         </button>
                     </div>
                 </mat-step>

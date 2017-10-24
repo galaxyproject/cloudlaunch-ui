@@ -14,7 +14,7 @@ import { Cloud } from '../../shared/models/cloud';
 // and initialConfig. This class will walk through the initialConfig object,
 // setting form values as appropriate.
 export abstract class BasePluginComponent implements OnInit, OnDestroy {
-    _cloud: Cloud;
+    protected cloudCtrl = new FormControl('');
     private _initialConfig: any;
 
     get form(): FormGroup {
@@ -25,11 +25,12 @@ export abstract class BasePluginComponent implements OnInit, OnDestroy {
         throw new TypeError("get configName must be implemented");
     }
 
-    get initialConfig() {
+    @Input()
+    public get initialConfig() {
         return this._initialConfig;
     }
 
-    set initialConfig(value) {
+    public set initialConfig(value) {
         this._initialConfig = value;
         if (value && value[this.configName]) {
             // Recursively set initial values on controls
@@ -37,12 +38,13 @@ export abstract class BasePluginComponent implements OnInit, OnDestroy {
         }
     }
 
-    get cloud() {
-        return this._cloud;
+    @Input()
+    public set cloud(value) {
+        this.cloudCtrl.patchValue(value);
     }
 
-    set cloud(value) {
-        this._cloud = value;
+    public get cloud() {
+        return this.cloudCtrl.value;
     }
 
     constructor(fb: FormBuilder, private parentContainer: FormGroupDirective) {

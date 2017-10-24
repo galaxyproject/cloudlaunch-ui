@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MatSlideToggleModule } from '@angular/material'
+import { MatRadioModule } from '@angular/material'
+import { MatInputModule } from '@angular/material'
 
 import { LayoutModule } from '../../shared/layout.module';
 import { UbuntuConfigComponent } from './ubuntu/ubuntu.component'
@@ -21,6 +23,8 @@ import { MarkdownModule } from 'angular2-markdown';
         ReactiveFormsModule,
         HttpModule,
         MatSlideToggleModule,
+        MatRadioModule,
+        MatInputModule,
         LayoutModule,
         SelectModule,
         MarkdownModule

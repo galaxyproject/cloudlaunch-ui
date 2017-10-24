@@ -8,6 +8,8 @@ import { MatProgressSpinnerModule } from '@angular/material';
 import { MatPaginatorModule } from '@angular/material'
 import { MatSlideToggleModule } from '@angular/material'
 import { MatSelectModule } from '@angular/material'
+import { MatRadioModule } from '@angular/material'
+import { MatInputModule } from '@angular/material'
 
 import { SelectModule } from 'ng2-select-compat';
 
@@ -41,6 +43,8 @@ import { ProfileService } from '../shared/services/profile.service';
         MatPaginatorModule,
         MatSlideToggleModule,
         MatSelectModule,
+        MatRadioModule,
+        MatInputModule,
         SelectModule,
         CatalogRoutingModule,
         MyProfileModule,
