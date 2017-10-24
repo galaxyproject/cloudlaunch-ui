@@ -36,7 +36,7 @@
     </div>
 </td>
 <td>
-    <span *ngIf="deployment.latest_task?.status == 'SUCCESS' && deployment.latest_task?.action !== 'DELETE' && deployment.latest_task?.result?.instance_status !== 'unknown'; else elseBlock">
+    <span *ngIf="deployment.latest_task?.status == 'SUCCESS' && deployment.latest_task?.action !== 'DELETE' && deployment.latest_task?.result?.instance_status !== 'unknown' && deployment.latest_task?.result?.instance_status !== 'deleted'; else elseBlock">
         <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL }}" target="_blank">
             <span>{{ launchTask?.result?.cloudLaunch?.applicationURL }}</span>
         </a>
