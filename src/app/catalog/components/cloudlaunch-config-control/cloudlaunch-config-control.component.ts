@@ -34,31 +34,11 @@ import { CloudService } from '../../../shared/services/cloud.service';
 })
 
 export class CloudLaunchConfigControlComponent extends BasePluginComponent {
-    _cloud: Cloud;
 
-    @Input()
-    initialConfig: any;
-
-    @Input()
-    set cloud(value) {
-        this._cloud = value;
-        if (value)
-            this.onCloudSelect(value);
-        else
-            this.cloudLaunchForm.reset({rootStorageType: 'instance'});
-    }
-
-    get cloud() {
-        return this._cloud;
-    }
-
-    CLOUD_SELECTION_HELP: string = 'Select a target cloud first';
     errorMessage: string;
     showAdvanced: boolean = false;
-    cloudFields = true; // Used to reset form fields that are dependent on cloud selection
-    // See 'reset' on https://angular.io/docs/ts/latest/guide/forms.html
 
-    cloudLaunchForm: FormGroup;
+    CLOUD_SELECTION_HELP: string = 'Select a target cloud first';
     instanceTypes: InstanceType[] = [];
     instanceTypeHelp: string = this.CLOUD_SELECTION_HELP;
     regions: Region[] = [];
@@ -75,7 +55,15 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     staticIPHelp: string = this.CLOUD_SELECTION_HELP;
 
     // Form Controls
-    rootStorageType = new FormControl('instance', Validators.required);
+    cloudLaunchForm: FormGroup;
+    rootStorageTypeCtrl = new FormControl('instance', Validators.required);
+    rootStorageSizeCtrl = new FormControl('');
+    instTypeCtrl = new FormControl('', Validators.required);
+    placementCtrl = new FormControl('');
+    keypairCtrl = new FormControl('');
+    networkCtrl = new FormControl('');
+    subnetCtrl = new FormControl('');
+    staticIpCtrl = new FormControl('');
 
     get form(): FormGroup {
         return this.cloudLaunchForm;
@@ -89,30 +77,40 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
         private _cloudService: CloudService) {
         super(fb, parentContainer);
         this.cloudLaunchForm = fb.group({
-            'instanceType': ['', Validators.required],
-            'rootStorageType': this.rootStorageType,
-            'rootStorageSize': [''],
-            'placementZone': [''],
-            'keyPair': [''],
-            'network': [''],
-            'subnet': [''],
-            'staticIP': [''],
+            'instanceType': this.instTypeCtrl,
+            'rootStorageType': this.rootStorageTypeCtrl,
+            'rootStorageSize': this.rootStorageSizeCtrl,
+            'placementZone': this.placementCtrl,
+            'keyPair': this.keypairCtrl,
+            'network': this.networkCtrl,
+            'subnet': this.subnetCtrl,
+            'staticIP': this.staticIpCtrl,
             'customImageID': [null],
             'provider_settings': fb.group({
                 'ebsOptimised': [''],
                 'volumeIOPS': [''],
             })
         });
+        this.cloudCtrl.valueChanges.subscribe(cloud => { this.onCloudChange(cloud); });
+        this.networkCtrl.valueChanges.subscribe(network => { this.onNetworkChange(network); });
+        this.rootStorageTypeCtrl.valueChanges.subscribe(storageType => { this.onRootStorageTypeChange(storageType); });
     }
 
-    onCloudSelect(cloud: Cloud) {
-        // Fetch options for the newly selected cloud
-        this.getPlacements(cloud);
-        this.getInstanceTypes(cloud);
-        this.getKeyPairs(cloud);
-        this.getNetworks(cloud);
-        this.getStaticIPs(cloud);
+    toggleAdvanced() {
+        this.showAdvanced = !this.showAdvanced;
+    }
 
+    onCloudChange(cloud: Cloud) {
+        // Reset all form values
+        this.cloudLaunchForm.reset({rootStorageType: 'instance'});
+        if (cloud) {
+            // Fetch options for the newly selected cloud
+            this.getPlacements(cloud);
+            this.getInstanceTypes(cloud);
+            this.getKeyPairs(cloud);
+            this.getNetworks(cloud);
+            this.getStaticIPs(cloud);
+        }
         // Reapply initial config on cloud change
         this.initialConfig = this.initialConfig;
     }
@@ -121,92 +119,78 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
         this.instanceTypeHelp = 'Retrieving instance types...';
         this.instanceTypes = [];
         this._cloudService.getInstanceTypes(cloud.slug)
-            .subscribe(instanceTypes => this.instanceTypes = instanceTypes.map(t => { t.id = t.name; t.text = t.name; return t; }),
-            error => this.errorMessage = <any>error,
-            () => { this.instanceTypeHelp = 'Select an Instance Type'; });
-    }
-
-    onInstanceTypeSelect(instanceType: InstanceType) {
-        (<FormControl>this.cloudLaunchForm.controls['instanceType']).setValue(instanceType.id);
-    }
-
-    getSelectedInstanceType() {
-        if ((<FormControl>this.cloudLaunchForm.controls['instanceType']).value) {
-            return [(<FormControl>this.cloudLaunchForm.controls['instanceType']).value];
-        }
-        return null;
-    }
-
-    toggleAdvanced() {
-        this.showAdvanced = !this.showAdvanced;
+            .subscribe(
+                    instanceTypes => this.instanceTypes = instanceTypes,
+                    error => this.errorMessage = <any>error,
+                    () => { this.instanceTypeHelp = 'What type of virtual hardware would you like to use?'; });
     }
 
     getPlacements(cloud: Cloud) {
         this.placementHelp = 'Retrieving placement options...';
         this.placements = [];
         this._cloudService.getPlacementZones(cloud.slug, cloud.region_name)
-            .subscribe(placements => this.placements = placements.map(p => { p.text = p.name; return p; }),
-            error => this.errorMessage = <any>error,
-            () => { this.placementHelp = 'Select a placement'; });
-    }
-
-    onPlacementSelect(placement: PlacementZone) {
-        (<FormControl>this.cloudLaunchForm.controls['placementZone']).setValue(placement.id);
+            .subscribe(
+                    placements => this.placements = placements,
+                    error => this.errorMessage = <any>error,
+                    () => { this.placementHelp = 'In which placement zone would you like to launch this appliance?'; });
     }
 
     getKeyPairs(cloud: Cloud) {
         this.keypairsHelp = 'Retrieving keypairs...';
         this.keypairs = [];
         this._cloudService.getKeyPairs(cloud.slug)
-            .subscribe(keypairs => this.keypairs = keypairs.map(kp => { kp.text = kp.name; return kp; }),
-            error => this.errorMessage = <any>error,
-            () => { this.keypairsHelp = 'Select a keypair'; });
-    }
-
-    onKeyPairSelect(kp: KeyPair) {
-        (<FormControl>this.cloudLaunchForm.controls['keyPair']).setValue(kp.id);
+            .subscribe(
+                    keypairs => this.keypairs = keypairs,
+                    error => this.errorMessage = <any>error,
+                    () => { this.keypairsHelp = 'Which keypair would you like to use for this Virtual Machine?'; });
     }
 
     getNetworks(cloud: Cloud) {
         this.networksHelp = 'Retrieving list of networks...';
-        (<FormControl>this.cloudLaunchForm.controls['network']).setValue(null);
         this.subnetsHelp = 'Select a network first';
         this.networks = [];
         this._cloudService.getNetworks(cloud.slug)
-            .subscribe(networks => this.networks = networks.map(n => { n.text = n.name ? n.name : n.id; return n; }),
-            error => this.errorMessage = <any>error,
-            () => { this.networksHelp = 'Select a network'; });
+            .subscribe(
+                    networks => this.networks = networks,
+                    error => this.errorMessage = <any>error,
+                    () => { this.networksHelp = 'In which network would you like to place this Virtual Machine?'; });
     }
 
-    onNetworkSelect(network: Network) {
-        (<FormControl>this.cloudLaunchForm.controls['network']).setValue(network.id);
-        this.getSubnets(this.cloud, network.id);
+    onNetworkChange(network: Network) {
+        this.subnetCtrl.patchValue(null);
+        if (this.cloud && network)
+            this.getSubnets(this.cloud, network.id);
     }
 
     getSubnets(cloud: Cloud, networkId: string) {
         this.subnetsHelp = 'Retrieving list of subnets...';
         this.subnets = [];
         this._cloudService.getSubNets(cloud.slug, networkId)
-            .subscribe(subnets => this.subnets = subnets.map(s => { s.text = s.name ? s.name : s.id; return s; }),
-            error => this.errorMessage = <any>error,
-            () => { this.subnetsHelp = 'Select a subnet'; });
-    }
-
-    onSubNetSelect(subnet: SubNet) {
-        (<FormControl>this.cloudLaunchForm.controls['subnet']).setValue(subnet.id);
+            .subscribe(
+                    subnets => this.subnets = subnets,
+                    error => this.errorMessage = <any>error,
+                    () => { this.subnetsHelp = 'In which subnet would you like to place this Virtual Machine?'; });
     }
 
     getStaticIPs(cloud: Cloud) {
         this.staticIPHelp = 'Retrieving static IPs ...';
         this.staticIPs = [];
         this._cloudService.getStaticIPs(cloud.slug)
-            .subscribe(ips => this.staticIPs = ips.map(s => { s.id = s.ip; s.text = s.ip; return s; }),
-            error => this.errorMessage = <any>error,
-            () => { this.staticIPHelp = 'Select a static IP'; });
+            .subscribe(
+                    ips => this.staticIPs = ips,
+                    error => this.errorMessage = <any>error,
+                    () => { this.staticIPHelp = 'What static/floating IP would you like to assign to this Virtual Machine?'; });
     }
 
-    onStaticIPSelect(staticIP: StaticIP) {
-        (<FormControl>this.cloudLaunchForm.controls['staticIP']).setValue(staticIP.id);
+    onRootStorageTypeChange(storageType: string) {
+        if (storageType == 'instance') {
+            this.rootStorageSizeCtrl.disable();
+            this.rootStorageSizeCtrl.setValidators([]);
+        }
+        else {
+            this.rootStorageSizeCtrl.enable();
+            this.rootStorageSizeCtrl.setValidators([Validators.required]);
+        }
     }
 
 }
