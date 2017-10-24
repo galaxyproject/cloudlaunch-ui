@@ -36,13 +36,16 @@
     </div>
 </td>
 <td>
-    <span *ngIf="deployment.latest_task?.status == 'SUCCESS' && deployment.latest_task?.action !== 'DELETE' && deployment.latest_task?.result?.instance_status !== 'unknown' && deployment.latest_task?.result?.instance_status !== 'deleted'; else elseBlock">
-        <a class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL }}" target="_blank">
+    <span *ngIf="deployment.latest_task?.status == 'SUCCESS' && deployment.latest_task?.action !== 'DELETE' && deployment.latest_task?.result?.instance_status !== 'unknown' && deployment.latest_task?.result?.instance_status !== 'deleted'; else dimBlock">
+        <a *ngIf="launchTask?.result?.cloudLaunch?.applicationURL?.length; else ipBlock"
+         class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL }}" target="_blank">
             <span>{{ launchTask?.result?.cloudLaunch?.applicationURL }}</span>
         </a>
-        <span *ngIf="launchTask?.result?.cloudLaunch?.publicIP">{{ launchTask?.result?.cloudLaunch?.publicIP }}</span>
+        <ng-template #ipBlock>
+            <span>{{ launchTask?.result?.cloudLaunch?.publicIP }}</span>
+        </ng-template>
     </span>
-    <ng-template #elseBlock>
+    <ng-template #dimBlock>
         <span class="dim">{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}</span>
     </ng-template>
     <button *ngIf="launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP"
