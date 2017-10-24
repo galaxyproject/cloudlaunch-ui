@@ -24,20 +24,11 @@ import { ApplicationService } from '../../../shared/services/application.service
 export class CatalogListComponent implements OnInit {
     apps: Application[] = [];
     currentApp: Application;
-    searchTerm = new FormControl();
+    searchTermCtrl = new FormControl();
     totalApps: number = 0;
     currentPage: number = 0;
-    fetchInProgress: boolean = false;
+    searchInProgress: boolean = false;
     PAGE_SIZE: number = 6;
-
-    @Input()
-    set filter(value: string) {
-        this.searchTerm.setValue(value);
-    }
-
-    get filter() : string {
-        return this.searchTerm.value;
-    }
 
     constructor(
         private _appService: ApplicationService) { }
@@ -45,14 +36,13 @@ export class CatalogListComponent implements OnInit {
     ngOnInit() {
         this.currentPage = 0;
         this.totalApps = 0;
-        this.fetchInProgress = true;
-        this.searchTerm.valueChanges
+        this.searchTermCtrl.valueChanges
             .startWith('')
             .debounceTime(300)
-            .switchMap(term => this._appService.queryApplications(term, this.currentPage, this.PAGE_SIZE))
+            .switchMap(term => { this.searchInProgress = true; return this._appService.queryApplications(term, this.currentPage, this.PAGE_SIZE) })
             .subscribe(
-                    result => { this.fetchInProgress = false; this.totalApps = 0; this.currentPage = 0; this.totalApps = result.count; this.apps = result.results; },
-                    error => { this.fetchInProgress = false; console.log(error) });
+                    result => { this.searchInProgress = false; this.totalApps = 0; this.currentPage = 0; this.totalApps = result.count; this.apps = result.results; },
+                    error => { this.searchInProgress = false; console.log(error) });
     }
 
     @HostListener('mouseleave') onMouseLeave() {
@@ -60,12 +50,12 @@ export class CatalogListComponent implements OnInit {
     }
 
     onPageChange(event) {
-        this.fetchInProgress = true;
+        this.searchInProgress = true;
         this.currentPage = event.pageIndex;
-        this._appService.queryApplications(this.filter, event.pageIndex+1, this.PAGE_SIZE)
+        this._appService.queryApplications(this.searchTermCtrl.value, event.pageIndex+1, this.PAGE_SIZE)
         .subscribe(
-                result => { this.fetchInProgress = false; this.totalApps = result.count; this.apps = result.results; },
-                error => { this.fetchInProgress = false; console.log(error) }
+                result => { this.searchInProgress = false; this.totalApps = result.count; this.apps = result.results; },
+                error => { this.searchInProgress = false; console.log(error) }
                 );
     }
 

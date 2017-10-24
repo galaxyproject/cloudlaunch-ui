@@ -1,4 +1,12 @@
 <div class="row">
+    <div class="col-lg-12 col-md-12 full-width-container">
+        <mat-form-field  [style.fontSize.px]="22">
+            <input id="id_search" matInput type="text"
+                [formControl]="searchTermCtrl" />
+            <mat-placeholder><i class="fa" [ngClass]="{'fa-search': !searchInProgress, 'fa-spinner fa-spin fa-fw': searchInProgress}"></i>
+                Search for an appliance</mat-placeholder>
+        </mat-form-field>
+    </div>
     <div class="row-height">
         <div class="col-lg-6 col-md-6 col-height">
             <ul class="list-group">
