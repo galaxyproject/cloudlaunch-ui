@@ -2,44 +2,45 @@
     <div class=form [formGroup]="azureCredentialsForm">
 
         <!-- Azure Subscription Id-->
-        <div class="form-group is-empty" [ngClass]="{'has-error': '!subscription_id.valid'}">
-            <label for="id_subscription_id" class="control-label">
-                What is your Azure Subscription ID?
-            </label>
-            <input id="id_subscription_id" name="subscription_id" type="text"
-             class="form-control input-md" formControlName="subscription_id" />
-            <span class="help-block"> Your Azure subscription Id can be obtained by following the instructions in the link above.</span>
-            <span class="material-input"></span>
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_subscription_id" type="text"
+                placeholder="What is your Azure Subscription ID?"
+                formControlName="subscription_id" />
+                <mat-error *ngIf="subscriptionIdCtrl.hasError('required')">Subscription Id is <strong>required</strong></mat-error>
+                <mat-hint>Your Azure Subscription Id can be obtained by following the instructions in the link above.</mat-hint>
+            </mat-form-field>
         </div>
         <!-- Azure Client Id-->
-        <div class="form-group is-empty" [ngClass]="{'has-error': '!client_id.valid'}">
-            <label for="id_client_id" class="control-label">
-                What is your Azure Client ID?
-            </label>
-            <input id="id_client_id" name="client_id" type="text"
-             class="form-control input-md" formControlName="client_id" />
-            <span class="help-block"> Your Azure client Id can be obtained by following the instructions in the link above.</span>
-            <span class="material-input"></span>
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_client_id" type="text"
+                placeholder="What is your Azure Client ID?"
+                formControlName="client_id" />
+                <mat-error *ngIf="clientIdCtrl.hasError('required')">Client Id is <strong>required</strong></mat-error>
+                <mat-hint>Your Azure Client Id can be obtained by following the instructions in the link above.</mat-hint>
+            </mat-form-field>
         </div>
         <!-- Azure Secret -->
-        <div class="form-group is-empty" [ngClass]="{'has-error': '!secret.valid'}">
-            <label for="id_secret" class="control-label">
-                What is your Azure secret key?
-            </label>
-            <input id="id_secret" name="secret" type="password"
-             class="form-control input-md" formControlName="secret" />
-            <span class="help-block"> Your Azure Secret Key can be obtained by following the instructions in the link above.</span>
-            <span class="material-input"></span>
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_secret" [type]="show ? 'text' : 'password'"
+                    placeholder="What is your Azure secret key?"
+                    formControlName="secret" />
+                <mat-icon matSuffix (click)="show = !show" matTooltip="show/hide secret key">{{show ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-error *ngIf="secretCtrl.hasError('required')">Secret key is <strong>required</strong></mat-error>
+                <mat-hint>Your Azure Secret Key can be obtained by following the instructions in the link above.</mat-hint>
+            </mat-form-field>
         </div>
         <!-- Azure Tenant-->
-        <div class="form-group is-empty" [ngClass]="{'has-error': '!tenant.valid'}">
-            <label for="id_tenant" class="control-label">
-                What is your Azure Tenant?
-            </label>
-            <input id="id_tenant" name="tenant" type="text"
-             class="form-control input-md" formControlName="tenant" />
-            <span class="help-block"> Your Azure Tenant can be obtained by following the instructions in the link above.</span>
-            <span class="material-input"></span>
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_tenant" type="text"
+                placeholder="What is your Azure Tenant?"
+                formControlName="tenant" />
+                <mat-error *ngIf="tenantCtrl.hasError('required')">Tenant is <strong>required</strong></mat-error>
+                <mat-hint>Your Azure Tenant can be obtained by following the instructions in the link above.</mat-hint>
+            </mat-form-field>
         </div>
     </div>
 </div>

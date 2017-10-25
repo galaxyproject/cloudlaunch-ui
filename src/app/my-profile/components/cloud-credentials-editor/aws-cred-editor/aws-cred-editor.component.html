@@ -2,24 +2,25 @@
     <div class=form [formGroup]="awsCredentialsForm">
 
         <!-- Access Key -->
-        <div class="form-group is-empty" [ngClass]="{'has-error': '!access_key.valid'}">
-            <label for="id_access_key" class="control-label">
-                What is your Amazon Web Services access key ID?
-            </label>
-            <input id="id_access_key" name="access_key" type="text"
-             class="form-control input-md" formControlName="access_key" />
-            <span class="help-block"> Your AWS Access Key can be obtained by following the instructions in the link above.</span>
-            <span class="material-input"></span>
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_access_key" type="text"
+                placeholder="What is your Amazon Web Services access key ID?"
+                formControlName="access_key" />
+                <mat-error *ngIf="accessKeyCtrl.hasError('required')">Access key is <strong>required</strong></mat-error>
+                <mat-hint>Your AWS Access Key can be obtained by following the instructions in the link above.</mat-hint>
+            </mat-form-field>
         </div>
         <!-- Secret Key -->
-        <div class="form-group is-empty" [ngClass]="{'has-error': '!secret_key.valid'}">
-            <label for="id_secret_key" class="control-label">
-                What is your Amazon Web Services secret key?
-            </label>
-            <input id="id_secret_key" name="secret_key" type="password"
-             class="form-control input-md" formControlName="secret_key" />
-            <span class="help-block"> Your AWS Secret Key can be obtained by following the instructions in the link above.</span>
-            <span class="material-input"></span>
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_secret_key" [type]="show ? 'text' : 'password'"
+                    placeholder="What is your Amazon Web Services secret key?"
+                    formControlName="secret_key" />
+                <mat-icon matSuffix (click)="show = !show" matTooltip="show/hide secret key">{{show ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-error *ngIf="secretKeyCtrl.hasError('required')">Secret key is <strong>required</strong></mat-error>
+                <mat-hint>Your AWS Secret Key can be obtained by following the instructions in the link above.</mat-hint>
+            </mat-form-field>
         </div>
 
     </div>

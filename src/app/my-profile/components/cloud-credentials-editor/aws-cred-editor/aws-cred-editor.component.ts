@@ -35,9 +35,8 @@ export class AWSCredEditorComponent implements ControlValueAccessor, Validator {
     awsCredentialsForm: FormGroup;
 
     // Form Controls
-    access_key: FormControl = new FormControl(null, Validators.required);
-    secret_key: FormControl = new FormControl(null, Validators.required);
-
+    accessKeyCtrl: FormControl = new FormControl(null, Validators.required);
+    secretKeyCtrl: FormControl = new FormControl(null, Validators.required);
 
     // Begin: implementation of ControlValueAccessor
 
@@ -84,8 +83,8 @@ export class AWSCredEditorComponent implements ControlValueAccessor, Validator {
 
     constructor(fb: FormBuilder) {
         this.awsCredentialsForm = fb.group({
-            'access_key': this.access_key,
-            'secret_key': this.secret_key
+            'access_key': this.accessKeyCtrl,
+            'secret_key': this.secretKeyCtrl
         });
         this.awsCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
     }

@@ -2,6 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material'
+import { MatButtonModule } from '@angular/material'
+import { MatSelectModule } from '@angular/material'
+import { MatIconModule } from '@angular/material'
+import { MatTooltipModule } from '@angular/material'
 
 import { SelectModule } from 'ng2-select-compat';
 
@@ -35,6 +40,11 @@ import { CloudService } from '../shared/services/cloud.service';
         LayoutModule,
         FormsModule,
         ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatIconModule,
+        MatTooltipModule,
         SelectModule,
         MyProfileRoutingModule
     ],

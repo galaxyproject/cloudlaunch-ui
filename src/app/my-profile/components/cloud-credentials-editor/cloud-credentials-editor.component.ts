@@ -9,6 +9,7 @@ import {
     NG_VALIDATORS,
     Validator
 } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
 
 // models
 import { Cloud } from '../../../shared/models/cloud';
@@ -17,6 +18,9 @@ import { Credentials, AWSCredentials, OpenStackCredentials, AzureCredentials } f
 // services
 import { CloudService } from '../../../shared/services/cloud.service';
 import { ProfileService } from '../../../shared/services/profile.service';
+
+// utils
+import { CredentialParser } from './credential-parser';
 
 const CREDENTIALS_CONTROL_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
@@ -30,9 +34,8 @@ const CREDENTIALS_CONTROL_VALIDATOR = {
     multi: true
 };
 
-declare type FileParserCallback = (string, CloudCredentialsEditorComponent) => void;
-declare type VerificationSuccessCallback = (CloudCredentialsEditorComponent, Credentials) => void;
-declare type VerificationFailureCallback = (CloudCredentialsEditorComponent, Credentials, error: string) => void;
+declare type VerificationSuccessCallback = (Credentials) => void;
+declare type VerificationFailureCallback = (Credentials, error: string) => void;
 
 @Component({
     selector: 'cloud-credentials-editor',
@@ -41,39 +44,39 @@ declare type VerificationFailureCallback = (CloudCredentialsEditorComponent, Cre
 })
 export class CloudCredentialsEditorComponent implements OnInit, ControlValueAccessor, Validator {
     allowCloudChange: boolean = true;
-    credentialsForm: FormGroup;
-    availableClouds: Cloud[];
     errorMessage: string;
     _saveIsOptional: boolean = false;
     saveIsPressed: boolean = false;
     useCredsIsPressed: boolean = false;
     credVerificationInProgress = false;
-    // Form Controls
-    ctrl_id: FormControl = new FormControl(null);
-    ctrl_name: FormControl = new FormControl(null, Validators.required);
-    ctrl_default: FormControl = new FormControl(null);
-    ctrl_cloud: FormControl = new FormControl(null, Validators.required);
-    ctrl_aws_creds: FormControl = new FormControl(null, Validators.required);
-    ctrl_openstack_creds: FormControl = new FormControl(null, Validators.required);
-    ctrl_azure_creds: FormControl = new FormControl(null, Validators.required);
-    ctrl_credential_terms: FormControl = new FormControl(null, this.validateCredentialsTerms);
 
-    moreCredsInfo: boolean = false;
-    toggleCredsInfo() {
-        this.moreCredsInfo = !this.moreCredsInfo;
-    }
+    // Form Controls
+    credentialsForm: FormGroup;
+    idCtrl: FormControl = new FormControl(null);
+    nameCtrl: FormControl = new FormControl(null, Validators.required);
+    defaultCtrl: FormControl = new FormControl(null);
+    cloudCtrl: FormControl = new FormControl(null, Validators.required);
+    credentialTermsCtrl: FormControl = new FormControl(null, this.validateCredentialsTerms);
+
+    // Form controls disconnected from the main FormGroup
+    cloudTypeCtrl: FormControl = new FormControl(null);
+    awsCredsCtrl: FormControl = new FormControl(null, Validators.required);
+    openstackCredsCtrl: FormControl = new FormControl(null, Validators.required);
+    azureCredsCtrl: FormControl = new FormControl(null, Validators.required);
+
+    // Observables
+    filteredCloudTypes: Observable<Cloud[]>;
 
     @Input()
     set credentials(creds: Credentials) {
         if (creds) {
-            if (!this.cloud && creds.cloud) {
-                this.onCloudSelect(creds.cloud);
-            }
-            this.ctrl_creds.patchValue(creds);
+            this.cloudCtrl.patchValue(creds.cloud);
             this.credentialsForm.patchValue(creds);
-
-        } else {
-            this.credentialsForm.patchValue(new Credentials());
+            if (this.getActiveProviderEditor())
+                this.getActiveProviderEditor().patchValue(creds);
+        }
+        else {
+            this.cancelUseCredentials(null, null, true);
         }
     }
     get credentials(): Credentials {
@@ -81,9 +84,13 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     }
 
     formDataToCredentials(data): Credentials {
-        let creds: Credentials = Object.assign({}, data);
-        if (data && data.credentials) {
-            Object.assign(creds, data.credentials);
+        let creds = new Credentials();
+        creds.id = this.idCtrl.value;
+        creds.name = this.nameCtrl.value;
+        creds.default = this.defaultCtrl.value;
+        creds.cloud = this.cloudCtrl.value;
+        if (data && data.provider_editor) {
+            Object.assign(creds, data.provider_editor);
         }
         return creds;
     }
@@ -91,36 +98,30 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     @Input()
     set cloud(cloud: Cloud) {
         this.allowCloudChange = false;
-        this.onCloudSelect(cloud);
+        this.cloudCtrl.patchValue(cloud);
     }
-    get cloud() { return this.ctrl_cloud.value; }
+    get cloud() { return this.cloudCtrl.value; }
 
+    @Input()
+    set cloudType(providerId: string) {
+        this.cloudTypeCtrl.patchValue(providerId);
+    }
+    get cloudType() { return this.cloudTypeCtrl.value; }
+
+    getActiveProviderEditor() : FormControl {
+        return (<FormControl>this.credentialsForm.controls["provider_editor"]);
+    }
 
     @Input()
     set saveIsOptional(isOptional: boolean) {
         this._saveIsOptional = isOptional;
-        this.ctrl_name.disable();
-        this.ctrl_credential_terms.disable()
+        this.nameCtrl.disable();
+        this.credentialTermsCtrl.disable()
     }
     get saveIsOptional() { return this._saveIsOptional; }
 
     @Output()
     onCredentialsChanged = new EventEmitter<Credentials>();
-
-    get ctrl_creds() : FormControl {
-        let cloud_type = "";
-        if (this.cloud)
-            cloud_type = this.cloud.cloud_type;
-        if (cloud_type == "aws")
-            return this.ctrl_aws_creds;
-        else if (cloud_type == "openstack")
-            return this.ctrl_openstack_creds;
-        else if (cloud_type == "azure")
-            return this.ctrl_azure_creds;
-        else
-            return new FormControl(null, Validators.required);
-    }
-
 
     // implementation of ControlValueAccessor
 
@@ -159,66 +160,78 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             return { 'credentials_editor': 'invalid' };
         }
     }
-
     // End: implementation of Validator interface
+
     constructor(
         private _profileService: ProfileService,
         private _cloudService: CloudService,
         fb: FormBuilder) {
         this.credentialsForm = fb.group({
-            'id': this.ctrl_id,
-            'name': this.ctrl_name,
-            'default': this.ctrl_default,
-            'cloud': this.ctrl_cloud,
-            'credentials': this.ctrl_creds,
-            'credential_terms': this.ctrl_credential_terms
+            'id': this.idCtrl,
+            'name': this.nameCtrl,
+            'default': this.defaultCtrl,
+            'cloud': this.cloudCtrl,
+            'credential_terms': this.credentialTermsCtrl
         });
+        this.cloudCtrl.valueChanges.distinctUntilChanged().subscribe(cloud => this.onCloudChanged(cloud));
+        this.cloudTypeCtrl.valueChanges.subscribe(cloudType => this.onCloudTypeChanged(cloudType));
     }
 
     ngOnInit() {
-        this._cloudService.getClouds().subscribe(
-            clouds => this.availableClouds = clouds.map(t => { return this.ng2SelectAdjust(t); }),
-            error => this.errorMessage = <any>error);
-        this.onCloudSelect(this.cloud);
+        // shareReplay so that the cloud call is made only once
+        let cloudObservable = this._cloudService.getClouds().shareReplay(1);
+        // this.cloudTypeCtrl.value has a value only after initial properties are set, so initialize
+        // here on ngOnInit() instead of in constructor
+        this.filteredCloudTypes = this.cloudTypeCtrl.valueChanges
+                                    .startWith(this.cloudTypeCtrl.value)
+                                    .flatMap(cloudType => cloudObservable.map(c => this.getCloudsForType(cloudType, c)));
     }
 
+    isSameCloud(c1: Cloud, c2: Cloud) : boolean {
+        return c1 && c2 && c1.slug == c2.slug;
+    }
 
-    onCloudSelect(cloud: any) {
-        this.ng2SelectAdjust(cloud);
-        if (this.availableClouds && cloud) {
-            let matching_cloud = this.availableClouds.filter(c => c.slug === cloud.id);
-            this.ctrl_cloud.setValue(matching_cloud[0]);
-        } else {
-            this.ctrl_cloud.setValue(cloud);
+    onCloudChanged(cloud: Cloud) {
+        if (cloud) {
+            this.cloudType = cloud.cloud_type;
         }
         this.saveIsPressed = false;
         this.useCredsIsPressed = false;
-        this.credentialsForm.setControl('credentials', this.ctrl_creds);
     }
 
-    getSelectedCloud() {
-        if (this.ctrl_cloud.value) {
-            return [this.ctrl_cloud.value];
-        }
-        return null;
+    getCloudsForType(cloudType: any, cloudList: Cloud[]) {
+        if (cloudType)
+            return cloudList.filter(c => c.cloud_type == cloudType);
+         else
+            return cloudList;
     }
 
-    ng2SelectAdjust(cloud: Cloud) {
-        // Satisfy ng2-select requirements
-        if (cloud && cloud.slug) {
-            cloud.id = cloud.slug;
-            cloud.text = cloud.name;
-        }
-        return cloud;
+    getEditorFor(cloudType: string) {
+        if (cloudType == "aws")
+            return this.awsCredsCtrl;
+        else if (cloudType == "azure")
+            return this.azureCredsCtrl;
+        else if (cloudType == "openstack")
+            return this.openstackCredsCtrl;
+        else
+            return null;
     }
 
-    handleCredentialsChanged(creds: Credentials) {
+    onCloudTypeChanged(cloudType: string) {
+        this.credentialsForm.setControl('provider_editor', this.getEditorFor(cloudType));
+    }
+
+    handleCredentialsFinalised(creds: Credentials) {
+        this.credentials = creds;
         this.propagateChange(creds);
         this.onCredentialsChanged.emit(creds);
     }
 
     useCredentials() {
-        this.verifyCredentials(this.credentials, this.continueUseCredentials, this.cancelUseCredentials);
+        this.verifyCredentials(
+                this.credentials,
+                (creds) => { this.continueUseCredentials(creds); },
+                (creds, error) => { this.cancelUseCredentials(creds, error); });
     }
 
     verifyCredentials(creds: any, successCallBack: VerificationSuccessCallback,
@@ -248,37 +261,38 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             failureCallback: VerificationFailureCallback) {
         this.credVerificationInProgress = false;
         if (result.result === "SUCCESS") {
-            successCallback(this, creds);
+            successCallback(creds);
         }
         else
             this.handleVerificationFailure(creds, "The credentials you have entered are invalid.", failureCallback)
     }
 
-    handleVerificationFailure(creds: Credentials, error: any, callback: VerificationFailureCallback) {
+    handleVerificationFailure(creds: Credentials, error: any, failureCallback: VerificationFailureCallback) {
         this.credVerificationInProgress = false;
         this.errorMessage = error;
-        callback(this, creds, error);
+        failureCallback(creds, error);
     }
 
-    continueUseCredentials(editor: CloudCredentialsEditorComponent, creds: Credentials) {
-        editor.useCredsIsPressed = true;
-        editor.credentialsForm.disable();
-        editor.ctrl_name.disable();
-        editor.ctrl_credential_terms.disable()
-        editor.handleCredentialsChanged(creds);
+    continueUseCredentials(creds: Credentials) {
+        this.useCredsIsPressed = true;
+        this.credentialsForm.disable();
+        this.nameCtrl.disable();
+        this.credentialTermsCtrl.disable()
+        this.handleCredentialsFinalised(creds);
     }
 
-    cancelUseCredentials(editor: CloudCredentialsEditorComponent, error: string) {
-        editor.useCredsIsPressed = false;
-        editor.credentialsForm.enable();
-        editor.ctrl_name.disable();
-        editor.ctrl_credential_terms.disable();
-        editor.handleCredentialsChanged(null);
+    cancelUseCredentials(creds: Credentials, error: string, suppressEvent?: boolean) {
+        this.useCredsIsPressed = false;
+        this.credentialsForm.enable();
+        this.nameCtrl.disable();
+        this.credentialTermsCtrl.disable();
+        if (!suppressEvent)
+            this.handleCredentialsFinalised(null);
     }
 
     setSaveIsPressed() {
-        this.ctrl_name.enable();
-        this.ctrl_credential_terms.enable()
+        this.nameCtrl.enable();
+        this.credentialTermsCtrl.enable()
         this.saveIsPressed = true;
     }
 
@@ -286,11 +300,11 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         // Clear form values
         if (this.saveIsOptional) {
             this.saveIsPressed = false;
-            this.ctrl_name.disable();
-            this.ctrl_credential_terms.disable()
+            this.nameCtrl.disable();
+            this.credentialTermsCtrl.disable()
         } else {
             this.credentialsForm.reset();
-            this.handleCredentialsChanged(this.credentialsForm.value);
+            this.handleCredentialsFinalised(null);
         }
     }
 
@@ -299,138 +313,80 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             return {"terms_not_accepted": true}
     }
 
-
-    // BEGIN: Credential File Parsing Functions
-
     loadCredentialsFromFile($event: Event) {
-        this.errorMessage = null;
-        let parserFunc: FileParserCallback;
-        if (this.cloud && this.cloud.cloud_type) {
-            if (this.cloud.cloud_type == "openstack")
-                parserFunc = this.parseOpenstackCreds;
-            else if (this.cloud.cloud_type == "aws")
-                parserFunc = this.parseAWSCreds;
-            else if (this.cloud.cloud_type == "azure")
-                parserFunc = this.parseAzureCreds;
+        let file = (<HTMLInputElement>$event.target).files[0];
+        if (file) {
+            let parser = new CredentialParser(this.cloudCtrl.value.cloud_type);
+            parser.loadCredentialsFromFile(
+                    (<HTMLInputElement>$event.target).files[0],
+                    (creds) => this.handleLoadedCredentials(creds));
         }
-        this.readCredentialsFile((<HTMLInputElement>$event.target).files[0], parserFunc);
     }
 
-    readCredentialsFile(file: File, parserFunc: FileParserCallback) : void {
-        var reader: FileReader = new FileReader();
-
-        let self = this;
-
-        reader.onloadend = function(e) { parserFunc(reader.result, self); }
-        reader.onerror = function(e) { console.log(e); }
-        reader.readAsText(file);
-    }
-
-    static extractValueByKey(key: string, content: string) : string {
-        /* Regex description:
-        Match the key, value part of a string like
-        export OS_TENANT_NAME="<value>" or
-        AWS_ACCESS_KEY: "<value>"
-
-        With the result being <value>, without quotes.
-
-        Begins by matching full text of keyname, followed by optional = or : symbols,
-        followed by an optional whitespace, followed by an optional capture group (1)
-        for the double quote, followed by any text other than doule-quotes. $ symbols
-        and new lines, followed by capture group (1) again if it existed (this make
-         sure that either both beginning and ending double-quotes are present, or
-        none are). The value corresponding to the key will end up in match group 2.
-        */
-        let regex = new RegExp(key + '[=:]\\s?(")?([^"\\n\\$]+)\\1?');
-        let match = regex.exec(content);
-        if (match)
-            return match[2];
-        else
-            return null;
-    }
-
-    parseOpenstackCreds(content: string, editor: CloudCredentialsEditorComponent) {
-        let creds = {
-            'project_name': CloudCredentialsEditorComponent.extractValueByKey("OS_PROJECT_NAME", content) ||
-                CloudCredentialsEditorComponent.extractValueByKey("OS_TENANT_NAME", content),
-            'username': CloudCredentialsEditorComponent.extractValueByKey("OS_USERNAME", content),
-            'password': CloudCredentialsEditorComponent.extractValueByKey("OS_PASSWORD", content),
-            'user_domain_name': CloudCredentialsEditorComponent.extractValueByKey("OS_USER_DOMAIN_NAME", content),
-            'project_domain_name': CloudCredentialsEditorComponent.extractValueByKey("OS_PROJECT_DOMAIN_NAME", content)
+    handleLoadedCredentials(creds: Credentials) {
+        if (creds instanceof AWSCredentials) {
+            this.awsCredsCtrl.patchValue(creds);
         }
-        editor.ctrl_openstack_creds.patchValue(creds);
-    }
-
-    parseAWSCreds(content: string, editor: CloudCredentialsEditorComponent) {
-        let creds = {
-            'access_key': CloudCredentialsEditorComponent.extractValueByKey("ACCESS_KEY", content),
-            'secret_key': CloudCredentialsEditorComponent.extractValueByKey("SECRET_KEY", content)
+        else if (creds instanceof AzureCredentials) {
+            this.azureCredsCtrl.patchValue(creds);
         }
-        editor.ctrl_aws_creds.patchValue(creds);
-    }
-
-    parseAzureCreds(content: string, editor: CloudCredentialsEditorComponent) {
-        let creds = {
-            'subscription_id': CloudCredentialsEditorComponent.extractValueByKey("AZURE_SUBSCRIPTION_ID", content),
-            'client_id': CloudCredentialsEditorComponent.extractValueByKey("AZURE_CLIENT_ID", content),
-            'secret': CloudCredentialsEditorComponent.extractValueByKey("AZURE_SECRET", content),
-            'tenant': CloudCredentialsEditorComponent.extractValueByKey("AZURE_TENANT", content)
+        else if (creds instanceof OpenStackCredentials) {
+            this.openstackCredsCtrl.patchValue(creds);
         }
-        editor.ctrl_azure_creds.patchValue(creds);
     }
-
-    // END: Credential File Parsing Functions
 
     saveEdit() {
-        let creds = <any>this.credentials;
-        creds.cloud_id = creds.cloud.id;
+        let creds = <Credentials>this.credentials;
+        creds.cloud_id = creds.cloud.slug;
         creds.default = creds.default || false;
 
-        this.verifyCredentials(creds, this.continueSaveCredentials, this.endSaveCredentials);
-
+        this.verifyCredentials(
+                creds,
+                (creds) => { this.continueSaveCredentials(creds); },
+                (creds, error) => { this.endSaveCredentials(creds, error); });
     }
 
-    continueSaveCredentials(editor: CloudCredentialsEditorComponent, creds: Credentials) {
+    continueSaveCredentials(creds: Credentials) {
         if (creds.id) { // Has an id, therefore, it's an existing record
-            switch (editor.cloud.cloud_type) {
+            switch (this.cloudTypeCtrl.value) {
                 case 'aws':
-                    editor._profileService.saveCredentialsAWS(<AWSCredentials>creds)
-                        .subscribe(result => { editor.handleCredentialsChanged(result); });
+                    this._profileService.saveCredentialsAWS(<AWSCredentials>creds)
+                        .subscribe(result => this.handleCredentialsFinalised(result));
                     break;
                 case 'openstack':
-                    editor._profileService.saveCredentialsOpenStack(<OpenStackCredentials>creds)
-                        .subscribe(result => { editor.handleCredentialsChanged(result); });
+                    this._profileService.saveCredentialsOpenStack(<OpenStackCredentials>creds)
+                        .subscribe(result => this.handleCredentialsFinalised(result));
                     break;
                 case 'azure':
-                    editor._profileService.saveCredentialsAzure(<AzureCredentials>creds)
-                        .subscribe(result => { editor.handleCredentialsChanged(result); });
+                    this._profileService.saveCredentialsAzure(<AzureCredentials>creds)
+                        .subscribe(result => this.handleCredentialsFinalised(result));
                     break;
             }
 
         } else { // Must be a new record
-            switch (editor.cloud.cloud_type) {
+            switch (this.cloudTypeCtrl.value) {
                 case 'aws':
-                    editor._profileService.createCredentialsAWS(<AWSCredentials>creds)
-                        .subscribe(result => { editor.handleCredentialsChanged(result); });
+                    this._profileService.createCredentialsAWS(<AWSCredentials>creds)
+                        .subscribe(result => this.handleCredentialsFinalised(result));
                     break;
                 case 'openstack':
-                    editor._profileService.createCredentialsOpenStack(<OpenStackCredentials>creds)
-                        .subscribe(result => { editor.handleCredentialsChanged(result); });
+                    this._profileService.createCredentialsOpenStack(<OpenStackCredentials>creds)
+                        .subscribe(result => this.handleCredentialsFinalised(result));
                     break;
                 case 'azure':
-                    editor._profileService.createCredentialsAzure(<AzureCredentials>creds)
-                        .subscribe(result => { editor.handleCredentialsChanged(result); });
+                    this._profileService.createCredentialsAzure(<AzureCredentials>creds)
+                        .subscribe(result => this.handleCredentialsFinalised(result));
                     break;
             }
         }
-        editor.endSaveCredentials(editor, null);
+        this.endSaveCredentials(creds, null);
     }
 
-    endSaveCredentials(editor: CloudCredentialsEditorComponent, error: string) {
-        if (editor.saveIsOptional) {
-            editor.saveIsPressed = false;
-            editor.ctrl_name.disable();
-            editor.ctrl_credential_terms.disable()
+    endSaveCredentials(creds: Credentials, error: string) {
+        if (this.saveIsOptional) {
+            this.saveIsPressed = false;
+            this.nameCtrl.disable();
+            this.credentialTermsCtrl.disable()
         }
     }
 }
