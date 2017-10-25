@@ -25,7 +25,7 @@
             <input matInput id="id_password" [type]="show ? 'text' : 'password'"
                 placeholder="What password would you like to use for this CloudMan instance?"
                 formControlName="clusterPassword" />
-            <mat-icon matSuffix (click)="show = !show">{{show ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-icon matSuffix (click)="show = !show" matTooltip="show/hide password">{{show ? 'visibility_off' : 'visibility'}}</mat-icon>
             <mat-hint>Your choice of password, for the CloudMan web interface and
                 accessing the cluster via ssh.</mat-hint>
         </mat-form-field>

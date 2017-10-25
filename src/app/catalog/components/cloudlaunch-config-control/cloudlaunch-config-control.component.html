@@ -4,13 +4,10 @@
     <!-- Instance type selection -->
     <div class="full-width-container">
         <mat-form-field>
-            <mat-select id="id_instance_type"
-                [ngClass]="{'has-error': '!instTypeCtrl.valid'}"
-                [formControl]="instTypeCtrl">
-                <mat-option *ngFor="let instType of instanceTypes" [value]="instType.name">
-                    {{ instType.name }}
-                </mat-option>
+            <mat-select id="id_instance_type" [formControl]="instTypeCtrl">
+                <mat-option *ngFor="let instType of instanceTypes" [value]="instType.name">{{ instType.name }}</mat-option>
             </mat-select>
+            <mat-error *ngIf="instTypeCtrl.hasError('required')">Instance type is <strong>required</strong></mat-error>
             <mat-placeholder><i *ngIf="instanceTypeHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>
                 {{ instanceTypeHelp }}</mat-placeholder>
         </mat-form-field>

@@ -1,11 +1,12 @@
 <div [formGroup]="form">
     <!-- Access password -->
-    <div class='form-group full-width-container' [ngClass]="{'has-error': '!gvlLaunchForm.valid'}">
+    <div class='form-group full-width-container'>
         <mat-form-field>
             <input matInput id="id_password" [type]="show ? 'text' : 'password'"
                 placeholder="What password would you like to use for this GVL instance?"
                 [formControl]="gvlPasswordCtrl" />
-            <mat-icon matSuffix (click)="show = !show">{{show ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-error *ngIf="gvlPasswordCtrl.hasError('required')">A password is <strong>required</strong></mat-error>
+            <mat-icon matSuffix (click)="show = !show" matTooltip="show/hide password">{{show ? 'visibility_off' : 'visibility'}}</mat-icon>
             <mat-hint>The password you set here can be used to access all services provided by this GVL, including ssh access.</mat-hint>
         </mat-form-field>
     </div>
