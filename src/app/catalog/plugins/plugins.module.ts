@@ -6,6 +6,9 @@ import { HttpModule } from '@angular/http';
 import { MatSlideToggleModule } from '@angular/material'
 import { MatRadioModule } from '@angular/material'
 import { MatInputModule } from '@angular/material'
+import { MatButtonModule } from '@angular/material'
+import { MatSelectModule } from '@angular/material'
+import { MatIconModule } from '@angular/material'
 
 import { LayoutModule } from '../../shared/layout.module';
 import { UbuntuConfigComponent } from './ubuntu/ubuntu.component'
@@ -25,6 +28,9 @@ import { MarkdownModule } from 'angular2-markdown';
         MatSlideToggleModule,
         MatRadioModule,
         MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatIconModule,
         LayoutModule,
         SelectModule,
         MarkdownModule

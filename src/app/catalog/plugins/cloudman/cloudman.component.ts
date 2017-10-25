@@ -13,29 +13,28 @@ import { CloudService } from '../../../shared/services/cloud.service';
 @Component({
     selector: 'cloudman-config',
     templateUrl: './cloudman.component.html',
-    inputs: ['cloud', 'initialConfig'],
     providers: [CloudService]
 })
 
 export class CloudManConfigComponent extends BasePluginComponent {
-    hidePassword = false;
-    @Input()
-    set password (value: string) { this.hidePassword = true; this.cmClusterForm.controls['clusterPassword'].setValue(value); }
-    get password(): string { return this.cmClusterForm.controls['clusterPassword'].value; }
 
-    cluster: Object = {};
-    clusterTypes: Object[] = [  // First element in the list if the default choice
-        { 'id': 'Galaxy', 'text': 'SLURM cluster with Galaxy' },
-        { 'id': 'Data', 'text': 'SLURM cluster only' },
-        { 'id': 'None', 'text': 'Do not set cluster type now' }]
+    @Input()
+    set password (value: string) { this.hidePassword = true; this.clusterPasswordCtrl.setValue(value); }
+    get password(): string { return this.clusterPasswordCtrl.value; }
+
+    hidePassword = false;
     showAdvanced: boolean = false;
     showSavedClusters: boolean = false;
     savedClustersHelp: string = "Select a saved cluster";
     savedClusters: CloudManCluster[] = [];
     errorMessage: string;
 
+    // Form controls
     cmClusterForm: FormGroup;
-    storageType = new FormControl('', Validators.required);
+    restartClusterCtrl = new FormControl();
+    clusterPasswordCtrl = new FormControl(null, Validators.required);
+    storageTypeCtrl = new FormControl('', Validators.required);
+    clusterTypeCtrl = new FormControl('Galaxy');
 
     get form(): FormGroup {
         return this.cmClusterForm;
@@ -49,25 +48,18 @@ export class CloudManConfigComponent extends BasePluginComponent {
                 private _cloudService: CloudService) {
         super(fb, parentContainer);
         this.cmClusterForm = fb.group({
-            'restartCluster': [null],
-            'clusterPassword': [null, Validators.required],
-            'storageType': this.storageType,
+            'restartCluster': this.restartClusterCtrl,
+            'clusterPassword': this.clusterPasswordCtrl,
+            'storageType': this.storageTypeCtrl,
             'storageSize': [null],
-            'clusterType': [null],
+            'clusterType': this.clusterTypeCtrl,
             'defaultBucket': [null, Validators.required],
             'masterPostStartScript': [null],
             'workerPostStartScript': [null],
             'clusterSharedString': [null],
             'extraUserData': [null]
         });
-    }
-
-    getInitialClusterType(): Object {
-        return [this.clusterTypes[0]];
-    }
-
-    setClusterType(clusterType: any) {
-        this.cmClusterForm.value['clusterType'] = clusterType.id;
+        this.restartClusterCtrl.valueChanges.subscribe(cluster => { this.storageTypeCtrl.setValue('volume'); });
     }
 
     toggleAdvanced() {
@@ -77,15 +69,10 @@ export class CloudManConfigComponent extends BasePluginComponent {
     fetchSavedClusters() {
         this.savedClustersHelp = "Retrieving saved clusters..."
         this.savedClusters = []
-        this._cloudService.getSavedClusters(this.cloud.slug)
-            .subscribe(savedClusters => this.savedClusters = savedClusters.map( (sc, i) => { sc.id = i; sc.text = sc.cluster_name; return sc; }),
-            error => this.errorMessage = <any>error,
-            () => {this.savedClustersHelp = 'Select a saved cluster'; });
         this.showSavedClusters = true;
-    }
-
-    onClusterSelect(cluster: CloudManCluster) {
-        this.cmClusterForm.controls['restartCluster'].setValue(this.savedClusters[cluster.id]);
-        this.cmClusterForm.controls['storageType'].setValue('volume');
+        this._cloudService.getSavedClusters(this.cloud.slug)
+            .subscribe(savedClusters => this.savedClusters = savedClusters,
+            error => this.errorMessage = <any>error,
+            () => { this.savedClustersHelp = 'Select a saved cluster'; });
     }
 }

@@ -1,153 +1,111 @@
 <div [formGroup]="form">
-   <!-- Fetch saved clusters -->
-   <div class="form-group control-label is-empty">
-      <button class="btn btn-primary" (click)=fetchSavedClusters() *ngIf="!showSavedClusters">
-         Fetch saved clusters
-      </button>
-      <label for="id-saved-clusters" class="control-label" *ngIf="showSavedClusters">
-         Which saved cluster would you like to start?
-      </label>
-      <ng-select id="id-saved-clusters" [items]="savedClusters"
-       (selected)="onClusterSelect($event)"
-       *ngIf="showSavedClusters" [placeholder]="savedClustersHelp"></ng-select>
+    <!-- Fetch saved clusters -->
+    <div class="form-group">
+        <button mat-raised-button color="primary" (click)=fetchSavedClusters() *ngIf="!showSavedClusters">
+            Fetch saved clusters
+        </button>
+        <div class="full-width-container">
+            <mat-form-field *ngIf="showSavedClusters">
+                <mat-select id="id_saved_clusters"
+                    [formControl]="restartClusterCtrl">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let cluster of savedClusters" [value]="cluster">
+                        {{ cluster.cluster_name }}
+                    </mat-option>
+                </mat-select>
+                <mat-placeholder><i *ngIf="savedClustersHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>
+                    {{ savedClustersHelp }}</mat-placeholder>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <!-- Access password -->
+    <div class="form-group full-width-container" *ngIf="!hidePassword">
+        <mat-form-field>
+            <input matInput id="id_password" [type]="show ? 'text' : 'password'"
+                placeholder="What password would you like to use for this CloudMan instance?"
+                formControlName="clusterPassword" />
+            <mat-icon matSuffix (click)="show = !show">{{show ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-hint>Your choice of password, for the CloudMan web interface and
+                accessing the cluster via ssh.</mat-hint>
+        </mat-form-field>
+    </div>
+
+    <!--  Storage Type Selection -->
+    <div class="form-group full-width-container" *ngIf="!showSavedClusters">
+        <label>Storage Type</label>
+        <mat-radio-group class="standard-radio-group" [formControl]="storageTypeCtrl">
+            <mat-radio-button value="transient">Transient Instance Storage</mat-radio-button>
+            <mat-radio-button value="volume">Persistent Volume Storage</mat-radio-button>
+        </mat-radio-group>
    </div>
 
-   <!-- Access password -->
-   <div class="form-group control-label is-empty" [ngClass]="{'has-error': '!cmClusterForm.valid'}" *ngIf="!hidePassword">
-      <label for="id_password" class="control-label">What password would you like to use for this CloudMan instance?</label>
-      <input id="id_password" type="password"
-         class="form-control input-md"
-         formControlName="clusterPassword">
-      <span class="help-block">
-         Your choice of password, for the CloudMan web interface and
-         accessing the cluster via ssh.
-      </span>
-      <span class="material-input"></span>
-   </div>
 
-   <!--  Storage Type Selection -->
-   <div class="form-group" *ngIf="!showSavedClusters">
-      <label>Storage Type</label>
-      <div class="radio">
-         <label>
-            <input type="radio" value='transient'
-               formControlName="storageType" />
-            Transient instance storage
-         </label>
-      </div>
-      <div class="radio">
-         <label>
-            <input type="radio" value='volume'
-               formControlName="storageType" />
-            Persistent volume storage
-         </label>
-      </div>
-   </div>
+    <!-- Root storage size -->
+    <div class="full-width-container" *ngIf="storageTypeCtrl.value=='volume' && !showSavedClusters">
+          <mat-form-field>
+              <input matInput type="number" placeholder="How large should the storage volume be?" formControlName="storageSize" />
+            <mat-hint>Size (in GB)</mat-hint>
+        </mat-form-field>
+        <br />
+    </div>
 
-   <!--  Storage size -->
-   <div class="form-group" *ngIf="storageType.value=='volume' && !showSavedClusters">
-      <label for="id_storage_size" class="control-label">
-         Storage size
-      </label>
-      <input type="number" class="form-control input-md"
-         formControlName="storageSize" />
-      <span class="help-block">
-         Desired size of your persistent storage.
-      </span>
-      <span class="material-input"></span>
-   </div>
+    <div class="form-group">
+        <mat-slide-toggle (change)="toggleAdvanced()">Advanced CloudMan options</mat-slide-toggle>
+    </div>
 
-   <div class="form-group">
-      <mat-slide-toggle (change)="toggleAdvanced()">Advanced CloudMan options</mat-slide-toggle>
-   </div>
+    <div class="form-group" *ngIf="showAdvanced">
+        <!--  Cluster Type Selection -->
+        <div class="form-group full-width-container" *ngIf="!showSavedClusters">
+            <mat-form-field>
+                <mat-select id="id_cluster_type"
+                    [formControl]="clusterTypeCtrl">
+                    <mat-option value="Galaxy">SLURM cluster with Galaxy</mat-option>
+                    <mat-option value="Data">SLURM cluster only</mat-option>
+                    <mat-option value="None">Do not set cluster type now</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
 
-   <div *ngIf="showAdvanced">
-      <!--  Cluster Type Selection -->
-      <div class="form-group" *ngIf="!showSavedClusters">
-         <label for="cluster_type">Cluster Type</label>
-         <ng-select id="id_cluster_type" [items]="clusterTypes"
-            [active]="getInitialClusterType()"
-            (selected)="setClusterType($event)">
-         </ng-select>
+        <!--  Default bucket -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_default_bucket" type="text" placeholder="Default Bucket" formControlName="defaultBucket" />
+                <mat-hint>The default bucket to use. See CloudMan's wiki for a detailed description of this option.</mat-hint>
+            </mat-form-field>
+        </div>
 
-      </div>
+        <!-- Post Start Script -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_post_start_script" type="text" placeholder="Post-start script" formControlName="masterPostStartScript" />
+                <mat-hint>A URL to the post-start script. See CloudMan's wiki for a detailed description of this option.</mat-hint>
+            </mat-form-field>
+        </div>
 
-      <!--  Default bucket -->
-      <div class="form-group is-empty">
-         <label for="id_default_bucket" class="control-label">
-            Default Bucket
-         </label>
-         <input id="id_default_bucket"
-            type="text" class="form-control input-md"
-            formControlName="defaultBucket" />
-         <span class="help-block">
-            The default bucket to use. See CloudMan's wiki for a
-            detailed description of this option.
-         </span>
-         <span class="material-input"></span>
-      </div>
+        <!-- Worker Post Start Script -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_worker_post_start_script" type="text" placeholder="Worker post-start script" formControlName="workerPostStartScript" />
+                <mat-hint>A URL to the post-start script for worker nodes. See CloudMan's wiki for the description.</mat-hint>
+            </mat-form-field>
+        </div>
 
-      <!-- Post Start Script -->
-      <div class="form-group is-empty">
-         <label for="id_post_start_script" class="control-label">
-            Post-start
-         </label>
-         <input id="id_post_start_script"
-            type="text" class="form-control input-md"
-            formControlName="masterPostStartScript" />
-         <span class="help-block">
-            A URL to the post-start script. See CloudMan's wiki for
-            a detailed description of this option.
-         </span>
-         <span class="material-input"></span>
-      </div>
+        <!-- Shared Cluster String -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_shared_cluster_string" type="text" placeholder="Shared cluster string" formControlName="clusterSharedString" />
+                <mat-hint>A share string from a cluster to clone.</mat-hint>
+            </mat-form-field>
+        </div>
 
-      <!-- Worker Post Start Script -->
-      <div class="form-group is-empty">
-         <label for="id_worker_post_start_script" class="control-label">
-            Worker post-start script
-         </label>
-         <input id="worker_post_start_script"
-            type="text"
-            class="form-control input-md"
-            formControlName="workerPostStartScript" />
-         <span class="help-block">
-            A URL to the post-start script for worker nodes. See
-            CloudMan's wiki for the description.
-         </span>
-         <span class="material-input"></span>
-      </div>
-
-      <!-- Shared Cluster String -->
-      <div class="form-group is-empty">
-         <label for="id_shared_cluster_string" class="control-label">
-            Shared cluster string
-         </label>
-         <input id="id_shared_cluster_string"
-            type="text"
-            class="form-control input-md"
-            formControlName="clusterSharedString" />
-         <span class="help-block">
-            A share string from a cluster to clone.
-         </span>
-         <span class="material-input"></span>
-      </div>
-
-      <!-- Extra User Data -->
-      <div class="form-group is-empty">
-         <label for="id_extra_user_data" class="control-label">
-            Extra User-Data
-         </label>
-         <textarea id="id_extra_user_data"
-            rows="5"
-            class="form-control"
-            formControlName="extraUserData"></textarea>
-         <span class="help-block">
-            Pass advanced properties to CloudMan via the the cloud infrastructure's user-data mechanism.
-            Properties should be in YAML formatted key-value pairs.
-         </span>
-         <span class="material-input"></span>
-      </div>
-
+        <!-- Extra User Data -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <textarea rows="5" matInput id="id_extra_user_data" type="text" placeholder="Extra User-Data" formControlName="extraUserData"></textarea>
+                <mat-hint>Pass advanced properties to CloudMan via the the cloud infrastructure's user-data mechanism.
+                          Properties should be YAML formatted key-value pairs.</mat-hint>
+            </mat-form-field>
+        </div>
    </div>
 </div>
