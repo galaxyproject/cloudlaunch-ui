@@ -8,8 +8,7 @@ import { BasePluginComponent } from '../base-plugin.component';
 
 @Component({
     selector: 'ubuntu-config',
-    template: ``,
-    inputs: ['cloud', 'initialConfig']
+    template: ``
 })
 export class UbuntuConfigComponent extends BasePluginComponent {
     ubuntuLaunchForm: FormGroup;

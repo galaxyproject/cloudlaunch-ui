@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material'
 import { MatButtonModule } from '@angular/material'
 import { MatSelectModule } from '@angular/material'
 import { MatIconModule } from '@angular/material'
+import { MatCheckboxModule } from '@angular/material';
 
 import { LayoutModule } from '../../shared/layout.module';
 import { UbuntuConfigComponent } from './ubuntu/ubuntu.component'
@@ -31,6 +32,7 @@ import { MarkdownModule } from 'angular2-markdown';
         MatButtonModule,
         MatSelectModule,
         MatIconModule,
+        MatCheckboxModule,
         LayoutModule,
         SelectModule,
         MarkdownModule

@@ -9,13 +9,12 @@ import { BasePluginComponent } from '../base-plugin.component';
 
 @Component({
     selector: 'gvl-config',
-    templateUrl: './gvl.component.html',
-    inputs: ['cloud', 'initialConfig']
+    templateUrl: './gvl.component.html'
 })
 export class GVLConfigComponent extends BasePluginComponent {
     gvlLaunchForm: FormGroup;
     showAdvanced: boolean = false;
-    gvlPasswordControl: FormControl = new FormControl(null, Validators.required);
+    gvlPasswordCtrl: FormControl = new FormControl(null, Validators.required);
 
     get form(): FormGroup {
         return this.gvlLaunchForm;

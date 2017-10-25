@@ -1,13 +1,13 @@
 <div [formGroup]="form">
     <!-- Access password -->
-    <div class='form-group' [ngClass]="{'has-error': '!gvlLaunchForm.valid'}">
-        <label for="id_password" class="control-label">What password would you like to use for this GVL instance?</label>
-        <input id="id_password" type="password" class="form-control input-md"
-            [formControl]="gvlPasswordControl">
-        <span class="help-block">
-            The password you set here can be used to access all services provided by this GVL, including ssh access.
-        </span>
-        <span class="material-input"></span>
+    <div class='form-group full-width-container' [ngClass]="{'has-error': '!gvlLaunchForm.valid'}">
+        <mat-form-field>
+            <input matInput id="id_password" [type]="show ? 'text' : 'password'"
+                placeholder="What password would you like to use for this GVL instance?"
+                [formControl]="gvlPasswordCtrl" />
+            <mat-icon matSuffix (click)="show = !show">{{show ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-hint>The password you set here can be used to access all services provided by this GVL, including ssh access.</mat-hint>
+        </mat-form-field>
     </div>
 
 
@@ -20,7 +20,7 @@
         <config-panel>
             <panel-header>CloudMan Settings</panel-header>
             <panel-body>
-                <cloudman-config [cloud]="cloud" [initialConfig]="initialConfig.config_gvl" [password]="gvlPasswordControl.value" ></cloudman-config>
+                <cloudman-config [cloud]="cloud" [initialConfig]="initialConfig.config_gvl" [password]="gvlPasswordCtrl.value" ></cloudman-config>
             </panel-body>
         </config-panel>
 
@@ -29,21 +29,11 @@
             <panel-header>Additional GVL Settings</panel-header>
             <panel-body>
                 <!--  GVL Component Selection -->
-                <div class="form-group">
+                <div class="form-group full-width-container">
                     <label>Auto-start the selected applications</label>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="gvl_cmdline_utilities"
-                             formControlName="gvl_cmdline_utilities" />
-                            GVL Commandline Utilities
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="smrt_portal"
-                             formControlName="smrt_portal" />
-                            PacBio SMRT Analysis
-                        </label>
+                    <div class="standard-radio-group">
+                        <mat-checkbox name="gvl_cmdline_utilities" formControlName="gvl_cmdline_utilities">GVL Commandline Utilities</mat-checkbox>
+                        <mat-checkbox name="smrt_portal" formControlName="smrt_portal">PacBio SMRT Analysis</mat-checkbox>
                     </div>
                 </div>
             </panel-body>
