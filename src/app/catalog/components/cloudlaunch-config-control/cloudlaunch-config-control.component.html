@@ -119,7 +119,7 @@
                 </mat-form-field>
           </div>
       
-        <ng-container *ngIf="cloud.cloud_type === 'aws'">
+        <ng-container *ngIf="cloud?.cloud_type === 'aws'">
             <!-- EBS optimized selection (AWS only) -->
             <div class="checkbox">
                 <label> <input type="checkbox" id="ebs_optimized" name="ebs_optimized"
