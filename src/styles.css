@@ -10,13 +10,22 @@
   width: 100% !important;;
 }
 
-.standard-radio-group {
+.radio-group-vertical {
   display: inline-flex;
   flex-direction: column;
 }
 
-.standard-radio-group {
+.radio-group-vertical {
   margin: 5px 5px 5px 15px;
+}
+
+.radio-group-horizontal {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+.radio-group-horizontal > mat-radio-button {
+    margin: 15px 25px 5px 15px;
 }
 
 @keyframes fadein {

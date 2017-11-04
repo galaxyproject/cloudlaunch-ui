@@ -94,7 +94,7 @@ export class ApplianceDetailControlComponent implements OnInit {
     }
 
     onVersionChange(version: ApplicationVersion) {
-        if (version.default_cloud) {
+        if (version && version.default_cloud) {
             let default_cloud = this.getVersionConfigForCloud(version.default_cloud).cloud;
             this.targetCloudControl.setValue(default_cloud);
         }

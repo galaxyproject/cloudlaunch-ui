@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material'
 import { MatSelectModule } from '@angular/material'
 import { MatIconModule } from '@angular/material'
 import { MatTooltipModule } from '@angular/material'
+import { MatRadioModule } from '@angular/material'
 
 import { SelectModule } from 'ng2-select-compat';
 
@@ -45,6 +46,7 @@ import { CloudService } from '../shared/services/cloud.service';
         MatSelectModule,
         MatIconModule,
         MatTooltipModule,
+        MatRadioModule,
         SelectModule,
         MyProfileRoutingModule
     ],

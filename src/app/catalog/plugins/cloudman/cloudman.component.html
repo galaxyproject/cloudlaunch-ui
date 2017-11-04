@@ -34,7 +34,7 @@
     <!--  Storage Type Selection -->
     <div class="form-group full-width-container" *ngIf="!showSavedClusters">
         <label>Storage Type</label>
-        <mat-radio-group class="standard-radio-group" [formControl]="storageTypeCtrl">
+        <mat-radio-group class="radio-group-vertical" [formControl]="storageTypeCtrl">
             <mat-radio-button value="transient">Transient Instance Storage</mat-radio-button>
             <mat-radio-button value="volume">Persistent Volume Storage</mat-radio-button>
         </mat-radio-group>
