@@ -50,7 +50,7 @@
             <button *ngIf="!editMode" type="button" class="btn btn-info" (click)="addNew()"><i class="fa fa-plus"></i> Add New Credentials </button>
 
             <div *ngIf="editMode">
-                <cloud-credentials-editor [credentials]="currentObject" (onCredentialsChanged)="handleCredentialsChanged($event)"></cloud-credentials-editor>
+                <cloud-credentials-editor cloudType="azure" [credentials]="currentObject" (onCredentialsChanged)="handleCredentialsChanged($event)"></cloud-credentials-editor>
             </div>
         </div>
     </div>

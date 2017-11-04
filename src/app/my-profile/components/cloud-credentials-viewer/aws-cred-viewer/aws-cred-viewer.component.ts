@@ -27,7 +27,7 @@ export class AWSCredViewerComponent implements OnInit {
 
     ngOnInit() {
         this.editMode = false;
-        this.currentObject = null;
+        this.currentObject = new AWSCredentials();
     }
 
     groupBy(list: any) {

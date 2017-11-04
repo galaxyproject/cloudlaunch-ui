@@ -3,9 +3,9 @@ import { Cloud } from './cloud';
 export class Credentials {
     id: string;
     name: string;
-    text: string; // satisfy ng2-select
     default: boolean;
     cloud: Cloud;
+    cloud_id: string; // only used when saving new record
 }
 
 export class AWSCredentials extends Credentials {

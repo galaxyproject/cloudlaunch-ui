@@ -27,7 +27,7 @@ export class AzureCredViewerComponent implements OnInit {
 
     ngOnInit() {
         this.editMode = false;
-        this.currentObject = null;
+        this.currentObject = new AzureCredentials();
     }
 
     groupBy(list: any) {

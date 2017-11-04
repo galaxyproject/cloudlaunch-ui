@@ -27,7 +27,7 @@ export class OpenStackCredViewerComponent implements OnInit {
 
     ngOnInit() {
         this.editMode = false;
-        this.currentObject = null;
+        this.currentObject = new OpenStackCredentials();
     }
 
     groupBy(list: any) {

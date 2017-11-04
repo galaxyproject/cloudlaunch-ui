@@ -9,6 +9,8 @@ import {
     NG_VALIDATORS,
     Validator
 } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 // models
 import { Cloud } from '../../../shared/models/cloud';
@@ -43,28 +45,26 @@ enum CredentialsType {
 export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAccessor, Validator {
     
     public credentialsType = CredentialsType;
-    credentialsSelectionForm: FormGroup;
     public errorMessage: string;
-    _currentCloud: Cloud;
-    storedCredentials: Credentials[] = [];
-    selectedCredentials: Credentials;
-    storedCredentialsHelp: string = 'Select a target cloud first';
+    storedCredentials: Credentials[];
 
     @Input()
     set cloud(cloud: Cloud) {
-        this._currentCloud = cloud;
-        this.getStoredCredentials(cloud, null);
+        this.cloudCtrl.patchValue(cloud);
     }
-    get cloud() { return this._currentCloud; }
+    get cloud() { return this.cloudCtrl.value; }
     
     @Output()
     onCredentialsChanged = new EventEmitter<Credentials>();
 
     // Form Controls
-    ctrl_credentials_type: FormControl = new FormControl(CredentialsType.TEMPORARY, Validators.required);
-    ctrl_stored_credentials: FormControl = new FormControl('');
-    ctrl_temporary_credentials: FormControl = new FormControl('');
+    credentialsSelectionForm: FormGroup;
+    credTypeCtrl: FormControl = new FormControl(CredentialsType.SAVED, Validators.required);
+    storedCredCtrl: FormControl = new FormControl('');
+    tempCredCtrl: FormControl = new FormControl('');
     
+    // Disconnected Form Controls
+    cloudCtrl: FormControl = new FormControl('');
 
     // implementation of ControlValueAccessor
 
@@ -76,12 +76,10 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     // this is the initial value set to the component
     public writeValue(obj: any) {
         if (obj && obj.id) {
-            this.ctrl_credentials_type.setValue(CredentialsType.SAVED);
-            this.ctrl_stored_credentials.patchValue(obj);
+            this.storedCredCtrl.patchValue(obj);
         }
         else {
-            this.ctrl_credentials_type.setValue(CredentialsType.TEMPORARY);
-            this.ctrl_temporary_credentials.patchValue(obj);
+            this.tempCredCtrl.patchValue(obj);
         }
     }
 
@@ -104,11 +102,11 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     // Begin: implementation of Validator interface
     public validate(c: FormControl) {
         // Delegate to form
-        if (this.ctrl_credentials_type.value == CredentialsType.SAVED &&
-            this.ctrl_stored_credentials.valid)
+        if (this.credTypeCtrl.value == CredentialsType.SAVED &&
+            this.storedCredCtrl.valid)
             return null;
-        else if (this.ctrl_credentials_type.value == CredentialsType.TEMPORARY &&
-            this.ctrl_temporary_credentials.valid)
+        else if (this.credTypeCtrl.value == CredentialsType.TEMPORARY &&
+            this.tempCredCtrl.valid)
             return null;
         else
             return { 'credentials_selector': 'invalid' };
@@ -120,26 +118,33 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
         private _cloudService: CloudService,
         fb: FormBuilder) {
         this.credentialsSelectionForm = fb.group({
-            'credential_type': this.ctrl_credentials_type,
-            'credentials': this.ctrl_stored_credentials,
-            'temporary_credentials': this.ctrl_temporary_credentials,
+            'credential_type': this.credTypeCtrl,
+            'credentials': this.storedCredCtrl,
+            'temporary_credentials': this.tempCredCtrl,
         });
-        this.ctrl_credentials_type.valueChanges.subscribe(data => { this.handleCredentialChange(); });
-        this.ctrl_stored_credentials.valueChanges.subscribe(data => { this.handleCredentialChange(); });
-        this.ctrl_temporary_credentials.valueChanges.subscribe(data => { this.handleCredentialChange(); });
+        this.credTypeCtrl.valueChanges.subscribe(data => this.handleCredentialChange());
+        this.storedCredCtrl.valueChanges.subscribe(data => this.handleCredentialChange());
+        this.tempCredCtrl.valueChanges.subscribe(data => this.handleCredentialChange());
+        this.cloudCtrl.valueChanges.subscribe(cloud => this.retrieveStoredCredentials(cloud, null));
+
+    }
+
+    isSameCredential(c1: Credentials, c2: Credentials) : boolean {
+        return c1 && c2 && c1.id == c2.id;
     }
 
     ngOnInit() {
+        // Trigger initial fetch of creds
+        this.cloudCtrl.updateValueAndValidity();
     }
 
     handleCredentialChange() {
-        if (this.ctrl_credentials_type.value == CredentialsType.SAVED)
-            this.notifyCredentialsChanged(this.ctrl_stored_credentials.value);
+        if (this.credTypeCtrl.value == CredentialsType.SAVED)
+            this.notifyCredentialsChanged(this.storedCredCtrl.value);
         else {
-            this.notifyCredentialsChanged(this.ctrl_temporary_credentials.value);
+            this.notifyCredentialsChanged(this.tempCredCtrl.value);
         }
     }
-
 
     notifyCredentialsChanged(creds: Credentials) {
         this.propagateChange(creds);
@@ -149,53 +154,39 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     handleTempCredChange(creds: Credentials) {
         if (creds && creds.id) {
             // Has an id, must have been saved to profile
-            this.getStoredCredentials(creds.cloud, creds);
+            this.retrieveStoredCredentials(creds.cloud, creds);
         }
         else
-            this.ctrl_temporary_credentials.setValue(creds);
+            this.tempCredCtrl.setValue(creds);
     }
 
-    getStoredCredentials(cloud: Cloud, highlight_creds: Credentials) {
-        this.storedCredentialsHelp = 'Retrieving stored credentials...';
-        this.storedCredentials = [];
+    retrieveStoredCredentials(cloud: Cloud, selectedCreds: Credentials) {
         this._profileService.getCredentialsForCloud(cloud.slug)
-            .subscribe(creds => this.processStoredCredentials(creds, highlight_creds),
-            error => this.errorMessage = <any>error,
-            () => { this.storedCredentialsHelp = 'Select Credentials'; });
+            .subscribe(creds => this.handleRetrievedCredentials(creds, selectedCreds),
+            error => this.errorMessage = <any>error);
     }
 
-    getSelectedCredentials() {
-        if (this.ctrl_stored_credentials.value) {
-            return [this.ctrl_stored_credentials.value];
-        }
-        return null;
-    }
-
-    processStoredCredentials(creds: Credentials[], highlight_creds: Credentials) {
-        if (creds)
-            this.storedCredentials = creds.map((c: any) => { c.text = c.name; return c; });
-        if (this.storedCredentials && this.storedCredentials.length > 0) { // Activate the correct tab
-            this.ctrl_credentials_type.setValue(CredentialsType.SAVED);
-            if (highlight_creds) {
-                highlight_creds.text = highlight_creds.name; // Adjustments to keep ng2 select happy
-                this.ctrl_stored_credentials.setValue(highlight_creds);
-            }
+    handleRetrievedCredentials(creds: Credentials[], selectedCreds: Credentials) {
+        this.storedCredentials = creds;
+        if (creds && creds.length > 0) { // Activate the correct tab
+            this.credTypeCtrl.setValue(CredentialsType.SAVED);
+            this.credTypeCtrl.enable();
+            if (selectedCreds)
+                this.storedCredCtrl.setValue(selectedCreds);
             else {
-                let defaultCreds = this.storedCredentials.filter(c => c.default === true);
+                let defaultCreds = creds.filter(c => c.default === true);
                 if (defaultCreds)
-                    this.ctrl_stored_credentials.setValue(defaultCreds[0]);
+                    this.storedCredCtrl.setValue(defaultCreds[0]);
+                else if (creds.length == 1)
+                    this.storedCredCtrl.setValue(creds[0]);
             }
         } else {
-            this.ctrl_credentials_type.setValue(CredentialsType.TEMPORARY);
-            this.ctrl_stored_credentials.patchValue(null);
+            this.credTypeCtrl.setValue(CredentialsType.TEMPORARY);
+            // User has no saved credentials, so disable the tab
+            this.credTypeCtrl.disable();
+            this.tempCredCtrl.patchValue(null)
+            this.storedCredCtrl.patchValue(null);
         }
-    }
-
-    onCredentialsSelect(creds: Credentials) {
-        if (this.storedCredentials && creds) {
-            creds = this.storedCredentials.filter(c => c.id === creds.id)[0];
-        }
-        this.ctrl_stored_credentials.setValue(creds);
     }
 
 }
