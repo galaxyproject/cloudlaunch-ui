@@ -141,25 +141,29 @@ export class ApplianceDetailControlComponent implements OnInit {
         d.name = formValues['name'];
         d.application = formValues['application'].slug;
         d.application_version = formValues['application_version'].version;
-        d.target_cloud = formValues['target_cloud'].id;
+        d.target_cloud = formValues['target_cloud'].slug;
         d.config_app = formValues['config_app'];
         return d;
     }
 
     handleErrors(errors) {
         this.submitPending = false;
+        console.log("Error occurd!!", errors)
         if (errors) {
             if (errors.hasOwnProperty("error")) {
                 this.errorMessage = `${errors.error}`;
             }
-
-            for (let err of errors) {
-                alert(err);
-                //this.applianceLaunchForm.controls[error].setErrors({ remote: error });
+            else {
+                // Validation responses such as: {"target_cloud":["This field is required."]}
+                this.errorMessage = "";
+                for (let err in errors) {
+                    this.errorMessage += `${err}: ${errors[err]} `;
+                    this.applianceLaunchForm.controls[err].setErrors({ remote: errors[err] });
+                }
             }
         }
         else {
-            this.errorMessage = `${errors.reasonPhrase} (${errors.code})`;
+            this.errorMessage = `An unknown error occurred. No message was received from the server.`;
         }
     }
 
