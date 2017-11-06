@@ -11,10 +11,7 @@ import { MatSelectModule } from '@angular/material'
 import { MatRadioModule } from '@angular/material'
 import { MatInputModule } from '@angular/material'
 
-import { SelectModule } from 'ng2-select-compat';
-
 import { LayoutModule } from '../shared/layout.module';
-
 import { CatalogListComponent } from './components/catalog-list/catalog-list.component';
 import { CatalogPageComponent } from './components/catalog-page/catalog-page.component';
 import { ApplianceDetailPageComponent } from './components/appliance-detail-page/appliance-detail-page.component';
@@ -45,7 +42,6 @@ import { ProfileService } from '../shared/services/profile.service';
         MatSelectModule,
         MatRadioModule,
         MatInputModule,
-        SelectModule,
         CatalogRoutingModule,
         MyProfileModule,
         PluginsModule

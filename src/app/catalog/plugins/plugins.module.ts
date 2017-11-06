@@ -18,7 +18,6 @@ import { CloudManConfigComponent } from './cloudman/cloudman.component'
 import { GVLConfigComponent } from './gvl/gvl.component'
 import { DockerConfigComponent } from './docker/docker.component'
 import { DockerFileEditorComponent } from './docker/components/docker-file-editor.component'
-import { SelectModule } from 'ng2-select-compat';
 import { MarkdownModule } from 'angular2-markdown';
 
 @NgModule({
@@ -36,7 +35,6 @@ import { MarkdownModule } from 'angular2-markdown';
         MatCheckboxModule,
         MatTooltipModule,
         LayoutModule,
-        SelectModule,
         MarkdownModule
     ],
     declarations: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,

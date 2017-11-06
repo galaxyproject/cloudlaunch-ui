@@ -9,8 +9,6 @@ import { MatIconModule } from '@angular/material'
 import { MatTooltipModule } from '@angular/material'
 import { MatRadioModule } from '@angular/material'
 
-import { SelectModule } from 'ng2-select-compat';
-
 import { LayoutModule } from '../shared/layout.module';
 import { MyProfileRoutingModule } from './my-profile-routing.module';
 
@@ -47,7 +45,6 @@ import { CloudService } from '../shared/services/cloud.service';
         MatIconModule,
         MatTooltipModule,
         MatRadioModule,
-        SelectModule,
         MyProfileRoutingModule
     ],
     declarations: [
