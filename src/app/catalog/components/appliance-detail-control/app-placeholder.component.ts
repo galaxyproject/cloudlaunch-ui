@@ -1,6 +1,6 @@
 import { Component, ComponentRef, ViewContainerRef, ViewChild } from '@angular/core';
 import { ComponentFactoryResolver } from '@angular/core/src/linker/component_factory_resolver';
-import { JitCompilerFactory } from '@angular/compiler';
+import { CompilerFactory } from '@angular/core';
 
 declare var System: any;
 
@@ -57,7 +57,7 @@ export class AppPlaceHolderComponent {
     }
 
     constructor(
-        private viewContainerRef: ViewContainerRef) {
+        private viewContainerRef: ViewContainerRef, private compilerFactory: CompilerFactory) {
     }
 
     private reloadComponentIfNeeded(componentPath: string, componentName: string) {
@@ -80,7 +80,7 @@ export class AppPlaceHolderComponent {
                 return module[moduleName];
             })
             .then((type: any) => {
-                let compiler = new JitCompilerFactory([{useDebug: false, useJit: true}]).createCompiler();
+                let compiler = this.compilerFactory.createCompiler();
                 return compiler.compileModuleAndAllComponentsAsync(type)
             })
             .then((moduleWithFactories => {

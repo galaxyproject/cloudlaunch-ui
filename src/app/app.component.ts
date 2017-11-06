@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router, NavigationEnd, Event as NavigationEvent } from '@angular/router';
 import { AppSettings } from './app.settings'
 import { LoginService } from './login/services/login/login.service';
-import 'rxjs/add/operator/filter';
 import { User } from './shared/models/user';
 
 
