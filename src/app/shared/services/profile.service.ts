@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
-import { CLAuthHttp } from '../../login/utils/cloudlaunch-http';
 import { AppSettings } from '../../app.settings';
 import { UserProfile } from '../models/profile';
 import { Credentials } from '../models/profile';
@@ -21,11 +20,10 @@ export class ProfileService {
     private _creds_url_azure = `${this._profile_url}credentials/azure/`;
     private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/infrastructure/clouds/`;
 
-    constructor(private _http: CLAuthHttp) { }
+    constructor(private http: HttpClient) { }
 
     public getProfile(): Observable<UserProfile> {
-        return this._http.get(this._profile_url)
-            .map(response => response.json());
+        return this.http.get<UserProfile>(this._profile_url);
     }
 
     public getCredentialsForCloud(cloud_id: string): Observable<Credentials[]> {
@@ -34,88 +32,114 @@ export class ProfileService {
     }
 
     public saveCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {
-        let body = JSON.stringify(creds);
-        return this._http.put(`${this._creds_url_aws}${creds.id}/`, body)
-            .map(response => response.json())
+        return this.http.put<AWSCredentials>(`${this._creds_url_aws}${creds.id}/`, creds)
             .catch(this.handleError);
     }
 
     public deleteCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {
-        return this._http.delete(`${this._creds_url_aws}${creds.id}/`)
+        return this.http.delete(`${this._creds_url_aws}${creds.id}/`)
             .catch(this.handleError);
     }
 
     public createCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {
-        let body = JSON.stringify(creds);
-        return this._http.post(`${this._creds_url_aws}`, body)
-            .map(response => response.json())
+        return this.http.post<AWSCredentials>(`${this._creds_url_aws}`, creds)
             .catch(this.handleError);
     }
     
     public verifyCredentialsAWS(creds: AWSCredentials): Observable<CredVerificationResult> {
-        let body = JSON.stringify(creds);
-        this._http.setCloudCredentials(creds);
-        return this._http.post(`${this._application_url}${creds.cloud.slug}/authenticate/`, body)
-            .map(response => response.json())
+        let headers = {};
+        addCredentialHeaders(headers, creds);
+        return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`, creds, { headers: new HttpHeaders(headers) })
             .catch(this.handleError);
     }
 
     public saveCredentialsOpenStack(creds: OpenStackCredentials): Observable<OpenStackCredentials> {
-        let body = JSON.stringify(creds);
-        return this._http.put(`${this._creds_url_openstack}${creds.id}/`, body)
-            .map(response => response.json())
+        return this.http.put<OpenStackCredentials>(`${this._creds_url_openstack}${creds.id}/`, creds)
             .catch(this.handleError);
     }
 
     public deleteCredentialsOpenStack(creds: OpenStackCredentials): Observable<OpenStackCredentials> {
-        return this._http.delete(`${this._creds_url_openstack}${creds.id}/`)
+        return this.http.delete<OpenStackCredentials>(`${this._creds_url_openstack}${creds.id}/`)
             .catch(this.handleError);
     }
 
     public createCredentialsOpenStack(creds: OpenStackCredentials): Observable<OpenStackCredentials> {
-        let body = JSON.stringify(creds);
-        return this._http.post(`${this._creds_url_openstack}`, body)
-            .map(response => response.json())
+        return this.http.post<OpenStackCredentials>(`${this._creds_url_openstack}`, creds)
             .catch(this.handleError);
     }
     
     public verifyCredentialsOpenStack(creds: OpenStackCredentials): Observable<CredVerificationResult> {
-        let body = JSON.stringify(creds);
-        this._http.setCloudCredentials(creds);
-        return this._http.post(`${this._application_url}${creds.cloud.slug}/authenticate/`, body)
-            .map(response => response.json())
+        let headers = {};
+        addCredentialHeaders(headers, creds);
+        return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`, creds, { headers: new HttpHeaders(headers) })
             .catch(this.handleError);
     }
 
     public saveCredentialsAzure(creds: AzureCredentials): Observable<AzureCredentials> {
-        let body = JSON.stringify(creds);
-        return this._http.put(`${this._creds_url_azure}${creds.id}/`, body)
-            .map(response => response.json())
+        return this.http.put<AzureCredentials>(`${this._creds_url_azure}${creds.id}/`, creds)
             .catch(this.handleError);
     }
 
     public deleteCredentialsAzure(creds: AzureCredentials): Observable<AzureCredentials> {
-        return this._http.delete(`${this._creds_url_azure}${creds.id}/`)
+        return this.http.delete<AzureCredentials>(`${this._creds_url_azure}${creds.id}/`)
             .catch(this.handleError);
     }
 
     public createCredentialsAzure(creds: AzureCredentials): Observable<AzureCredentials> {
-        let body = JSON.stringify(creds);
-        return this._http.post(`${this._creds_url_azure}`, body)
-            .map(response => response.json())
+        return this.http.post<AzureCredentials>(`${this._creds_url_azure}`, creds)
             .catch(this.handleError);
     }
 
     public verifyCredentialsAzure(creds: AzureCredentials): Observable<CredVerificationResult> {
-        let body = JSON.stringify(creds);
-        this._http.setCloudCredentials(creds);
-        return this._http.post(`${this._application_url}${creds.cloud.slug}/authenticate/`, body)
-            .map(response => response.json())
+        let headers = {};
+        addCredentialHeaders(headers, creds);
+        return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`, creds, { headers: new HttpHeaders(headers) })
             .catch(this.handleError);
     }
 
-    private handleError(error: Response) {
-        return Observable.throw(error.json() || 'Server error');
+    private handleError(err: HttpErrorResponse) {
+        console.error(err);
+        if (err.error instanceof Error) {
+            // A client-side or network error occurred. Handle it accordingly.
+            return Observable.throw(err.error.message || 'Server error');
+        } else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            return Observable.throw(err || 'Server error');
+        }
     }
-
 }
+
+export function addCredentialHeaders(headers, credentials: Credentials) {
+    if (credentials && credentials.cloud) {
+        if (credentials.id) {
+            // Must be a saved set or credentials. Retrieve using ID
+            headers['cl-credentials-id'] = credentials.id;
+            return;
+        }
+        // Must be an unsaved set of credentials
+        switch (credentials.cloud.cloud_type) {
+            case 'openstack':
+                let os_creds = <OpenStackCredentials>credentials;
+                headers['cl-os-username'] = os_creds.username;
+                headers['cl-os-password'] = os_creds.password;
+                headers['cl-os-project-name'] = os_creds.project_name;
+                headers['cl-os-project-domain-name'] = os_creds.project_domain_name;
+                headers['cl-os-user-domain-name'] = os_creds.user_domain_name;
+                break;
+            case 'aws':
+                let aws_creds = <AWSCredentials>credentials;
+                headers['cl-aws-access-key'] = aws_creds.access_key;
+                headers['cl-aws-secret-key'] = aws_creds.secret_key;
+                break;
+            case 'azure':
+                let azure_creds = <AzureCredentials>credentials;
+                headers['cl-azure-subscription-id'] = azure_creds.subscription_id;
+                headers['cl-azure-client-id'] = azure_creds.client_id;
+                headers['cl-azure-secret'] = azure_creds.secret;
+                headers['cl-azure-tenant'] = azure_creds.tenant;
+                break;
+        }
+    }
+}
+

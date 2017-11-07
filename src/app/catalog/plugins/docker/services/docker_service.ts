@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { CLAuthHttp } from '../../../../login/utils/cloudlaunch-http';
 import { AppSettings } from '../../../../app.settings';
 import { DockerRepositoryOverview } from '../models/docker';
 import { DockerRepositoryDetail } from '../models/docker';
@@ -11,30 +10,30 @@ import { PortMapping } from '../models/docker';
 import { EnvironmentVariable } from '../models/docker';
 import { VolumeMapping } from '../models/docker';
 import { DockerFileParser } from '../utils/docker_parser';
+import { QueryResult } from '../../../../shared/models/query';
 
 @Injectable()
 export class DockerService {
-    constructor(private _http: CLAuthHttp) { }
+    constructor(private http: HttpClient) { }
 
     docker_repo_url = 'https://hub.docker.com/v2/';
     cors_proxy_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/cors_proxy/`;
 
-    searchDockerHub(term: string) : Observable<Array<DockerRepositoryOverview>> {
+    searchDockerHub(term: string) : Observable<DockerRepositoryOverview[]> {
         let url = `${this.docker_repo_url}search/repositories/?query=${term}&page_size=20`;
-        return this._http.get(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
-            .map(response => <Array<DockerRepositoryOverview>>response.json().results)
-            .catch(error => Observable.throw(error.json().error || 'Server error'));
+        return this.http.get<QueryResult<DockerRepositoryOverview>>(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
+            .map(data => data.results)
+            .catch(error => Observable.throw(error.error || 'Server error'));
     }
 
-    getRepoDetail(repo: DockerRepositoryOverview) {
+    getRepoDetail(repo: DockerRepositoryOverview) : Observable<DockerRepositoryDetail> {
         let url = '';
         if (repo.is_official)
             url = `${this.docker_repo_url}repositories/library/${repo.repo_name}`;
         else
             url = `${this.docker_repo_url}repositories/${repo.repo_name}`;
-        return this._http.get(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
-            .map(response => <Array<DockerRepositoryDetail>>response.json())
-            .catch(error => Observable.throw(error.json().error || 'Server error'));
+        return this.http.get<DockerRepositoryDetail>(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
+            .catch(error => Observable.throw(error.error || 'Server error'));
     }
 
     getDockerFile(repo: DockerRepositoryOverview) {
@@ -43,9 +42,9 @@ export class DockerService {
             url = `${this.docker_repo_url}repositories/library/${repo.repo_name}/dockerfile`;
         else
             url = `${this.docker_repo_url}repositories/${repo.repo_name}/dockerfile`;
-        return this._http.get(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
-            .map(response => <Array<DockerRepositoryDetail>>response.json().contents)
-            .catch(error => Observable.throw(error.json().error || 'Server error'));
+        return this.http.get(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
+            .map(data => data['contents'])
+            .catch(error => Observable.throw(error.error || 'Server error'));
     }
 
     parseDockerFile(content: string) : DockerRunConfiguration {

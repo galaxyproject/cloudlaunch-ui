@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
 
-import { CLAuthHttp } from '../../../login/utils/cloudlaunch-http';
 import { AppPlaceHolderComponent } from './app-placeholder.component';
 
 // Models
@@ -43,16 +42,14 @@ export class ApplianceDetailControlComponent implements OnInit {
     targetCloudControl = new FormControl('', Validators.required);
 
     public errorMessage: string;
-    private submitPending: boolean = false;
+    public submitPending: boolean = false;
 
     constructor(
         fb: FormBuilder,
         private _router: Router,
         private _applicationService: ApplicationService,
         private _deploymentService: DeploymentService,
-        private _loginService: LoginService,
-        private _http: CLAuthHttp
-        ) {
+        private _loginService: LoginService) {
         this.appConfigForm = fb.group({});
         this.applianceLaunchForm = fb.group({
             'name': this.nameControl,
@@ -124,7 +121,7 @@ export class ApplianceDetailControlComponent implements OnInit {
 
     /* Set global request credentials based on user entered data */
     setRequestCredentials(creds: Credentials) {
-        this._http.setCloudCredentials(creds);
+        this._loginService.setCloudCredentials(creds);
     }
 
     onSubmit(formValues: any): void {

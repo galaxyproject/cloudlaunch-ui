@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { MatSlideToggleModule } from '@angular/material'
 import { MatRadioModule } from '@angular/material'
 import { MatInputModule } from '@angular/material'
@@ -25,7 +24,6 @@ import { MarkdownModule } from 'angular2-markdown';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        HttpModule,
         MatSlideToggleModule,
         MatRadioModule,
         MatInputModule,
