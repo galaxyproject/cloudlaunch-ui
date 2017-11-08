@@ -1,4 +1,4 @@
-import { Component, ComponentRef, ViewContainerRef, ViewChild } from '@angular/core';
+import { Component, ComponentRef, ViewContainerRef, ViewChild, OnDestroy } from '@angular/core';
 import { ComponentFactoryResolver } from '@angular/core/src/linker/component_factory_resolver';
 import { CompilerFactory } from '@angular/core';
 
@@ -11,7 +11,7 @@ import { Cloud } from '../../../shared/models/cloud';
     template: `<span #content></span>`,
     inputs: ['initialConfig', 'componentPath', 'componentName', 'cloud'],
 })
-export class AppPlaceHolderComponent {
+export class AppPlaceHolderComponent implements OnDestroy {
     _cloud: Cloud;
     _initialConfig: any;
     _componentPath: string;
@@ -92,4 +92,9 @@ export class AppPlaceHolderComponent {
             }));
     }
 
+    ngOnDestroy() {
+        if(this._currentComponent) {
+          this._currentComponent.destroy();
+        }
+    }
 }

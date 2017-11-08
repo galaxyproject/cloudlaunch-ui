@@ -85,11 +85,11 @@ export class CloudService {
         console.error(err);
         if (err.error instanceof Error) {
             // A client-side or network error occurred. Handle it accordingly.
-            return Observable.throw(err.error.message || 'Server error');
+            return Observable.throw(err.message || err.error.message || 'Client error');
         } else {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
-            return Observable.throw(err || 'Server error');
+            return Observable.throw(err.error || String(err) || 'Server error');
         }
     }
 }
