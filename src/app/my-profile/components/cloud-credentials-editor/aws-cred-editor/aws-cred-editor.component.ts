@@ -33,6 +33,7 @@ const AWS_CREDENTIALS_CONTROL_VALIDATOR = {
 })
 export class AWSCredEditorComponent implements ControlValueAccessor, Validator {
     awsCredentialsForm: FormGroup;
+    showPassword: boolean = false;
 
     // Form Controls
     accessKeyCtrl: FormControl = new FormControl(null, Validators.required);

@@ -10,6 +10,8 @@ import {
     Validator
 } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/shareReplay';
+import { map, mergeMap, startWith } from 'rxjs/operators';
 
 // models
 import { Cloud } from '../../../shared/models/cloud';
@@ -184,7 +186,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         // here on ngOnInit() instead of in constructor
         this.filteredCloudTypes = this.cloudTypeCtrl.valueChanges
                                     .startWith(this.cloudTypeCtrl.value)
-                                    .flatMap(cloudType => cloudObservable.map(c => this.getCloudsForType(cloudType, c)));
+                                    .mergeMap(cloudType => cloudObservable.map(c => this.getCloudsForType(cloudType, c)));
     }
 
     isSameCloud(c1: Cloud, c2: Cloud) : boolean {

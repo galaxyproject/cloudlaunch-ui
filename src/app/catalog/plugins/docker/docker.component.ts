@@ -7,6 +7,9 @@ import {
     FormGroupDirective } from '@angular/forms';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { debounceTime, switchMap } from 'rxjs/operators';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 import { BasePluginComponent } from '../base-plugin.component';
 import { AppSettings } from '../../../app.settings';

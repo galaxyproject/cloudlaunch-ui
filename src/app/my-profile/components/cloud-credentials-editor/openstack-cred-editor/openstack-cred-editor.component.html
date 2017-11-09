@@ -14,10 +14,10 @@
         <!-- Password -->
         <div class="form-group full-width-container">
             <mat-form-field>
-                <input matInput id="id_password" [type]="show ? 'text' : 'password'"
+                <input matInput id="id_password" [type]="showPassword ? 'text' : 'password'"
                     placeholder="What is your OpenStack API Password?"
                     formControlName="password" />
-                <mat-icon matSuffix (click)="show = !show" matTooltip="show/hide password">{{show ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-icon matSuffix (click)="showPassword = !showPassword" matTooltip="show/hide password">{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 <mat-error *ngIf="passwordCtrl.hasError('required')">Password is <strong>required</strong></mat-error>
                 <mat-hint>Your OpenStack Password can be obtained by following the instructions in the link above.</mat-hint>
             </mat-form-field>

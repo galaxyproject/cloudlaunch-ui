@@ -14,6 +14,7 @@ import { BasePluginComponent } from '../base-plugin.component';
 export class GVLConfigComponent extends BasePluginComponent {
     gvlLaunchForm: FormGroup;
     showAdvanced: boolean = false;
+    showPassword: boolean = false;
     gvlPasswordCtrl: FormControl = new FormControl(null, Validators.required);
 
     get form(): FormGroup {

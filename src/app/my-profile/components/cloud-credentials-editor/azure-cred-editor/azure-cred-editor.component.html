@@ -24,10 +24,10 @@
         <!-- Azure Secret -->
         <div class="form-group full-width-container">
             <mat-form-field>
-                <input matInput id="id_secret" [type]="show ? 'text' : 'password'"
+                <input matInput id="id_secret" [type]="showPassword ? 'text' : 'password'"
                     placeholder="What is your Azure secret key?"
                     formControlName="secret" />
-                <mat-icon matSuffix (click)="show = !show" matTooltip="show/hide secret key">{{show ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-icon matSuffix (click)="showPassword = !showPassword" matTooltip="show/hide secret key">{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 <mat-error *ngIf="secretCtrl.hasError('required')">Secret key is <strong>required</strong></mat-error>
                 <mat-hint>Your Azure Secret Key can be obtained by following the instructions in the link above.</mat-hint>
             </mat-form-field>

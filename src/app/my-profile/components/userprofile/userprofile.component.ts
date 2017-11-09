@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
-import { Observable } from 'rxjs/Rx';
 import {
     FormBuilder,
     FormGroup,

@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
-import { Observable } from 'rxjs/Rx';
 
 import { Task } from '../../../../../shared/models/task';
 

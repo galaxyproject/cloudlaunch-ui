@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/interval';
+import { map, mergeMap, startWith } from 'rxjs/operators';
+
 
 import { Deployment } from '../../../shared/models/deployment';
 import { DeploymentService } from '../../../shared/services/deployment.service';
@@ -35,7 +38,7 @@ export class DeploymentsComponent implements OnInit {
         return Observable
             .interval(5000)
             .startWith(0)
-            .flatMap(() => {
+            .mergeMap(() => {
                 return this._deploymentService.getDeployments({archived: false});
             });
     }

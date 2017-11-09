@@ -1,6 +1,6 @@
 import { Component, OnInit, trigger, transition, animate,
     style, state } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { Deployment } from '../../../shared/models/deployment';
 import { DeploymentService } from '../../../shared/services/deployment.service';

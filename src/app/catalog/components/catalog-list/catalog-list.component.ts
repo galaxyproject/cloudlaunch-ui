@@ -1,6 +1,10 @@
 import { Component, OnInit, trigger, transition, animate,
     style, state, HostListener, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/switchMap';
 
 import { Application } from '../../../shared/models/application';
 import { ApplicationService } from '../../../shared/services/application.service';

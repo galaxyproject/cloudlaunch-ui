@@ -3,6 +3,7 @@ import { Router, NavigationEnd, Event as NavigationEvent } from '@angular/router
 import { AppSettings } from './app.settings'
 import { LoginService } from './login/services/login/login.service';
 import { User } from './shared/models/user';
+import 'rxjs/add/operator/filter';
 
 
 @Component({

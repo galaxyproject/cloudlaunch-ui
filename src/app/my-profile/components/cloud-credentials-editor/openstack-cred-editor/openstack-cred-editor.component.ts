@@ -33,6 +33,7 @@ const OPENSTACK_CREDENTIALS_CONTROL_VALIDATOR = {
 })
 export class OpenStackCredEditorComponent implements ControlValueAccessor, Validator {
     openstackCredentialsForm: FormGroup;
+    showPassword: boolean = false;
 
     @Input() cloud: Cloud;
 

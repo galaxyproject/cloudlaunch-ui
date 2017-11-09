@@ -1,6 +1,7 @@
 import { Component, OnInit, trigger, transition, animate,
     style, state } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/mergeMap';
 
 // Services
 import { ApplicationService } from '../../../shared/services/application.service';
@@ -40,7 +41,7 @@ export class ApplianceDetailPageComponent implements OnInit {
     ngOnInit() {
         this._route.params
             .map(params => params['slug'])
-            .flatMap(slug => this._applicationService.getApplication(slug))
+            .mergeMap(slug => this._applicationService.getApplication(slug))
             .subscribe(application => this.application = application);
     }
 }

@@ -33,6 +33,7 @@ const AZURE_CREDENTIALS_CONTROL_VALIDATOR = {
 })
 export class AzureCredEditorComponent implements ControlValueAccessor, Validator {
     azureCredentialsForm: FormGroup;
+    showPassword: boolean = false;
 
     // Form Controls
     subscriptionIdCtrl: FormControl = new FormControl(null, Validators.required);

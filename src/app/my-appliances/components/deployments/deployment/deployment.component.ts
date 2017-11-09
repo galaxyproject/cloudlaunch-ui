@@ -1,6 +1,11 @@
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild, Input, HostBinding } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { map, mergeMap, filter, startWith } from 'rxjs/operators';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/mergeMap';
 
 import { Deployment } from '../../../../shared/models/deployment';
 import { Credentials } from '../../../../shared/models/profile';
@@ -65,7 +70,7 @@ export class DeploymentComponent implements OnInit {
 
     initializeCloudCredentialsObservable(deployment: Deployment): Observable<Credentials> {
         return this._profileService.getCredentialsForCloud(deployment.target_cloud)
-            .flatMap(credentialsArray => Observable.from(credentialsArray))
+            .mergeMap(credentialsArray => Observable.from<Credentials>(credentialsArray))
             .filter(credential => credential.default);
     }
 
@@ -128,7 +133,7 @@ export class DeploymentComponent implements OnInit {
 
     initializeLaunchTask() {
         this._deploymentService.getTasks(this.deployment.id)
-            .flatMap(tasksArray => Observable.from(tasksArray))
+            .mergeMap(tasksArray => Observable.from(tasksArray))
             .filter(task => task.action == 'LAUNCH')
             .subscribe(launchTask => this.launchTask = launchTask);
     }

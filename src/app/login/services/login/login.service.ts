@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
+import 'rxjs/add/operator/do';
 import { ɵgetDOM as getDOM } from '@angular/platform-browser';
 
 import { AppSettings } from '../../../app.settings';

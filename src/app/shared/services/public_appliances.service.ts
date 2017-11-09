@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { AppSettings } from '../../app.settings';
