@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/do';
-import { ɵgetDOM as getDOM } from '@angular/platform-browser';
 
 import { AppSettings } from '../../../app.settings';
 import { User } from '../../../shared/models/user';
@@ -96,7 +95,7 @@ export class LoginService {
         this.credentials = credentials;
     }
 
-    public getDefaultHeaders() {
+    public getDefaultHeaders(): Object {
         let headers = {};
         if (sessionStorage.getItem('token') || localStorage.getItem('token')) {
             let auth_header = "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
@@ -104,12 +103,6 @@ export class LoginService {
         }
 
         addCredentialHeaders(headers, this.credentials);
-
-        headers['X-CSRFToken'] = this.getCookie('csrftoken');
         return headers;
-    }
-
-    getCookie(name) {
-        return getDOM().getCookie(name);
     }
 }

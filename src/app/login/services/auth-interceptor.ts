@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
     let loginService = this.injector.get(LoginService);
     // Get the auth header from the service.
     const authHeaders = loginService.getDefaultHeaders();
-    // Preserve existing headers and add new ones
+    // Preserve existing headers and add missing ones
     let missingHeaders = {};
     for (let key in authHeaders) {
         if (!req.headers.has(key))
