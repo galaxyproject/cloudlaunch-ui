@@ -9,7 +9,7 @@
                 <mat-select id="id_saved_clusters"
                     [formControl]="restartClusterCtrl">
                     <mat-option>None</mat-option>
-                    <mat-option *ngFor="let cluster of savedClusters" [value]="cluster">
+                    <mat-option *ngFor="let cluster of savedClusters" [value]="cluster.bucket_name">
                         {{ cluster.cluster_name }}
                     </mat-option>
                 </mat-select>
