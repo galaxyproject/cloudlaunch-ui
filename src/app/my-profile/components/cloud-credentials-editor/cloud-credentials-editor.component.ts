@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/shareReplay';
+import 'rxjs/add/operator/distinctUntilChanged';
 import { map, mergeMap, startWith } from 'rxjs/operators';
 
 // models
@@ -286,8 +287,14 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     cancelUseCredentials(creds: Credentials, error: string, suppressEvent?: boolean) {
         this.useCredsIsPressed = false;
         this.credentialsForm.enable();
-        this.nameCtrl.disable();
-        this.credentialTermsCtrl.disable();
+        if (this.saveIsOptional) {
+            this.nameCtrl.disable();
+            this.credentialTermsCtrl.disable();
+        }
+        else {
+            this.nameCtrl.enable();
+            this.credentialTermsCtrl.enable();
+        }
         if (!suppressEvent)
             this.handleCredentialsFinalised(null);
     }
