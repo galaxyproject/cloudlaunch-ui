@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginService } from '../../services/login/login.service';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AppSettings } from '../../../app.settings';
 
 @Component({
@@ -9,23 +8,13 @@ import { AppSettings } from '../../../app.settings';
     styleUrls: ['./login-box.component.css']
 })
 export class LoginBoxComponent implements OnInit {
-    public email: string;
-    public password: string;
-    public rememberMe: boolean = false;
-    public errorMessage: string;
+    redirectUrl: string;
 
-    constructor(
-        private _router: Router,
-        private _loginService: LoginService) { }
-
-    ngOnInit() {
+    constructor(private route: ActivatedRoute, private router: Router) {
     }
 
-    onSubmit() {
-        this.errorMessage = null;
-        this._loginService.login(this.email, this.password, this.rememberMe).subscribe(
-            data => this._router.navigate(['/catalog']),
-            error => this.errorMessage = <any>error);
+    ngOnInit() {
+        this.redirectUrl = this.route.snapshot.queryParams['next'] || '/catalog';
     }
 
     getApiRoot(): string {
