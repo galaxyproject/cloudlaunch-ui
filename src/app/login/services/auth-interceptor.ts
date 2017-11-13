@@ -33,16 +33,18 @@ export class AuthInterceptor implements HttpInterceptor {
         // Clone the request to add the new headers.
         const authReq = req.clone({ setHeaders: missingHeaders });
         // Pass on the cloned request instead of the original request.
-        return next.handle(authReq).do(
-            (event: HttpEvent<any>) => {},
-            (err: any) => {
-                // Redirect to login page if any response returns an Unauthorized or Forbidden
-                if (err instanceof HttpErrorResponse && authReq.url != '/api/v1/auth/user/') {
-                    if (err.status === 401 || err.status === 403) {
-                        this.router.navigate(['/auth/login'], { queryParams: { next: this.router.routerState.snapshot.url }});
-                    }
-                }
-            }
-        );
+        return next.handle(authReq);
+//
+//        .do(
+//            (event: HttpEvent<any>) => {},
+//            (err: any) => {
+//                // Redirect to login page if any response returns an Unauthorized or Forbidden
+//                if (err instanceof HttpErrorResponse && authReq.url != '/api/v1/auth/user/') {
+//                    if (err.status === 401 || err.status === 403) {
+//                        this.router.navigate(['/auth/login'], { queryParams: { next: this.router.routerState.snapshot.url }});
+//                    }
+//                }
+//            }
+//        );
     }
 }

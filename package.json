@@ -28,7 +28,6 @@
     "@angular/platform-server": "^5.0.0",
     "@angular/router": "^5.0.0",
     "angular2-markdown": "^1.6.0",
-    "arrive": "^2.4.1",
     "bootstrap-material-design": "^0.5.10",
     "core-js": "^2.5.0",
     "moment": "^2.18.1",
