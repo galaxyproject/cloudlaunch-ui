@@ -6,6 +6,9 @@ import {
     FormGroupDirective,
     Validators
 } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/combineLatest';
+import 'rxjs/add/operator/switchMap';
 
 import {
     Cloud,
@@ -39,19 +42,11 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     showAdvanced: boolean = false;
 
     CLOUD_SELECTION_HELP: string = 'Select a target cloud first';
-    instanceTypes: InstanceType[] = [];
     instanceTypeHelp: string = this.CLOUD_SELECTION_HELP;
-    regions: Region[] = [];
-    regionHelp: string = this.CLOUD_SELECTION_HELP;
-    placements: PlacementZone[] = [];
     placementHelp: string = this.CLOUD_SELECTION_HELP;
-    keypairs: KeyPair[] = [];
     keypairsHelp: string = this.CLOUD_SELECTION_HELP;
-    networks: Network[] = [];
     networksHelp: string = this.CLOUD_SELECTION_HELP;
-    subnets: SubNet[] = [];
     subnetsHelp: string = this.CLOUD_SELECTION_HELP;
-    staticIPs: StaticIP[] = [];
     staticIPHelp: string = this.CLOUD_SELECTION_HELP;
 
     // Form Controls
@@ -64,6 +59,14 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     networkCtrl = new FormControl('');
     subnetCtrl = new FormControl('');
     staticIpCtrl = new FormControl('');
+
+    // Observables
+    placementObservable: Observable<PlacementZone[]>;
+    instanceTypeObservable: Observable<InstanceType[]>;
+    keypairObservable: Observable<KeyPair[]>;
+    networkObservable: Observable<Network[]>;
+    staticIpObservable: Observable<StaticIP[]>;
+    subnetObservable: Observable<SubNet[]>;
 
     get form(): FormGroup {
         return this.cloudLaunchForm;
@@ -91,9 +94,45 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
                 'volumeIOPS': [''],
             })
         });
-        this.cloudCtrl.valueChanges.subscribe(cloud => { this.onCloudChange(cloud); });
-        this.networkCtrl.valueChanges.subscribe(network => { this.onNetworkChange(network); });
-        this.rootStorageTypeCtrl.valueChanges.subscribe(storageType => { this.onRootStorageTypeChange(storageType); });
+        // share replay ensures that subscribers who join at any time get the last emitted value immediately
+        let cloudObservable = this.cloudCtrl.valueChanges.do(cloud => { this.onCloudChange(cloud); }).shareReplay(1);
+        // Properties dependent on cloud
+        this.placementObservable = cloudObservable
+                                      .do(cloud => { this.placementHelp = 'Retrieving placement options...'; })
+                                      .switchMap(cloud => this._cloudService.getPlacementZones(cloud.slug, cloud.region_name))
+                                        .do(placement => { this.placementHelp = 'In which placement zone would you like to launch this appliance?'; },
+                                            error => { this.errorMessage = <any>error; });
+        this.instanceTypeObservable = cloudObservable
+                                         .do(cloud => { this.instanceTypeHelp = 'Retrieving instance types...'; })
+                                         .switchMap(cloud => this._cloudService.getInstanceTypes(cloud.slug))
+                                         .do(vmType => { this.instanceTypeHelp = 'What type of virtual hardware would you like to use?'; },
+                                             error => { this.errorMessage = <any>error; });
+        this.keypairObservable = cloudObservable
+                                    .do(cloud => { this.keypairsHelp = 'Retrieving keypairs...'; })
+                                    .switchMap(cloud => this._cloudService.getKeyPairs(cloud.slug))
+                                    .do(kp => { this.keypairsHelp = 'Which keypair would you like to use for this Virtual Machine?'; },
+                                        error => { this.errorMessage = <any>error; });
+        this.networkObservable = cloudObservable
+                                    .do(cloud => { this.networksHelp = 'Retrieving list of networks...';
+                                                   this.subnetsHelp = 'Select a network first';})
+                                    .switchMap(cloud => this._cloudService.getNetworks(cloud.slug))
+                                    .do(net => { this.networksHelp = 'In which network would you like to place this Virtual Machine?'; },
+                                        error => { this.errorMessage = <any>error; });
+        this.staticIpObservable = cloudObservable
+                                     .do(cloud => { this.staticIPHelp = 'Retrieving static IPs ...'; })
+                                     .switchMap(cloud => this._cloudService.getStaticIPs(cloud.slug))
+                                     .do(fip => { this.staticIPHelp = 'What static/floating IP would you like to assign to this Virtual Machine?'; },
+                                         error => { this.errorMessage = <any>error; });
+        // properties dependent on network
+        let networkObservable = this.networkCtrl.valueChanges
+                                    .do(network => { this.subnetsHelp = 'Retrieving list of subnets...'; this.subnetCtrl.patchValue(null) })
+                                    .shareReplay(1);
+        this.subnetObservable = Observable.combineLatest(cloudObservable, networkObservable)
+                                   .switchMap(([cloud, net_id]) => this._cloudService.getSubNets(cloud.slug, net_id))
+                                   .do(subnet => { this.subnetsHelp = 'In which subnet would you like to place this Virtual Machine?'; },
+                                       error => { this.errorMessage = <any>error; });
+        // properties dependent on storage type
+        let storageObservable = this.rootStorageTypeCtrl.valueChanges.subscribe(storageType => { this.onRootStorageTypeChange(storageType); });
     }
 
     toggleAdvanced() {
@@ -103,83 +142,9 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     onCloudChange(cloud: Cloud) {
         // Reset all form values
         this.cloudLaunchForm.reset({rootStorageType: 'instance'});
-        if (cloud) {
-            // Fetch options for the newly selected cloud
-            this.getPlacements(cloud);
-            this.getInstanceTypes(cloud);
-            this.getKeyPairs(cloud);
-            this.getNetworks(cloud);
-            this.getStaticIPs(cloud);
-        }
+        this.errorMessage = null;
         // Reapply initial config on cloud change
         this.initialConfig = this.initialConfig;
-    }
-
-    getInstanceTypes(cloud: Cloud) {
-        this.instanceTypeHelp = 'Retrieving instance types...';
-        this.instanceTypes = [];
-        this._cloudService.getInstanceTypes(cloud.slug)
-            .subscribe(
-                    instanceTypes => this.instanceTypes = instanceTypes,
-                    error => this.errorMessage = <any>error,
-                    () => { this.instanceTypeHelp = 'What type of virtual hardware would you like to use?'; });
-    }
-
-    getPlacements(cloud: Cloud) {
-        this.placementHelp = 'Retrieving placement options...';
-        this.placements = [];
-        this._cloudService.getPlacementZones(cloud.slug, cloud.region_name)
-            .subscribe(
-                    placements => this.placements = placements,
-                    error => this.errorMessage = <any>error,
-                    () => { this.placementHelp = 'In which placement zone would you like to launch this appliance?'; });
-    }
-
-    getKeyPairs(cloud: Cloud) {
-        this.keypairsHelp = 'Retrieving keypairs...';
-        this.keypairs = [];
-        this._cloudService.getKeyPairs(cloud.slug)
-            .subscribe(
-                    keypairs => this.keypairs = keypairs,
-                    error => this.errorMessage = <any>error,
-                    () => { this.keypairsHelp = 'Which keypair would you like to use for this Virtual Machine?'; });
-    }
-
-    getNetworks(cloud: Cloud) {
-        this.networksHelp = 'Retrieving list of networks...';
-        this.subnetsHelp = 'Select a network first';
-        this.networks = [];
-        this._cloudService.getNetworks(cloud.slug)
-            .subscribe(
-                    networks => this.networks = networks,
-                    error => this.errorMessage = <any>error,
-                    () => { this.networksHelp = 'In which network would you like to place this Virtual Machine?'; });
-    }
-
-    onNetworkChange(network: Network) {
-        this.subnetCtrl.patchValue(null);
-        if (this.cloud && network)
-            this.getSubnets(this.cloud, network.id);
-    }
-
-    getSubnets(cloud: Cloud, networkId: string) {
-        this.subnetsHelp = 'Retrieving list of subnets...';
-        this.subnets = [];
-        this._cloudService.getSubNets(cloud.slug, networkId)
-            .subscribe(
-                    subnets => this.subnets = subnets,
-                    error => this.errorMessage = <any>error,
-                    () => { this.subnetsHelp = 'In which subnet would you like to place this Virtual Machine?'; });
-    }
-
-    getStaticIPs(cloud: Cloud) {
-        this.staticIPHelp = 'Retrieving static IPs ...';
-        this.staticIPs = [];
-        this._cloudService.getStaticIPs(cloud.slug)
-            .subscribe(
-                    ips => this.staticIPs = ips,
-                    error => this.errorMessage = <any>error,
-                    () => { this.staticIPHelp = 'What static/floating IP would you like to assign to this Virtual Machine?'; });
     }
 
     onRootStorageTypeChange(storageType: string) {
