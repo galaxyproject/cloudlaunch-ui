@@ -118,23 +118,22 @@
                     <mat-hint>A custom image ID if you want to override the preconfigured Image ID</mat-hint>
                 </mat-form-field>
           </div>
-      
-        <ng-container *ngIf="cloud?.cloud_type === 'aws'">
+
+        <ng-container *ngIf="cloud?.cloud_type === 'aws'" formGroupName="provider_settings">
             <!-- EBS optimized selection (AWS only) -->
-            <div class="checkbox">
-                <label> <input type="checkbox" id="ebs_optimized" name="ebs_optimized"
-                    [formControl]="cloudLaunchForm.controls['provider_settings'].controls['ebsOptimised']" />
-                    If checked, use dedicated disk bandwidth (i.e., EBS-optimized)
-                </label>
+            <div class="form-group full-width-container">
+                <mat-checkbox name="ebs_optimized" formControlName="ebsOptimised" matTooltip="If checked, use dedicated disk bandwidth (i.e., EBS-optimized)">
+                    EBS Optimized
+                </mat-checkbox>
             </div>
-    
+
             <!-- Volume IOPS selection (AWS only) -->
             <!--  Add *ngIf="storageType=='volume'" once variable is propagated -->
-            <div class="form-group">
-                <label for="id_iops" class="control-label">Volume IOPS</label> <input type="number"
-                    name="volume_iops" class="form-control input-md"
-                    [formControl]="cloudLaunchForm.controls['provider_settings'].controls['volumeIOPS']" />
-                <span class="help-block"> Min: 100; max: 20000; max 30:1 IOPS to size ratio </span>
+            <div class="form-group full-width-container">
+                <mat-form-field>
+                    <input matInput type="number" placeholder="Volume IOPS" formControlName="volumeIOPS" />
+                    <mat-hint>Min: 100; max: 20000; max 30:1 IOPS to size ratio</mat-hint>
+                </mat-form-field>
             </div>
         </ng-container>
     </div>

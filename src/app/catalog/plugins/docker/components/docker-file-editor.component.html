@@ -55,11 +55,7 @@
                             <td><input id="id_vol_cont_{{ i }}" type="text" class="form-control input-md" formControlName="container_path" readonly></td>
                             <td><input id="id_vol_host_{{ i }}" type="text" class="form-control input-md" formControlName="host_path"></td>
                             <td>
-                                <div class="checkbox">
-                                    <label> <input type="checkbox" id="id_vol_writable_{{ i }}"
-                                        formControlName="read_write" />
-                                    </label>
-                                </div>
+                                <mat-checkbox id="id_vol_writable_{{ i }}" formControlName="read_write"></mat-checkbox>
                             </td>
                         </tr>
 

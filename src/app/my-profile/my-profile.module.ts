@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material'
 import { MatIconModule } from '@angular/material'
 import { MatTooltipModule } from '@angular/material'
 import { MatRadioModule } from '@angular/material'
+import { MatCheckboxModule } from '@angular/material';
 
 import { LayoutModule } from '../shared/layout.module';
 import { MyProfileRoutingModule } from './my-profile-routing.module';
@@ -45,6 +46,7 @@ import { CloudService } from '../shared/services/cloud.service';
         MatIconModule,
         MatTooltipModule,
         MatRadioModule,
+        MatCheckboxModule,
         MyProfileRoutingModule
     ],
     declarations: [

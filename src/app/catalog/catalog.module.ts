@@ -10,6 +10,8 @@ import { MatSlideToggleModule } from '@angular/material'
 import { MatSelectModule } from '@angular/material'
 import { MatRadioModule } from '@angular/material'
 import { MatInputModule } from '@angular/material'
+import { MatCheckboxModule } from '@angular/material';
+import { MatTooltipModule } from '@angular/material'
 
 import { LayoutModule } from '../shared/layout.module';
 import { CatalogListComponent } from './components/catalog-list/catalog-list.component';
@@ -42,6 +44,8 @@ import { ProfileService } from '../shared/services/profile.service';
         MatSelectModule,
         MatRadioModule,
         MatInputModule,
+        MatCheckboxModule,
+        MatTooltipModule,
         CatalogRoutingModule,
         MyProfileModule,
         PluginsModule
