@@ -95,7 +95,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
             })
         });
         // share replay ensures that subscribers who join at any time get the last emitted value immediately
-        let cloudObservable = this.cloudCtrl.valueChanges.do(cloud => { this.onCloudChange(cloud); }).shareReplay(1);
+        let cloudObservable = this.cloudCtrl.valueChanges.do(cloud => { this.onCloudChange(cloud); }).filter(c => !!c).shareReplay(1);
         // Properties dependent on cloud
         this.placementObservable = cloudObservable
                                       .do(cloud => { this.placementHelp = 'Retrieving placement options...'; })
