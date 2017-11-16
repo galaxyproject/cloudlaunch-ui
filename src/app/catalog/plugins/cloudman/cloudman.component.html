@@ -1,15 +1,15 @@
 <div [formGroup]="form">
     <!-- Fetch saved clusters -->
     <div class="form-group">
-        <button mat-raised-button color="primary" (click)=fetchSavedClusters() *ngIf="!showSavedClusters">
+        <button mat-raised-button color="primary" (click)="fetchSavedClusters()" *ngIf="!showSavedClusters">
             Fetch saved clusters
         </button>
-        <div class="full-width-container">
-            <mat-form-field *ngIf="showSavedClusters">
+        <div class="full-width-container" *ngIf="showSavedClusters">
+            <mat-form-field>
                 <mat-select id="id_saved_clusters"
                     [formControl]="restartClusterCtrl">
                     <mat-option>None</mat-option>
-                    <mat-option *ngFor="let cluster of savedClusters" [value]="cluster.bucket_name">
+                    <mat-option *ngFor="let cluster of savedClustersObservable | async" [value]="cluster.bucket_name">
                         {{ cluster.cluster_name }}
                     </mat-option>
                 </mat-select>

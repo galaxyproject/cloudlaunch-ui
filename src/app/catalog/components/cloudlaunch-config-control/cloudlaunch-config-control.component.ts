@@ -100,8 +100,8 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
         this.placementObservable = cloudObservable
                                       .do(cloud => { this.placementHelp = 'Retrieving placement options...'; })
                                       .switchMap(cloud => this._cloudService.getPlacementZones(cloud.slug, cloud.region_name))
-                                        .do(placement => { this.placementHelp = 'In which placement zone would you like to launch this appliance?'; },
-                                            error => { this.errorMessage = <any>error; });
+                                      .do(placement => { this.placementHelp = 'In which placement zone would you like to launch this appliance?'; },
+                                          error => { this.errorMessage = <any>error; });
         this.instanceTypeObservable = cloudObservable
                                          .do(cloud => { this.instanceTypeHelp = 'Retrieving instance types...'; })
                                          .switchMap(cloud => this._cloudService.getInstanceTypes(cloud.slug))

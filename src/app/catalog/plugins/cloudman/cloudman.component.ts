@@ -1,10 +1,13 @@
-import { Component, Host, Input } from '@angular/core';
+import { Component, Host, Input, OnDestroy } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
     FormControl,
     Validators,
     FormGroupDirective } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/switchMap';
 
 import { BasePluginComponent } from '../base-plugin.component';
 import { Cloud, CloudManCluster } from '../../../shared/models/cloud';
@@ -16,7 +19,7 @@ import { CloudService } from '../../../shared/services/cloud.service';
     providers: [CloudService]
 })
 
-export class CloudManConfigComponent extends BasePluginComponent {
+export class CloudManConfigComponent extends BasePluginComponent implements OnDestroy {
 
     @Input()
     set password (value: string) { this.hidePassword = true; this.clusterPasswordCtrl.setValue(value); }
@@ -26,7 +29,6 @@ export class CloudManConfigComponent extends BasePluginComponent {
     showAdvanced: boolean = false;
     showSavedClusters: boolean = false;
     savedClustersHelp: string = "Select a saved cluster";
-    savedClusters: CloudManCluster[] = [];
     errorMessage: string;
 
     // Form controls
@@ -35,6 +37,10 @@ export class CloudManConfigComponent extends BasePluginComponent {
     clusterPasswordCtrl = new FormControl(null, Validators.required);
     storageTypeCtrl = new FormControl('', Validators.required);
     clusterTypeCtrl = new FormControl('Galaxy');
+
+    // Observables
+    savedClustersObservable: Observable<CloudManCluster[]>;
+    restartCtrlSubscription: Subscription;
 
     get form(): FormGroup {
         return this.cmClusterForm;
@@ -59,7 +65,8 @@ export class CloudManConfigComponent extends BasePluginComponent {
             'clusterSharedString': [null],
             'extraUserData': [null]
         });
-        this.restartClusterCtrl.valueChanges.subscribe(cluster => { this.storageTypeCtrl.setValue('volume'); });
+        this.restartCtrlSubscription = this.restartClusterCtrl.valueChanges
+                                       .subscribe(cluster => { this.storageTypeCtrl.setValue('volume'); });
     }
 
     toggleAdvanced() {
@@ -67,12 +74,15 @@ export class CloudManConfigComponent extends BasePluginComponent {
     }
 
     fetchSavedClusters() {
-        this.savedClustersHelp = "Retrieving saved clusters..."
-        this.savedClusters = []
         this.showSavedClusters = true;
-        this._cloudService.getSavedClusters(this.cloud.slug)
-            .subscribe(savedClusters => this.savedClusters = savedClusters,
-            error => this.errorMessage = <any>error,
-            () => { this.savedClustersHelp = 'Select a saved cluster'; });
+        this.savedClustersHelp = "Retrieving saved clusters...";
+        this.savedClustersObservable = this._cloudService.getSavedClusters(this.cloud.slug)
+                                       .do(clusters => { this.savedClustersHelp = 'Select a saved cluster'; },
+                                           error => { this.errorMessage = <any>error; });
+    }
+
+    ngOnDestroy() {
+        if (this.restartCtrlSubscription)
+            this.restartCtrlSubscription.unsubscribe();
     }
 }
