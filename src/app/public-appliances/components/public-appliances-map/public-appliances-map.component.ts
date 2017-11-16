@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/shareReplay';
+
 import { PublicService } from '../../../shared/models/public_service';
 
 @Component({
     selector: 'public-appliances-map',
     templateUrl: './public-appliances-map.component.html',
-    styleUrls: ['./public-appliances-map.component.css'],
-    inputs: ['public_services']
+    styleUrls: ['./public-appliances-map.component.css']
 })
 export class PublicAppliancesMapComponent {
-    public_services: PublicService[] = [];
+    @Input()
+    publicServices: Observable<PublicService[]>;
     
     styles =
         [{

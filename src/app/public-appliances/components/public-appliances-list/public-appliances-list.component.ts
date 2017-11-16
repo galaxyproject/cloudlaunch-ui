@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { PublicService } from '../../../shared/models/public_service';
 import { PublicAppliancesService } from '../../../shared/services/public_appliances.service';
@@ -10,14 +11,11 @@ import { PublicAppliancesService } from '../../../shared/services/public_applian
     providers: [PublicAppliancesService]
 })
 
-export class PublicAppliancesListComponent implements OnInit {
-    public_services: PublicService[] = [];
+export class PublicAppliancesListComponent {
+    publicServicesObservable: Observable<PublicService[]>;
 
     constructor(
-        private _publicAppliancesService: PublicAppliancesService) { }
-
-    ngOnInit() {
-        this._publicAppliancesService.getPublicServices()
-            .subscribe(services => this.public_services = services);
+        private _publicAppliancesService: PublicAppliancesService) {
+        this.publicServicesObservable = this._publicAppliancesService.getPublicServices().shareReplay(1);
     }
 }
