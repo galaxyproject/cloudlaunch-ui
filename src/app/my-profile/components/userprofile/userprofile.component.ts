@@ -7,6 +7,10 @@ import {
     Validators
 } from '@angular/forms';
 
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/startWith';
+
 import { UserProfile } from '../../../shared/models/profile';
 import { ProfileService } from '../../../shared/services/profile.service';
 
@@ -14,9 +18,11 @@ import { ProfileService } from '../../../shared/services/profile.service';
     selector: 'userprofile',
     templateUrl: './userprofile.component.html'
 })
-export class UserProfileComponent implements OnInit {
-    profile: UserProfile = null;
+export class UserProfileComponent {
+    profileChanged = new Subject();
+    profileObs: Observable<UserProfile>;
 
+    // Form Controls
     profileForm: FormGroup;
     username: FormControl = new FormControl({ value: null, disabled: true }, Validators.required);
     email: FormControl = new FormControl(null, Validators.required);
@@ -25,7 +31,7 @@ export class UserProfileComponent implements OnInit {
 
 
     constructor(
-        private _profileService: ProfileService,
+        private profileService: ProfileService,
         fb: FormBuilder) {
         this.profileForm = fb.group({
             'username': this.username,
@@ -33,18 +39,9 @@ export class UserProfileComponent implements OnInit {
             'first_name': this.first_name,
             'last_name': this.last_name,
         });
-
-    }
-
-    ngOnInit() {
-        this.refreshProfile();
-    }
-
-
-    refreshProfile() {
-        this._profileService.getProfile().subscribe(result => {
-            this.profile = result;
-            this.profileForm.patchValue(this.profile)
-        });
+        this.profileObs = this.profileChanged
+                          .startWith(null)
+                          .switchMap(() => this.profileService.getProfile())
+                          .do(profile => this.profileForm.patchValue(profile));
     }
 }

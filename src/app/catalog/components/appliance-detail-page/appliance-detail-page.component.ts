@@ -1,6 +1,7 @@
-import { Component, OnInit, trigger, transition, animate,
+import { Component, OnInit, OnDestroy, trigger, transition, animate,
     style, state } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/mergeMap';
 
 // Services
@@ -25,9 +26,10 @@ import { Application } from '../../../shared/models/application';
         ])
     ]
 })
-export class ApplianceDetailPageComponent implements OnInit {
+export class ApplianceDetailPageComponent implements OnInit, OnDestroy {
     application: Application;
     moreInfo: boolean = false;
+    routeSubscription: Subscription;
 
     toggleInfo() {
         this.moreInfo = !this.moreInfo;
@@ -39,9 +41,14 @@ export class ApplianceDetailPageComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._route.params
-            .map(params => params['slug'])
-            .mergeMap(slug => this._applicationService.getApplication(slug))
-            .subscribe(application => this.application = application);
+        this.routeSubscription = this._route.params
+                                .map(params => params['slug'])
+                                .mergeMap(slug => this._applicationService.getApplication(slug))
+                                .subscribe(application => this.application = application);
+    }
+
+    ngOnDestroy() {
+        if (this.routeSubscription)
+            this.routeSubscription.unsubscribe();
     }
 }

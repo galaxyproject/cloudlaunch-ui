@@ -1,16 +1,13 @@
-import { Component, OnInit, OnDestroy, Input, HostBinding } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 import { FormControl } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { map, mergeMap, filter, startWith } from 'rxjs/operators';
-import 'rxjs/add/observable/interval';
+import { map, mergeMap, filter } from 'rxjs/operators';
 import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/shareReplay';
 import * as moment from 'moment';
 
