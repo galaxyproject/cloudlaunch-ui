@@ -1,88 +1,88 @@
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild, Input, HostBinding } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
+import { FormControl } from '@angular/forms';
+
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { map, mergeMap, filter, startWith } from 'rxjs/operators';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/shareReplay';
+import * as moment from 'moment';
 
 import { Deployment } from '../../../../shared/models/deployment';
-import { Credentials } from '../../../../shared/models/profile';
+import { Credentials, UserProfile } from '../../../../shared/models/profile';
 import { Task } from '../../../../shared/models/task';
 import { DeploymentService } from '../../../../shared/services/deployment.service';
 import { ProfileService } from '../../../../shared/services/profile.service';
-import * as moment from 'moment';
+
 import { MatDialog } from '@angular/material';
 import { ArchiveDeleteConfirmDialog } from '../dialogs/archive-delete-confirm.component';
 
-const AUTOMATIC_HEALTH_CHECK_MINUTES = 5;
+const AUTOMATIC_HEALTH_CHECK_MINUTES = 7;
 
 @Component({
     selector: '[deployment-component]',
     templateUrl: './deployment.component.html',
     styleUrls: ['./deployment.component.css']
 })
-export class DeploymentComponent implements OnInit {
+export class DeploymentComponent implements OnInit, OnDestroy {
+    defaultCreds: Observable<Credentials>;
+    deploymentCtrl = new FormControl();
+    profileCtrl = new FormControl();
+    healthCheckSubscription: Subscription;
 
-    _deployment: Deployment;
-    _currentTimer: Observable<any>;
-    credentials: Credentials;
-    isLatestTaskRunning: boolean;
-    launchTask: Task;
+    @Input()
+    set deployment(deployment: Deployment) {
+        this.deploymentCtrl.patchValue(deployment);
+    }
+    get deployment(): Deployment {
+        return this.deploymentCtrl.value;
+    }
+
+    @Input()
+    public currentTimer: Observable<moment.Moment>;
+
+    @Input()
+    set profile(profile: UserProfile) {
+        this.profileCtrl.patchValue(profile);
+    }
+    get profile(): UserProfile {
+        return this.deploymentCtrl.value;
+    }
 
     @HostBinding('class.archiving') archiveInProgress: boolean = false;
 
     @ViewChild('kpLink') a;
 
-    constructor(
-        private _deploymentService: DeploymentService,
-        private _profileService: ProfileService,
-        private dialog: MatDialog) {
+    constructor(private deploymentService: DeploymentService,
+                private profileService: ProfileService,
+                private dialog: MatDialog) {
+        this.defaultCreds = Observable.combineLatest(this.deploymentCtrl.valueChanges.shareReplay(1), this.profileCtrl.valueChanges.shareReplay(1))
+                            .filter(([deployment, profile]) => deployment && profile)
+                            .map(([deployment, profile]) => this.profileService.getCredsForCloudFromProfile(profile, deployment.target_cloud))
+                            .mergeMap(credentialsArray => Observable.from<Credentials>(credentialsArray))
+                            .filter(credential => credential.default)
+                            .shareReplay(1);
     }
 
     ngOnInit() {
-        let cred = this.initializeCloudCredentialsObservable(this.deployment);
-        this.initializeCloudCredentials(cred);
-        this.initializeAutomaticHealthCheck(cred);
-        this.currentTimer = this.initializeClock();
-        this.initializeLaunchTask();
+        this.healthCheckSubscription = this.initializeAutomaticHealthCheck();
     }
 
-    @Input()
-    set deployment(deployment: Deployment) {
-        this._deployment = deployment;
-        this.isLatestTaskRunning = this.computeIsLatestTaskRunning();
-        // If not (re)initialized, task status doesn’t get updated until a page refresh
-        this.initializeLaunchTask();
-    }
-    get deployment(): Deployment {
-        return this._deployment;
-    }
-
-    @Input()
-    set currentTimer(currentTimer: Observable<any>) {
-        this._currentTimer = currentTimer;
-    }
-    get currentTimer(): Observable<any> {
-        return this._currentTimer;
-    }
-
-    initializeCloudCredentialsObservable(deployment: Deployment): Observable<Credentials> {
-        return this._profileService.getCredentialsForCloud(deployment.target_cloud)
-            .mergeMap(credentialsArray => Observable.from<Credentials>(credentialsArray))
-            .filter(credential => credential.default);
-    }
-
-    initializeCloudCredentials(cred: Observable<Credentials>) {
-        cred.subscribe(credentials => this.credentials = credentials);
+    ngOnDestroy() {
+        if (this.healthCheckSubscription)
+            this.healthCheckSubscription.unsubscribe();
     }
 
     // If deployment has default credentials and latest task with status
     // information was over 10 minutes ago, then automatically kick off a
     // HEALTH_CHECK task
-    initializeAutomaticHealthCheck(cred: Observable<Credentials>) {
-        cred.subscribe(credentials => {
+    initializeAutomaticHealthCheck() {
+        return this.defaultCreds.subscribe(credentials => {
             if (credentials) {
                 let latest_task = this.deployment.latest_task;
                 if (latest_task.status != 'PENDING' && latest_task.status != 'PROGRESSING' && latest_task.action != 'DELETE') {
@@ -100,24 +100,13 @@ export class DeploymentComponent implements OnInit {
         return moment.duration(currentTime.diff(launchTime)).humanize();
     }
 
-    initializeClock(): Observable<any> {
-        const self = this;
-        return Observable
-            .interval(1000)
-            .startWith(0)
-            .map(() => {
-                return moment();
-            });
-    }
-
     runTask(deployment: Deployment, action: string) {
-        this._deploymentService.createTask(deployment.id, action).subscribe(newTask => {
-            this.isLatestTaskRunning = true;
+        this.deploymentService.createTask(deployment.id, action).subscribe(newTask => {
             this.deployment.latest_task = newTask;
         });
     }
 
-    computeIsLatestTaskRunning() {
+    isLatestTaskRunning() {
         return this.deployment.latest_task.status == 'PENDING' || this.deployment.latest_task.status == 'PROGRESSING';
     }
 
@@ -129,13 +118,6 @@ export class DeploymentComponent implements OnInit {
         const file = new Blob(data, properties);
         const url = URL.createObjectURL(file);
         this.a.nativeElement.href = url;
-    }
-
-    initializeLaunchTask() {
-        this._deploymentService.getTasks(this.deployment.id)
-            .mergeMap(tasksArray => Observable.from(tasksArray))
-            .filter(task => task.action == 'LAUNCH')
-            .subscribe(launchTask => this.launchTask = launchTask);
     }
 
     openArchiveConfirmDialog(deployment: Deployment): void {
@@ -155,7 +137,7 @@ export class DeploymentComponent implements OnInit {
 
         let deploymentCopy = Object.assign({}, this.deployment);
         deploymentCopy.archived = true;
-        this._deploymentService.updateDeployment(deploymentCopy)
+        this.deploymentService.updateDeployment(deploymentCopy)
           .subscribe(deployment => this.deployment.archived = deployment.archived,
               null,
               () => this.archiveInProgress = false);

@@ -11,18 +11,18 @@
     <span class="col-xs-12 col-md-12">
         <span class="text-muted">Cloud:</span> {{ deployment.target_cloud }}
     </span>
-    <span class="col-xs-12 col-md-12" *ngIf="credentials">
+    <span class="col-xs-12 col-md-12" *ngIf="defaultCreds | async as credentials">
         <span class="text-muted">Credentials:</span> {{ credentials.name }}
     </span>
     </p>
-    <div *ngIf=launchTask?.result?.cloudLaunch?.keyPair?.material>
+    <div *ngIf=deployment.launch_task?.result?.cloudLaunch?.keyPair?.material>
         <p class="text-info" style="padding-top: 25px;">
             A new SSH key pair was created when this instance
             was launched. The key will be available for
             retrieval only here for up to one hour after the
             instance was launched. <a #kpLink
             target="_blank" download="kp.txt"
-            (click)="getKP(launchTask)"> Download the key</a> and
+            (click)="getKP(deployment.launch_task)"> Download the key</a> and
             keep it secure.
         </p>
     </div>
@@ -30,7 +30,7 @@
 <td>{{ calculateUptime(deployment, currentTimer | async) }} ago</td>
 <td class="text-left">
     <div [ngSwitch]="deployment.latest_task?.action">
-        <launch-task-status-renderer *ngSwitchCase="'LAUNCH'" [task]="deployment.latest_task" hasCredentials="!!credentials"></launch-task-status-renderer>
+        <launch-task-status-renderer *ngSwitchCase="'LAUNCH'" [task]="deployment.latest_task" hasCredentials="!!(defaultCreds | async)"></launch-task-status-renderer>
         <delete-task-status-renderer *ngSwitchCase="'DELETE'" [task]="deployment.latest_task"></delete-task-status-renderer>
         <health-check-task-status-renderer *ngSwitchDefault [task]="deployment.latest_task"></health-check-task-status-renderer>
     </div>
@@ -40,30 +40,30 @@
                  deployment.latest_task?.action !== 'DELETE' &&
                  deployment.latest_task?.result?.instance_status !== 'unknown' &&
                  deployment.latest_task?.result?.instance_status !== 'deleted'; else dimBlock">
-        <a *ngIf="launchTask?.result?.cloudLaunch?.applicationURL?.length; else ipBlock"
-         class="btn-link" href="{{ launchTask?.result?.cloudLaunch?.applicationURL }}" target="_blank">
-            <span>{{ launchTask?.result?.cloudLaunch?.applicationURL }}</span>
+        <a *ngIf="deployment.launch_task?.result?.cloudLaunch?.applicationURL?.length; else ipBlock"
+         class="btn-link" href="{{ deployment.launch_task?.result?.cloudLaunch?.applicationURL }}" target="_blank">
+            <span>{{ deployment.launch_task?.result?.cloudLaunch?.applicationURL }}</span>
         </a>
         <ng-template #ipBlock>
-            <span>{{ launchTask?.result?.cloudLaunch?.publicIP }}</span>
+            <span>{{ deployment.launch_task?.result?.cloudLaunch?.publicIP }}</span>
         </ng-template>
     </span>
     <ng-template #dimBlock>
-        <span class="dim">{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}</span>
+        <span class="dim">{{ deployment.launch_task?.result?.cloudLaunch?.applicationURL || deployment.launch_task?.result?.cloudLaunch?.publicIP }}</span>
     </ng-template>
-    <button *ngIf="launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP"
+    <button *ngIf="deployment.launch_task?.result?.cloudLaunch?.applicationURL || deployment.launch_task?.result?.cloudLaunch?.publicIP"
      class="btn btn-secondary pill" style="margin: 0 5px" type="button"
-     ngxClipboard cbContent="{{ launchTask?.result?.cloudLaunch?.applicationURL || launchTask?.result?.cloudLaunch?.publicIP }}"
+     ngxClipboard cbContent="{{ deployment.launch_task?.result?.cloudLaunch?.applicationURL || deployment.launch_task?.result?.cloudLaunch?.publicIP }}"
      matTooltip="Copy access address to clipboard">
         <i class="fa fa-copy"></i>
    </button>
 </td>
 <td>
   <div class="btn-group" style="margin-top: 0px" role="group" aria-label="Actions">
-    <button *ngIf="credentials" class="btn btn-secondary pill" type="button" (click)="runTask(deployment, 'HEALTH_CHECK')" [disabled]="isLatestTaskRunning" matTooltip="Run Health Check">
+    <button *ngIf="defaultCreds | async as credentials" class="btn btn-secondary pill" type="button" (click)="runTask(deployment, 'HEALTH_CHECK')" [disabled]="isLatestTaskRunning()" matTooltip="Run Health Check">
         <i class="fa fa-refresh"></i>
     </button>
-    <button type="button" class="btn btn-secondary pill" (click)="openArchiveConfirmDialog(deployment)" [disabled]="isLatestTaskRunning" matTooltip="Archive/Delete">
+    <button type="button" class="btn btn-secondary pill" (click)="openArchiveConfirmDialog(deployment)" [disabled]="isLatestTaskRunning()" matTooltip="Archive/Delete">
         <i class="fa fa-trash"></i>
     </button>
   </div>

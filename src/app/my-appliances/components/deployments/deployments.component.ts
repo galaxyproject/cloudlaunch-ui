@@ -2,11 +2,13 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
+import 'rxjs/add/observable/combineLatest';
 import { map, mergeMap, startWith } from 'rxjs/operators';
-
 
 import { Deployment } from '../../../shared/models/deployment';
 import { DeploymentService } from '../../../shared/services/deployment.service';
+import { UserProfile } from '../../../shared/models/profile';
+import { ProfileService } from '../../../shared/services/profile.service';
 import * as moment from 'moment';
 
 
@@ -22,35 +24,26 @@ import * as moment from 'moment';
 
 export class DeploymentsComponent implements OnInit {
     deployments: Observable<Deployment[]>;
-    currentTimer: Observable<any>;
+    profile: Observable<UserProfile>;
+    currentTimer: Observable<moment.Moment>;
 
     constructor(
-        private _deploymentService: DeploymentService) {
+        private deploymentService: DeploymentService,
+        private profileService: ProfileService) {
     }
 
     ngOnInit() {
-        this.deployments = this.initializePolling();
-        this.currentTimer = this.initializeClock();
-    }
-
-    initializePolling(): Observable<Deployment[]> {
-        const self = this;
-        return Observable
-            .interval(5000)
-            .startWith(0)
-            .mergeMap(() => {
-                return this._deploymentService.getDeployments({archived: false});
-            });
-    }
-
-    initializeClock(): Observable<any> {
-        const self = this;
-        return Observable
-            .interval(1000)
-            .startWith(0)
-            .map(() => {
-                return moment();
-            });
+        this.deployments = Observable
+                           .interval(10000)
+                           .startWith(0)
+                           .mergeMap(() => this.deploymentService.getDeployments({archived: false}));
+        this.currentTimer = Observable
+                            .interval(5000)
+                            .startWith(0)
+                            .map(() => {
+                                return moment();
+                            });
+        this.profile = this.profileService.getProfile().shareReplay(1); 
     }
 
     trackByDeploymentId(index: number, deployment: Deployment): string {

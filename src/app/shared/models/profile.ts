@@ -1,3 +1,7 @@
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import { map } from 'rxjs/operators';
+
 import { Cloud } from './cloud';
 
 export class Credentials {
