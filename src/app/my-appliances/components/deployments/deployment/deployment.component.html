@@ -20,9 +20,9 @@
             A new SSH key pair was created when this instance
             was launched. The key will be available for
             retrieval only here for up to one hour after the
-            instance was launched. <a #kpLink
-            target="_blank" download="kp.txt"
-            (click)="getKP(deployment.launch_task)"> Download the key</a> and
+            instance was launched.
+            <a target="_blank" download="private_key.txt"
+            [href]="getKPDownloadLink(deployment.launch_task?.result?.cloudLaunch?.keyPair?.material)"> Download the key</a> and
             keep it secure.
         </p>
     </div>

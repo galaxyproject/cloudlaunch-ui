@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild, Input, HostBinding } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, HostBinding } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 import { FormControl } from '@angular/forms';
 
@@ -54,12 +55,9 @@ export class DeploymentComponent implements OnInit, OnDestroy {
         return this.deploymentCtrl.value;
     }
 
-    @HostBinding('class.archiving') archiveInProgress: boolean = false;
-
-    @ViewChild('kpLink') a;
-
     constructor(private deploymentService: DeploymentService,
                 private profileService: ProfileService,
+                private sanitizer: DomSanitizer,
                 private dialog: MatDialog) {
         this.defaultCreds = Observable.combineLatest(this.deploymentCtrl.valueChanges.shareReplay(1), this.profileCtrl.valueChanges.shareReplay(1))
                             .filter(([deployment, profile]) => deployment && profile)
@@ -110,14 +108,8 @@ export class DeploymentComponent implements OnInit, OnDestroy {
         return this.deployment.latest_task.status == 'PENDING' || this.deployment.latest_task.status == 'PROGRESSING';
     }
 
-    getKP(launchTask: Task) {
-        const data = [];
-        // Only LAUNCH tasks can have the key pair data
-        data.push(launchTask.result.cloudLaunch.keyPair.material);
-        const properties = {type: 'plain/text'};
-        const file = new Blob(data, properties);
-        const url = URL.createObjectURL(file);
-        this.a.nativeElement.href = url;
+    getKPDownloadLink(material: string) {
+        return this.sanitizer.bypassSecurityTrustResourceUrl(`data:text/plain,${material}`);
     }
 
     openArchiveConfirmDialog(deployment: Deployment): void {
@@ -132,14 +124,9 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     }
 
     archiveDeployment() {
-        // Put a translucent grey mask over view while archive operation is running
-        this.archiveInProgress = true;
-
         let deploymentCopy = Object.assign({}, this.deployment);
         deploymentCopy.archived = true;
         this.deploymentService.updateDeployment(deploymentCopy)
-          .subscribe(deployment => this.deployment.archived = deployment.archived,
-              null,
-              () => this.archiveInProgress = false);
+          .subscribe(deployment => this.deployment.archived = deployment.archived);
     }
 }
