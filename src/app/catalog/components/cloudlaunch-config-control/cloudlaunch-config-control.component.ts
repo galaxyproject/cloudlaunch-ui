@@ -7,6 +7,7 @@ import {
     Validators
 } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/switchMap';
 
@@ -51,7 +52,8 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
 
     // Form Controls
     cloudLaunchForm: FormGroup;
-    rootStorageTypeCtrl = new FormControl('instance', Validators.required);
+    DEFAULT_ROOT_STORAGE_TYPE = 'instance';
+    rootStorageTypeCtrl = new FormControl(this.DEFAULT_ROOT_STORAGE_TYPE, Validators.required);
     rootStorageSizeCtrl = new FormControl('');
     instTypeCtrl = new FormControl('', Validators.required);
     placementCtrl = new FormControl('');
@@ -67,6 +69,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
     networkObservable: Observable<Network[]>;
     staticIpObservable: Observable<StaticIP[]>;
     subnetObservable: Observable<SubNet[]>;
+    storageSubscription: Subscription;
 
     get form(): FormGroup {
         return this.cloudLaunchForm;
@@ -132,7 +135,12 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
                                    .do(subnet => { this.subnetsHelp = 'In which subnet would you like to place this Virtual Machine?'; },
                                        error => { this.errorMessage = <any>error; });
         // properties dependent on storage type
-        let storageObservable = this.rootStorageTypeCtrl.valueChanges.subscribe(storageType => { this.onRootStorageTypeChange(storageType); });
+        this.storageSubscription = this.rootStorageTypeCtrl.valueChanges.subscribe(storageType => { this.onRootStorageTypeChange(storageType); });
+    }
+
+    ngOnDestroy() {
+        if (this.storageSubscription)
+            this.storageSubscription.unsubscribe();
     }
 
     toggleAdvanced() {
@@ -141,7 +149,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent {
 
     onCloudChange(cloud: Cloud) {
         // Reset all form values
-        this.cloudLaunchForm.reset({rootStorageType: 'instance'});
+        this.cloudLaunchForm.reset({rootStorageType: this.DEFAULT_ROOT_STORAGE_TYPE});
         this.errorMessage = null;
         // Reapply initial config on cloud change
         this.initialConfig = this.initialConfig;

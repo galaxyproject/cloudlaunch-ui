@@ -1,7 +1,9 @@
-import { Component, OnInit, trigger, transition, animate,
+import { Component, OnDestroy, trigger, transition, animate,
     style, state, HostListener, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/switchMap';
@@ -25,7 +27,8 @@ import { ApplicationService } from '../../../shared/services/application.service
     ]
 })
 
-export class CatalogListComponent implements OnInit {
+export class CatalogListComponent implements OnDestroy {
+    subscription: Subscription;
     apps: Application[] = [];
     currentApp: Application;
     searchTermCtrl = new FormControl();
@@ -34,19 +37,23 @@ export class CatalogListComponent implements OnInit {
     searchInProgress: boolean = false;
     PAGE_SIZE: number = 6;
 
-    constructor(
-        private _appService: ApplicationService) { }
+    constructor(private _appService: ApplicationService) {
+        this.subscription = this.searchTermCtrl.valueChanges
+                            .startWith('')
+                            .debounceTime(300)
+                            .switchMap(term => { this.searchInProgress = true;
+                                                 return this._appService.queryApplications(term, this.currentPage, this.PAGE_SIZE) })
+                            .subscribe(
+                                    result => { this.searchInProgress = false;
+                                                this.currentPage = 0;
+                                                this.totalApps = result.count;
+                                                this.apps = result.results; },
+                                    error => { this.searchInProgress = false; console.log(error) });
+    }
 
-    ngOnInit() {
-        this.currentPage = 0;
-        this.totalApps = 0;
-        this.searchTermCtrl.valueChanges
-            .startWith('')
-            .debounceTime(300)
-            .switchMap(term => { this.searchInProgress = true; return this._appService.queryApplications(term, this.currentPage, this.PAGE_SIZE) })
-            .subscribe(
-                    result => { this.searchInProgress = false; this.totalApps = 0; this.currentPage = 0; this.totalApps = result.count; this.apps = result.results; },
-                    error => { this.searchInProgress = false; console.log(error) });
+    ngOnDestroy() {
+        if (this.subscription)
+            this.subscription.unsubscribe();
     }
 
     @HostListener('mouseleave') onMouseLeave() {
