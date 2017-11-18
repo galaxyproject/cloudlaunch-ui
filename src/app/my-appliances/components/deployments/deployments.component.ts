@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
-import 'rxjs/add/observable/combineLatest';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/map';
 import { map, mergeMap, startWith } from 'rxjs/operators';
 
 import { Deployment } from '../../../shared/models/deployment';

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 import { AppSettings } from '../../../../app.settings';
 import { DockerRepositoryOverview } from '../models/docker';

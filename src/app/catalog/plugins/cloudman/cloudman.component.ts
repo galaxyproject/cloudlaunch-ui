@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/do';
 
 import { BasePluginComponent } from '../base-plugin.component';
 import { Cloud, CloudManCluster } from '../../../shared/models/cloud';

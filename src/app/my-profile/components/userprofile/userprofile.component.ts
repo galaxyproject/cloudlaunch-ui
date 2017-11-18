@@ -10,6 +10,8 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/do';
 
 import { UserProfile } from '../../../shared/models/profile';
 import { ProfileService } from '../../../shared/services/profile.service';

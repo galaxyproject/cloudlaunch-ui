@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/do';
 
 import {
     Cloud,
