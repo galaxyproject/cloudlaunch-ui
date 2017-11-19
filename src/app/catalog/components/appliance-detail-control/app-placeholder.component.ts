@@ -72,11 +72,11 @@ export class AppPlaceHolderComponent implements OnDestroy {
         }
         // Add new component
 
+        let [modulePath, moduleName] = this.componentPath.split("#");
         // Workaround so webpack has context for the chunk - hardcoded import of module
         // System.import(this.componentPath)
         System.import('app/catalog/plugins/plugins.module')
             .then((module: any) => {
-                let [moduleName, componentClass] = this.componentName.split("#");
                 return module[moduleName];
             })
             .then((type: any) => {
@@ -84,8 +84,8 @@ export class AppPlaceHolderComponent implements OnDestroy {
                 return compiler.compileModuleAndAllComponentsAsync(type)
             })
             .then((moduleWithFactories => {
-                let [moduleName, componentClass] = this.componentName.split("#");
-                const factory = moduleWithFactories.componentFactories.find(x => x.componentType.name === componentClass); // Crucial: componentType.name, not componentType!!
+                let componentSelector = this.componentName;
+                const factory = moduleWithFactories.componentFactories.find(x => x.selector === componentSelector);
                 this._currentComponent = this.viewContainerRef.createComponent(factory, 0, this.viewContainerRef.injector);
                 this._currentComponent.instance.initialConfig = this.initialConfig;
                 this._currentComponent.instance.cloud = this.cloud;

@@ -24,7 +24,6 @@ import { CatalogRoutingModule } from './catalog-routing.module';
 import { MyProfileModule } from '../my-profile/my-profile.module';
 import { PluginsModule } from './plugins/plugins.module';
 
-
 import { ApplicationService } from '../shared/services/application.service';
 import { DeploymentService } from '../shared/services/deployment.service';
 import { CloudService } from '../shared/services/cloud.service';

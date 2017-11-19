@@ -1,4 +1,3 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -11,19 +10,22 @@ import { LoginModule } from './login/login.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule }  from './app-routing.module';
 
-import { RequestOptions } from '@angular/http';
-
 import { MyAppliancesModule } from './my-appliances/my-appliances.module';
 import { ArchiveDeleteConfirmDialog } from './my-appliances/components/deployments/dialogs/archive-delete-confirm.component';
 import { AuthInterceptor } from './login/services/auth-interceptor';
 
+// Remove once plugin system is in place
+import { PluginsModule } from './catalog/plugins/plugins.module'
+import { UbuntuConfigComponent } from './catalog/plugins/ubuntu/ubuntu.component'
+import { CloudManConfigComponent } from './catalog/plugins/cloudman/cloudman.component'
+import { GVLConfigComponent } from './catalog/plugins/gvl/gvl.component'
+import { DockerConfigComponent } from './catalog/plugins/docker/docker.component'
 
 @NgModule({
     declarations: [
         AppComponent
     ],
     imports: [
-        BrowserModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
@@ -35,7 +37,8 @@ import { AuthInterceptor } from './login/services/auth-interceptor';
         LoginModule,
         MarkdownModule,
         BrowserAnimationsModule,
-        MyAppliancesModule
+        MyAppliancesModule,
+        PluginsModule
     ],
     providers: [
         {
@@ -44,7 +47,7 @@ import { AuthInterceptor } from './login/services/auth-interceptor';
             multi: true,
         }
     ],
-    entryComponents: [ArchiveDeleteConfirmDialog],
+    entryComponents: [ArchiveDeleteConfirmDialog, UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent, DockerConfigComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
