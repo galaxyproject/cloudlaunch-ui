@@ -41,6 +41,7 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
 
     // Observables
     savedClustersObservable: Observable<CloudManCluster[]>;
+    cloudCtrlSubscription: Subscription;
     restartCtrlSubscription: Subscription;
 
     get form(): FormGroup {
@@ -66,6 +67,8 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
             'clusterSharedString': [null],
             'extraUserData': [null]
         });
+        this.cloudCtrlSubscription = this.cloudCtrl.valueChanges
+                                     .subscribe(cluster => { this.showSavedClusters = false; this.restartClusterCtrl.patchValue(null); });
         this.restartCtrlSubscription = this.restartClusterCtrl.valueChanges
                                        .subscribe(cluster => { this.storageTypeCtrl.setValue('volume'); });
     }
@@ -85,5 +88,7 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
     ngOnDestroy() {
         if (this.restartCtrlSubscription)
             this.restartCtrlSubscription.unsubscribe();
+        if (this.cloudCtrlSubscription)
+            this.cloudCtrlSubscription.unsubscribe();
     }
 }

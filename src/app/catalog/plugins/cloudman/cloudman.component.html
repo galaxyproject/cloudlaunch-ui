@@ -9,7 +9,7 @@
                 <mat-select id="id_saved_clusters"
                     [formControl]="restartClusterCtrl">
                     <mat-option>None</mat-option>
-                    <mat-option *ngFor="let cluster of savedClustersObservable | async" [value]="cluster.bucket_name">
+                    <mat-option *ngFor="let cluster of savedClustersObservable | async" [value]="cluster">
                         {{ cluster.cluster_name }}
                     </mat-option>
                 </mat-select>
