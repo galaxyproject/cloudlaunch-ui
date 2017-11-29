@@ -100,8 +100,8 @@
                 <mat-select id="id_floating_ip"
                     [formControl]="staticIpCtrl">
                     <mat-option>None</mat-option>
-                    <mat-option *ngFor="let ip of staticIpObservable | async" [value]="ip.id">
-                        {{ ip.name }}
+                    <mat-option *ngFor="let ip of staticIpObservable | async" [value]="ip.ip">
+                        {{ ip.ip }}
                     </mat-option>
                 </mat-select>
                 <mat-placeholder><i *ngIf="staticIPHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>
