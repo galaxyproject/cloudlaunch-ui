@@ -20,6 +20,8 @@ To start the dev server, run:
 
     npm start
 
+Or if you use yarn as your preferred package manager, `yarn start`.
+
 Access the server at `http://localhost:4200/`.
 The app will automatically reload if you change any of the source files.
 

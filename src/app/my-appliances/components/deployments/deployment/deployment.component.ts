@@ -60,9 +60,9 @@ export class DeploymentComponent implements OnInit, OnDestroy {
                 private sanitizer: DomSanitizer,
                 private dialog: MatDialog) {
         this.defaultCreds = Observable.combineLatest(this.deploymentCtrl.valueChanges.shareReplay(1), this.profileCtrl.valueChanges.shareReplay(1))
-                            .filter(([deployment, profile]) => deployment && profile)
-                            .map(([deployment, profile]) => this.profileService.getCredsForCloudFromProfile(profile, deployment.target_cloud))
-                            .mergeMap(credentialsArray => Observable.from<Credentials>(credentialsArray))
+                            .filter(([deployment, profile]) => !!deployment && !!profile)
+                            .mergeMap(([deployment, profile]) => this.profileService.getCredsForCloudFromProfile(profile, deployment.target_cloud))
+                            .mergeMap(credentialsArray => Observable.from(credentialsArray))
                             .filter(credential => credential.default)
                             .shareReplay(1);
     }
