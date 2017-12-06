@@ -32,7 +32,7 @@ export class OpenStackCredViewerComponent implements OnInit {
 
     groupBy(list: any) {
         let temp = {};
-        let results = [];
+        let results: any[] = [];
         if (list) {
             for (let item of list) {
                 if (item.cloud.slug in temp) {

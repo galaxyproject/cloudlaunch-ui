@@ -112,11 +112,11 @@ export class ApplianceDetailControlComponent implements OnInit {
     }
 
     getVersionConfigForCloud(slug: string) : ApplicationVersionCloudConfig {
-        return this.appVerControl.value.cloud_config.filter(v => { return v.cloud.slug === slug; })[0];
+        return this.appVerControl.value.cloud_config.filter((v: ApplicationVersionCloudConfig) => v.cloud.slug == slug)[0];
     }
 
     getCloudsForSelectedVersion(): Cloud {
-        return this.appVerControl.value.cloud_config.map(c => c.cloud);
+        return this.appVerControl.value.cloud_config.map((v: ApplicationVersionCloudConfig)  => v.cloud);
     }
 
     /* Set global request credentials based on user entered data */
@@ -143,7 +143,7 @@ export class ApplianceDetailControlComponent implements OnInit {
         return d;
     }
 
-    handleErrors(errors) {
+    handleErrors(errors: any) {
         this.submitPending = false;
         if (errors) {
             if (errors.hasOwnProperty("error")) {

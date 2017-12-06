@@ -118,7 +118,7 @@ export class ProfileService {
     }
 }
 
-export function addCredentialHeaders(headers, credentials: Credentials) {
+export function addCredentialHeaders(headers: any, credentials: Credentials) {
     if (credentials && credentials.cloud) {
         if (credentials.id) {
             // Must be a saved set or credentials. Retrieve using ID

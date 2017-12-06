@@ -116,9 +116,9 @@ export class DockerFileEditorComponent implements ControlValueAccessor, Validato
         this.propagateChange(changedVals);
     }
 
-    getDirtyValues(control_group) {
+    getDirtyValues(control_group: FormGroup) {
         if (control_group instanceof FormArray) {
-            let dirtyValues = []
+            let dirtyValues: any = []
             Object.keys(control_group.controls).forEach((control_name) => {
                 let control = control_group.controls[control_name];
                 if (control.dirty) {
@@ -130,12 +130,12 @@ export class DockerFileEditorComponent implements ControlValueAccessor, Validato
             return dirtyValues;
         }
         else {
-            let dirtyValues = {};
+            let dirtyValues: any = {};
             Object.keys(control_group.controls).forEach((control_name) => {
                 let control = control_group.controls[control_name];
                 if (control.dirty){
-                    if (control.controls) // check for nested controlGroups
-                        dirtyValues[control_name] = this.getDirtyValues(control);  // recurse
+                    if ((<FormGroup>control).controls) // check for nested controlGroups
+                        dirtyValues[control_name] = this.getDirtyValues(<FormGroup>control);  // recurse
                     else    
                         dirtyValues[control_name] = control.value; // simple control
                 }

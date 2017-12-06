@@ -37,8 +37,8 @@ const CREDENTIALS_CONTROL_VALIDATOR = {
     multi: true
 };
 
-declare type VerificationSuccessCallback = (Credentials) => void;
-declare type VerificationFailureCallback = (Credentials, error: string) => void;
+declare type VerificationSuccessCallback = (c: Credentials) => void;
+declare type VerificationFailureCallback = (c: Credentials, error: string) => void;
 
 @Component({
     selector: 'cloud-credentials-editor',
@@ -86,7 +86,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         return this.formDataToCredentials(this.credentialsForm.value);
     }
 
-    formDataToCredentials(data): Credentials {
+    formDataToCredentials(data: any): Credentials {
         let creds = new Credentials();
         creds.id = this.idCtrl.value;
         creds.name = this.nameCtrl.value;

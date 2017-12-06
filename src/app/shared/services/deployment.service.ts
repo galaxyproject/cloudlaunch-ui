@@ -18,7 +18,7 @@ export class DeploymentService {
 
 
     public getDeployments(options = {}): Observable<Deployment[]> {
-        let defaultOptions = {
+        let defaultOptions: any = {
             archived: null,
         };
         let finalOptions = Object.assign({}, defaultOptions, options);

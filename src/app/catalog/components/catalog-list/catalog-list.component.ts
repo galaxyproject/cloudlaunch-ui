@@ -1,6 +1,7 @@
 import { Component, OnDestroy, trigger, transition, animate,
     style, state, HostListener, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { PageEvent } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -60,7 +61,7 @@ export class CatalogListComponent implements OnDestroy {
         this.currentApp = null;
     }
 
-    onPageChange(event) {
+    onPageChange(event: PageEvent) {
         this.searchInProgress = true;
         this.currentPage = event.pageIndex;
         this._appService.queryApplications(this.searchTermCtrl.value, event.pageIndex+1, this.PAGE_SIZE)

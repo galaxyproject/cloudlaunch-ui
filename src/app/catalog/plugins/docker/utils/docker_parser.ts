@@ -16,7 +16,7 @@ export class DockerCommand
 export class DockerFileParser
 {
     TOKEN_WHITESPACE = /[\t\v\f\r ]+/;
-    TOKEN_LINE_CONTINUATION = /\\[ \t]*$/;
+    TOKEN_LINE_CONTINUATION = /\\[ \t]*$/g;
     TOKEN_COMMENT = /^#.*$/;
     commandParsers = {};
     
@@ -47,8 +47,8 @@ export class DockerFileParser
         };
     }
     
-    isSpace(s): boolean {
-        return s.match(/^\s$/);
+    isSpace(s: string): boolean {
+        return !!s.match(/^\s$/);
     }
 
     /**
@@ -63,7 +63,7 @@ export class DockerFileParser
     //
     //ONBUILD RUN foo bar -> (onbuild (run foo bar))
     //
-    parseSubCommand(cmd): boolean {
+    parseSubCommand(cmd: any): boolean {
         let parseDetails = this.parseLine(cmd.rest, cmd.lineno);
         if (parseDetails.command) {
             cmd.args = parseDetails.command;
@@ -162,7 +162,7 @@ export class DockerFileParser
 
     //Parse environment like statements. Note that this does *not* handle
     //variable interpolation, which will be handled in the evaluator.
-    parseNameVal(cmd) : boolean {
+    parseNameVal(cmd: any) : boolean {
         // This is kind of tricky because we need to support the old
         // variant:   KEY name value
         // as well as the new one:    KEY name=value ...
@@ -207,11 +207,11 @@ export class DockerFileParser
         return true;
     }
 
-    parseEnv(cmd): boolean {
+    parseEnv(cmd: any): boolean {
         return this.parseNameVal(cmd);
     }
 
-    parseLabel(cmd): boolean {
+    parseLabel(cmd: any): boolean {
         return this.parseNameVal(cmd);
     }
 
@@ -223,26 +223,26 @@ export class DockerFileParser
     //In addition, a keyword definition alone is of the form `keyword` like `name1`
     //above. And the assignments `name2=` and `name3=""` are equivalent and
     //assign an empty value to the respective keywords.
-    parseNameOrNameVal(cmd): boolean {
+    parseNameOrNameVal(cmd: any): boolean {
         cmd.args = this.parseWords(cmd.rest);
         return true;
     }
 
     //Parses a whitespace-delimited set of arguments. The result is a
     //list of string arguments.
-    parseStringsWhitespaceDelimited(cmd): boolean {
+    parseStringsWhitespaceDelimited(cmd: any): boolean {
         cmd.args = cmd.rest.split(this.TOKEN_WHITESPACE);
         return true;
     }
 
     //Just stores the raw string.
-    parseString(cmd): boolean {
+    parseString(cmd: any): boolean {
         cmd.args = cmd.rest;
         return true;
     }
 
     //Converts to JSON array, returns true on success, false otherwise.
-    parseJSON(cmd): boolean {
+    parseJSON(cmd: any): boolean {
         try {
             var json = JSON.parse(cmd.rest);
         } catch (e) {
@@ -267,7 +267,7 @@ export class DockerFileParser
 
     //Determines if the argument appears to be a JSON array. If so, passes to
     //parseJSON; if not, quotes the result and returns a single string.
-    parseJsonOrString(cmd): boolean {
+    parseJsonOrString(cmd: any): boolean {
         if (this.parseJSON(cmd)) {
             return true;
         }
@@ -276,20 +276,20 @@ export class DockerFileParser
 
     //Determines if the argument appears to be a JSON array. If so, parses as JSON;
     //if not, attempts to parse it as a whitespace delimited string.
-    parseJsonOrList(cmd): boolean {
+    parseJsonOrList(cmd: any): boolean {
         if (this.parseJSON(cmd)) {
             return true;
         }
         return this.parseStringsWhitespaceDelimited(cmd);
     }
 
-    isComment(line) {
+    isComment(line: string) {
         return line.match(this.TOKEN_COMMENT);
     }
 
     //Takes a single line of text and parses out the cmd and rest,
     //which are used for dispatching to more exact parsing functions.
-    splitCommand(line): any {
+    splitCommand(line: string): any {
         // Make sure we get the same results irrespective of leading/trailing spaces
         let match = line.match(this.TOKEN_WHITESPACE);
         if (!match) {
@@ -302,7 +302,7 @@ export class DockerFileParser
     }
 
     //parse a line and return the remainder.
-    parseLine(line, lineno, remainder?: string): any {
+    parseLine(line: string, lineno: number, remainder?: string): any {
         let command = null;
 
         if (!remainder)
@@ -323,7 +323,7 @@ export class DockerFileParser
         
         if (line.match(this.TOKEN_LINE_CONTINUATION)) {
             // Line continues on next line.
-            remainder = remainder + line.replace(this.TOKEN_LINE_CONTINUATION, '', 'g');
+            remainder = remainder + line.replace(this.TOKEN_LINE_CONTINUATION, '');
             return { command: null, remainder: remainder };
         }
         

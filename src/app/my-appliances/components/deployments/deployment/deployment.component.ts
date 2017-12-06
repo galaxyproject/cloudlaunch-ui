@@ -93,7 +93,7 @@ export class DeploymentComponent implements OnInit, OnDestroy {
         });
     }
 
-    calculateUptime(dep: Deployment, currentTime) {
+    calculateUptime(dep: Deployment, currentTime: moment.Moment) {
         const launchTime = moment(dep.added);
         return moment.duration(currentTime.diff(launchTime)).humanize();
     }

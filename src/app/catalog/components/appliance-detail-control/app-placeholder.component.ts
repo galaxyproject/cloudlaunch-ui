@@ -83,13 +83,13 @@ export class AppPlaceHolderComponent implements OnDestroy {
                 let compiler = this.compilerFactory.createCompiler();
                 return compiler.compileModuleAndAllComponentsAsync(type)
             })
-            .then((moduleWithFactories => {
+            .then((moduleWithFactories: any) => {
                 let componentSelector = this.componentName;
-                const factory = moduleWithFactories.componentFactories.find(x => x.selector === componentSelector);
+                const factory = moduleWithFactories.componentFactories.find((x: any) => x.selector === componentSelector);
                 this._currentComponent = this.viewContainerRef.createComponent(factory, 0, this.viewContainerRef.injector);
                 this._currentComponent.instance.initialConfig = this.initialConfig;
                 this._currentComponent.instance.cloud = this.cloud;
-            }));
+            });
     }
 
     ngOnDestroy() {
