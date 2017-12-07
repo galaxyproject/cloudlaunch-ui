@@ -27,12 +27,12 @@ export class GCECredViewerComponent implements OnInit {
 
     ngOnInit() {
         this.editMode = false;
-        this.currentObject = null;
+        this.currentObject = new GCECredentials();
     }
 
     groupBy(list: any) {
         let temp = {};
-        let results = [];
+        let results: any[] = [];
         if (list) {
             for (let item of list) {
                 if (item.cloud.slug in temp) {
@@ -49,7 +49,7 @@ export class GCECredViewerComponent implements OnInit {
 
     addNew() {
         this.editMode = true;
-        this.currentObject = null;
+        this.currentObject = new GCECredentials();
     }
 
     editExisting(creds: GCECredentials) {

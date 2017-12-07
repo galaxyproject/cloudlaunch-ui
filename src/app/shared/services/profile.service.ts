@@ -174,6 +174,11 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
                 headers['cl-azure-secret'] = azure_creds.secret;
                 headers['cl-azure-tenant'] = azure_creds.tenant;
                 break;
+            case 'gce':
+                let gce_creds = <GCECredentials>credentials;
+                // Parse then stringify credentials to remove any new lines
+                headers['cl-gce-credentials-json'] = JSON.stringify(JSON.parse(gce_creds.credentials));
+                break;
         }
     }
 }
