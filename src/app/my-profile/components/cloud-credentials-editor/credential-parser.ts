@@ -55,6 +55,10 @@ export class CredentialParser {
                 parserFunc = this.parseOpenstackCreds;
                 break;
             }
+            case "gce": {
+                parserFunc = this.parseGCECreds;
+                break;
+            }
             default: {
                 throw new Error(`Unrecognised parser type: ${this.parser_type}`);
             }
