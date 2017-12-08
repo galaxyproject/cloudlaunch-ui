@@ -10,6 +10,7 @@ import 'rxjs/add/operator/filter';
 
 @Component({
     selector: 'clui-root',
+    animations: [ routerTransition ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
@@ -42,5 +43,9 @@ export class AppComponent {
 
     logout() {
         this._loginService.logout().subscribe();
+    }
+
+    getState(outlet: RouterOutlet) {
+        return outlet.activatedRouteData.state;
     }
 }
