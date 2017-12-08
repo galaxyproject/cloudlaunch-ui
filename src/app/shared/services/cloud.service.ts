@@ -23,7 +23,7 @@ export class CloudService {
     // TODO: This needs to be obtained from some global config
     private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/infrastructure/clouds/`;
 
-    public getClouds() : Observable<Cloud[]> {
+    public getClouds(): Observable<Cloud[]> {
         return this.http.get<QueryResult<Cloud>>(this._application_url)
             .map(qr => qr.results)
             .catch(this.handleError);

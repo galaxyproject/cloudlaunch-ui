@@ -27,13 +27,13 @@ const AWS_CREDENTIALS_CONTROL_VALIDATOR = {
 };
 
 @Component({
-    selector: 'aws-cred-editor',
+    selector: 'clui-aws-cred-editor',
     templateUrl: './aws-cred-editor.component.html',
     providers: [AWS_CREDENTIALS_CONTROL_ACCESSOR, AWS_CREDENTIALS_CONTROL_VALIDATOR]
 })
 export class AWSCredEditorComponent implements ControlValueAccessor, Validator {
     awsCredentialsForm: FormGroup;
-    showPassword: boolean = false;
+    showPassword = false;
 
     // Form Controls
     accessKeyCtrl: FormControl = new FormControl(null, Validators.required);

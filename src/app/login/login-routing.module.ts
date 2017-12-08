@@ -1,11 +1,11 @@
-import { NgModule }             from '@angular/core';
-import { ModuleWithProviders }  from '@angular/core';
+import { NgModule } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Services
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 
-//Pages
+// Pages
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { LogoutPageComponent } from './components/logout-page/logout-page.component';
 

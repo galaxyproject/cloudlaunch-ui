@@ -18,11 +18,11 @@ export abstract class BasePluginComponent implements OnInit, OnDestroy {
     private _initialConfig: any;
 
     get form(): FormGroup {
-        throw new TypeError("get form must be implemented");
+        throw new TypeError('get form must be implemented');
     }
 
     get configName(): string {
-        throw new TypeError("get configName must be implemented");
+        throw new TypeError('get configName must be implemented');
     }
 
     @Input()

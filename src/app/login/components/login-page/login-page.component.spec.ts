@@ -5,7 +5,7 @@ import { LoginPageComponent } from './login-page.component';
 
 describe('Component: Login', () => {
     it('should create an instance', () => {
-        let component = new LoginPageComponent();
+        const component = new LoginPageComponent();
         expect(component).toBeTruthy();
     });
 });

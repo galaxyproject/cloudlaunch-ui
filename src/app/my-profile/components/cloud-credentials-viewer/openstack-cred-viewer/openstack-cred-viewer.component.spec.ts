@@ -5,7 +5,7 @@ import { OpenStackCredViewerComponent } from './openstack-cred-viewer.component'
 
 describe('Component: Openstack Credentials Viewer', () => {
     it('should create an instance', () => {
-        let component = new OpenStackCredViewerComponent();
+        const component = new OpenStackCredViewerComponent();
         expect(component).toBeTruthy();
     });
 });

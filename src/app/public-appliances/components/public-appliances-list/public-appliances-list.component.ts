@@ -6,7 +6,7 @@ import { PublicService } from '../../../shared/models/public_service';
 import { PublicAppliancesService } from '../../../shared/services/public_appliances.service';
 
 @Component({
-    selector: 'app-public-appliances-list',
+    selector: 'clui-public-appliances-list',
     templateUrl: './public-appliances-list.component.html',
     styleUrls: ['./public-appliances-list.component.css'],
     providers: [PublicAppliancesService]

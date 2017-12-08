@@ -5,7 +5,7 @@ import { ApplianceDetailPageComponent } from './appliance-detail-page.component'
 
 describe('Component: Appliance Detail Page', () => {
     it('should create an instance', () => {
-        let component = new ApplianceDetailPageComponent();
+        const component = new ApplianceDetailPageComponent();
         expect(component).toBeTruthy();
     });
 });

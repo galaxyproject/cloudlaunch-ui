@@ -5,7 +5,7 @@ import { AzureCredEditorComponent } from './azure-cred-editor.component';
 
 describe('Component: AzureCredEditorComponent', () => {
   it('should create an instance', () => {
-    let component = new AzureCredEditorComponent();
+    const component = new AzureCredEditorComponent();
     expect(component).toBeTruthy();
   });
 });

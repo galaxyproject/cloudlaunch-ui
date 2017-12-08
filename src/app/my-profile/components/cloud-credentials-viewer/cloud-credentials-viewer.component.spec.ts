@@ -5,7 +5,7 @@ import { CloudCredentialsViewerComponent } from './cloud-credentials-viewer.comp
 
 describe('Component: Cloud Credentials Viewer', () => {
     it('should create an instance', () => {
-        let component = new CloudCredentialsViewerComponent();
+        const component = new CloudCredentialsViewerComponent();
         expect(component).toBeTruthy();
     });
 });

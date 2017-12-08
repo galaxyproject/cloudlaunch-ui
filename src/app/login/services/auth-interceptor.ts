@@ -20,15 +20,16 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        let loginService = this.injector.get(LoginService);
+        const loginService = this.injector.get(LoginService);
         // Get the auth header from the service.
         const authHeaders = loginService.getDefaultHeaders();
         // Preserve existing headers and add missing ones
-        let missingHeaders = {};
-        for (let key in authHeaders) {
-            if (!req.headers.has(key))
+        const missingHeaders = {};
+        for (const key in authHeaders) {
+            if (!req.headers.has(key)) {
                 // Make sure these are strings or an exception occurs: CreateListFromArrayLike
                 missingHeaders[key] = String( authHeaders[key] );
+            }
         }
         // Clone the request to add the new headers.
         const authReq = req.clone({ setHeaders: missingHeaders });

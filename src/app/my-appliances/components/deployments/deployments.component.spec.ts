@@ -5,7 +5,7 @@ import { DeploymentsComponent } from './deployments.component';
 
 describe('Component: Deployments Page', () => {
     it('should create an instance', () => {
-        let component = new DeploymentsComponent();
+        const component = new DeploymentsComponent();
         expect(component).toBeTruthy();
     });
 });

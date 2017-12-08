@@ -27,13 +27,13 @@ const AZURE_CREDENTIALS_CONTROL_VALIDATOR = {
 };
 
 @Component({
-    selector: 'azure-cred-editor',
+    selector: 'clui-azure-cred-editor',
     templateUrl: './azure-cred-editor.component.html',
     providers: [AZURE_CREDENTIALS_CONTROL_ACCESSOR, AZURE_CREDENTIALS_CONTROL_VALIDATOR]
 })
 export class AzureCredEditorComponent implements ControlValueAccessor, Validator {
     azureCredentialsForm: FormGroup;
-    showPassword: boolean = false;
+    showPassword = false;
 
     // Form Controls
     subscriptionIdCtrl: FormControl = new FormControl(null, Validators.required);

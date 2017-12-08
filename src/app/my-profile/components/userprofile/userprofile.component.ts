@@ -17,7 +17,7 @@ import { UserProfile } from '../../../shared/models/profile';
 import { ProfileService } from '../../../shared/services/profile.service';
 
 @Component({
-    selector: 'userprofile',
+    selector: 'clui-user-profile',
     templateUrl: './userprofile.component.html'
 })
 export class UserProfileComponent {

@@ -5,7 +5,7 @@ import { CloudCredentialsSelectorComponent } from './cloud-credentials-selector.
 
 describe('Component: CloudCredentialsSelectorComponent', () => {
     it('should create an instance', () => {
-        let component = new CloudCredentialsSelectorComponent();
+        const component = new CloudCredentialsSelectorComponent();
         expect(component).toBeTruthy();
     });
 });

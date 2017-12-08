@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, trigger, transition, animate,
-    style, state } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/mergeMap';
@@ -11,24 +10,13 @@ import { ApplicationService } from '../../../shared/services/application.service
 import { Application } from '../../../shared/models/application';
 
 @Component({
-    selector: 'app-appliance-detail-page',
+    selector: 'clui-appliance-detail-page',
     templateUrl: './appliance-detail-page.component.html',
     styleUrls: ['./appliance-detail-page.component.css'],
-    inputs: ['appliance'],
-    host: { '[@routeAnimation]': 'true' },
-    animations: [
-        trigger('routeAnimation', [
-            state('*', style({ opacity: 1 })),
-            transition('void => *', [
-                style({ opacity: 0 }),
-                animate('0.5s')
-            ])
-        ])
-    ]
 })
 export class ApplianceDetailPageComponent implements OnInit, OnDestroy {
     application: Application;
-    moreInfo: boolean = false;
+    moreInfo = false;
     routeSubscription: Subscription;
 
     toggleInfo() {
@@ -48,7 +36,8 @@ export class ApplianceDetailPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.routeSubscription)
+        if (this.routeSubscription) {
             this.routeSubscription.unsubscribe();
+        }
     }
 }

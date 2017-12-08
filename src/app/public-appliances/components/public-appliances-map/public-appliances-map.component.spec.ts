@@ -5,7 +5,7 @@ import { PublicAppliancesMapComponent } from './public-appliances-map.component'
 
 describe('Component: Catalog', () => {
     it('should create an instance', () => {
-        let component = new PublicAppliancesMapComponent();
+        const component = new PublicAppliancesMapComponent();
         expect(component).toBeTruthy();
     });
 });

@@ -27,13 +27,13 @@ const OPENSTACK_CREDENTIALS_CONTROL_VALIDATOR = {
 };
 
 @Component({
-    selector: 'openstack-cred-editor',
+    selector: 'clui-openstack-cred-editor',
     templateUrl: './openstack-cred-editor.component.html',
     providers: [OPENSTACK_CREDENTIALS_CONTROL_ACCESSOR, OPENSTACK_CREDENTIALS_CONTROL_VALIDATOR]
 })
 export class OpenStackCredEditorComponent implements ControlValueAccessor, Validator {
     openstackCredentialsForm: FormGroup;
-    showPassword: boolean = false;
+    showPassword = false;
 
     @Input() cloud: Cloud;
 
@@ -46,8 +46,8 @@ export class OpenStackCredEditorComponent implements ControlValueAccessor, Valid
 
     // Begin: implementation of ControlValueAccessor
 
-    // the method set in registerOnChange, it is just 
-    // a placeholder for a method that takes one parameter, 
+    // the method set in registerOnChange, it is just
+    // a placeholder for a method that takes one parameter,
     // we use it to emit changes back to the form
     private propagateChange = (_: any) => { };
 

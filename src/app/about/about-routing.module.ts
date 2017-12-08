@@ -1,8 +1,8 @@
-import { NgModule }             from '@angular/core';
-import { ModuleWithProviders }  from '@angular/core';
+import { NgModule } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-//Pages
+// Pages
 import { AboutCloudLaunchPageComponent } from './components/about-cloudlaunch-page/about-cloudlaunch-page.component';
 
 

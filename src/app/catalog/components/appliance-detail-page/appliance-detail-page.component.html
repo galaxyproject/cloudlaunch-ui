@@ -1,5 +1,5 @@
 <div *ngIf="application">
-	<standard-layout>
+	<clui-standard-layout>
 	    <page-header>
 	        <div class="col-md-8">
 		       <h2>Launching {{ application.name }} appliance</h2>
@@ -27,8 +27,8 @@
 	                application and cloud-specific choices.
 	                </p>
 	            </div>
-		       <app-appliance-detail-control [(application)]="application"></app-appliance-detail-control>
+		       <clui-appliance-detail-control [(application)]="application"></clui-appliance-detail-control>
 	        </div>
 	    </page-body>
-	</standard-layout>
+	</clui-standard-layout>
 </div>

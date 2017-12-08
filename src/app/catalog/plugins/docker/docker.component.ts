@@ -5,7 +5,6 @@ import {
     FormControl,
     Validators,
     FormGroupDirective } from '@angular/forms';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { debounceTime, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import 'rxjs/add/observable/forkJoin';
@@ -18,9 +17,10 @@ import { DockerRepositoryDetail } from './models/docker';
 import { DockerService } from './services/docker_service';
 
 @Component({
-    selector: 'docker-config',
+    selector: 'clui-docker-config',
     templateUrl: './docker.component.html',
     styleUrls: ['./docker.component.css'],
+    // tslint:disable-next-line:use-input-property-decorator
     inputs: ['cloud', 'initialConfig'],
     providers: [DockerService]
 })
@@ -30,7 +30,7 @@ export class DockerConfigComponent extends BasePluginComponent {
     searchResults: Array<DockerRepositoryOverview>;
     selectedRepoOverview: DockerRepositoryOverview;
     selectedRepoDetail: DockerRepositoryDetail;
-    fetchInProgress: boolean = false;
+    fetchInProgress = false;
     selectedDockerFile: string;
 
 
@@ -39,12 +39,11 @@ export class DockerConfigComponent extends BasePluginComponent {
     }
 
     get configName(): string {
-        return "config_docker";
+        return 'config_docker';
     }
 
     constructor(fb: FormBuilder,
             parentContainer: FormGroupDirective,
-            private _http: Http,
             private _dockerService: DockerService) {
         super(fb, parentContainer);
         this.dockerLaunchForm = fb.group({
@@ -57,7 +56,7 @@ export class DockerConfigComponent extends BasePluginComponent {
             .switchMap(term => this.onDockerSearch(term))
             .subscribe(
                     data => { this.fetchInProgress = false; this.searchResults = data; },
-                    error => { this.fetchInProgress = false; console.log(error) });
+                    error => { this.fetchInProgress = false; console.log(error); });
     }
 
     onDockerSearch(term: string): Observable<Array<DockerRepositoryOverview>> {
@@ -68,7 +67,7 @@ export class DockerConfigComponent extends BasePluginComponent {
         this.dockerLaunchForm.reset();
         return this._dockerService.searchDockerHub(term);
     }
-    
+
     onRepositorySelect(repo: DockerRepositoryOverview) {
         this.selectedRepoOverview = repo;
         this.selectedRepoDetail = null;
@@ -76,7 +75,7 @@ export class DockerConfigComponent extends BasePluginComponent {
         this.selectedDockerFile = null;
         this.dockerLaunchForm.reset();
         this.dockerLaunchForm.controls['repo_name'].setValue(repo.repo_name);
-        
+
         Observable.forkJoin(
                 this._dockerService.getRepoDetail(repo),
                 this._dockerService.getDockerFile(repo)

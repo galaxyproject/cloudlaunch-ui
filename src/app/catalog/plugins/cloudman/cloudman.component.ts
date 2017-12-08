@@ -15,9 +15,11 @@ import { Cloud, CloudManCluster } from '../../../shared/models/cloud';
 import { CloudService } from '../../../shared/services/cloud.service';
 
 @Component({
-    selector: 'cloudman-config',
+    selector: 'clui-cloudman-config',
     templateUrl: './cloudman.component.html',
-    providers: [CloudService]
+    providers: [CloudService],
+    // tslint:disable-next-line:use-input-property-decorator
+    inputs: ['cloud', 'initialConfig']
 })
 
 export class CloudManConfigComponent extends BasePluginComponent implements OnDestroy {
@@ -27,9 +29,9 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
     get password(): string { return this.clusterPasswordCtrl.value; }
 
     hidePassword = false;
-    showAdvanced: boolean = false;
-    showSavedClusters: boolean = false;
-    savedClustersHelp: string = "Select a saved cluster";
+    showAdvanced = false;
+    showSavedClusters = false;
+    savedClustersHelp = 'Select a saved cluster';
     errorMessage: string;
 
     // Form controls
@@ -49,7 +51,7 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
     }
 
     get configName(): string {
-        return "config_cloudman";
+        return 'config_cloudman';
     }
 
     constructor(fb: FormBuilder, @Host() parentContainer: FormGroupDirective,
@@ -79,16 +81,18 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
 
     fetchSavedClusters() {
         this.showSavedClusters = true;
-        this.savedClustersHelp = "Retrieving saved clusters...";
+        this.savedClustersHelp = 'Retrieving saved clusters...';
         this.savedClustersObservable = this._cloudService.getSavedClusters(this.cloud.slug)
                                        .do(clusters => { this.savedClustersHelp = 'Select a saved cluster'; },
                                            error => { this.errorMessage = <any>error; });
     }
 
     ngOnDestroy() {
-        if (this.restartCtrlSubscription)
+        if (this.restartCtrlSubscription) {
             this.restartCtrlSubscription.unsubscribe();
-        if (this.cloudCtrlSubscription)
+        }
+        if (this.cloudCtrlSubscription) {
             this.cloudCtrlSubscription.unsubscribe();
+        }
     }
 }

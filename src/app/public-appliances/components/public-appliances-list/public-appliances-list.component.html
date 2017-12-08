@@ -1,6 +1,6 @@
 <div class="list-group">
     <div class="col-md-12 list-group">
-        <public-appliances-map [publicServices]="publicServicesObservable"></public-appliances-map>
+        <clui-public-appliances-map [publicServices]="publicServicesObservable"></clui-public-appliances-map>
     </div>
 	<div *ngFor="let svc of publicServicesObservable | async" class="col-md-4 list-group">
 		<div class="list-group-item cl-app-badge" style="overflow: auto">

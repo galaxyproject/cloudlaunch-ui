@@ -8,7 +8,7 @@ import { ProfileService } from '../../../../shared/services/profile.service';
 
 
 @Component({
-    selector: 'azure-cred-viewer',
+    selector: 'clui-azure-cred-viewer',
     templateUrl: './azure-cred-viewer.component.html'
 })
 export class AzureCredViewerComponent implements OnInit {
@@ -16,11 +16,10 @@ export class AzureCredViewerComponent implements OnInit {
     credentials: AzureCredentials;
 
     @Output()
-    onCredentialsChanged = new EventEmitter<Credentials>();
+    credentialsChanged = new EventEmitter<Credentials>();
 
-    editMode: boolean = false;
+    editMode = false;
     currentObject: AzureCredentials;
-
 
     constructor(private _profileService: ProfileService) {
     }
@@ -31,10 +30,10 @@ export class AzureCredViewerComponent implements OnInit {
     }
 
     groupBy(list: any) {
-        let temp = {};
-        let results: any[] = [];
+        const temp = {};
+        const results: any[] = [];
         if (list) {
-            for (let item of list) {
+            for (const item of list) {
                 if (item.cloud.slug in temp) {
                     temp[item.cloud.slug].push(item);
                 } else {
@@ -69,13 +68,13 @@ export class AzureCredViewerComponent implements OnInit {
     deleteCreds(creds: AzureCredentials) {
         this._profileService.deleteCredentialsAzure(creds)
             .subscribe(result => {
-                this.onCredentialsChanged.emit(creds);
+                this.credentialsChanged.emit(creds);
             });
     }
 
     handleCredentialsChanged(creds: AzureCredentials) {
         this.editMode = false;
         this.currentObject = null;
-        this.onCredentialsChanged.emit(creds);
+        this.credentialsChanged.emit(creds);
     }
 }

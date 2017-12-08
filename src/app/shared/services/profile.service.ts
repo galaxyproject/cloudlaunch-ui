@@ -28,7 +28,7 @@ export class ProfileService {
     }
 
     public getCredentialsForCloud(cloud_id: string): Observable<Credentials[]> {
-        let all_creds = this.getProfile().map(p => [].concat(p.aws_creds).concat(p.openstack_creds).concat(p.azure_creds));
+        const all_creds = this.getProfile().map(p => [].concat(p.aws_creds).concat(p.openstack_creds).concat(p.azure_creds));
         return all_creds.map(creds => creds.filter(c => c && c.cloud.slug === cloud_id));
     }
 
@@ -53,11 +53,12 @@ export class ProfileService {
         return this.http.post<AWSCredentials>(`${this._creds_url_aws}`, creds)
             .catch(this.handleError);
     }
-    
+
     public verifyCredentialsAWS(creds: AWSCredentials): Observable<CredVerificationResult> {
-        let headers = {};
+        const headers = {};
         addCredentialHeaders(headers, creds);
-        return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`, creds, { headers: new HttpHeaders(headers) })
+        return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
+                                                      creds, { headers: new HttpHeaders(headers) })
             .catch(this.handleError);
     }
 
@@ -75,11 +76,12 @@ export class ProfileService {
         return this.http.post<OpenStackCredentials>(`${this._creds_url_openstack}`, creds)
             .catch(this.handleError);
     }
-    
+
     public verifyCredentialsOpenStack(creds: OpenStackCredentials): Observable<CredVerificationResult> {
-        let headers = {};
+        const headers = {};
         addCredentialHeaders(headers, creds);
-        return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`, creds, { headers: new HttpHeaders(headers) })
+        return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
+                                                      creds, { headers: new HttpHeaders(headers) })
             .catch(this.handleError);
     }
 
@@ -99,9 +101,10 @@ export class ProfileService {
     }
 
     public verifyCredentialsAzure(creds: AzureCredentials): Observable<CredVerificationResult> {
-        let headers = {};
+        const headers = {};
         addCredentialHeaders(headers, creds);
-        return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`, creds, { headers: new HttpHeaders(headers) })
+        return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
+                                                      creds, { headers: new HttpHeaders(headers) })
             .catch(this.handleError);
     }
 
@@ -128,7 +131,7 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
         // Must be an unsaved set of credentials
         switch (credentials.cloud.cloud_type) {
             case 'openstack':
-                let os_creds = <OpenStackCredentials>credentials;
+                const os_creds = <OpenStackCredentials>credentials;
                 headers['cl-os-username'] = os_creds.username;
                 headers['cl-os-password'] = os_creds.password;
                 headers['cl-os-project-name'] = os_creds.project_name;
@@ -136,12 +139,12 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
                 headers['cl-os-user-domain-name'] = os_creds.user_domain_name;
                 break;
             case 'aws':
-                let aws_creds = <AWSCredentials>credentials;
+                const aws_creds = <AWSCredentials>credentials;
                 headers['cl-aws-access-key'] = aws_creds.access_key;
                 headers['cl-aws-secret-key'] = aws_creds.secret_key;
                 break;
             case 'azure':
-                let azure_creds = <AzureCredentials>credentials;
+                const azure_creds = <AzureCredentials>credentials;
                 headers['cl-azure-subscription-id'] = azure_creds.subscription_id;
                 headers['cl-azure-client-id'] = azure_creds.client_id;
                 headers['cl-azure-secret'] = azure_creds.secret;

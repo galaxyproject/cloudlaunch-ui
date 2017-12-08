@@ -5,7 +5,7 @@ import { PublicAppliancesPageComponent } from './public-appliances-page.componen
 
 describe('Component: Public Appliances Page', () => {
     it('should create an instance', () => {
-        let component = new PublicAppliancesPageComponent();
+        const component = new PublicAppliancesPageComponent();
         expect(component).toBeTruthy();
     });
 });

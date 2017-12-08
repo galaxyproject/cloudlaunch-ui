@@ -1,12 +1,12 @@
-import { Component, OnInit, trigger, transition, animate,
-    style, state } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { trigger, transition, animate, style, state } from '@angular/animations';
 import { Observable } from 'rxjs/Observable';
 
 import { Deployment } from '../../../shared/models/deployment';
 import { DeploymentService } from '../../../shared/services/deployment.service';
 
 @Component({
-    selector: 'launch-history-page',
+    selector: 'clui-launch-history-page',
     templateUrl: './launch-history-page.component.html',
     styleUrls: ['./launch-history-page.component.css'],
     host: { '[@routeAnimation]': 'true' },
@@ -20,7 +20,7 @@ import { DeploymentService } from '../../../shared/services/deployment.service';
         ])
     ]
 })
-export class LaunchHistoryPageComponent {
+export class LaunchHistoryPageComponent implements OnInit {
     deployments: Observable<Deployment[]>;
 
     constructor(

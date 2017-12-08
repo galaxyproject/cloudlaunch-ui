@@ -20,39 +20,41 @@ export class DockerService {
     docker_repo_url = 'https://hub.docker.com/v2/';
     cors_proxy_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/cors_proxy/`;
 
-    searchDockerHub(term: string) : Observable<DockerRepositoryOverview[]> {
-        let url = `${this.docker_repo_url}search/repositories/?query=${term}&page_size=20`;
+    searchDockerHub(term: string): Observable<DockerRepositoryOverview[]> {
+        const url = `${this.docker_repo_url}search/repositories/?query=${term}&page_size=20`;
         return this.http.get<QueryResult<DockerRepositoryOverview>>(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
             .map(data => data.results)
             .catch(error => Observable.throw(error.error || 'Server error'));
     }
 
-    getRepoDetail(repo: DockerRepositoryOverview) : Observable<DockerRepositoryDetail> {
+    getRepoDetail(repo: DockerRepositoryOverview): Observable<DockerRepositoryDetail> {
         let url = '';
-        if (repo.is_official)
+        if (repo.is_official) {
             url = `${this.docker_repo_url}repositories/library/${repo.repo_name}`;
-        else
+        } else {
             url = `${this.docker_repo_url}repositories/${repo.repo_name}`;
+        }
         return this.http.get<DockerRepositoryDetail>(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
             .catch(error => Observable.throw(error.error || 'Server error'));
     }
 
     getDockerFile(repo: DockerRepositoryOverview) {
         let url = '';
-        if (repo.is_official)
+        if (repo.is_official) {
             url = `${this.docker_repo_url}repositories/library/${repo.repo_name}/dockerfile`;
-        else
+        } else {
             url = `${this.docker_repo_url}repositories/${repo.repo_name}/dockerfile`;
+        }
         return this.http.get(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
             .map(data => data['contents'])
             .catch(error => Observable.throw(error.error || 'Server error'));
     }
 
-    parseDockerFile(content: string) : DockerRunConfiguration {
-        let config = new DockerRunConfiguration();
-        let parse_results = new DockerFileParser().parse(content);
+    parseDockerFile(content: string): DockerRunConfiguration {
+        const config = new DockerRunConfiguration();
+        const parse_results = new DockerFileParser().parse(content);
 
-        for (let command of parse_results) {
+        for (const command of parse_results) {
             switch (command.name) {
                 case 'ENTRYPOINT':
                     config.entrypoint = command.args;
@@ -73,12 +75,12 @@ export class DockerService {
                     }
                     break;
                 case 'ENV':
-                    for (let key in command.args) {
+                    Object.keys(command.args).forEach(function(key) {
                         config.env_vars.push(new EnvironmentVariable(key, command.args[key]));
-                    }
+                    });
                     break;
                 case 'VOLUME':
-                    for (let vol of command.args) {
+                    for (const vol of command.args) {
                         config.volumes.push(new VolumeMapping('', vol));
                     }
                     break;

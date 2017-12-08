@@ -8,18 +8,18 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { LoginModule } from './login/login.module';
 import { AppComponent } from './app.component';
-import { AppRoutingModule }  from './app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 
 import { MyAppliancesModule } from './my-appliances/my-appliances.module';
-import { ArchiveDeleteConfirmDialog } from './my-appliances/components/deployments/dialogs/archive-delete-confirm.component';
+import { ArchiveDeleteConfirmDlgComponent } from './my-appliances/components/deployments/dialogs/archive-delete-confirm.component';
 import { AuthInterceptor } from './login/services/auth-interceptor';
 
 // Remove once plugin system is in place
-import { PluginsModule } from './catalog/plugins/plugins.module'
-import { UbuntuConfigComponent } from './catalog/plugins/ubuntu/ubuntu.component'
-import { CloudManConfigComponent } from './catalog/plugins/cloudman/cloudman.component'
-import { GVLConfigComponent } from './catalog/plugins/gvl/gvl.component'
-import { DockerConfigComponent } from './catalog/plugins/docker/docker.component'
+import { PluginsModule } from './catalog/plugins/plugins.module';
+import { UbuntuConfigComponent } from './catalog/plugins/ubuntu/ubuntu.component';
+import { CloudManConfigComponent } from './catalog/plugins/cloudman/cloudman.component';
+import { GVLConfigComponent } from './catalog/plugins/gvl/gvl.component';
+import { DockerConfigComponent } from './catalog/plugins/docker/docker.component';
 
 @NgModule({
     declarations: [
@@ -47,7 +47,8 @@ import { DockerConfigComponent } from './catalog/plugins/docker/docker.component
             multi: true,
         }
     ],
-    entryComponents: [ArchiveDeleteConfirmDialog, UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent, DockerConfigComponent],
+    entryComponents: [ArchiveDeleteConfirmDlgComponent, UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,
+                      DockerConfigComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

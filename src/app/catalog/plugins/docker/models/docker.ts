@@ -27,8 +27,8 @@ export interface DockerRepositoryDetail {
 }
 
 export class PortMapping {
-    container_port: string; 
-    host_port: string; 
+    container_port: string;
+    host_port: string;
 
     constructor(container_port: string, host_port: string) {
         this.container_port = container_port;
@@ -37,7 +37,7 @@ export class PortMapping {
 }
 
 export class EnvironmentVariable {
-    variable: string; 
+    variable: string;
     value: string;
 
     constructor(variable: string, value: string) {
@@ -63,7 +63,7 @@ export class DockerRunConfiguration {
     entrypoint: string;
     command: string;
     work_dir: string;
-    user: string;        
+    user: string;
     port_mappings: PortMapping[] = [];
     env_vars: EnvironmentVariable[] = [];
     volumes: VolumeMapping[] = [];

@@ -5,7 +5,7 @@ import { CloudCredentialsEditorComponent } from './cloud-credentials-editor.comp
 
 describe('Component: CloudCredentialsEditorComponent', () => {
     it('should create an instance', () => {
-        let component = new CloudCredentialsEditorComponent();
+        const component = new CloudCredentialsEditorComponent();
         expect(component).toBeTruthy();
     });
 });

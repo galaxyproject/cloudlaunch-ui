@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login/login.service';
 
 @Component({
-    selector: 'app-logout-page',
+    selector: 'clui-logout-page',
     templateUrl: './logout-page.component.html',
     styleUrls: ['./logout-page.component.css']
 })

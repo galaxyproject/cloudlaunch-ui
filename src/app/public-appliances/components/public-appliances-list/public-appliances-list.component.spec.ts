@@ -5,7 +5,7 @@ import { PublicAppliancesListComponent } from './public-appliances-list.componen
 
 describe('Component: Catalog', () => {
     it('should create an instance', () => {
-        let component = new PublicAppliancesListComponent();
+        const component = new PublicAppliancesListComponent();
         expect(component).toBeTruthy();
     });
 });

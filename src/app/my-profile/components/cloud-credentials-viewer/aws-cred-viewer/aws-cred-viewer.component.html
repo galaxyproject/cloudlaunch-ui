@@ -50,7 +50,7 @@
             <button *ngIf="!editMode" type="button" class="btn btn-info" (click)="addNew()"><i class="fa fa-plus"></i> Add New Credentials </button>
 
             <div *ngIf="editMode">
-                <cloud-credentials-editor cloudType="aws" [credentials]="currentObject" (onCredentialsChanged)="handleCredentialsChanged($event)"></cloud-credentials-editor>
+                <clui-cloud-credentials-editor cloudType="aws" [credentials]="currentObject" (credentialsChanged)="handleCredentialsChanged($event)"></clui-cloud-credentials-editor>
             </div>
         </div>
     </div>

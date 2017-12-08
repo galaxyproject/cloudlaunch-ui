@@ -7,7 +7,7 @@ import { BasePluginComponent } from '../base-plugin.component';
 
 
 @Component({
-    selector: 'ubuntu-config',
+    selector: 'clui-ubuntu-config',
     template: ``
 })
 export class UbuntuConfigComponent extends BasePluginComponent {
@@ -23,6 +23,6 @@ export class UbuntuConfigComponent extends BasePluginComponent {
     }
 
     get configName(): string {
-        return "config_ubuntu";
+        return 'config_ubuntu';
     }
 }

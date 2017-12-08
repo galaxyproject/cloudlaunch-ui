@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 
-import { Task } from '../../../../../shared/models/task';
+import { Task } from '../../../../shared/models/task';
 
 @Component({
-    selector: 'launch-task-status-renderer',
-    templateUrl: './launch-task-status-renderer.component.html',
+    selector: 'clui-launch-task-status',
+    templateUrl: './launch-task-status.component.html',
 })
-export class LaunchTaskStatusRenderer {
+export class LaunchTaskStatusComponent {
 
     _task: Task;
     _hasCredentials: boolean;
@@ -27,7 +27,7 @@ export class LaunchTaskStatusRenderer {
     set hasCredentials(hasCredentials: boolean) {
         this._hasCredentials = hasCredentials;
     }
-    get hasCredentials():boolean {
+    get hasCredentials(): boolean {
         return this._hasCredentials;
     }
 }

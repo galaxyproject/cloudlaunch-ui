@@ -5,7 +5,7 @@ import { UserProfileComponent } from './userprofile.component';
 
 describe('Component: User Profile', () => {
     it('should create an instance', () => {
-        let component = new UserProfileComponent();
+        const component = new UserProfileComponent();
         expect(component).toBeTruthy();
     });
 });

@@ -5,7 +5,7 @@ import { OpenStackCredEditorComponent } from './openstack-cred-editor.component'
 
 describe('Component: OpenStackCredEditorComponent', () => {
   it('should create an instance', () => {
-    let component = new OpenStackCredEditorComponent();
+    const component = new OpenStackCredEditorComponent();
     expect(component).toBeTruthy();
   });
 });

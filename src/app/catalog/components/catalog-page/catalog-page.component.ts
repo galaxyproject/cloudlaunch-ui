@@ -1,9 +1,9 @@
-import { Component, trigger, transition, animate,
-    style, state } from '@angular/core';
+import { Component } from '@angular/core';
+import { trigger, transition, animate, style, state } from '@angular/animations';
 import { CatalogListComponent } from '../catalog-list/catalog-list.component';
 
 @Component({
-    selector: 'app-catalog-page',
+    selector: 'clui-catalog-page',
     templateUrl: './catalog-page.component.html',
     styleUrls: ['./catalog-page.component.css'],
     host: { '[@routeAnimation]': 'true' },

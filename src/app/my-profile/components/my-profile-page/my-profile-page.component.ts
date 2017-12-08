@@ -1,9 +1,9 @@
-import { Component, OnInit, trigger, transition, animate,
-    style, state } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { trigger, transition, animate, style, state } from '@angular/animations';
 
 
 @Component({
-    selector: 'my-profile-page',
+    selector: 'clui-my-profile-page',
     templateUrl: './my-profile-page.component.html',
     styleUrls: ['./my-profile-page.component.css'],
     host: { '[@routeAnimation]': 'true' },
@@ -25,6 +25,5 @@ export class MyProfilePageComponent implements OnInit {
     }
 
     onSubmit() {
-        //this.errorMessage = null;
     }
 }

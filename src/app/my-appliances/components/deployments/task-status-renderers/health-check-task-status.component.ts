@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 
-import { Task } from '../../../../../shared/models/task';
+import { Task } from '../../../../shared/models/task';
 
 @Component({
-    selector: 'health-check-task-status-renderer',
-    templateUrl: './health-check-task-status-renderer.component.html',
+    selector: 'clui-health-check-task-status',
+    templateUrl: './health-check-task-status.component.html',
 })
-export class HealthCheckTaskStatusRenderer {
+export class HealthCheckTaskStatusComponent {
 
     _task: Task;
 

@@ -8,7 +8,7 @@ import { ProfileService } from '../../../../shared/services/profile.service';
 
 
 @Component({
-    selector: 'aws-cred-viewer',
+    selector: 'clui-aws-cred-viewer',
     templateUrl: './aws-cred-viewer.component.html'
 })
 export class AWSCredViewerComponent implements OnInit {
@@ -16,11 +16,10 @@ export class AWSCredViewerComponent implements OnInit {
     credentials: AWSCredentials;
 
     @Output()
-    onCredentialsChanged = new EventEmitter<Credentials>();
+    credentialsChanged = new EventEmitter<Credentials>();
 
-    editMode: boolean = false;
+    editMode = false;
     currentObject: AWSCredentials;
-
 
     constructor(private _profileService: ProfileService) {
     }
@@ -31,10 +30,10 @@ export class AWSCredViewerComponent implements OnInit {
     }
 
     groupBy(list: any) {
-        let temp = {};
-        let results: any[] = [];
+        const temp = {};
+        const results: any[] = [];
         if (list) {
-            for (let item of list) {
+            for (const item of list) {
                 if (item.cloud.slug in temp) {
                     temp[item.cloud.slug].push(item);
                 } else {
@@ -69,13 +68,13 @@ export class AWSCredViewerComponent implements OnInit {
     deleteCreds(creds: AWSCredentials) {
         this._profileService.deleteCredentialsAWS(creds)
             .subscribe(result => {
-                this.onCredentialsChanged.emit(creds);
+                this.credentialsChanged.emit(creds);
             });
     }
 
     handleCredentialsChanged(creds: AWSCredentials) {
         this.editMode = false;
         this.currentObject = null;
-        this.onCredentialsChanged.emit(creds);
+        this.credentialsChanged.emit(creds);
     }
 }

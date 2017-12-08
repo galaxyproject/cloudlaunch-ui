@@ -18,10 +18,10 @@ export class DeploymentService {
 
 
     public getDeployments(options = {}): Observable<Deployment[]> {
-        let defaultOptions: any = {
+        const defaultOptions: any = {
             archived: null,
         };
-        let finalOptions = Object.assign({}, defaultOptions, options);
+        const finalOptions = Object.assign({}, defaultOptions, options);
         let url = `${this._deployment_url}`;
         if (finalOptions.archived !== null) {
             url = `${url}?archived=${finalOptions.archived}`;
@@ -48,7 +48,7 @@ export class DeploymentService {
 
     public createTask(slug: string, task: string): Observable<Task> {
         // TODO: make this an enum?
-        let body = {'action': task};
+        const body = {'action': task};
         return this.http.post<Deployment>(`${this._deployment_url}${slug}/tasks/`, body)
             .catch(this.handleError);
     }

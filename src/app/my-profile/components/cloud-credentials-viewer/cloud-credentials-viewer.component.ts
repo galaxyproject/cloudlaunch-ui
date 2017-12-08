@@ -10,7 +10,7 @@ import {
 import { Credentials, UserProfile } from '../../../shared/models/profile';
 
 @Component({
-    selector: 'cloud-credentials-viewer',
+    selector: 'clui-cloud-credentials-viewer',
     templateUrl: './cloud-credentials-viewer.component.html',
 })
 export class CloudCredentialsViewerComponent {
@@ -18,9 +18,9 @@ export class CloudCredentialsViewerComponent {
     profile: UserProfile;
 
     @Output()
-    onCredentialsChanged = new EventEmitter<Credentials>();
+    credentialsChanged = new EventEmitter<Credentials>();
 
     handleCredentialsChanged(creds: Credentials) {
-        this.onCredentialsChanged.emit(creds);
+        this.credentialsChanged.emit(creds);
     }
 }

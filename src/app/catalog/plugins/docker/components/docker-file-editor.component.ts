@@ -31,13 +31,13 @@ const DOCKER_FILE_CONTROL_VALIDATOR = {
 };
 
 @Component({
-    selector: 'docker-file-editor',
+    selector: 'clui-docker-file-editor',
     templateUrl: './docker-file-editor.component.html',
     providers: [DOCKER_FILE_CONTROL_ACCESSOR, DOCKER_FILE_CONTROL_VALIDATOR]
 })
 export class DockerFileEditorComponent implements ControlValueAccessor, Validator {
     dockerFileForm: FormGroup;
-    showAdvanced: boolean = false;
+    showAdvanced = false;
     _dockerFile: string;
 
     // Form Controls
@@ -48,12 +48,12 @@ export class DockerFileEditorComponent implements ControlValueAccessor, Validato
     get dockerFile(): string {
         return this._dockerFile;
     }
-    
+
     @Input()
     set dockerFile(value) {
         this._dockerFile = value;
         if (value) {
-            let config = this._dockerService.parseDockerFile(value);
+            const config = this._dockerService.parseDockerFile(value);
             this.setDockerConfigFormValues(config);
         }
     }
@@ -110,34 +110,34 @@ export class DockerFileEditorComponent implements ControlValueAccessor, Validato
         });
         this.dockerFileForm.valueChanges.subscribe(data => this.propagateChangedValues());
     }
-    
+
     propagateChangedValues() {
-        let changedVals = this.getDirtyValues(this.dockerFileForm);
+        const changedVals = this.getDirtyValues(this.dockerFileForm);
         this.propagateChange(changedVals);
     }
 
     getDirtyValues(control_group: FormGroup) {
         if (control_group instanceof FormArray) {
-            let dirtyValues: any = []
+            const dirtyValues: any = [];
             Object.keys(control_group.controls).forEach((control_name) => {
-                let control = control_group.controls[control_name];
+                const control = control_group.controls[control_name];
                 if (control.dirty) {
                     // Send the complete control value
                     dirtyValues.push(control.value);
                 }
-    
+
             });
             return dirtyValues;
-        }
-        else {
-            let dirtyValues: any = {};
+        } else {
+            const dirtyValues: any = {};
             Object.keys(control_group.controls).forEach((control_name) => {
-                let control = control_group.controls[control_name];
-                if (control.dirty){
-                    if ((<FormGroup>control).controls) // check for nested controlGroups
+                const control = control_group.controls[control_name];
+                if (control.dirty) {
+                    if ((<FormGroup>control).controls) {  // check for nested controlGroups
                         dirtyValues[control_name] = this.getDirtyValues(<FormGroup>control);  // recurse
-                    else    
+                    } else {
                         dirtyValues[control_name] = control.value; // simple control
+                    }
                 }
 
             });

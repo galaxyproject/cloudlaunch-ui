@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-//Services
+// Services
 import { AuthGuardService } from '../login/services/auth-guard/auth-guard.service';
 
-//Pages
+// Pages
 import { MyAppliancesPageComponent } from './components/my-appliances-page/my-appliances-page.component';
 import { LaunchHistoryPageComponent } from './components/launch-history-page/launch-history-page.component';
 

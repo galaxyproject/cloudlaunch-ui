@@ -5,7 +5,7 @@ import { AboutCloudLaunchPageComponent } from './about-cloudlaunch-page.componen
 
 describe('Component: About CloudLaunch Page', () => {
     it('should create an instance', () => {
-        let component = new AboutCloudLaunchPageComponent();
+        const component = new AboutCloudLaunchPageComponent();
         expect(component).toBeTruthy();
     });
 });

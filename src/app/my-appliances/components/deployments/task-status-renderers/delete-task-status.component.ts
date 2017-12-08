@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 
-import { Task } from '../../../../../shared/models/task';
+import { Task } from '../../../../shared/models/task';
 
 @Component({
-    selector: 'delete-task-status-renderer',
-    templateUrl: './delete-task-status-renderer.component.html',
+    selector: 'clui-delete-task-status',
+    templateUrl: './delete-task-status.component.html',
 })
-export class DeleteTaskStatusRenderer {
+export class DeleteTaskStatusComponent {
 
     _task: Task;
 

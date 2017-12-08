@@ -18,7 +18,7 @@
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
-      "prefix": "app",
+      "prefix": "clui",
       "styles": [
         "../node_modules/bootstrap-material-design/dist/css/ripples.min.css",
         "styles.css",

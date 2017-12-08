@@ -22,12 +22,15 @@ export class ApplicationService {
 
     public queryApplications(filter?: string, page?: number, page_size?: number): Observable<QueryResult<Application>> {
         let query_url = `${this._application_url}?`;
-        if (filter)
+        if (filter) {
             query_url = `${query_url}search=${filter}&`;
-        if (page)
+        }
+        if (page) {
             query_url = `${query_url}page=${page}&`;
-        if (page_size)
+        }
+        if (page_size) {
             query_url = `${query_url}page_size=${page_size}&`;
+        }
         return this.http.get<QueryResult<Application>>(query_url);
     }
 

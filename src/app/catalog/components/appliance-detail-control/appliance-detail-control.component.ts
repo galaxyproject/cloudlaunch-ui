@@ -10,14 +10,14 @@ import { Cloud } from '../../../shared/models/cloud';
 import { Deployment } from '../../../shared/models/deployment';
 import { Credentials } from '../../../shared/models/profile';
 
-//Services
+// Services
 import { ApplicationService } from '../../../shared/services/application.service';
 import { DeploymentService } from '../../../shared/services/deployment.service';
 import { LoginService } from '../../../login/services/login/login.service';
 
 
 @Component({
-    selector: 'app-appliance-detail-control',
+    selector: 'clui-appliance-detail-control',
     templateUrl: './appliance-detail-control.component.html',
     styleUrls: ['./appliance-detail-control.component.css']
 })
@@ -28,7 +28,7 @@ export class ApplianceDetailControlComponent implements OnInit {
         this.appControl.patchValue(value);
     }
 
-    get application() : Application {
+    get application(): Application {
         return this.appControl.value;
     }
 
@@ -42,7 +42,7 @@ export class ApplianceDetailControlComponent implements OnInit {
     targetCloudControl = new FormControl('', Validators.required);
 
     public errorMessage: string;
-    public submitPending: boolean = false;
+    public submitPending = false;
 
     constructor(
         fb: FormBuilder,
@@ -83,36 +83,37 @@ export class ApplianceDetailControlComponent implements OnInit {
 
     onVersionSelectById(version_id: string) {
         if (version_id) {
-            let applicationVersion = this.application.versions.filter(v => { return v.version == version_id; })[0];
+            const applicationVersion = this.application.versions.filter(v => v.version === version_id)[0];
             this.appVerControl.setValue(applicationVersion);
-        }
-        else
+        } else {
             this.appVerControl.patchValue(null);
+        }
     }
 
     onVersionChange(version: ApplicationVersion) {
         if (version && version.default_cloud) {
-            let default_cloud = this.getVersionConfigForCloud(version.default_cloud).cloud;
+            const default_cloud = this.getVersionConfigForCloud(version.default_cloud).cloud;
             this.targetCloudControl.setValue(default_cloud);
-        }
-        else
+        } else {
             this.targetCloudControl.patchValue(null);
+        }
     }
 
     onTargetCloudChange(cloud: Cloud) {
         this.credentialsControl.patchValue(null);
     }
 
-    getCurrentAppCloudConfig() : ApplicationVersionCloudConfig {
-        let cloud = this.targetCloudControl.value;
-        if (cloud)
+    getCurrentAppCloudConfig(): ApplicationVersionCloudConfig {
+        const cloud = this.targetCloudControl.value;
+        if (cloud) {
             return this.getVersionConfigForCloud(cloud.slug);
-        else
+        } else {
             return null;
+        }
     }
 
-    getVersionConfigForCloud(slug: string) : ApplicationVersionCloudConfig {
-        return this.appVerControl.value.cloud_config.filter((v: ApplicationVersionCloudConfig) => v.cloud.slug == slug)[0];
+    getVersionConfigForCloud(slug: string): ApplicationVersionCloudConfig {
+        return this.appVerControl.value.cloud_config.filter((v: ApplicationVersionCloudConfig) => v.cloud.slug === slug)[0];
     }
 
     getCloudsForSelectedVersion(): Cloud {
@@ -127,14 +128,14 @@ export class ApplianceDetailControlComponent implements OnInit {
     onSubmit(formValues: any): void {
         this.errorMessage = null;
         this.submitPending = true;
-        let deployment = this.formToDeployment(formValues);
+        const deployment = this.formToDeployment(formValues);
         this._deploymentService.createDeployment(deployment).subscribe(
             data => this._router.navigate(['appliances']),
             error => this.handleErrors(error));
     }
 
-    formToDeployment(formValues: any) : Deployment {
-        let d = new Deployment();
+    formToDeployment(formValues: any): Deployment {
+        const d = new Deployment();
         d.name = formValues['name'];
         d.application = formValues['application'].slug;
         d.application_version = formValues['application_version'].version;
@@ -146,31 +147,26 @@ export class ApplianceDetailControlComponent implements OnInit {
     handleErrors(errors: any) {
         this.submitPending = false;
         if (errors) {
-            if (errors.hasOwnProperty("error")) {
+            if (errors.hasOwnProperty('error')) {
                 this.errorMessage = `${errors.error}`;
-            }
-            else if (typeof errors === 'string') {
+            } else if (typeof errors === 'string') {
                 this.errorMessage = <string>errors;
-            }
-            else if (errors instanceof Array) {
+            } else if (errors instanceof Array) {
                 // Validation responses such as: ["Unknown error occurred"]
-                this.errorMessage = "";
-                for (let err in errors) {
-                    this.errorMessage += `${errors[err]}\n`;
-                }
-            }
-            else {
+                this.errorMessage = '';
+                errors.map(err => this.errorMessage += `${err}\n`);
+            } else {
                 // Validation responses such as: {"target_cloud":["This field is required."]}
-                this.errorMessage = "";
-                for (let err in errors) {
+                this.errorMessage = '';
+                errors.map((err: any) => {
                     this.errorMessage += `${err}: ${errors[err]}\n`;
-                    if (this.applianceLaunchForm.controls[err])
+                    if (this.applianceLaunchForm.controls[err]) {
                         this.applianceLaunchForm.controls[err].setErrors({ remote: errors[err] });
-                }
+                    }
+                });
             }
 
-        }
-        else {
+        } else {
             this.errorMessage = `An unknown error occurred. No message was received from the server.`;
         }
     }

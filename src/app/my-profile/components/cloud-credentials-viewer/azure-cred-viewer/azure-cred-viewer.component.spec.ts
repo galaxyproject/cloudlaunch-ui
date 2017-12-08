@@ -5,7 +5,7 @@ import { AzureCredViewerComponent } from './azure-credentials.component';
 
 describe('Component: Azure Credentials Viewer', () => {
     it('should create an instance', () => {
-        let component = new AzureCredViewerComponent();
+        const component = new AzureCredViewerComponent();
         expect(component).toBeTruthy();
     });
 });

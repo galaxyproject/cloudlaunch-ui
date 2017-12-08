@@ -15,7 +15,7 @@ import * as moment from 'moment';
 
 
 @Component({
-    selector: 'deployments',
+    selector: 'clui-deployments',
     templateUrl: './deployments.component.html',
     styles: [`
                .archiving {
@@ -42,10 +42,8 @@ export class DeploymentsComponent implements OnInit {
         this.currentTimer = Observable
                             .interval(5000)
                             .startWith(0)
-                            .map(() => {
-                                return moment();
-                            });
-        this.profile = this.profileService.getProfile().shareReplay(1); 
+                            .map(() => moment());
+        this.profile = this.profileService.getProfile().shareReplay(1);
     }
 
     trackByDeploymentId(index: number, deployment: Deployment): string {

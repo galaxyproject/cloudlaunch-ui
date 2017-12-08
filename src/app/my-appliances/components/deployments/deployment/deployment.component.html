@@ -30,9 +30,9 @@
 <td>{{ calculateUptime(deployment, currentTimer | async) }} ago</td>
 <td class="text-left">
     <div [ngSwitch]="deployment.latest_task?.action">
-        <launch-task-status-renderer *ngSwitchCase="'LAUNCH'" [task]="deployment.latest_task" hasCredentials="!!(defaultCreds | async)"></launch-task-status-renderer>
-        <delete-task-status-renderer *ngSwitchCase="'DELETE'" [task]="deployment.latest_task"></delete-task-status-renderer>
-        <health-check-task-status-renderer *ngSwitchDefault [task]="deployment.latest_task"></health-check-task-status-renderer>
+        <clui-launch-task-status *ngSwitchCase="'LAUNCH'" [task]="deployment.latest_task" hasCredentials="!!(defaultCreds | async)"></clui-launch-task-status>
+        <clui-delete-task-status *ngSwitchCase="'DELETE'" [task]="deployment.latest_task"></clui-delete-task-status>
+        <clui-health-check-task-status *ngSwitchDefault [task]="deployment.latest_task"></clui-health-check-task-status>
     </div>
 </td>
 <td>

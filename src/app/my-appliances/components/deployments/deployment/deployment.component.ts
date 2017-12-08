@@ -21,12 +21,13 @@ import { DeploymentService } from '../../../../shared/services/deployment.servic
 import { ProfileService } from '../../../../shared/services/profile.service';
 
 import { MatDialog } from '@angular/material';
-import { ArchiveDeleteConfirmDialog } from '../dialogs/archive-delete-confirm.component';
+import { ArchiveDeleteConfirmDlgComponent } from '../dialogs/archive-delete-confirm.component';
 
 const AUTOMATIC_HEALTH_CHECK_MINUTES = 7;
 
 @Component({
-    selector: '[deployment-component]',
+    // tslint:disable-next-line:component-selector
+    selector: '[clui-deployment-component]',
     templateUrl: './deployment.component.html',
     styleUrls: ['./deployment.component.css']
 })
@@ -59,9 +60,11 @@ export class DeploymentComponent implements OnInit, OnDestroy {
                 private profileService: ProfileService,
                 private sanitizer: DomSanitizer,
                 private dialog: MatDialog) {
-        this.defaultCreds = Observable.combineLatest(this.deploymentCtrl.valueChanges.shareReplay(1), this.profileCtrl.valueChanges.shareReplay(1))
+        this.defaultCreds = Observable.combineLatest(this.deploymentCtrl.valueChanges.shareReplay(1),
+                                                     this.profileCtrl.valueChanges.shareReplay(1))
                             .filter(([deployment, profile]) => !!deployment && !!profile)
-                            .mergeMap(([deployment, profile]) => this.profileService.getCredsForCloudFromProfile(profile, deployment.target_cloud))
+                            .mergeMap(([deployment, profile]) => this.profileService.getCredsForCloudFromProfile(profile,
+                                                                                                                 deployment.target_cloud))
                             .mergeMap(credentialsArray => Observable.from(credentialsArray))
                             .filter(credential => credential.default)
                             .shareReplay(1);
@@ -72,8 +75,9 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.healthCheckSubscription)
+        if (this.healthCheckSubscription) {
             this.healthCheckSubscription.unsubscribe();
+        }
     }
 
     // If deployment has default credentials and latest task with status
@@ -82,9 +86,9 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     initializeAutomaticHealthCheck() {
         return this.defaultCreds.subscribe(credentials => {
             if (credentials) {
-                let latest_task = this.deployment.latest_task;
-                if (latest_task.status != 'PENDING' && latest_task.status != 'PROGRESSING' && latest_task.action != 'DELETE') {
-                    let addedMoment = moment(latest_task.added);
+                const latest_task = this.deployment.latest_task;
+                if (latest_task.status !== 'PENDING' && latest_task.status !== 'PROGRESSING' && latest_task.action !== 'DELETE') {
+                    const addedMoment = moment(latest_task.added);
                     if (addedMoment.isBefore(moment().subtract(AUTOMATIC_HEALTH_CHECK_MINUTES, 'minutes'))) {
                         this.runTask(this.deployment, 'HEALTH_CHECK');
                     }
@@ -105,7 +109,7 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     }
 
     isLatestTaskRunning() {
-        return this.deployment.latest_task.status == 'PENDING' || this.deployment.latest_task.status == 'PROGRESSING';
+        return this.deployment.latest_task.status === 'PENDING' || this.deployment.latest_task.status === 'PROGRESSING';
     }
 
     getKPDownloadLink(material: string) {
@@ -113,18 +117,19 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     }
 
     openArchiveConfirmDialog(deployment: Deployment): void {
-        let dialogRef = this.dialog.open(ArchiveDeleteConfirmDialog);
+        const dialogRef = this.dialog.open(ArchiveDeleteConfirmDlgComponent);
 
         dialogRef.afterClosed().subscribe(result => {
-            if (result == 'delete')
-                this.runTask(deployment, 'DELETE')
-            else if (result == 'archive')
+            if (result === 'delete') {
+                this.runTask(deployment, 'DELETE');
+            } else if (result === 'archive') {
                 this.archiveDeployment();
+            }
           });
     }
 
     archiveDeployment() {
-        let deploymentCopy = Object.assign({}, this.deployment);
+        const deploymentCopy = Object.assign({}, this.deployment);
         deploymentCopy.archived = true;
         this.deploymentService.updateDeployment(deploymentCopy)
           .subscribe(deployment => this.deployment.archived = deployment.archived);

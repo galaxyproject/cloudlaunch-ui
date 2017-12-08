@@ -8,13 +8,13 @@ import {
 import { BasePluginComponent } from '../base-plugin.component';
 
 @Component({
-    selector: 'gvl-config',
+    selector: 'clui-gvl-config',
     templateUrl: './gvl.component.html'
 })
 export class GVLConfigComponent extends BasePluginComponent {
     gvlLaunchForm: FormGroup;
-    showAdvanced: boolean = false;
-    showPassword: boolean = false;
+    showAdvanced = false;
+    showPassword = false;
     gvlPasswordCtrl: FormControl = new FormControl(null, Validators.required);
 
     get form(): FormGroup {
@@ -22,7 +22,7 @@ export class GVLConfigComponent extends BasePluginComponent {
     }
 
     get configName(): string {
-        return "config_gvl";
+        return 'config_gvl';
     }
 
     constructor(fb: FormBuilder, parentContainer: FormGroupDirective) {
@@ -32,7 +32,7 @@ export class GVLConfigComponent extends BasePluginComponent {
             'smrt_portal': ['']
         });
     }
-    
+
     toggleAdvanced() {
         this.showAdvanced = !this.showAdvanced;
     }

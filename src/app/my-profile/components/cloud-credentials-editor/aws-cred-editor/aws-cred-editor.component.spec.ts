@@ -5,7 +5,7 @@ import { AWSCredEditorComponent } from './aws-cred-editor.component';
 
 describe('Component: AWSCredEditorComponent', () => {
   it('should create an instance', () => {
-    let component = new AWSCredEditorComponent();
+    const component = new AWSCredEditorComponent();
     expect(component).toBeTruthy();
   });
 });

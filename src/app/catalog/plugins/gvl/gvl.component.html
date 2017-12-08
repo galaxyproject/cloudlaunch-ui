@@ -18,15 +18,15 @@
 
     <div [hidden]="!showAdvanced">
         <!--  CloudMan settings -->
-        <config-panel>
+        <clui-config-panel>
             <panel-header>CloudMan Settings</panel-header>
             <panel-body>
-                <cloudman-config [cloud]="cloud" [initialConfig]="initialConfig.config_gvl" [password]="gvlPasswordCtrl.value" ></cloudman-config>
+                <clui-cloudman-config [cloud]="cloud" [initialConfig]="initialConfig.config_gvl" [password]="gvlPasswordCtrl.value" ></clui-cloudman-config>
             </panel-body>
-        </config-panel>
+        </clui-config-panel>
 
         <!--  Additional GVL settings -->
-        <config-panel>
+        <clui-config-panel>
             <panel-header>Additional GVL Settings</panel-header>
             <panel-body>
                 <!--  GVL Component Selection -->
@@ -38,6 +38,6 @@
                     </div>
                 </div>
             </panel-body>
-        </config-panel>
+        </clui-config-panel>
     </div>
 </div>

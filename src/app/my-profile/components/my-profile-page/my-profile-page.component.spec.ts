@@ -5,7 +5,7 @@ import { MyProfilePageComponent } from './my-profile-page.component';
 
 describe('Component: My Profile Page', () => {
     it('should create an instance', () => {
-        let component = new MyProfilePageComponent();
+        const component = new MyProfilePageComponent();
         expect(component).toBeTruthy();
     });
 });

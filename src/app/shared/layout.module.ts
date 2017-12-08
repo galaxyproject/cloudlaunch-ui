@@ -1,26 +1,26 @@
 import { NgModule } from '@angular/core';
 
-import { StandardLayoutComponent, PageHeader, PageBody } from './layouts/standard-layout.component';
-import { ConfigPanelComponent, PanelHeader, PanelBody } from './layouts/config-panel.component';
+import { StandardLayoutComponent, PageHeaderDirective, PageBodyDirective } from './layouts/standard-layout.component';
+import { ConfigPanelComponent, PanelHeaderDirective, PanelBodyDirective } from './layouts/config-panel.component';
 
 @NgModule({
     declarations: [
         StandardLayoutComponent,
-        PageHeader,
-        PageBody,
+        PageHeaderDirective,
+        PageBodyDirective,
         ConfigPanelComponent,
-        PanelHeader,
-        PanelBody
+        PanelHeaderDirective,
+        PanelBodyDirective
     ],
     imports: [
     ],
     exports: [
         StandardLayoutComponent,
-        PageHeader,
-        PageBody,
+        PageHeaderDirective,
+        PageBodyDirective,
         ConfigPanelComponent,
-        PanelHeader,
-        PanelBody
+        PanelHeaderDirective,
+        PanelBodyDirective
     ]
 })
 export class LayoutModule { }

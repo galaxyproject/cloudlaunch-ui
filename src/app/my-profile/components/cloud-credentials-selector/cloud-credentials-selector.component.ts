@@ -38,12 +38,12 @@ enum CredentialsType {
 }
 
 @Component({
-    selector: 'cloud-credentials-selector',
+    selector: 'clui-cloud-credentials-selector',
     templateUrl: './cloud-credentials-selector.component.html',
     providers: [CREDENTIALS_CONTROL_ACCESSOR, CREDENTIALS_CONTROL_VALIDATOR]
 })
 export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAccessor, Validator {
-    
+
     public credentialsType = CredentialsType;
     public errorMessage: string;
     storedCredentials: Credentials[];
@@ -53,23 +53,23 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
         this.cloudCtrl.patchValue(cloud);
     }
     get cloud() { return this.cloudCtrl.value; }
-    
+
     @Output()
-    onCredentialsChanged = new EventEmitter<Credentials>();
+    credentialsChanged = new EventEmitter<Credentials>();
 
     // Form Controls
     credentialsSelectionForm: FormGroup;
     credTypeCtrl: FormControl = new FormControl(CredentialsType.SAVED, Validators.required);
     storedCredCtrl: FormControl = new FormControl('');
     tempCredCtrl: FormControl = new FormControl('');
-    
+
     // Disconnected Form Controls
     cloudCtrl: FormControl = new FormControl('');
 
     // implementation of ControlValueAccessor
 
-    // the method set in registerOnChange, it is just 
-    // a placeholder for a method that takes one parameter, 
+    // the method set in registerOnChange, it is just
+    // a placeholder for a method that takes one parameter,
     // we use it to emit changes back to the form
     private propagateChange = (_: any) => { };
 
@@ -77,8 +77,7 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     public writeValue(obj: any) {
         if (obj && obj.id) {
             this.storedCredCtrl.patchValue(obj);
-        }
-        else {
+        } else {
             this.tempCredCtrl.patchValue(obj);
         }
     }
@@ -102,14 +101,15 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     // Begin: implementation of Validator interface
     public validate(c: FormControl) {
         // Delegate to form
-        if (this.credTypeCtrl.value == CredentialsType.SAVED &&
-            this.storedCredCtrl.valid)
+        if (this.credTypeCtrl.value === CredentialsType.SAVED &&
+            this.storedCredCtrl.valid) {
             return null;
-        else if (this.credTypeCtrl.value == CredentialsType.TEMPORARY &&
-            this.tempCredCtrl.valid)
+        } else if (this.credTypeCtrl.value === CredentialsType.TEMPORARY &&
+            this.tempCredCtrl.valid) {
             return null;
-        else
+        } else {
             return { 'credentials_selector': 'invalid' };
+        }
     }
 
     // End: implementation of Validator interface
@@ -129,8 +129,8 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
 
     }
 
-    isSameCredential(c1: Credentials, c2: Credentials) : boolean {
-        return c1 && c2 && c1.id == c2.id;
+    isSameCredential(c1: Credentials, c2: Credentials): boolean {
+        return c1 && c2 && c1.id === c2.id;
     }
 
     ngOnInit() {
@@ -139,25 +139,25 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     }
 
     handleCredentialChange() {
-        if (this.credTypeCtrl.value == CredentialsType.SAVED)
+        if (this.credTypeCtrl.value === CredentialsType.SAVED) {
             this.notifyCredentialsChanged(this.storedCredCtrl.value);
-        else {
+        } else {
             this.notifyCredentialsChanged(this.tempCredCtrl.value);
         }
     }
 
     notifyCredentialsChanged(creds: Credentials) {
         this.propagateChange(creds);
-        this.onCredentialsChanged.emit(creds);
+        this.credentialsChanged.emit(creds);
     }
 
     handleTempCredChange(creds: Credentials) {
         if (creds && creds.id) {
             // Has an id, must have been saved to profile
             this.retrieveStoredCredentials(creds.cloud, creds);
-        }
-        else
+        } else {
             this.tempCredCtrl.setValue(creds);
+        }
     }
 
     retrieveStoredCredentials(cloud: Cloud, selectedCreds: Credentials) {
@@ -171,20 +171,21 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
         if (creds && creds.length > 0) { // Activate the correct tab
             this.credTypeCtrl.setValue(CredentialsType.SAVED);
             this.credTypeCtrl.enable();
-            if (selectedCreds)
+            if (selectedCreds) {
                 this.storedCredCtrl.setValue(selectedCreds);
-            else {
-                let defaultCreds = creds.filter(c => c.default === true);
-                if (defaultCreds)
+            } else {
+                const defaultCreds = creds.filter(c => c.default === true);
+                if (defaultCreds) {
                     this.storedCredCtrl.setValue(defaultCreds[0]);
-                else if (creds.length == 1)
+                } else if (creds.length === 1) {
                     this.storedCredCtrl.setValue(creds[0]);
+                }
             }
         } else {
             this.credTypeCtrl.setValue(CredentialsType.TEMPORARY);
             // User has no saved credentials, so disable the tab
             this.credTypeCtrl.disable();
-            this.tempCredCtrl.patchValue(null)
+            this.tempCredCtrl.patchValue(null);
             this.storedCredCtrl.patchValue(null);
         }
     }

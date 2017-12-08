@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import { Headers, RequestOptions } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/do';
@@ -29,7 +27,7 @@ export class LoginService {
         if (this._login_method == null) {
             return new Promise((resolve: any) => {
                 this.http.get(this._currentUserUrl)
-                    .catch((err: Response) => {
+                    .catch((err: HttpErrorResponse) => {
                         loginService._current_user = null;
                         return Observable.throw(err);
                     })
@@ -64,16 +62,17 @@ export class LoginService {
     }
 
     public login(email: string, password: string, remember_me?: boolean): Observable<string> {
-        let body = { "email": email, "password": password };
-        let loginService = this;
+        const body = { 'email': email, 'password': password };
+        const loginService = this;
         return this.http.post(this._loginUrl, body)
             .map(res => res['key'])
             .do(function (item) {
-                if (remember_me)
+                if (remember_me) {
                     localStorage.setItem('token', item);
-                else
+                } else {
                     sessionStorage.setItem('token', item);
-                loginService._login_method = "token";
+                }
+                loginService._login_method = 'token';
             })
             .catch(this.handleError);
     }
@@ -83,12 +82,12 @@ export class LoginService {
         this.credentials = null;
         localStorage.removeItem('token');
         sessionStorage.removeItem('token');
-        return this.http.post(this._logoutUrl, "")
+        return this.http.post(this._logoutUrl, '')
             .catch(this.handleError);
     }
 
-    private handleError(error: Response) {
-        return Observable.throw(error.json().non_field_errors || 'Server error');
+    private handleError(error: HttpErrorResponse) {
+        return Observable.throw((<any>error).non_field_errors || 'Server error');
     }
 
     public setCloudCredentials(credentials: Credentials) {
@@ -96,9 +95,9 @@ export class LoginService {
     }
 
     public getDefaultHeaders(): Object {
-        let headers = {};
+        const headers = {};
         if (sessionStorage.getItem('token') || localStorage.getItem('token')) {
-            let auth_header = "Token " + sessionStorage.getItem('token') || localStorage.getItem('token');
+            const auth_header = 'Token ' + sessionStorage.getItem('token') || localStorage.getItem('token');
             headers['Authorization'] = auth_header;
         }
 

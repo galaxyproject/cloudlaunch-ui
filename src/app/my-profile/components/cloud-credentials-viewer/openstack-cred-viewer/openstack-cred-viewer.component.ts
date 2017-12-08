@@ -8,7 +8,7 @@ import { ProfileService } from '../../../../shared/services/profile.service';
 
 
 @Component({
-    selector: 'openstack-cred-viewer',
+    selector: 'clui-openstack-cred-viewer',
     templateUrl: './openstack-cred-viewer.component.html'
 })
 export class OpenStackCredViewerComponent implements OnInit {
@@ -16,11 +16,10 @@ export class OpenStackCredViewerComponent implements OnInit {
     credentials: OpenStackCredentials;
 
     @Output()
-    onCredentialsChanged = new EventEmitter<Credentials>();
+    credentialsChanged = new EventEmitter<Credentials>();
 
-    editMode: boolean = false;
+    editMode = false;
     currentObject: OpenStackCredentials;
-
 
     constructor(private _profileService: ProfileService) {
     }
@@ -31,10 +30,10 @@ export class OpenStackCredViewerComponent implements OnInit {
     }
 
     groupBy(list: any) {
-        let temp = {};
-        let results: any[] = [];
+        const temp = {};
+        const results: any[] = [];
         if (list) {
-            for (let item of list) {
+            for (const item of list) {
                 if (item.cloud.slug in temp) {
                     temp[item.cloud.slug].push(item);
                 } else {
@@ -69,13 +68,13 @@ export class OpenStackCredViewerComponent implements OnInit {
     deleteCreds(creds: OpenStackCredentials) {
         this._profileService.deleteCredentialsOpenStack(creds)
             .subscribe(result => {
-                this.onCredentialsChanged.emit(creds);
+                this.credentialsChanged.emit(creds);
             });
     }
 
     handleCredentialsChanged(creds: OpenStackCredentials) {
         this.editMode = false;
         this.currentObject = null;
-        this.onCredentialsChanged.emit(creds);
+        this.credentialsChanged.emit(creds);
     }
 }

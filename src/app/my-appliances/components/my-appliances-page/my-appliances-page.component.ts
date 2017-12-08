@@ -1,8 +1,8 @@
-import { Component, OnInit, trigger, transition, animate,
-    style, state } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { trigger, transition, animate, style, state } from '@angular/animations';
 
 @Component({
-    selector: 'my-appliances-page',
+    selector: 'clui-my-appliances-page',
     templateUrl: './my-appliances-page.component.html',
     styleUrls: ['./my-appliances-page.component.css'],
     host: { '[@routeAnimation]': 'true' },
@@ -17,7 +17,7 @@ import { Component, OnInit, trigger, transition, animate,
     ]
 })
 export class MyAppliancesPageComponent {
-    moreInfo: boolean = false;
+    moreInfo = false;
 
     toggleInfo() {
         this.moreInfo = !this.moreInfo;

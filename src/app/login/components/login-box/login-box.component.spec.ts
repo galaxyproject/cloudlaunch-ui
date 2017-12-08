@@ -5,7 +5,7 @@ import { LoginBoxComponent } from './login-box.component';
 
 describe('Component: Login Box', () => {
     it('should create an instance', () => {
-        let component = new LoginBoxComponent();
+        const component = new LoginBoxComponent();
         expect(component).toBeTruthy();
     });
 });

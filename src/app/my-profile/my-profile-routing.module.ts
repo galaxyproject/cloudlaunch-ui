@@ -1,11 +1,11 @@
-import { NgModule }             from '@angular/core';
-import { ModuleWithProviders }  from '@angular/core';
+import { NgModule } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Services
 import { AuthGuardService } from '../login/services/auth-guard/auth-guard.service';
 
-//Pages
+// Pages
 import { MyProfilePageComponent } from './components/my-profile-page/my-profile-page.component';
 
 
