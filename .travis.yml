@@ -1,6 +1,7 @@
 sudo: required
 dist: trusty
 language: node_js
+cache: yarn
 node_js:
   - '8.0'
 
@@ -17,10 +18,10 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 before_script:
-  - npm install -g angular-cli
-  - npm install
+  - yarn global add @angular/cli
+  - yarn install
 
 script: 
   - ng lint
-  - npm run buildprod
+  - yarn buildprod
   - ng e2e
