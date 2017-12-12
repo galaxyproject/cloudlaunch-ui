@@ -53,8 +53,10 @@ import { CloudService } from '../shared/services/cloud.service';
     ],
     declarations: [
         MyProfilePageComponent, UserProfileComponent,
-        CloudCredentialsViewerComponent, OpenStackCredViewerComponent, AWSCredViewerComponent, AzureCredViewerComponent, GCECredViewerComponent,
-        CloudCredentialsEditorComponent, OpenStackCredEditorComponent, AWSCredEditorComponent, AzureCredEditorComponent, GCECredEditorComponent,
+        CloudCredentialsViewerComponent,
+        OpenStackCredViewerComponent, AWSCredViewerComponent, AzureCredViewerComponent, GCECredViewerComponent,
+        CloudCredentialsEditorComponent,
+        OpenStackCredEditorComponent, AWSCredEditorComponent, AzureCredEditorComponent, GCECredEditorComponent,
         CloudCredentialsSelectorComponent
     ],
     exports: [CloudCredentialsViewerComponent, CloudCredentialsEditorComponent, CloudCredentialsSelectorComponent],

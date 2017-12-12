@@ -18,7 +18,7 @@ export class GCECredViewerComponent implements OnInit {
     @Output()
     credentialsChanged = new EventEmitter<Credentials>();
 
-    editMode: boolean = false;
+    editMode = false;
     currentObject: GCECredentials;
 
 

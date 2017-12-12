@@ -105,7 +105,7 @@ export class CredentialParser {
     }
 
     parseGCECreds(content: string, callback: CredentialParserCallback) {
-        let creds = new GCECredentials();
+        const creds = new GCECredentials();
         creds.credentials = content;
 
         callback(creds);

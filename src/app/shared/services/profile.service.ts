@@ -30,7 +30,7 @@ export class ProfileService {
     }
 
     public getCredentialsForCloud(cloud_id: string): Observable<Credentials[]> {
-        const all_creds = this.getProfile().map(p => [].concat(p.aws_creds).concat(p.openstack_creds).concat(p.azure_creds).concat(p.gce_creds));
+        const all_creds = this.getProfile().map(p => [].concat(p.aws_creds, p.openstack_creds, p.azure_creds, p.gce_creds));
         return all_creds.map(creds => creds.filter(c => c && c.cloud.slug === cloud_id));
     }
 
@@ -126,9 +126,10 @@ export class ProfileService {
     }
 
     public verifyCredentialsGCE(creds: GCECredentials): Observable<CredVerificationResult> {
-        let headers = {};
+        const headers = {};
         addCredentialHeaders(headers, creds);
-        return this.http.post<GCECredentials>(`${this._application_url}${creds.cloud.slug}/authenticate/`, creds, { headers: new HttpHeaders(headers) })
+        return this.http.post<GCECredentials>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
+                                              creds, { headers: new HttpHeaders(headers) })
             .catch(this.handleError);
     }
 
@@ -175,7 +176,7 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
                 headers['cl-azure-tenant'] = azure_creds.tenant;
                 break;
             case 'gce':
-                let gce_creds = <GCECredentials>credentials;
+                const gce_creds = <GCECredentials>credentials;
                 // Parse then stringify credentials to remove any new lines
                 headers['cl-gce-credentials-json'] = JSON.stringify(JSON.parse(gce_creds.credentials));
                 break;

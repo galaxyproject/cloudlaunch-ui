@@ -218,7 +218,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             return this.azureCredsCtrl;
         } else if (cloudType === 'openstack') {
             return this.openstackCredsCtrl;
-        } else if (cloudType == 'gce') {
+        } else if (cloudType === 'gce') {
             return this.gceCredsCtrl;
         } else {
             return null;
