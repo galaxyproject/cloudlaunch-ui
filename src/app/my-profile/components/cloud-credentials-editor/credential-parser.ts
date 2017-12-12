@@ -1,5 +1,5 @@
 // Utility class for parsing cloud credentials from a file
-import { Credentials, AWSCredentials, OpenStackCredentials, AzureCredentials } from '../../../shared/models/profile';
+import { Credentials, AWSCredentials, OpenStackCredentials, AzureCredentials, GCECredentials } from '../../../shared/models/profile';
 
 // Callback function for CredentialParser results
 export declare type CredentialParserCallback = (creds: Credentials) => void;
@@ -55,6 +55,10 @@ export class CredentialParser {
                 parserFunc = this.parseOpenstackCreds;
                 break;
             }
+            case 'gce': {
+                parserFunc = this.parseGCECreds;
+                break;
+            }
             default: {
                 throw new Error(`Unrecognised parser type: ${this.parser_type}`);
             }
@@ -96,6 +100,13 @@ export class CredentialParser {
         creds.client_id = CredentialParser.extractValueByKey('AZURE_CLIENT_ID', content);
         creds.secret = CredentialParser.extractValueByKey('AZURE_SECRET', content);
         creds.tenant = CredentialParser.extractValueByKey('AZURE_TENANT', content);
+
+        callback(creds);
+    }
+
+    parseGCECreds(content: string, callback: CredentialParserCallback) {
+        const creds = new GCECredentials();
+        creds.credentials = content;
 
         callback(creds);
     }

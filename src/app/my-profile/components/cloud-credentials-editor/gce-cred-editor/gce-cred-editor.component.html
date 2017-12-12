@@ -1,0 +1,13 @@
+<div>
+    <div class="form" [formGroup]="gceCredentialsForm">
+
+        <!-- Credentials -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <textarea matInput id="id_credentials" name="credentials" formControlName="credentials" placeholder="GCE Credentials as JSON" rows="12"></textarea>
+                <mat-error *ngIf="credentials.errors && credentials.errors.json">The provided credentials are not valid JSON.</mat-error>
+                <mat-hint>Copy your GCE credentials json file into this field, or use the upload button above.</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
