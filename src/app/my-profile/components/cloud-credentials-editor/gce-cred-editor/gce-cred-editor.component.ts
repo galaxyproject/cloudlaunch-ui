@@ -26,7 +26,7 @@ const GCE_CREDENTIALS_CONTROL_VALIDATOR = {
 };
 
 @Component({
-    selector: 'gce-cred-editor',
+    selector: 'clui-gce-cred-editor',
     templateUrl: './gce-cred-editor.component.html',
     providers: [GCE_CREDENTIALS_CONTROL_ACCESSOR, GCE_CREDENTIALS_CONTROL_VALIDATOR]
 })

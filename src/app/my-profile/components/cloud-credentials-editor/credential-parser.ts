@@ -55,7 +55,7 @@ export class CredentialParser {
                 parserFunc = this.parseOpenstackCreds;
                 break;
             }
-            case "gce": {
+            case 'gce': {
                 parserFunc = this.parseGCECreds;
                 break;
             }

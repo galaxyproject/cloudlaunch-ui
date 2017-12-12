@@ -8,7 +8,7 @@ import { ProfileService } from '../../../../shared/services/profile.service';
 
 
 @Component({
-    selector: 'gce-cred-viewer',
+    selector: 'clui-gce-cred-viewer',
     templateUrl: './gce-cred-viewer.component.html'
 })
 export class GCECredViewerComponent implements OnInit {
@@ -16,7 +16,7 @@ export class GCECredViewerComponent implements OnInit {
     credentials: GCECredentials;
 
     @Output()
-    onCredentialsChanged = new EventEmitter<Credentials>();
+    credentialsChanged = new EventEmitter<Credentials>();
 
     editMode: boolean = false;
     currentObject: GCECredentials;
@@ -31,10 +31,10 @@ export class GCECredViewerComponent implements OnInit {
     }
 
     groupBy(list: any) {
-        let temp = {};
-        let results: any[] = [];
+        const temp = {};
+        const results: any[] = [];
         if (list) {
-            for (let item of list) {
+            for (const item of list) {
                 if (item.cloud.slug in temp) {
                     temp[item.cloud.slug].push(item);
                 } else {
@@ -69,13 +69,13 @@ export class GCECredViewerComponent implements OnInit {
     deleteCreds(creds: GCECredentials) {
         this._profileService.deleteCredentialsGCE(creds)
             .subscribe(result => {
-                this.onCredentialsChanged.emit(creds);
+                this.credentialsChanged.emit(creds);
             });
     }
 
     handleCredentialsChanged(creds: GCECredentials) {
         this.editMode = false;
         this.currentObject = null;
-        this.onCredentialsChanged.emit(creds);
+        this.credentialsChanged.emit(creds);
     }
 }
