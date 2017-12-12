@@ -78,7 +78,6 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     set credentials(creds: Credentials) {
         if (creds) {
             this.cloudCtrl.patchValue(creds.cloud);
-            // TODO: When editing existing credential, don't allow changing cloud
             this.credentialsForm.patchValue(creds);
             if (this.getActiveProviderEditor()) {
                 this.getActiveProviderEditor().patchValue(creds);
