@@ -5,7 +5,40 @@
     <div class="full-width-container">
         <mat-form-field>
             <mat-select id="id_instance_type" [formControl]="vmTypeCtrl">
-                <mat-option *ngFor="let vmType of vmTypeObs | async" [value]="vmType.name">{{ vmType.name }}</mat-option>
+                <mat-option class="full-width-container" disabled>
+                    <div class="row">
+                        <div class="col-md-6">VM Type</div>
+                        <div class="col-md-2">CPUs</div>
+                        <div class="col-md-2">RAM (GB)</div>
+                        <div class="col-md-2">Total Disk (GB)</div>
+                    </div>
+                </mat-option>
+                <mat-option class="full-width-container" *ngFor="let vmType of vmTypeObs | async | orderBy: 'name'" [value]="vmType.name">
+                    <div class="row">
+                        <div class="col-md-6">{{ vmType.name }}</div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-3"><mat-icon>sim_card</mat-icon></div>
+                                <div class="col-md-3"><span class="pull-right">{{ vmType.vcpus }}</span></div>
+                                <div class="col-md-6"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-3"><mat-icon>memory</mat-icon></div>
+                                <div class="col-md-4"><span class="pull-right">{{ vmType.ram }}</span></div>
+                                <div class="col-md-5"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-3"><mat-icon>storage</mat-icon></div>
+                                <div class="col-md-5"><span class="pull-right">{{ vmType.size_total_disk }}</span></div>
+                                <div class="col-md-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-option>
             </mat-select>
             <mat-error *ngIf="vmTypeCtrl.hasError('required')">Instance type is <strong>required</strong></mat-error>
             <mat-placeholder><i *ngIf="vmTypeHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>

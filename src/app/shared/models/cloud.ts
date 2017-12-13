@@ -10,6 +10,9 @@ export interface Cloud {
 export interface VmType {
     id: string;
     name: string;
+    vcpus: number;
+    ram: number;
+    size_total_disk: number;
 }
 
 export interface Region {

@@ -12,6 +12,9 @@ import { MatRadioModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material';
 import { MatTooltipModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
+
+import { OrderModule } from 'ngx-order-pipe';
 
 import { LayoutModule } from '../shared/layout.module';
 import { CatalogListComponent } from './components/catalog-list/catalog-list.component';
@@ -45,6 +48,8 @@ import { ProfileService } from '../shared/services/profile.service';
         MatInputModule,
         MatCheckboxModule,
         MatTooltipModule,
+        MatIconModule,
+        OrderModule,
         CatalogRoutingModule,
         MyProfileModule,
         PluginsModule
