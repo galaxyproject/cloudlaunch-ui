@@ -17,7 +17,6 @@ export interface PublicService {
     slug: string;
     name: string;
     id: string;
-    text: string;
     logo: string;
     added: string;
     links: string;

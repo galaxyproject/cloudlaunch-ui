@@ -9,7 +9,6 @@ export interface ApplicationVersionCloudConfig {
 export interface ApplicationVersion {
     version: string;
     id: string;
-    text: string;
     application: Application;
     cloud_config: ApplicationVersionCloudConfig[];
     frontend_component_path: string;

@@ -5,7 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { AppSettings } from '../../app.settings';
 import { Cloud } from '../models/cloud';
-import { InstanceType } from '../models/cloud';
+import { VmType } from '../models/cloud';
 import { Region } from '../models/cloud';
 import { PlacementZone } from '../models/cloud';
 import { KeyPair } from '../models/cloud';
@@ -34,8 +34,8 @@ export class CloudService {
             .catch(this.handleError);
     }
 
-    public getInstanceTypes(slug: string): Observable<InstanceType[]> {
-        return this.http.get<QueryResult<InstanceType>>(`${this._application_url}${slug}/compute/vm_types/`)
+    public getVmTypes(slug: string): Observable<VmType[]> {
+        return this.http.get<QueryResult<VmType>>(`${this._application_url}${slug}/compute/vm_types/`)
             .map(qr => qr.results)
             .catch(this.handleError);
     }

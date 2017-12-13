@@ -14,7 +14,7 @@ import 'rxjs/add/operator/do';
 
 import {
     Cloud,
-    InstanceType,
+    VmType,
     Region,
     PlacementZone,
     KeyPair,
@@ -44,7 +44,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     showAdvanced = false;
 
     CLOUD_SELECTION_HELP = 'Select a target cloud first';
-    instanceTypeHelp = this.CLOUD_SELECTION_HELP;
+    vmTypeHelp = this.CLOUD_SELECTION_HELP;
     placementHelp = this.CLOUD_SELECTION_HELP;
     keypairsHelp = this.CLOUD_SELECTION_HELP;
     networksHelp = this.CLOUD_SELECTION_HELP;
@@ -56,7 +56,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     DEFAULT_ROOT_STORAGE_TYPE = 'instance';
     rootStorageTypeCtrl = new FormControl(this.DEFAULT_ROOT_STORAGE_TYPE, Validators.required);
     rootStorageSizeCtrl = new FormControl('');
-    instTypeCtrl = new FormControl('', Validators.required);
+    vmTypeCtrl = new FormControl('', Validators.required);
     placementCtrl = new FormControl('');
     keypairCtrl = new FormControl('');
     networkCtrl = new FormControl('');
@@ -65,7 +65,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
 
     // Observables
     placementObs: Observable<PlacementZone[]>;
-    instanceTypeObs: Observable<InstanceType[]>;
+    vmTypeObs: Observable<VmType[]>;
     keypairObs: Observable<KeyPair[]>;
     networkObs: Observable<Network[]>;
     staticIpObs: Observable<StaticIP[]>;
@@ -84,7 +84,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
         private _cloudService: CloudService) {
         super(fb, parentContainer);
         this.cloudLaunchForm = fb.group({
-            'instanceType': this.instTypeCtrl,
+            'vmType': this.vmTypeCtrl,
             'rootStorageType': this.rootStorageTypeCtrl,
             'rootStorageSize': this.rootStorageSizeCtrl,
             'placementZone': this.placementCtrl,
@@ -106,9 +106,9 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
                                     .do(placement => { this.placementHelp = 'In which placement zone would you like to launch this'
                                                          + ' appliance?'; },
                                           error => { this.errorMessage = <any>error; });
-        this.instanceTypeObs = cloudObs.do(cloud => { this.instanceTypeHelp = 'Retrieving instance types...'; })
-                                       .switchMap(cloud => this._cloudService.getInstanceTypes(cloud.slug))
-                                       .do(vmType => { this.instanceTypeHelp = 'What type of virtual hardware would you like to use?'; },
+        this.vmTypeObs = cloudObs.do(cloud => { this.vmTypeHelp = 'Retrieving instance types...'; })
+                                       .switchMap(cloud => this._cloudService.getVmTypes(cloud.slug))
+                                       .do(vmType => { this.vmTypeHelp = 'What type of virtual hardware would you like to use?'; },
                                            error => { this.errorMessage = <any>error; });
         this.keypairObs = cloudObs.do(cloud => { this.keypairsHelp = 'Retrieving keypairs...'; })
                                   .switchMap(cloud => this._cloudService.getKeyPairs(cloud.slug))
