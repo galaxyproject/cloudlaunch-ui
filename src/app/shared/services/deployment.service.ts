@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
+import 'rxjs/add/observable/from';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { AppSettings } from '../../app.settings';
 import { Deployment } from '../models/deployment';
+import { UserProfile, Credentials } from '../models/profile';
 import { Task } from '../models/task';
 import { QueryResult } from '../models/query';
 
@@ -29,6 +31,23 @@ export class DeploymentService {
         return this.http.get<QueryResult<Deployment>>(url)
             .map(response => response.results)
             .catch(this.handleError);
+    }
+
+    public getCredsForDeployment(deployment: Deployment, profile: UserProfile): Observable<Credentials> {
+        const allDepCreds = [].concat(profile.aws_creds)
+                              .concat(profile.openstack_creds)
+                              .concat(profile.azure_creds)
+                              .concat(profile.gce_creds)
+                              .filter(c => c && c.cloud.slug === deployment.target_cloud);
+
+        // If credentials are associated with this deployment, return that or return the first
+        // set of default credentials for the deployment's target cloud.
+        if (deployment.credentials) {
+            return Observable.from(allDepCreds.filter(c => c.id === deployment.credentials));
+        }
+        else {
+            return Observable.from(allDepCreds.filter(credential => credential.default));
+        }
     }
 
     public getDeployment(slug: string): Observable<Deployment> {

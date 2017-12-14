@@ -18,7 +18,6 @@ import { Deployment } from '../../../../shared/models/deployment';
 import { Credentials, UserProfile } from '../../../../shared/models/profile';
 import { Task } from '../../../../shared/models/task';
 import { DeploymentService } from '../../../../shared/services/deployment.service';
-import { ProfileService } from '../../../../shared/services/profile.service';
 
 import { MatDialog } from '@angular/material';
 import { ArchiveDeleteConfirmDlgComponent } from '../dialogs/archive-delete-confirm.component';
@@ -57,17 +56,12 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     }
 
     constructor(private deploymentService: DeploymentService,
-                private profileService: ProfileService,
                 private sanitizer: DomSanitizer,
                 private dialog: MatDialog) {
         this.defaultCreds = Observable.combineLatest(this.deploymentCtrl.valueChanges.shareReplay(1),
                                                      this.profileCtrl.valueChanges.shareReplay(1))
                             .filter(([deployment, profile]) => !!deployment && !!profile)
-                            .mergeMap(([deployment, profile]) => this.profileService.getCredsForCloudFromProfile(profile,
-                                                                                                                 deployment.target_cloud))
-                            .mergeMap(credentialsArray => Observable.from(credentialsArray))
-                            .filter(credential => credential.default)
-                            .shareReplay(1);
+                            .mergeMap(([deployment, profile]) => this.deploymentService.getCredsForDeployment(deployment, profile));
     }
 
     ngOnInit() {

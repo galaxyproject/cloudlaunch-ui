@@ -1,4 +1,5 @@
 import { ApplicationVersion } from './application';
+import { Credentials } from './profile';
 import { Task } from './task';
 
 export class Deployment {
@@ -15,4 +16,5 @@ export class Deployment {
     latest_task: Task;
     tasks: Task[];
     archived: boolean;
+    credentials: Credentials;
 }
