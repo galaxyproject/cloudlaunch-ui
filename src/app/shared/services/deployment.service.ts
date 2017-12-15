@@ -44,8 +44,7 @@ export class DeploymentService {
         // set of default credentials for the deployment's target cloud.
         if (deployment.credentials) {
             return Observable.from(allDepCreds.filter(c => c.id === deployment.credentials));
-        }
-        else {
+        } else {
             return Observable.from(allDepCreds.filter(credential => credential.default));
         }
     }

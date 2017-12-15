@@ -103,7 +103,10 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     }
 
     isLatestTaskRunning() {
-        return this.deployment.latest_task.status === 'PENDING' || this.deployment.latest_task.status === 'PROGRESSING';
+        // Pending tasks should not have a task result. Sometimes, tasks are stuck in pending
+        // because they have errored out prior to launch - so check for the result too.
+        return (this.deployment.latest_task.status === 'PENDING' && !this.deployment.latest_task.result) ||
+                this.deployment.latest_task.status === 'PROGRESSING';
     }
 
     getKPDownloadLink(material: string) {
