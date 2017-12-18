@@ -100,6 +100,9 @@ export class CredentialParser {
         creds.client_id = CredentialParser.extractValueByKey('AZURE_CLIENT_ID', content);
         creds.secret = CredentialParser.extractValueByKey('AZURE_SECRET', content);
         creds.tenant = CredentialParser.extractValueByKey('AZURE_TENANT', content);
+        creds.resource_group = CredentialParser.extractValueByKey('AZURE_RESOURCE_GROUP', content);
+        creds.storage_account = CredentialParser.extractValueByKey('AZURE_STORAGE_ACCOUNT', content);
+        creds.vm_default_username = CredentialParser.extractValueByKey('AZURE_VM_DEFAULT_USERNAME', content);
 
         callback(creds);
     }

@@ -1,7 +1,7 @@
 <div>
     <div class=form [formGroup]="azureCredentialsForm">
 
-        <!-- Azure Subscription Id-->
+        <!-- Azure Subscription Id -->
         <div class="form-group full-width-container">
             <mat-form-field>
                 <input matInput id="id_subscription_id" type="text"
@@ -11,7 +11,7 @@
                 <mat-hint>Your Azure Subscription Id can be obtained by following the instructions in the link above.</mat-hint>
             </mat-form-field>
         </div>
-        <!-- Azure Client Id-->
+        <!-- Azure Client Id -->
         <div class="form-group full-width-container">
             <mat-form-field>
                 <input matInput id="id_client_id" type="text"
@@ -32,7 +32,7 @@
                 <mat-hint>Your Azure Secret Key can be obtained by following the instructions in the link above.</mat-hint>
             </mat-form-field>
         </div>
-        <!-- Azure Tenant-->
+        <!-- Azure Tenant -->
         <div class="form-group full-width-container">
             <mat-form-field>
                 <input matInput id="id_tenant" type="text"
@@ -40,6 +40,36 @@
                 formControlName="tenant" />
                 <mat-error *ngIf="tenantCtrl.hasError('required')">Tenant is <strong>required</strong></mat-error>
                 <mat-hint>Your Azure Tenant can be obtained by following the instructions in the link above.</mat-hint>
+            </mat-form-field>
+        </div>
+        <!-- Azure Resource Group -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_resource_group" type="text"
+                placeholder="Which Azure Resource Group would you like to use?"
+                formControlName="resource_group" />
+                <mat-error *ngIf="resourceGroupCtrl.hasError('required')">Resource group is <strong>required</strong></mat-error>
+                <mat-hint>A new resource group will be created if the specified group doesn't exist. You can leave the defaults as is if you're unsure.</mat-hint>
+            </mat-form-field>
+        </div>
+        <!-- Azure Storage Account -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_storage_account" type="text"
+                placeholder="Which Azure Storage Account would you like to use?"
+                formControlName="storage_account" />
+                <mat-error *ngIf="storageAccountCtrl.hasError('required')">Storage Account is <strong>required</strong></mat-error>
+                <mat-hint>A new storage account will be created if the specified account doesn't exist. You can leave the defaults as is if you're unsure.</mat-hint>
+            </mat-form-field>
+        </div>
+        <!-- Azure VM Default User Name -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_vm_default_username" type="text"
+                placeholder="Which username would you like to use as the default VM admin user?"
+                formControlName="vm_default_username" />
+                <mat-error *ngIf="vmDefaultUserCtrl.hasError('required')">VM Default Username is <strong>required</strong></mat-error>
+                <mat-hint>When launching a new virtual machine, the keypair you specify at launch will be associated with this user's account and you must use this username to ssh in. You can leave the defaults as is if you're unsure.</mat-hint>
             </mat-form-field>
         </div>
     </div>

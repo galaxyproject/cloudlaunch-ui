@@ -167,6 +167,9 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
                 headers['cl-azure-client-id'] = azure_creds.client_id;
                 headers['cl-azure-secret'] = azure_creds.secret;
                 headers['cl-azure-tenant'] = azure_creds.tenant;
+                headers['cl-azure-resource-group'] = azure_creds.resource_group;
+                headers['cl-azure-storage-account'] = azure_creds.storage_account;
+                headers['cl-azure-vm-default-username'] = azure_creds.vm_default_username;
                 break;
             case 'gce':
                 const gce_creds = <GCECredentials>credentials;

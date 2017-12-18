@@ -40,6 +40,9 @@ export class AzureCredEditorComponent implements ControlValueAccessor, Validator
     clientIdCtrl: FormControl = new FormControl(null, Validators.required);
     secretCtrl: FormControl = new FormControl(null, Validators.required);
     tenantCtrl: FormControl = new FormControl(null, Validators.required);
+    resourceGroupCtrl: FormControl = new FormControl('cloudlaunch', Validators.required);
+    storageAccountCtrl: FormControl = new FormControl('clstorage', Validators.required);
+    vmDefaultUserCtrl: FormControl = new FormControl('cluser', Validators.required);
 
 
     // Begin: implementation of ControlValueAccessor
@@ -54,7 +57,10 @@ export class AzureCredEditorComponent implements ControlValueAccessor, Validator
         if (obj) {
             this.azureCredentialsForm.patchValue(obj);
         } else {
-            this.azureCredentialsForm.reset();
+            this.azureCredentialsForm.reset(
+                {'resource_group' : 'cloudlaunch',
+                'storage_account': 'clstorage',
+                'vm_default_username': 'cluser'});
         }
     }
 
@@ -90,7 +96,10 @@ export class AzureCredEditorComponent implements ControlValueAccessor, Validator
             'subscription_id': this.subscriptionIdCtrl,
             'client_id': this.clientIdCtrl,
             'secret': this.secretCtrl,
-            'tenant': this.tenantCtrl
+            'tenant': this.tenantCtrl,
+            'resource_group': this.resourceGroupCtrl,
+            'storage_account': this.storageAccountCtrl,
+            'vm_default_username': this.vmDefaultUserCtrl,
         });
         this.azureCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
     }

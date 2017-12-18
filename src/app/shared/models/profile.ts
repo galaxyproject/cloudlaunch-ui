@@ -27,6 +27,9 @@ export class AzureCredentials extends Credentials {
     client_id: string;
     secret: string;
     tenant: string;
+    resource_group: string;
+    storage_account: string;
+    vm_default_username: string;
 }
 
 export class GCECredentials extends Credentials {
