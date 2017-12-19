@@ -20,6 +20,7 @@ import {
     KeyPair,
     Network,
     SubNet,
+    Gateway,
     StaticIP
 } from '../../../shared/models/cloud';
 
@@ -30,6 +31,7 @@ import { Credentials } from '../../../shared/models/profile';
 
 // Services
 import { CloudService } from '../../../shared/services/cloud.service';
+import { validateConfig } from '@angular/router/src/config';
 
 
 @Component({
@@ -49,6 +51,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     keypairsHelp = this.CLOUD_SELECTION_HELP;
     networksHelp = this.CLOUD_SELECTION_HELP;
     subnetsHelp = this.CLOUD_SELECTION_HELP;
+    gatewayHelp = this.CLOUD_SELECTION_HELP;
     staticIPHelp = this.CLOUD_SELECTION_HELP;
 
     // Form Controls
@@ -61,6 +64,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     keypairCtrl = new FormControl('');
     networkCtrl = new FormControl('');
     subnetCtrl = new FormControl('');
+    gatewayCtrl = new FormControl('');
     staticIpCtrl = new FormControl('');
 
     // Observables
@@ -68,6 +72,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     vmTypeObs: Observable<VmType[]>;
     keypairObs: Observable<KeyPair[]>;
     networkObs: Observable<Network[]>;
+    gatewayObs: Observable<Gateway[]>;
     staticIpObs: Observable<StaticIP[]>;
     subnetObs: Observable<SubNet[]>;
     storageSubscription: Subscription;
@@ -91,6 +96,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
             'keyPair': this.keypairCtrl,
             'network': this.networkCtrl,
             'subnet': this.subnetCtrl,
+            'gateway': this.gatewayCtrl,
             'staticIP': this.staticIpCtrl,
             'customImageID': [null],
             'provider_settings': fb.group({
@@ -115,25 +121,38 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
                                   .do(kp => { this.keypairsHelp = 'Which keypair would you like to use for this Virtual Machine?'; },
                                       error => { this.errorMessage = <any>error; });
         this.networkObs = cloudObs.do(cloud => { this.networksHelp = 'Retrieving list of networks...';
-                                                 this.subnetsHelp = 'Select a network first'; })
+                                                 this.subnetsHelp = 'Before choosing a subnet, select a network first.';
+                                                 this.gatewayHelp = 'Before choosing a gateway, select a network first.'; })
                                   .switchMap(cloud => this._cloudService.getNetworks(cloud.slug))
                                   .do(net => { this.networksHelp = 'In which network would you like to place this Virtual Machine?'; },
                                       error => { this.errorMessage = <any>error; });
-        this.staticIpObs = cloudObs.do(cloud => { this.staticIPHelp = 'Retrieving static IPs ...'; })
-                                   .switchMap(cloud => this._cloudService.getStaticIPs(cloud.slug))
-                                   .do(fip => { this.staticIPHelp = 'What static/floating IP would you like to assign to this Virtual'
-                                                + ' Machine?'; },
-                                       error => { this.errorMessage = <any>error; });
-        // properties dependent on network
+        // Properties dependent on network
         const networkObs = this.networkCtrl.valueChanges
-                                           .do(network => { this.subnetsHelp = 'Retrieving list of subnets...';
-                                                            this.subnetCtrl.patchValue(null); })
-                                           .shareReplay(1);
+            .do(network => {this.subnetsHelp = 'Retrieving list of subnets...';
+                            this.gatewayHelp = 'Retrieving internet gateways...';
+                            this.subnetCtrl.patchValue(null); })
+            .shareReplay(1);
         this.subnetObs = Observable.combineLatest(cloudObs, networkObs)
                                    .switchMap(([cloud, net_id]) => this._cloudService.getSubNets(cloud.slug, net_id))
                                    .do(subnet => { this.subnetsHelp = 'In which subnet would you like to place this Virtual Machine?'; },
                                        error => { this.errorMessage = <any>error; });
-        // properties dependent on storage type
+        this.gatewayObs = Observable.combineLatest(cloudObs, networkObs)
+            .switchMap(([cloud, net_id]) => this._cloudService.getGateways(cloud.slug, net_id))
+            .do(gateway => { this.gatewayHelp = 'Which internet gateway would you like to use for internet connectivity?';
+                             this.staticIPHelp = 'Select internet gateway first.'; },
+            error => { this.errorMessage = <any>error; });
+
+        // Properties dependent on gateways
+        const gatewayObs = this.gatewayCtrl.valueChanges
+            .do(gateway => {this.staticIPHelp = 'Retrieving static IPs...'; })
+            .shareReplay(1);
+        this.staticIpObs = Observable.combineLatest(cloudObs, networkObs, gatewayObs)
+                                     .switchMap(([cloud, net_id, gateway_id]) => this._cloudService.getStaticIPs(
+                                         cloud.slug, net_id, gateway_id))
+                                     .do(staticIP => { this.staticIPHelp = 'Which static IP would you like to attach to your appliance?'; },
+                                        error => { this.errorMessage = <any>error; });
+
+        // Properties dependent on storage type
         this.storageSubscription = this.rootStorageTypeCtrl.valueChanges.subscribe(
                                         storageType => { this.onRootStorageTypeChange(storageType); });
     }

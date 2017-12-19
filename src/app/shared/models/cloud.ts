@@ -40,9 +40,14 @@ export interface SubNet {
     name: string;
 }
 
+export interface Gateway {
+    id: string;
+    name: string;
+}
 export interface StaticIP {
     id: string;
     ip: string;
+    state: string;
 }
 
 export interface CloudManCluster {

@@ -11,6 +11,7 @@ import { PlacementZone } from '../models/cloud';
 import { KeyPair } from '../models/cloud';
 import { Network } from '../models/cloud';
 import { SubNet } from '../models/cloud';
+import { Gateway } from '../models/cloud';
 import { StaticIP } from '../models/cloud';
 import { CloudManCluster } from '../models/cloud';
 import { QueryResult } from '../models/query';
@@ -59,19 +60,27 @@ export class CloudService {
     }
 
     public getNetworks(slug: string): Observable<Network[]> {
-        return this.http.get<QueryResult<Network>>(`${this._application_url}${slug}/networks/`)
+        return this.http.get<QueryResult<Network>>(`${this._application_url}${slug}/networking/networks/`)
             .map(response => response.results)
             .catch(this.handleError);
     }
 
     public getSubNets(slug: string, network_id: string): Observable<SubNet[]> {
-        return this.http.get<QueryResult<SubNet>>(`${this._application_url}${slug}/networks/${network_id}/subnets/`)
+        return this.http.get<QueryResult<SubNet>>(`${this._application_url}${slug}/networking/networks/${network_id}/subnets/`)
             .map(qr => qr.results)
             .catch(this.handleError);
     }
 
-    public getStaticIPs(slug: string): Observable<StaticIP[]> {
-        return this.http.get<QueryResult<StaticIP>>(`${this._application_url}${slug}/static_ips/`)
+    public getGateways(slug: string, network_id: string): Observable<Gateway[]> {
+        return this.http.get<QueryResult<Gateway>>(`${this._application_url}${slug}/networking/networks/${network_id}/gateways/`)
+            .map(response => response.results)
+            .catch(this.handleError);
+    }
+
+    public getStaticIPs(slug: string, network_id: string, gateway_id: string): Observable<StaticIP[]> {
+        console.log('network_id: ' + network_id + ', gateway_id: ' + gateway_id);
+        return this.http.get<QueryResult<StaticIP>>(
+                `${this._application_url}${slug}/networking/networks/${network_id}/gateways/${gateway_id}/floating_ips/`)
             .map(qr => qr.results)
             .catch(this.handleError);
     }

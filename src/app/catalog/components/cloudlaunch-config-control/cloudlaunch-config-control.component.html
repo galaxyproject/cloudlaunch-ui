@@ -126,14 +126,27 @@
                     {{ subnetsHelp }}</mat-placeholder>
             </mat-form-field>
         </div>
-
+        <!-- Internet gateway selection -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <mat-select id="id_gateway" [formControl]="gatewayCtrl">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let gateway of gatewayObs | async" [value]="gateway.id">
+                        {{ gateway.name }} ({{ gateway.id }})
+                    </mat-option>
+                </mat-select>
+                <mat-placeholder>
+                    <i *ngIf="gatewayHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>
+                    {{ gatewayHelp }}</mat-placeholder>
+            </mat-form-field>
+        </div>
         <!-- Static IP selection -->
         <div class="form-group full-width-container">
             <mat-form-field>
-                <mat-select id="id_floating_ip"
+                <mat-select id="id_staticIP"
                     [formControl]="staticIpCtrl">
                     <mat-option>None</mat-option>
-                    <mat-option *ngFor="let ip of staticIpObs | async" [value]="ip.ip">
+                    <mat-option *ngFor="let ip of staticIpObs | async" [value]="ip.id">
                         {{ ip.ip }}
                     </mat-option>
                 </mat-select>

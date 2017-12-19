@@ -42,7 +42,7 @@
 
 
     <!-- Root storage size -->
-    <div class="full-width-container" *ngIf="storageTypeCtrl.value=='volume' && !showSavedClusters">
+    <div class="form-group full-width-container" *ngIf="storageTypeCtrl.value=='volume' && !showSavedClusters">
           <mat-form-field>
               <input matInput type="number" placeholder="How large should the storage volume be?" formControlName="storageSize" />
             <mat-hint>Size (in GB)</mat-hint>
