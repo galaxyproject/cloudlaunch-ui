@@ -122,7 +122,8 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
                                       error => { this.errorMessage = <any>error; });
         this.networkObs = cloudObs.do(cloud => { this.networksHelp = 'Retrieving list of networks...';
                                                  this.subnetsHelp = 'Before choosing a subnet, select a network first.';
-                                                 this.gatewayHelp = 'Before choosing a gateway, select a network first.'; })
+                                                 this.gatewayHelp = 'Before choosing a gateway, select a network first.';
+                                                 this.staticIPHelp = 'Before selecting a floating IP, select a network and a gateway.'; })
                                   .switchMap(cloud => this._cloudService.getNetworks(cloud.slug))
                                   .do(net => { this.networksHelp = 'In which network would you like to place this Virtual Machine?'; },
                                       error => { this.errorMessage = <any>error; });

@@ -11,7 +11,7 @@
         <i class="fa fa-question-circle fa-fw"></i> UNKNOWN
       </span>
       <span *ngSwitchCase="'not_found'" class="text-warning">
-        <i class="fa fa-exclamation-circle fa-fw"></i> NOT FOUND
+        <i class="fa fa-exclamation-circle fa-fw"></i> APPLIANCE NOT FOUND
       </span>
       <span *ngSwitchCase="'pending'" class="text-info">
         <i class="fa fa-hourglass fa-fw"></i> PENDING
@@ -27,6 +27,9 @@
       </span>
       <span *ngSwitchCase="'error'" class="text-danger">
         <i class="fa fa-exclamation-triangle fa-fw"></i> ERROR
+      </span>
+      <span *ngSwitchCase="'deployment_not_found'" class="text-info">
+        <i class="fa fa-exclamation-circle fa-fw"></i> DEPLOYMENT NOT FOUND
       </span>
       <span *ngSwitchDefault class="text-info">
         <i class="fa fa-question-circle fa-fw"></i> UNKNOWN: {{ getInstanceStatus() }}
