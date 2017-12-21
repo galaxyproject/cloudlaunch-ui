@@ -34,12 +34,14 @@
                     </div>
                     <!-- Credentials selection -->
                     <div class="form-group" *ngIf="targetCloudControl?.value">
-                        <p>
-                            <ng-container *ngIf="targetCloudControl.value?.access_instructions_url">
-                                For detailed instructions on how to obtain credentials for this cloud, click
-                                <a target="_blank" [href]="targetCloudControl.value.access_instructions_url">here</a>.
-                            </ng-container>
-                        </p>
+                        <ng-container *ngIf="targetCloudControl.value?.access_instructions_url">
+                            <div class="alert alert-info">
+                                For detailed instructions on how to obtain credentials for this cloud,
+                                <a target="_blank" [href]="targetCloudControl.value.access_instructions_url" class="alert-link">
+                                    click here.
+                                </a>
+                            </div>
+                        </ng-container>
                         <clui-cloud-credentials-selector id="id_cred_selector"
                             [cloud]="targetCloudControl.value"
                             [formControl]="credentialsControl">
