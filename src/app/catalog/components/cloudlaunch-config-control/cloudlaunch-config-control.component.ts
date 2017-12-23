@@ -60,6 +60,8 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     rootStorageTypeCtrl = new FormControl(this.DEFAULT_ROOT_STORAGE_TYPE, Validators.required);
     rootStorageSizeCtrl = new FormControl('');
     vmTypeCtrl = new FormControl('', Validators.required);
+    // Just a dummy UI bound ctrl for setting the primitive value to vmTypeCtrl
+    vmTypeObjCtrl = new FormControl('', Validators.required);
     placementCtrl = new FormControl('');
     keypairCtrl = new FormControl('');
     networkCtrl = new FormControl('');
@@ -114,7 +116,10 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
                                           error => { this.errorMessage = <any>error; });
         this.vmTypeObs = cloudObs.do(cloud => { this.vmTypeHelp = 'Retrieving instance types...'; })
                                        .switchMap(cloud => this._cloudService.getVmTypes(cloud.slug))
-                                       .do(vmType => { this.vmTypeHelp = 'What type of virtual hardware would you like to use?'; },
+                                       .do(vmTypes => { this.vmTypeHelp = 'What type of virtual hardware would you like to use?';
+                                                        // Keep the two values synchronised between vmTypeCtrl and vmTypeObjCtrl
+                                                        const currentType = vmTypes.filter(vmType => vmType.name === this.vmTypeCtrl.value);
+                                                        this.vmTypeObjCtrl.patchValue(currentType ? currentType[0] : null); },
                                            error => { this.errorMessage = <any>error; });
         this.keypairObs = cloudObs.do(cloud => { this.keypairsHelp = 'Retrieving keypairs...'; })
                                   .switchMap(cloud => this._cloudService.getKeyPairs(cloud.slug))
@@ -156,6 +161,9 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
         // Properties dependent on storage type
         this.storageSubscription = this.rootStorageTypeCtrl.valueChanges.subscribe(
                                         storageType => { this.onRootStorageTypeChange(storageType); });
+
+        // Keep the two values synchronised between vmTypeCtrl and vmTypeObjCtrl
+        this.vmTypeObjCtrl.valueChanges.subscribe(vmType => this.vmTypeCtrl.patchValue(vmType ? vmType.name : null));
     }
 
     ngOnDestroy() {
