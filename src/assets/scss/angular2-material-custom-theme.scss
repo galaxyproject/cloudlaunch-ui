@@ -36,3 +36,9 @@ $dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
     justify-content: center;
     vertical-align: middle;
 }
+
+
+.vm_type_selection .mat-input-infix {
+    padding-top: 1em;
+    padding-bottom: 2px;
+}

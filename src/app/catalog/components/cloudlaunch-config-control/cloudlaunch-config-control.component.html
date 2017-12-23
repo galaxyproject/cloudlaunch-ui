@@ -3,7 +3,7 @@
 
     <!-- Instance type selection -->
     <div class="full-width-container">
-        <mat-form-field>
+        <mat-form-field class="vm_type_selection">
             <mat-select id="id_instance_type" [formControl]="vmTypeObjCtrl">
                 <mat-select-trigger>
                     <div class="row">
@@ -11,22 +11,22 @@
                         <div class="col-md-2">
                             <div class="row">
                                 <div class="col-md-3"><mat-icon>memory</mat-icon></div>
-                                <div class="col-md-3"><span class="pull-right">{{ vmTypeObjCtrl.value?.vcpus }}</span></div>
-                                <div class="col-md-6"></div>
+                                <div class="col-md-6"><span class="pull-right">{{ vmTypeObjCtrl.value?.vcpus }} VCPUs</span></div>
+                                <div class="col-md-3"></div>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="row">
                                 <div class="col-md-3"><mat-icon>sim_card</mat-icon></div>
-                                <div class="col-md-4"><span class="pull-right">{{ vmTypeObjCtrl.value?.ram }}</span></div>
-                                <div class="col-md-5"></div>
+                                <div class="col-md-8"><span class="pull-right">{{ vmTypeObjCtrl.value?.ram }} GB RAM</span></div>
+                                <div class="col-md-1"></div>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="row">
                                 <div class="col-md-3"><mat-icon>storage</mat-icon></div>
-                                <div class="col-md-5"><span class="pull-right">{{ vmTypeObjCtrl.value?.size_total_disk }}</span></div>
-                                <div class="col-md-4"></div>
+                                <div class="col-md-7"><span class="pull-right">{{ vmTypeObjCtrl.value?.size_total_disk }} GB Disk</span></div>
+                                <div class="col-md-2"></div>
                             </div>
                         </div>
                     </div>
