@@ -34,6 +34,9 @@
         <clui-delete-task-status *ngSwitchCase="'DELETE'" [task]="deployment.latest_task"></clui-delete-task-status>
         <clui-health-check-task-status *ngSwitchDefault [task]="deployment.latest_task"></clui-health-check-task-status>
     </div>
+    <a *ngIf="deployment.latest_task?.status == 'FAILURE'" href="https://github.com/galaxyproject/cloudlaunch/issues/new" target="_blank" class="small">
+        <i class="fa fa-exclamation"></i> Report this failure?
+    </a>
 </td>
 <td>
     <span *ngIf="deployment.latest_task?.status == 'SUCCESS' &&
