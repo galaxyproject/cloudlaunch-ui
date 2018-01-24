@@ -7,7 +7,7 @@
     <page-body>
         <div class="col-md-12">
             <p class="lead">
-                This page is a log of the appliances you have launched.
+                This page is a list of active appliances you have launched.
                 <i class="fa" [ngClass]="{'fa-toggle-down': !moreInfo, 'fa-toggle-up': moreInfo}" (click)="toggleInfo()"
                  style="cursor: pointer;"></i>
             </p>
@@ -15,12 +15,20 @@
                 <p class="lead">
                     Each log entry keeps key appliance and instance
                     information, also giving you a link to access a web
-                    interface that the given appliance may offer. This log is
-                    kept forever. <br/>
-                    Note that you cannot shut down or delete any instances from
-                    this page but need to use the appliance or the cloud
-                    provider interface instead. Even after an appliance has
-                    been shut down, its access URL will remain visible here.
+                    interface that the given appliance may offer.
+                    <br/>
+                    From this page you may refresh the status of an appliance.
+                    You can also delete and archive an appliance. Please note
+                    that deleting an appliance is a destructive, irreversible
+                    action. If you wish to preserve the state of your appliance
+                    please make sure to back it up first.
+                    <br/>
+                    If an appliance has been shut down or is otherwise no longer
+                    available you can remove it from this list by archiving it.
+                    <br/>
+                    All appliances you've launched, including archived
+                    appliances, are listed on the <a
+                    routerLink="history"><b>Launch History</b></a> page.
                 </p>
             </div>
             <clui-deployments></clui-deployments>
