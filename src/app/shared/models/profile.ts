@@ -47,6 +47,12 @@ export class UserProfile {
     gce_creds: GCECredentials[];
 }
 
+export class PublicKey {
+    name: string;
+    public_key: string;
+    fingerpring: string;
+}
+
 export class CredVerificationResult {
     result: string;
     details: string;

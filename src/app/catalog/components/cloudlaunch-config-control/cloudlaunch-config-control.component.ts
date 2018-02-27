@@ -27,10 +27,11 @@ import {
 import { BasePluginComponent } from '../../plugins/base-plugin.component';
 
 // models
-import { Credentials } from '../../../shared/models/profile';
+import { Credentials, PublicKey } from '../../../shared/models/profile';
 
 // Services
 import { CloudService } from '../../../shared/services/cloud.service';
+import { ProfileService } from '../../../shared/services/profile.service';
 import { validateConfig } from '@angular/router/src/config';
 
 
@@ -49,6 +50,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     vmTypeHelp = this.CLOUD_SELECTION_HELP;
     placementHelp = this.CLOUD_SELECTION_HELP;
     keypairsHelp = this.CLOUD_SELECTION_HELP;
+    publicKeyHelp = 'Select a desired ssh key pair';
     networksHelp = this.CLOUD_SELECTION_HELP;
     subnetsHelp = this.CLOUD_SELECTION_HELP;
     gatewayHelp = this.CLOUD_SELECTION_HELP;
@@ -64,6 +66,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     vmTypeObjCtrl = new FormControl('', Validators.required);
     placementCtrl = new FormControl('');
     keypairCtrl = new FormControl('');
+    publicKeyCtrl = new FormControl('');
     networkCtrl = new FormControl('');
     subnetCtrl = new FormControl('');
     gatewayCtrl = new FormControl('');
@@ -73,6 +76,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     placementObs: Observable<PlacementZone[]>;
     vmTypeObs: Observable<VmType[]>;
     keypairObs: Observable<KeyPair[]>;
+    publicKeyObs: Observable<PublicKey[]>;
     networkObs: Observable<Network[]>;
     gatewayObs: Observable<Gateway[]>;
     staticIpObs: Observable<StaticIP[]>;
@@ -88,7 +92,8 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     }
 
     constructor(fb: FormBuilder, parentContainer: FormGroupDirective,
-        private _cloudService: CloudService) {
+                private _cloudService: CloudService,
+                private _profileService: ProfileService) {
         super(fb, parentContainer);
         this.cloudLaunchForm = fb.group({
             'vmType': this.vmTypeCtrl,
@@ -96,6 +101,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
             'rootStorageSize': this.rootStorageSizeCtrl,
             'placementZone': this.placementCtrl,
             'keyPair': this.keypairCtrl,
+            'publicKey': this.publicKeyCtrl,
             'network': this.networkCtrl,
             'subnet': this.subnetCtrl,
             'gateway': this.gatewayCtrl,
@@ -121,10 +127,6 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
                                                         const currentType = vmTypes.filter(vmType => vmType.name === this.vmTypeCtrl.value);
                                                         this.vmTypeObjCtrl.patchValue(currentType ? currentType[0] : null); },
                                            error => { this.errorMessage = <any>error; });
-        this.keypairObs = cloudObs.do(cloud => { this.keypairsHelp = 'Retrieving keypairs...'; })
-                                  .switchMap(cloud => this._cloudService.getKeyPairs(cloud.slug))
-                                  .do(kp => { this.keypairsHelp = 'Which keypair would you like to use for this Virtual Machine?'; },
-                                      error => { this.errorMessage = <any>error; });
         this.networkObs = cloudObs.do(cloud => { this.networksHelp = 'Retrieving list of networks...';
                                                  this.subnetsHelp = 'Before choosing a subnet, select a network first.';
                                                  this.gatewayHelp = 'Before choosing a gateway, select a network first.';
@@ -164,6 +166,12 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
 
         // Keep the two values synchronised between vmTypeCtrl and vmTypeObjCtrl
         this.vmTypeObjCtrl.valueChanges.subscribe(vmType => this.vmTypeCtrl.patchValue(vmType ? vmType.name : null));
+
+        this.publicKeyHelp = 'Retrieving public keys...';
+        this.publicKeyObs = this._profileService.getPublicKeys()
+                            .do(kp => { this.publicKeyHelp = 'Which public key would you like to use for this Virtual Machine?'; },
+                                error => { this.errorMessage = <any>error; });
+
     }
 
     ngOnDestroy() {

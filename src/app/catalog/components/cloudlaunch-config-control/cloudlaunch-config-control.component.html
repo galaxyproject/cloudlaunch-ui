@@ -109,18 +109,18 @@
             </mat-form-field>
         </div>
 
-        <!-- Key pair selection -->
+        <!-- Public key selection -->
         <div class="form-group full-width-container">
             <mat-form-field>
-                <mat-select id="id_keypair"
-                    [formControl]="keypairCtrl">
-                    <mat-option>None</mat-option>
-                    <mat-option *ngFor="let kp of keypairObs | async" [value]="kp.id">
-                        {{ kp.name }}
+                <mat-select id="id_publicKey"
+                    [formControl]="publicKeyCtrl">
+                    <mat-option>None2</mat-option>
+                    <mat-option *ngFor="let pk of publicKeyObs | async" [value]="pk.id">
+                        {{ pk.name }}
                     </mat-option>
                 </mat-select>
-                <mat-placeholder><i *ngIf="keypairsHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>
-                    {{ keypairsHelp }}</mat-placeholder>
+                <mat-placeholder><i *ngIf="publicKeyHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>
+                    {{ publicKeyHelp }}</mat-placeholder>
             </mat-form-field>
         </div>
 

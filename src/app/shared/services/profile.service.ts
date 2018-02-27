@@ -4,19 +4,21 @@ import { map, filter } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { AppSettings } from '../../app.settings';
-import { UserProfile } from '../models/profile';
+import { UserProfile, PublicKey } from '../models/profile';
 import { Credentials } from '../models/profile';
 import { AWSCredentials } from '../models/profile';
 import { OpenStackCredentials } from '../models/profile';
 import { AzureCredentials } from '../models/profile';
 import { GCECredentials } from '../models/profile';
 import { CredVerificationResult } from '../models/profile';
+import { QueryResult } from '../models/query';
 
 
 @Injectable()
 export class ProfileService {
 
     private _profile_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/user/`;
+    private _public_key_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/user/public-keys/`;
     private _creds_url_aws = `${this._profile_url}credentials/aws/`;
     private _creds_url_openstack = `${this._profile_url}credentials/openstack/`;
     private _creds_url_azure = `${this._profile_url}credentials/azure/`;
@@ -27,6 +29,11 @@ export class ProfileService {
 
     public getProfile(): Observable<UserProfile> {
         return this.http.get<UserProfile>(this._profile_url);
+    }
+
+    public getPublicKeys(): Observable<PublicKey[]> {
+        return this.http.get<QueryResult<PublicKey>>(this._public_key_url)
+            .map(response => response.results);
     }
 
     public getCredentialsForCloud(cloud_id: string): Observable<Credentials[]> {
