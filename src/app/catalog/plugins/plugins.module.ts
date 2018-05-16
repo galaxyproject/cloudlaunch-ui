@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material';
 import { LayoutModule } from '../../shared/layout.module';
 import { UbuntuConfigComponent } from './ubuntu/ubuntu.component';
 import { CloudManConfigComponent } from './cloudman/cloudman.component';
+import { CloudMan2ConfigComponent } from './cloudman2/cloudman2.component';
 import { GVLConfigComponent } from './gvl/gvl.component';
 import { DockerConfigComponent } from './docker/docker.component';
 import { DockerFileEditorComponent } from './docker/components/docker-file-editor.component';
@@ -35,11 +36,11 @@ import { MarkdownModule } from 'angular2-markdown';
         LayoutModule,
         MarkdownModule
     ],
-    declarations: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,
-                   DockerConfigComponent, DockerFileEditorComponent],
-    exports: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,
-              DockerConfigComponent],
-    entryComponents: [UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,
-                      DockerConfigComponent]
+    declarations: [UbuntuConfigComponent, CloudManConfigComponent, CloudMan2ConfigComponent,
+                   GVLConfigComponent, DockerConfigComponent, DockerFileEditorComponent],
+    exports: [UbuntuConfigComponent, CloudManConfigComponent, CloudMan2ConfigComponent,
+              GVLConfigComponent, DockerConfigComponent],
+    entryComponents: [UbuntuConfigComponent, CloudManConfigComponent, CloudMan2ConfigComponent,
+                      GVLConfigComponent, DockerConfigComponent]
 })
 export class PluginsModule { }

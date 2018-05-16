@@ -1,0 +1,14 @@
+<div [formGroup]="form">
+    <!-- Access password -->
+    <div class='form-group full-width-container'>
+        <mat-form-field>
+            <input matInput id="id_password" [type]="showPassword ? 'text' : 'password'" placeholder="What password would you like to use for this instance?"
+                [formControl]="cm2PasswordCtrl" />
+            <mat-error *ngIf="cm2PasswordCtrl.hasError('required')">A password is
+                <strong>required</strong>
+            </mat-error>
+            <mat-icon matSuffix (click)="showPassword = !showPassword" matTooltip="show/hide password">{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-hint>The password you set here can be used to access services on your new instance.</mat-hint>
+        </mat-form-field>
+    </div>
+</div>

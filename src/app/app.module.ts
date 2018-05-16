@@ -18,6 +18,7 @@ import { AuthInterceptor } from './login/services/auth-interceptor';
 import { PluginsModule } from './catalog/plugins/plugins.module';
 import { UbuntuConfigComponent } from './catalog/plugins/ubuntu/ubuntu.component';
 import { CloudManConfigComponent } from './catalog/plugins/cloudman/cloudman.component';
+import { CloudMan2ConfigComponent } from './catalog/plugins/cloudman2/cloudman2.component';
 import { GVLConfigComponent } from './catalog/plugins/gvl/gvl.component';
 import { DockerConfigComponent } from './catalog/plugins/docker/docker.component';
 
@@ -47,8 +48,9 @@ import { DockerConfigComponent } from './catalog/plugins/docker/docker.component
             multi: true,
         }
     ],
-    entryComponents: [ArchiveDeleteConfirmDlgComponent, UbuntuConfigComponent, CloudManConfigComponent, GVLConfigComponent,
-                      DockerConfigComponent],
+    entryComponents: [ArchiveDeleteConfirmDlgComponent, UbuntuConfigComponent,
+                      CloudManConfigComponent, CloudMan2ConfigComponent,
+                      GVLConfigComponent, DockerConfigComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
