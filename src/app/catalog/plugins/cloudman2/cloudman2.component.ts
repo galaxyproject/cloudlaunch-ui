@@ -24,6 +24,7 @@ export class CloudMan2ConfigComponent extends BasePluginComponent {
 
     cm2LaunchForm: FormGroup;
     showPassword = false;
+    showAdvanced = false;
     cm2PasswordCtrl: FormControl = new FormControl(null, Validators.required);
 
     get form(): FormGroup {
@@ -37,7 +38,12 @@ export class CloudMan2ConfigComponent extends BasePluginComponent {
     constructor(fb: FormBuilder, parentContainer: FormGroupDirective) {
         super(fb, parentContainer);
         this.cm2LaunchForm = fb.group({
-            'clusterPassword': this.cm2PasswordCtrl
+            'clusterPassword': this.cm2PasswordCtrl,
+            'pulsarOnly': false
         });
+    }
+
+    toggleAdvanced() {
+        this.showAdvanced = !this.showAdvanced;
     }
 }

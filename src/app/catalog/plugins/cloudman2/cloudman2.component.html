@@ -11,4 +11,12 @@
             <mat-hint>The password you set here can be used to access services on your new instance.</mat-hint>
         </mat-form-field>
     </div>
+
+    <div class="form-group label-floating is-empty">
+        <mat-slide-toggle (change)="toggleAdvanced()">Advanced options</mat-slide-toggle>
+    </div>
+
+    <div [hidden]="!showAdvanced">
+        <mat-slide-toggle formControlName="pulsarOnly">Setup CloudMan with Pulsar only</mat-slide-toggle>
+    </div>
 </div>
