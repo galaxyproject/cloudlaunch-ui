@@ -131,7 +131,7 @@
                     [formControl]="networkCtrl">
                     <mat-option>None</mat-option>
                     <mat-option *ngFor="let net of networkObs | async" [value]="net.id">
-                        {{ net.name }}
+                        {{net.label }} ({{ net.name }})
                     </mat-option>
                 </mat-select>
                 <mat-placeholder><i *ngIf="networksHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>
@@ -145,7 +145,7 @@
                     [formControl]="subnetCtrl">
                     <mat-option>None</mat-option>
                     <mat-option *ngFor="let subnet of subnetObs | async" [value]="subnet.id">
-                        {{ subnet.name }}
+                        {{ subnet.label }} ({{ subnet.id }})
                     </mat-option>
                 </mat-select>
                 <mat-placeholder><i *ngIf="subnetsHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>
