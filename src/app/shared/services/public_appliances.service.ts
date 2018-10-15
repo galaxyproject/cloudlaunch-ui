@@ -1,8 +1,9 @@
+import { throwError as observableThrowError,  Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { AppSettings } from '../../app.settings';
@@ -19,7 +20,7 @@ export class PublicAppliancesService {
 
     public getPublicServices(): Observable<PublicService[]> {
         return this.http.get<QueryResult<PublicService>>(this._public_services_url)
-            .map(response => response.results);
+            .pipe(map(response => response.results));
     }
 
     public getPublicService(slug: string): Observable<PublicService> {
@@ -28,18 +29,18 @@ export class PublicAppliancesService {
 
     public createPublicService(public_service: PublicService): Observable<PublicService> {
         return this.http.post<PublicService>(this._public_services_url, public_service)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     private handleError(err: HttpErrorResponse) {
         console.error(err);
         if (err.error instanceof Error) {
             // A client-side or network error occurred. Handle it accordingly.
-            return Observable.throw(err.message || err.error.message || 'Client error');
+            return observableThrowError(err.message || err.error.message || 'Client error');
         } else {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
-            return Observable.throw(err.error || String(err) || 'Server error');
+            return observableThrowError(err.error || String(err) || 'Server error');
         }
     }
 }

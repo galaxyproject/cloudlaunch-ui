@@ -2,11 +2,11 @@ import { Component, OnDestroy, HostListener, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material';
 
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/switchMap';
+import { Observable, Subscription } from 'rxjs';
+import { startWith, debounceTime, switchMap } from 'rxjs/operators';
+
+
+
 
 import { Application } from '../../../shared/models/application';
 import { ApplicationService } from '../../../shared/services/application.service';
@@ -28,11 +28,11 @@ export class CatalogListComponent implements OnDestroy {
     PAGE_SIZE = 6;
 
     constructor(private _appService: ApplicationService) {
-        this.subscription = this.searchTermCtrl.valueChanges
-                            .startWith('')
-                            .debounceTime(300)
-                            .switchMap(term => { this.searchInProgress = true;
-                                                 return this._appService.queryApplications(term, this.currentPage, this.PAGE_SIZE); })
+        this.subscription = this.searchTermCtrl.valueChanges.pipe(
+                                startWith(''),
+                                debounceTime(300),
+                                switchMap(term => { this.searchInProgress = true;
+                                    return this._appService.queryApplications(term, this.currentPage, this.PAGE_SIZE); }))
                             .subscribe(
                                     result => { this.searchInProgress = false;
                                                 this.currentPage = 0;

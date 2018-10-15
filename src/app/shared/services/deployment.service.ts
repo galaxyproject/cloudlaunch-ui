@@ -1,8 +1,9 @@
+import { throwError as observableThrowError,  Observable, from } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
-import 'rxjs/add/observable/from';
+
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { AppSettings } from '../../app.settings';
@@ -28,9 +29,9 @@ export class DeploymentService {
         if (finalOptions.archived !== null) {
             url = `${url}?archived=${finalOptions.archived}`;
         }
-        return this.http.get<QueryResult<Deployment>>(url)
-            .map(response => response.results)
-            .catch(this.handleError);
+        return this.http.get<QueryResult<Deployment>>(url).pipe(
+            map(response => response.results),
+            catchError(this.handleError));
     }
 
     public getCredsForDeployment(deployment: Deployment, profile: UserProfile): Observable<Credentials> {
@@ -43,49 +44,50 @@ export class DeploymentService {
         // If credentials are associated with this deployment, return that or return the first
         // set of default credentials for the deployment's target cloud.
         if (deployment.credentials) {
-            return Observable.from(allDepCreds.filter(c => c.id === deployment.credentials));
+            return from(allDepCreds.filter(c => c.id === deployment.credentials));
         } else {
-            return Observable.from(allDepCreds.filter(credential => credential.default));
+            return from(allDepCreds.filter(credential => credential.default));
         }
     }
 
     public getDeployment(slug: string): Observable<Deployment> {
         return this.http.get<Deployment>(`${this._deployment_url}${slug}/`)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public createDeployment(deployment: Deployment): Observable<Deployment> {
         return this.http.post<Deployment>(this._deployment_url, deployment)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public updateDeployment(deployment: Deployment): Observable<Deployment> {
         return this.http.put<Deployment>(`${this._deployment_url}${deployment.id}/`, deployment)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public createTask(slug: string, task: string): Observable<Task> {
         // TODO: make this an enum?
         const body = {'action': task};
-        return this.http.post<Deployment>(`${this._deployment_url}${slug}/tasks/`, body)
-            .catch(this.handleError);
+        return this.http.post<Task>(`${this._deployment_url}${slug}/tasks/`, body)
+            .pipe(catchError(this.handleError));
     }
 
     public getTasks(slug: string): Observable<Task[]> {
         return this.http.get<QueryResult<Task>>(`${this._deployment_url}${slug}/tasks/`)
-            .map(response => response.results)
-            .catch(this.handleError);
+            .pipe(
+                    map(response => response.results),
+                    catchError(this.handleError));
     }
 
     private handleError(err: HttpErrorResponse) {
         console.error(err);
         if (err.error instanceof Error) {
             // A client-side or network error occurred. Handle it accordingly.
-            return Observable.throw(err.message || err.error.message || 'Client error');
+            return observableThrowError(err.message || err.error.message || 'Client error');
         } else {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
-            return Observable.throw(err.error || String(err) || 'Server error');
+            return observableThrowError(err.error || String(err) || 'Server error');
         }
     }
 

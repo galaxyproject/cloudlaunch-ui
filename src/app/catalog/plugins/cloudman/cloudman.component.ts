@@ -5,10 +5,9 @@ import {
     FormControl,
     Validators,
     FormGroupDirective } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/do';
+
+import { Observable ,  Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { BasePluginComponent } from '../base-plugin.component';
 import { Cloud, CloudManCluster } from '../../../shared/models/cloud';
@@ -83,8 +82,8 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
         this.showSavedClusters = true;
         this.savedClustersHelp = 'Retrieving saved clusters...';
         this.savedClustersObservable = this._cloudService.getSavedClusters(this.cloud.slug)
-                                       .do(clusters => { this.savedClustersHelp = 'Select a saved cluster'; },
-                                           error => { this.errorMessage = <any>error; });
+                                       .pipe(tap(clusters => { this.savedClustersHelp = 'Select a saved cluster'; },
+                                                 error => { this.errorMessage = <any>error; }));
     }
 
     ngOnDestroy() {

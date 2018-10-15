@@ -9,10 +9,9 @@ import {
     NG_VALIDATORS,
     Validator
 } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/shareReplay';
-import 'rxjs/add/operator/distinctUntilChanged';
-import { map, mergeMap, startWith } from 'rxjs/operators';
+
+import { Observable } from 'rxjs';
+import { map, mergeMap, startWith, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 
 // models
 import { Cloud } from '../../../shared/models/cloud';
@@ -177,18 +176,19 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             'cloud': this.cloudCtrl,
             'credential_terms': this.credentialTermsCtrl
         });
-        this.cloudCtrl.valueChanges.distinctUntilChanged().subscribe(cloud => this.onCloudChanged(cloud));
+        this.cloudCtrl.valueChanges.pipe(distinctUntilChanged()).subscribe(cloud => this.onCloudChanged(cloud));
         this.cloudTypeCtrl.valueChanges.subscribe(cloudType => this.onCloudTypeChanged(cloudType));
     }
 
     ngOnInit() {
         // shareReplay so that the cloud call is made only once
-        const cloudObservable = this._cloudService.getClouds().shareReplay(1);
+        const cloudObservable = this._cloudService.getClouds().pipe(shareReplay(1));
         // this.cloudTypeCtrl.value has a value only after initial properties are set, so initialize
         // here on ngOnInit() instead of in constructor
-        this.filteredCloudTypes = this.cloudTypeCtrl.valueChanges
-                                    .startWith(this.cloudTypeCtrl.value)
-                                    .mergeMap(cloudType => cloudObservable.map(c => this.getCloudsForType(cloudType, c)));
+        this.filteredCloudTypes = this.cloudTypeCtrl.valueChanges.pipe(
+                                     startWith(this.cloudTypeCtrl.value),
+                                     mergeMap(cloudType => cloudObservable.pipe(map(c => this.getCloudsForType(cloudType, c))))
+                                  );
     }
 
     isSameCloud(c1: Cloud, c2: Cloud): boolean {

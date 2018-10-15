@@ -1,7 +1,8 @@
+import { throwError as observableThrowError,  Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
 
 import { AppSettings } from '../../../../app.settings';
 import { DockerRepositoryOverview } from '../models/docker';
@@ -23,8 +24,9 @@ export class DockerService {
     searchDockerHub(term: string): Observable<DockerRepositoryOverview[]> {
         const url = `${this.docker_repo_url}search/repositories/?query=${term}&page_size=20`;
         return this.http.get<QueryResult<DockerRepositoryOverview>>(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
-            .map(data => data.results)
-            .catch(error => Observable.throw(error.error || 'Server error'));
+            .pipe(
+                    map(data => data.results),
+                    catchError(error => observableThrowError(error.error || 'Server error')));
     }
 
     getRepoDetail(repo: DockerRepositoryOverview): Observable<DockerRepositoryDetail> {
@@ -35,7 +37,7 @@ export class DockerService {
             url = `${this.docker_repo_url}repositories/${repo.repo_name}`;
         }
         return this.http.get<DockerRepositoryDetail>(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
-            .catch(error => Observable.throw(error.error || 'Server error'));
+            .pipe(catchError(error => observableThrowError(error.error || 'Server error')));
     }
 
     getDockerFile(repo: DockerRepositoryOverview) {
@@ -46,8 +48,8 @@ export class DockerService {
             url = `${this.docker_repo_url}repositories/${repo.repo_name}/dockerfile`;
         }
         return this.http.get(`${this.cors_proxy_url}?url=${encodeURI(url)}`)
-            .map(data => data['contents'])
-            .catch(error => Observable.throw(error.error || 'Server error'));
+            .pipe(map(data => data['contents']),
+                  catchError(error => observableThrowError(error.error || 'Server error')));
     }
 
     parseDockerFile(content: string): DockerRunConfiguration {

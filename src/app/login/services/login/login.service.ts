@@ -1,8 +1,9 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
-import 'rxjs/add/operator/do';
+import { map, tap, catchError } from 'rxjs/operators';
+
 
 import { AppSettings } from '../../../app.settings';
 import { User } from '../../../shared/models/user';
@@ -26,16 +27,16 @@ export class LoginService {
         const loginService = this;
         if (this._login_method == null) {
             return new Promise((resolve: any) => {
-                this.http.get(this._currentUserUrl)
-                    .catch((err: HttpErrorResponse) => {
+                this.http.get(this._currentUserUrl).pipe(
+                    catchError((err: HttpErrorResponse) => {
                         loginService._current_user = null;
-                        return Observable.throw(err);
-                    })
-                    .do(function (item) {
+                        return observableThrowError(err);
+                    }),
+                    tap(function (item) {
                         // Cache the login method
-                        loginService._current_user = item;
+                        loginService._current_user = <User>item;
                         loginService._login_method = 'session';
-                    })
+                    }))
                     .subscribe(
                         data => resolve(true),
                         error => resolve(false)
@@ -64,17 +65,17 @@ export class LoginService {
     public login(email: string, password: string, remember_me?: boolean): Observable<string> {
         const body = { 'email': email, 'password': password };
         const loginService = this;
-        return this.http.post(this._loginUrl, body)
-            .map(res => res['key'])
-            .do(function (item) {
+        return this.http.post(this._loginUrl, body).pipe(
+            map(res => res['key']),
+            tap(function (item) {
                 if (remember_me) {
                     localStorage.setItem('token', item);
                 } else {
                     sessionStorage.setItem('token', item);
                 }
                 loginService._login_method = 'token';
-            })
-            .catch(this.handleError);
+            }),
+            catchError(this.handleError));
     }
 
     public logout(): Observable<string> {
@@ -82,12 +83,12 @@ export class LoginService {
         this.credentials = null;
         localStorage.removeItem('token');
         sessionStorage.removeItem('token');
-        return this.http.post(this._logoutUrl, '')
-            .catch(this.handleError);
+        return this.http.post<any>(this._logoutUrl, '').pipe(
+                catchError(this.handleError));
     }
 
     private handleError(error: HttpErrorResponse) {
-        return Observable.throw((<any>error).non_field_errors || 'Server error');
+        return observableThrowError((<any>error).non_field_errors || 'Server error');
     }
 
     public setCloudCredentials(credentials: Credentials) {

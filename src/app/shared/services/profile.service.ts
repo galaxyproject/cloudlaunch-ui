@@ -1,6 +1,7 @@
+import { throwError as observableThrowError,  Observable } from 'rxjs';
+import { map, filter, catchError } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { map, filter } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { AppSettings } from '../../app.settings';
@@ -30,23 +31,23 @@ export class ProfileService {
     }
 
     public getCredentialsForCloud(cloud_id: string): Observable<Credentials[]> {
-        const all_creds = this.getProfile().map(p => [].concat(p.aws_creds, p.openstack_creds, p.azure_creds, p.gce_creds));
-        return all_creds.map(creds => creds.filter(c => c && c.cloud.slug === cloud_id));
+        const all_creds = this.getProfile().pipe(map(p => [].concat(p.aws_creds, p.openstack_creds, p.azure_creds, p.gce_creds)));
+        return all_creds.pipe(map(creds => creds.filter(c => c && c.cloud.slug === cloud_id)));
     }
 
     public saveCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {
         return this.http.put<AWSCredentials>(`${this._creds_url_aws}${creds.id}/`, creds)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public deleteCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {
-        return this.http.delete(`${this._creds_url_aws}${creds.id}/`)
-            .catch(this.handleError);
+        return this.http.delete<AWSCredentials>(`${this._creds_url_aws}${creds.id}/`)
+            .pipe(catchError(this.handleError));
     }
 
     public createCredentialsAWS(creds: AWSCredentials): Observable<AWSCredentials> {
         return this.http.post<AWSCredentials>(`${this._creds_url_aws}`, creds)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public verifyCredentialsAWS(creds: AWSCredentials): Observable<CredVerificationResult> {
@@ -54,22 +55,22 @@ export class ProfileService {
         addCredentialHeaders(headers, creds);
         return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
                                                       creds, { headers: new HttpHeaders(headers) })
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public saveCredentialsOpenStack(creds: OpenStackCredentials): Observable<OpenStackCredentials> {
         return this.http.put<OpenStackCredentials>(`${this._creds_url_openstack}${creds.id}/`, creds)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public deleteCredentialsOpenStack(creds: OpenStackCredentials): Observable<OpenStackCredentials> {
         return this.http.delete<OpenStackCredentials>(`${this._creds_url_openstack}${creds.id}/`)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public createCredentialsOpenStack(creds: OpenStackCredentials): Observable<OpenStackCredentials> {
         return this.http.post<OpenStackCredentials>(`${this._creds_url_openstack}`, creds)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public verifyCredentialsOpenStack(creds: OpenStackCredentials): Observable<CredVerificationResult> {
@@ -77,22 +78,22 @@ export class ProfileService {
         addCredentialHeaders(headers, creds);
         return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
                                                       creds, { headers: new HttpHeaders(headers) })
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public saveCredentialsAzure(creds: AzureCredentials): Observable<AzureCredentials> {
         return this.http.put<AzureCredentials>(`${this._creds_url_azure}${creds.id}/`, creds)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public deleteCredentialsAzure(creds: AzureCredentials): Observable<AzureCredentials> {
         return this.http.delete<AzureCredentials>(`${this._creds_url_azure}${creds.id}/`)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public createCredentialsAzure(creds: AzureCredentials): Observable<AzureCredentials> {
         return this.http.post<AzureCredentials>(`${this._creds_url_azure}`, creds)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public verifyCredentialsAzure(creds: AzureCredentials): Observable<CredVerificationResult> {
@@ -100,41 +101,41 @@ export class ProfileService {
         addCredentialHeaders(headers, creds);
         return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
                                                       creds, { headers: new HttpHeaders(headers) })
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public saveCredentialsGCE(creds: GCECredentials): Observable<GCECredentials> {
         return this.http.put<GCECredentials>(`${this._creds_url_gce}${creds.id}/`, creds)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public deleteCredentialsGCE(creds: GCECredentials): Observable<GCECredentials> {
         return this.http.delete<GCECredentials>(`${this._creds_url_gce}${creds.id}/`)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public createCredentialsGCE(creds: GCECredentials): Observable<GCECredentials> {
         return this.http.post<GCECredentials>(`${this._creds_url_gce}`, creds)
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     public verifyCredentialsGCE(creds: GCECredentials): Observable<CredVerificationResult> {
         const headers = {};
         addCredentialHeaders(headers, creds);
-        return this.http.post<GCECredentials>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
+        return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
                                               creds, { headers: new HttpHeaders(headers) })
-            .catch(this.handleError);
+            .pipe(catchError(this.handleError));
     }
 
     private handleError(err: HttpErrorResponse) {
         console.error(err);
         if (err.error instanceof Error) {
             // A client-side or network error occurred. Handle it accordingly.
-            return Observable.throw(err.message || err.error.message || 'Client error');
+            return observableThrowError(err.message || err.error.message || 'Client error');
         } else {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
-            return Observable.throw(err.error || String(err) || 'Server error');
+            return observableThrowError(err.error || String(err) || 'Server error');
         }
     }
 }

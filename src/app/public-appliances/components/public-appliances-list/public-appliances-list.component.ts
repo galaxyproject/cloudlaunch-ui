@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
 import { PublicService } from '../../../shared/models/public_service';
@@ -17,6 +17,6 @@ export class PublicAppliancesListComponent {
 
     constructor(
         private _publicAppliancesService: PublicAppliancesService) {
-        this.publicServicesObservable = this._publicAppliancesService.getPublicServices().shareReplay(1);
+        this.publicServicesObservable = this._publicAppliancesService.getPublicServices().pipe(shareReplay(1));
     }
 }

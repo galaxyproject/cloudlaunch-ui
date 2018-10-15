@@ -1,11 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/interval';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/map';
-import { map, mergeMap, startWith } from 'rxjs/operators';
+import { Observable, interval } from 'rxjs';
+import { map, mergeMap, startWith, shareReplay } from 'rxjs/operators';
 
 import { Deployment } from '../../../shared/models/deployment';
 import { DeploymentService } from '../../../shared/services/deployment.service';
@@ -35,15 +31,13 @@ export class DeploymentsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.deployments = Observable
-                           .interval(10000)
-                           .startWith(0)
-                           .mergeMap(() => this.deploymentService.getDeployments({archived: false}));
-        this.currentTimer = Observable
-                            .interval(5000)
-                            .startWith(0)
-                            .map(() => moment());
-        this.profile = this.profileService.getProfile().shareReplay(1);
+        this.deployments = interval(10000).pipe(
+                               startWith(0),
+                               mergeMap(() => this.deploymentService.getDeployments({archived: false})));
+        this.currentTimer = interval(5000).pipe(
+                               startWith(0),
+                               map(() => moment()));
+        this.profile = this.profileService.getProfile().pipe(shareReplay(1));
     }
 
     trackByDeploymentId(index: number, deployment: Deployment): string {

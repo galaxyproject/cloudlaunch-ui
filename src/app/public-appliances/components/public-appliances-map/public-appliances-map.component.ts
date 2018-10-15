@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/shareReplay';
+import { Observable } from 'rxjs';
+
 
 import { PublicService } from '../../../shared/models/public_service';
 

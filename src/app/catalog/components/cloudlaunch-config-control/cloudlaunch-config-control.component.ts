@@ -6,11 +6,8 @@ import {
     FormGroupDirective,
     Validators
 } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/observable/combineLatest';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/do';
+import { Observable, Subscription, combineLatest } from 'rxjs';
+import { tap, filter, shareReplay, switchMap } from 'rxjs/operators';
 
 import {
     Cloud,
@@ -107,56 +104,63 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
             })
         });
         // share replay ensures that subscribers who join at any time get the last emitted value immediately
-        const cloudObs = this.cloudCtrl.valueChanges.do(cloud => { this.onCloudChange(cloud); }).filter(c => !!c).shareReplay(1);
+        const cloudObs = this.cloudCtrl.valueChanges.pipe(
+                tap(cloud => { this.onCloudChange(cloud); }),
+                filter(c => !!c),
+                shareReplay(1));
         // Properties dependent on cloud
-        this.placementObs = cloudObs.do(cloud => { this.placementHelp = 'Retrieving placement options...'; })
-                                    .switchMap(cloud => this._cloudService.getPlacementZones(cloud.slug, cloud.region_name))
-                                    .do(placement => { this.placementHelp = 'In which placement zone would you like to launch this'
-                                                         + ' appliance?'; },
-                                          error => { this.errorMessage = <any>error; });
-        this.vmTypeObs = cloudObs.do(cloud => { this.vmTypeHelp = 'Retrieving instance types...'; })
-                                       .switchMap(cloud => this._cloudService.getVmTypes(cloud.slug))
-                                       .do(vmTypes => { this.vmTypeHelp = 'What type of virtual hardware would you like to use?';
-                                                        // Keep the two values synchronised between vmTypeCtrl and vmTypeObjCtrl
-                                                        const currentType = vmTypes.filter(vmType => vmType.name === this.vmTypeCtrl.value);
-                                                        this.vmTypeObjCtrl.patchValue(currentType ? currentType[0] : null); },
-                                           error => { this.errorMessage = <any>error; });
-        this.keypairObs = cloudObs.do(cloud => { this.keypairsHelp = 'Retrieving keypairs...'; })
-                                  .switchMap(cloud => this._cloudService.getKeyPairs(cloud.slug))
-                                  .do(kp => { this.keypairsHelp = 'Which keypair would you like to use for this Virtual Machine?'; },
-                                      error => { this.errorMessage = <any>error; });
-        this.networkObs = cloudObs.do(cloud => { this.networksHelp = 'Retrieving list of networks...';
+        this.placementObs = cloudObs.pipe(
+                                    tap(cloud => { this.placementHelp = 'Retrieving placement options...'; }),
+                                    switchMap(cloud => this._cloudService.getPlacementZones(cloud.slug, cloud.region_name)),
+                                    tap(placement => { this.placementHelp = 'In which placement zone would you like to launch this'
+                                                       + ' appliance?'; },
+                                        error => { this.errorMessage = <any>error; }));
+        this.vmTypeObs = cloudObs.pipe(
+                                tap(cloud => { this.vmTypeHelp = 'Retrieving instance types...'; }),
+                                switchMap(cloud => this._cloudService.getVmTypes(cloud.slug)),
+                                tap(vmTypes => { this.vmTypeHelp = 'What type of virtual hardware would you like to use?';
+                                                 // Keep the two values synchronised between vmTypeCtrl and vmTypeObjCtrl
+                                                 const currentType = vmTypes.filter(vmType => vmType.name === this.vmTypeCtrl.value);
+                                                 this.vmTypeObjCtrl.patchValue(currentType ? currentType[0] : null); },
+                                    error => { this.errorMessage = <any>error; }));
+        this.keypairObs = cloudObs.pipe(
+                                tap(cloud => { this.keypairsHelp = 'Retrieving keypairs...'; }),
+                                switchMap(cloud => this._cloudService.getKeyPairs(cloud.slug)),
+                                tap(kp => { this.keypairsHelp = 'Which keypair would you like to use for this Virtual Machine?'; },
+                                   error => { this.errorMessage = <any>error; }));
+        this.networkObs = cloudObs.pipe(
+                                  tap(cloud => { this.networksHelp = 'Retrieving list of networks...';
                                                  this.subnetsHelp = 'Before choosing a subnet, select a network first.';
                                                  this.gatewayHelp = 'Before choosing a gateway, select a network first.';
-                                                 this.staticIPHelp = 'Before selecting a floating IP, select a network and a gateway.'; })
-                                  .switchMap(cloud => this._cloudService.getNetworks(cloud.slug))
-                                  .do(net => { this.networksHelp = 'In which network would you like to place this Virtual Machine?'; },
-                                      error => { this.errorMessage = <any>error; });
+                                                 this.staticIPHelp = 'Before selecting a floating IP, select a network and a gateway.'; }),
+                                  switchMap(cloud => this._cloudService.getNetworks(cloud.slug)),
+                                  tap(net => { this.networksHelp = 'In which network would you like to place this Virtual Machine?'; },
+                                      error => { this.errorMessage = <any>error; }));
         // Properties dependent on network
-        const networkObs = this.networkCtrl.valueChanges
-            .do(network => {this.subnetsHelp = 'Retrieving list of subnets...';
-                            this.gatewayHelp = 'Retrieving internet gateways...';
-                            this.subnetCtrl.patchValue(null); })
-            .shareReplay(1);
-        this.subnetObs = Observable.combineLatest(cloudObs, networkObs)
-                                   .switchMap(([cloud, net_id]) => this._cloudService.getSubNets(cloud.slug, net_id))
-                                   .do(subnet => { this.subnetsHelp = 'In which subnet would you like to place this Virtual Machine?'; },
-                                       error => { this.errorMessage = <any>error; });
-        this.gatewayObs = Observable.combineLatest(cloudObs, networkObs)
-            .switchMap(([cloud, net_id]) => this._cloudService.getGateways(cloud.slug, net_id))
-            .do(gateway => { this.gatewayHelp = 'Which internet gateway would you like to use for internet connectivity?';
-                             this.staticIPHelp = 'Select internet gateway first.'; },
-            error => { this.errorMessage = <any>error; });
+        const networkObs = this.networkCtrl.valueChanges.pipe(
+                                tap(network => { this.subnetsHelp = 'Retrieving list of subnets...';
+                                                 this.gatewayHelp = 'Retrieving internet gateways...';
+                                                 this.subnetCtrl.patchValue(null); }),
+                                shareReplay(1));
+        this.subnetObs = combineLatest(cloudObs, networkObs).pipe(
+                                   switchMap(([cloud, net_id]) => this._cloudService.getSubNets(cloud.slug, net_id)),
+                                   tap(subnet => { this.subnetsHelp = 'In which subnet would you like to place this Virtual Machine?'; },
+                                      error => { this.errorMessage = <any>error; }));
+        this.gatewayObs = combineLatest(cloudObs, networkObs).pipe(
+                            switchMap(([cloud, net_id]) => this._cloudService.getGateways(cloud.slug, net_id)),
+                            tap(gateway => { this.gatewayHelp = 'Which internet gateway would you like to use for internet connectivity?';
+                                             this.staticIPHelp = 'Select internet gateway first.'; },
+                                error => { this.errorMessage = <any>error; }));
 
         // Properties dependent on gateways
-        const gatewayObs = this.gatewayCtrl.valueChanges
-            .do(gateway => {this.staticIPHelp = 'Retrieving static IPs...'; })
-            .shareReplay(1);
-        this.staticIpObs = Observable.combineLatest(cloudObs, networkObs, gatewayObs)
-                                     .switchMap(([cloud, net_id, gateway_id]) => this._cloudService.getStaticIPs(
-                                         cloud.slug, net_id, gateway_id))
-                                     .do(staticIP => { this.staticIPHelp = 'Which static IP would you like to attach to your appliance?'; },
-                                        error => { this.errorMessage = <any>error; });
+        const gatewayObs = this.gatewayCtrl.valueChanges.pipe(
+                            tap(gateway => {this.staticIPHelp = 'Retrieving static IPs...'; }),
+                            shareReplay(1));
+        this.staticIpObs = combineLatest(cloudObs, networkObs, gatewayObs).pipe(
+                                     switchMap(([cloud, net_id, gateway_id]) => this._cloudService.getStaticIPs(
+                                             cloud.slug, net_id, gateway_id)),
+                                     tap(staticIP => { this.staticIPHelp = 'Which static IP would you like to attach to your appliance?'; },
+                                         error => { this.errorMessage = <any>error; }));
 
         // Properties dependent on storage type
         this.storageSubscription = this.rootStorageTypeCtrl.valueChanges.subscribe(

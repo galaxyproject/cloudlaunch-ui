@@ -5,10 +5,8 @@ import {
     FormControl,
     Validators,
     FormGroupDirective } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable, forkJoin } from 'rxjs';
 import { debounceTime, switchMap, distinctUntilChanged } from 'rxjs/operators';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/distinctUntilChanged';
 
 import { BasePluginComponent } from '../base-plugin.component';
 import { AppSettings } from '../../../app.settings';
@@ -50,11 +48,11 @@ export class DockerConfigComponent extends BasePluginComponent {
             'repo_name': ['', Validators.required],
             'docker_file': ['']
         });
-        this.searchTerm.valueChanges
-            .debounceTime(300)
-            .distinctUntilChanged()
-            .switchMap(term => this.onDockerSearch(term))
-            .subscribe(
+        this.searchTerm.valueChanges.pipe(
+                    debounceTime(300),
+                    distinctUntilChanged(),
+                    switchMap(term => this.onDockerSearch(term)))
+                .subscribe(
                     data => { this.fetchInProgress = false; this.searchResults = data; },
                     error => { this.fetchInProgress = false; console.log(error); });
     }
@@ -76,14 +74,14 @@ export class DockerConfigComponent extends BasePluginComponent {
         this.dockerLaunchForm.reset();
         this.dockerLaunchForm.controls['repo_name'].setValue(repo.repo_name);
 
-        Observable.forkJoin(
-                this._dockerService.getRepoDetail(repo),
-                this._dockerService.getDockerFile(repo)
+        forkJoin(
+            this._dockerService.getRepoDetail(repo),
+            this._dockerService.getDockerFile(repo)
         ).subscribe(
                 data => {
                     this.fetchInProgress = false;
                     this.selectedRepoDetail = data[0];
-                    this.selectedDockerFile = data[1];
+                    this.selectedDockerFile = <string>data[1];
                 },
                 error => { this.fetchInProgress = false; console.log(error); }
         );

@@ -7,11 +7,8 @@ import {
     Validators
 } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/do';
+import { Observable, Subject } from 'rxjs';
+import { startWith, switchMap, tap } from 'rxjs/operators';
 
 import { UserProfile } from '../../../shared/models/profile';
 import { ProfileService } from '../../../shared/services/profile.service';
@@ -41,9 +38,9 @@ export class UserProfileComponent {
             'first_name': this.first_name,
             'last_name': this.last_name,
         });
-        this.profileObs = this.profileChanged
-                          .startWith(null)
-                          .switchMap(() => this.profileService.getProfile())
-                          .do(profile => this.profileForm.patchValue(profile));
+        this.profileObs = this.profileChanged.pipe(
+                              startWith(null),
+                              switchMap(() => this.profileService.getProfile()),
+                              tap(profile => this.profileForm.patchValue(profile)));
     }
 }

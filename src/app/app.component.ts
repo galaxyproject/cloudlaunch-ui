@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd, Event as NavigationEvent } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { routerTransition } from './app.routing.animations';
 import { AppSettings } from './app.settings';
 import { LoginService } from './login/services/login/login.service';
 import { User } from './shared/models/user';
 
-import 'rxjs/add/operator/filter';
+
 
 
 @Component({
@@ -16,8 +17,8 @@ import 'rxjs/add/operator/filter';
 })
 export class AppComponent {
     constructor(private _loginService: LoginService, private router: Router) {
-        router.events
-            .filter(event => event instanceof NavigationEnd)
+        router.events.pipe(
+            filter(event => event instanceof NavigationEnd))
             .subscribe((event: NavigationEvent) => {
                 this.updateLoggedInStatus();
             });

@@ -9,8 +9,7 @@ import {
     NG_VALIDATORS,
     Validator
 } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  Subject } from 'rxjs';
 
 // models
 import { Cloud } from '../../../shared/models/cloud';

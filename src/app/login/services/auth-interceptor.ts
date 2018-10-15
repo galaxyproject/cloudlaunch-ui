@@ -7,7 +7,7 @@ import {
     HttpErrorResponse,
     HttpResponse } from '@angular/common/http';
 import { LoginService } from './login/login.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 

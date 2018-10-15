@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/mergeMap';
+import { Subscription } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
+
 
 // Services
 import { ApplicationService } from '../../../shared/services/application.service';
@@ -29,9 +30,9 @@ export class ApplianceDetailPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.routeSubscription = this._route.params
-                                .map(params => params['slug'])
-                                .mergeMap(slug => this._applicationService.getApplication(slug))
+        this.routeSubscription = this._route.params.pipe(
+                                    map(params => params['slug']),
+                                    mergeMap(slug => this._applicationService.getApplication(slug)))
                                 .subscribe(application => this.application = application);
     }
 

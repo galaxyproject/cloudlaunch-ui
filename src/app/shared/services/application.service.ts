@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
@@ -16,8 +16,8 @@ export class ApplicationService {
 
 
     public getApplications(): Observable<Application[]> {
-        return this.http.get<QueryResult<Application>>(this._application_url)
-            .map(qr => qr.results);
+        return this.http.get<QueryResult<Application>>(this._application_url).pipe(
+            map(qr => qr.results));
     }
 
     public queryApplications(filter?: string, page?: number, page_size?: number): Observable<QueryResult<Application>> {

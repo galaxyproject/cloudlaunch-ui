@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { Deployment } from '../../../shared/models/deployment';
 import { DeploymentService } from '../../../shared/services/deployment.service';

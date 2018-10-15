@@ -3,15 +3,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 import { FormControl } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { map, mergeMap, filter } from 'rxjs/operators';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/combineLatest';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/shareReplay';
+import { Observable, Subscription, combineLatest } from 'rxjs';
+import { map, mergeMap, filter, shareReplay } from 'rxjs/operators';
+
 import * as moment from 'moment';
 
 import { Deployment } from '../../../../shared/models/deployment';
@@ -58,10 +52,11 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     constructor(private deploymentService: DeploymentService,
                 private sanitizer: DomSanitizer,
                 private dialog: MatDialog) {
-        this.defaultCreds = Observable.combineLatest(this.deploymentCtrl.valueChanges.shareReplay(1),
-                                                     this.profileCtrl.valueChanges.shareReplay(1))
-                            .filter(([deployment, profile]) => !!deployment && !!profile)
-                            .mergeMap(([deployment, profile]) => this.deploymentService.getCredsForDeployment(deployment, profile));
+        this.defaultCreds = combineLatest(this.deploymentCtrl.valueChanges.pipe(shareReplay(1)),
+                                          this.profileCtrl.valueChanges.pipe(shareReplay(1)))
+                            .pipe(
+                                    filter(([deployment, profile]) => !!deployment && !!profile),
+                                    mergeMap(([deployment, profile]) => this.deploymentService.getCredsForDeployment(deployment, profile)));
     }
 
     ngOnInit() {
