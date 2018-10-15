@@ -1,0 +1,12 @@
+.mat-expansion-panel-header,
+.mat-expansion-panel-header:focus,
+.mat-expansion-panel-header:hover,
+.mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header,
+.mat-expansion-panel-header.mat-expanded:focus,
+.mat-expansion-panel-header.mat-expanded:hover {
+  background: linear-gradient(-50deg, #28c1f7 17%, #03a9f4 83%);
+}
+
+.mat-expansion-panel-header-title {
+  color: rgba(255,255,255, 0.84);
+}

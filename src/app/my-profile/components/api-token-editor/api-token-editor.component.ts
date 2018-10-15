@@ -50,7 +50,8 @@ export class ApiTokenEditorComponent implements OnInit {
   onSubmit(token: AuthToken): void {
       this.submitPending = true;
       this._profileService.createAuthToken(token)
-      .subscribe(result => { this.submitPending = false; this.authTokenChanged.next(null); },
+      .subscribe(result => { this.submitPending = false; this.authTokenChanged.next(null);
+                             this.authTokenForm.reset(); },
                  error => { this.submitPending = false; });      
   }
 
