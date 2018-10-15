@@ -1,0 +1,44 @@
+<div>
+    <form class="form" [formGroup]="authTokenForm" (ngSubmit)="onSubmit(authTokenForm.value)" autocomplete="off">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">API Tokens</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2"><p> Name </p></th>
+                            <th class="col-md-9"><p> Token</p></th>
+                            <th class="col-md-1"><p> Actions</p></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let token of authTokenObservable | async;">
+                        <td>{{ token.name }}</td>
+                        <td>{{ token.key }}</td>
+                        <td class="col-md-1">
+                            <a class="text-info" href="javascript:void(0);" (click)="deleteToken(token)" title="Delete"><i class="fa fa-remove"></i></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                            <mat-form-field>
+                                <input matInput id="id_name" name="name" type="text"
+                                    placeholder="Name for this auth token" formControlName="name" />
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-info" [disabled]="submitPending || !authTokenForm.valid">
+                                <span *ngIf="submitPending" class="fa fa-spinner fa-spin fa-fw"></span>
+                                <i *ngIf="!submitPending" class="fa fa-plus"></i> Add New Token
+                            </button>
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>

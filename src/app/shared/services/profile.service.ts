@@ -137,6 +137,16 @@ export class ProfileService {
             catchError(this.handleError));
     }
 
+    public createAuthToken(token: AuthToken): Observable<AuthToken> {
+        return this.http.post<AuthToken>(`${this._auth_token_url}`, token)
+            .pipe(catchError(this.handleError));
+    }
+
+    public deleteAuthToken(token: AuthToken): Observable<AuthToken> {
+        return this.http.delete<AuthToken>(`${this._auth_token_url}${token.id}/`)
+            .pipe(catchError(this.handleError));
+    }
+
     private handleError(err: HttpErrorResponse) {
         console.error(err);
         if (err.error instanceof Error) {

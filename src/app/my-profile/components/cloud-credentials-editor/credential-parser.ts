@@ -21,9 +21,9 @@ export class CredentialParser {
 
         Begins by matching full text of keyname, followed by optional = or : symbols,
         followed by an optional whitespace, followed by an optional capture group (1)
-        for the double quote, followed by any text other than doule-quotes. $ symbols
-        and new lines, followed by capture group (1) again if it existed (this make
-         sure that either both beginning and ending double-quotes are present, or
+        for the double quote, followed by any text other than double-quotes. $ symbols
+        and new lines, followed by capture group (1) again if it existed (this makes
+        sure that either both beginning and ending double-quotes are present, or
         none are). The value corresponding to the key will end up in match group 2.
         */
         const regex = new RegExp(key + '[=:]\\s?(")?([^"\\n\\$]+)\\1?');
