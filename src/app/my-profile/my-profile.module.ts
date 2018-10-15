@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material';
 import { MatTooltipModule } from '@angular/material';
 import { MatRadioModule } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material';
+import { MatTableModule } from '@angular/material';
 
 import { LayoutModule } from '../shared/layout.module';
 import { MyProfileRoutingModule } from './my-profile-routing.module';
@@ -31,6 +32,8 @@ import { GCECredEditorComponent } from './components/cloud-credentials-editor/gc
 
 import { CloudCredentialsSelectorComponent } from './components/cloud-credentials-selector/cloud-credentials-selector.component';
 
+import { ApiTokenEditorComponent } from './components/api-token-editor/api-token-editor.component';
+
 // Services
 import { ProfileService } from '../shared/services/profile.service';
 import { CloudService } from '../shared/services/cloud.service';
@@ -49,6 +52,7 @@ import { CloudService } from '../shared/services/cloud.service';
         MatTooltipModule,
         MatRadioModule,
         MatCheckboxModule,
+        MatTableModule,
         MyProfileRoutingModule
     ],
     declarations: [
@@ -57,7 +61,8 @@ import { CloudService } from '../shared/services/cloud.service';
         OpenStackCredViewerComponent, AWSCredViewerComponent, AzureCredViewerComponent, GCECredViewerComponent,
         CloudCredentialsEditorComponent,
         OpenStackCredEditorComponent, AWSCredEditorComponent, AzureCredEditorComponent, GCECredEditorComponent,
-        CloudCredentialsSelectorComponent
+        CloudCredentialsSelectorComponent,
+        ApiTokenEditorComponent
     ],
     exports: [CloudCredentialsViewerComponent, CloudCredentialsEditorComponent, CloudCredentialsSelectorComponent],
     providers: [CloudService, ProfileService]

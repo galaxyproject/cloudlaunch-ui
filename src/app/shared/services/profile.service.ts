@@ -5,7 +5,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { AppSettings } from '../../app.settings';
+import { QueryResult } from '../models/query';
 import { UserProfile } from '../models/profile';
+import { AuthToken } from '../models/profile';
 import { Credentials } from '../models/profile';
 import { AWSCredentials } from '../models/profile';
 import { OpenStackCredentials } from '../models/profile';
@@ -23,6 +25,7 @@ export class ProfileService {
     private _creds_url_azure = `${this._profile_url}credentials/azure/`;
     private _creds_url_gce = `${this._profile_url}credentials/gce/`;
     private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/infrastructure/clouds/`;
+    private _auth_token_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/tokens/`;
 
     constructor(private http: HttpClient) { }
 
@@ -125,6 +128,13 @@ export class ProfileService {
         return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
                                               creds, { headers: new HttpHeaders(headers) })
             .pipe(catchError(this.handleError));
+    }
+
+    public getAuthTokens(): Observable<AuthToken[]> {
+        let url = `${this._auth_token_url}`;
+        return this.http.get<QueryResult<AuthToken>>(url).pipe(
+            map(response => response.results),
+            catchError(this.handleError));
     }
 
     private handleError(err: HttpErrorResponse) {

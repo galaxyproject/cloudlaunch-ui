@@ -47,6 +47,12 @@ export class UserProfile {
     gce_creds: GCECredentials[];
 }
 
+export class AuthToken {
+    id: string;
+    name: string;
+    key: string;
+}
+
 export class CredVerificationResult {
     result: string;
     details: string;
