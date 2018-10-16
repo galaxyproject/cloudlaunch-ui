@@ -1,6 +1,6 @@
 <div>
     <form class="form" [formGroup]="authTokenForm" (ngSubmit)="onSubmit(authTokenForm.value)" autocomplete="off">
-        <mat-expansion-panel>
+        <mat-expansion-panel #tokenPanel>
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     API Tokens
@@ -10,7 +10,7 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <br />
-            <table class="table table-hover">
+            <table class="table table-hover" *ngIf="tokenPanel.expanded">
                 <thead>
                     <tr>
                         <th class="col-md-2"><p> Name </p></th>
