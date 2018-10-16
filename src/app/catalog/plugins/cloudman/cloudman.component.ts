@@ -37,7 +37,7 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
     cmClusterForm: FormGroup;
     restartClusterCtrl = new FormControl();
     clusterPasswordCtrl = new FormControl(null, Validators.required);
-    storageTypeCtrl = new FormControl('', Validators.required);
+    storageTypeCtrl = new FormControl('transient', Validators.required);
     clusterTypeCtrl = new FormControl('Galaxy');
 
     // Observables
@@ -71,7 +71,7 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
         this.cloudCtrlSubscription = this.cloudCtrl.valueChanges
                                      .subscribe(cluster => { this.showSavedClusters = false; this.restartClusterCtrl.patchValue(null); });
         this.restartCtrlSubscription = this.restartClusterCtrl.valueChanges
-                                       .subscribe(cluster => { this.storageTypeCtrl.setValue('volume'); });
+                                       .subscribe(cluster => { if (cluster) { this.storageTypeCtrl.setValue('volume'); } });
     }
 
     toggleAdvanced() {
