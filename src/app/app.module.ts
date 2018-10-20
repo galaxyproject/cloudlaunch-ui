@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
-import { NgxMdModule } from 'ngx-md';
+import { MarkdownModule } from 'ngx-markdown';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { LoginModule } from './login/login.module';
@@ -36,7 +36,7 @@ import { DockerConfigComponent } from './catalog/plugins/docker/docker.component
         }),
         AppRoutingModule,
         LoginModule,
-        NgxMdModule.forRoot(),
+        MarkdownModule.forRoot(),
         BrowserAnimationsModule,
         MyAppliancesModule,
         PluginsModule

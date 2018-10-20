@@ -33,7 +33,7 @@
     "core-js": "^2.5.4",
     "moment": "^2.19.3",
     "ngx-clipboard": "^11.1.9",
-    "ngx-md": "^6.0.9",
+    "ngx-markdown": "^6.3.0",
     "ngx-order-pipe": "^2.0.1",
     "rxjs": "^6.3.3",
     "rxjs-tslint": "^0.1.5",

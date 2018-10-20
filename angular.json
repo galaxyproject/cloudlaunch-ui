@@ -28,7 +28,8 @@
             "scripts": [
               "node_modules/moment/min/moment.min.js",
               "node_modules/bootstrap-material-design/dist/js/material.min.js",
-              "node_modules/bootstrap-material-design/dist/js/ripples.min.js"
+              "node_modules/bootstrap-material-design/dist/js/ripples.min.js",
+              "node_modules/marked/lib/marked.js"
             ]
           },
           "configurations": {

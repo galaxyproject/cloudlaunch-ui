@@ -18,7 +18,7 @@ import { CloudMan2ConfigComponent } from './cloudman2/cloudman2.component';
 import { GVLConfigComponent } from './gvl/gvl.component';
 import { DockerConfigComponent } from './docker/docker.component';
 import { DockerFileEditorComponent } from './docker/components/docker-file-editor.component';
-import { NgxMdModule } from 'ngx-md';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
     imports: [
@@ -34,7 +34,7 @@ import { NgxMdModule } from 'ngx-md';
         MatCheckboxModule,
         MatTooltipModule,
         LayoutModule,
-        NgxMdModule
+        MarkdownModule
     ],
     declarations: [UbuntuConfigComponent, CloudManConfigComponent, CloudMan2ConfigComponent,
                    GVLConfigComponent, DockerConfigComponent, DockerFileEditorComponent],
