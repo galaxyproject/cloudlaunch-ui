@@ -69,7 +69,7 @@ export class CredentialParser {
     readCredentialsFile(file: File, parserFunc: FileParserCallback,
             callback: CredentialParserCallback): void {
         const reader: FileReader = new FileReader();
-        reader.onloadend = function(e) { parserFunc(reader.result, callback); };
+        reader.onloadend = function(e) { parserFunc(reader.result as string, callback); };
         reader.onerror = function(e) { console.log(e); };
         reader.readAsText(file);
     }

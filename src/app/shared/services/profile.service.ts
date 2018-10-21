@@ -198,5 +198,11 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
                 headers['cl-gce-credentials-json'] = JSON.stringify(JSON.parse(gce_creds.credentials));
                 break;
         }
+        // Angular doesn't like empty header values, so trim empty values
+        for (var h in headers) {
+            if (!headers[h]) {
+                delete (headers[h])
+            }
+        }
     }
 }
