@@ -28,17 +28,16 @@ export class ApiTokenEditorComponent implements OnInit {
   authTokenForm: FormGroup;
   authTokenChanged = new Subject();
   authTokenObservable: Observable<AuthToken[]>;
-  
-  displayedColumns: string[] = ['name', 'key']
+
+  displayedColumns: string[] = ['name', 'key'];
   submitPending = false;
 
   constructor(
           private _profileService: ProfileService,
-          private fb: FormBuilder) {       
+          private fb: FormBuilder) {
       this.authTokenForm = fb.group({
           'name': ['', Validators.required]
-      }); 
-  
+      });
   }
 
   ngOnInit() {
@@ -52,7 +51,7 @@ export class ApiTokenEditorComponent implements OnInit {
       this._profileService.createAuthToken(token)
       .subscribe(result => { this.submitPending = false; this.authTokenChanged.next(null);
                              this.authTokenForm.reset(); },
-                 error => { this.submitPending = false; });      
+                 error => { this.submitPending = false; });
   }
 
   deleteToken(token: AuthToken) {

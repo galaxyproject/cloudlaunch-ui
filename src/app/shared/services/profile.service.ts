@@ -131,7 +131,7 @@ export class ProfileService {
     }
 
     public getAuthTokens(): Observable<AuthToken[]> {
-        let url = `${this._auth_token_url}`;
+        const url = `${this._auth_token_url}`;
         return this.http.get<QueryResult<AuthToken>>(url).pipe(
             map(response => response.results),
             catchError(this.handleError));
@@ -199,9 +199,9 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
                 break;
         }
         // Angular doesn't like empty header values, so trim empty values
-        for (var h in headers) {
+        for (const h in headers) {
             if (!headers[h]) {
-                delete (headers[h])
+                delete (headers[h]);
             }
         }
     }
