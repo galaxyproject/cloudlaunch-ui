@@ -276,7 +276,9 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         if (result.result === 'SUCCESS') {
             successCallback(creds);
         } else {
-            this.handleVerificationFailure(creds, 'The credentials you have entered are invalid.', failureCallback);
+            const message = 'The credentials you have entered could not be \
+                validated.\nERROR Details: ' + result.details;
+            this.handleVerificationFailure(creds, message, failureCallback);
         }
     }
 
