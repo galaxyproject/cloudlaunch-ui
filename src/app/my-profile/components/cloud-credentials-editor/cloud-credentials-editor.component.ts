@@ -47,6 +47,7 @@ declare type VerificationFailureCallback = (c: Credentials, error: string) => vo
 export class CloudCredentialsEditorComponent implements OnInit, ControlValueAccessor, Validator {
     allowCloudChange = true;
     errorMessage: string;
+    errorDetails: string;
     _saveIsOptional = false;
     saveIsPressed = false;
     useCredsIsPressed = false;
@@ -245,27 +246,28 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     verifyCredentials(creds: any, successCallBack: VerificationSuccessCallback,
             failureCallBack: VerificationFailureCallback) {
         this.errorMessage = null;
+        this.errorDetails = null;
         this.credVerificationInProgress = true;
         switch (this.cloud.cloud_type) {
             case 'aws':
                 this._profileService.verifyCredentialsAWS(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });
+                               error => { this.handleVerificationFailure(creds, error, "", failureCallBack); });
                 break;
             case 'openstack':
                 this._profileService.verifyCredentialsOpenStack(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });
+                               error => { this.handleVerificationFailure(creds, error, "", failureCallBack); });
                 break;
             case 'azure':
                 this._profileService.verifyCredentialsAzure(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });
+                               error => { this.handleVerificationFailure(creds, error, "", failureCallBack); });
                 break;
             case 'gce':
                 this._profileService.verifyCredentialsGCE(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, failureCallBack); });
+                               error => { this.handleVerificationFailure(creds, error, "", failureCallBack); });
                 break;
         }
     }
@@ -276,15 +278,16 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         if (result.result === 'SUCCESS') {
             successCallback(creds);
         } else {
-            const message = 'The credentials you have entered could not be \
-                validated.\nERROR Details: ' + result.details;
-            this.handleVerificationFailure(creds, message, failureCallback);
+            const message = 'The credentials you have entered could not be validated.';
+            const dets = 'ERROR Details: ' + result.details;
+            this.handleVerificationFailure(creds, message, dets, failureCallback);
         }
     }
 
-    handleVerificationFailure(creds: Credentials, error: any, failureCallback: VerificationFailureCallback) {
+    handleVerificationFailure(creds: Credentials, error: any, details: any, failureCallback: VerificationFailureCallback) {
         this.credVerificationInProgress = false;
         this.errorMessage = error;
+        this.errorDetails = details;
         failureCallback(creds, error);
     }
 
