@@ -59,7 +59,8 @@
                 placeholder="Which Azure Storage Account would you like to use?"
                 formControlName="storage_account" />
                 <mat-error *ngIf="storageAccountCtrl.hasError('required')">Storage Account is <strong>required</strong></mat-error>
-                <mat-hint>A new storage account will be created if the specified account doesn't exist. You can leave the defaults as is if you're unsure.</mat-hint>
+                <mat-hint>A new Storage Account will be created if the specified account doesn't exist. Leaving the default name is not recommended, given that the name must be
+                    unique across all existing storage account names in Azure. It must be 3 to 24 characters long, and can contain only lowercase letters and numbers.</mat-hint>
             </mat-form-field>
         </div>
         <!-- Azure VM Default User Name -->

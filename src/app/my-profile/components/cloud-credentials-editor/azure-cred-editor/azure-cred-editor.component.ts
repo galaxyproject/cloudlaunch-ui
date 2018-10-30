@@ -42,7 +42,7 @@ export class AzureCredEditorComponent implements ControlValueAccessor, Validator
     tenantCtrl: FormControl = new FormControl(null, Validators.required);
     resourceGroupCtrl: FormControl = new FormControl('cloudlaunch', Validators.required);
     storageAccountCtrl: FormControl = new FormControl('clstorage', Validators.required);
-    vmDefaultUserCtrl: FormControl = new FormControl('cluser', Validators.required);
+    vmDefaultUserCtrl: FormControl = new FormControl('ubuntu', Validators.required);
 
 
     // Begin: implementation of ControlValueAccessor
@@ -60,7 +60,7 @@ export class AzureCredEditorComponent implements ControlValueAccessor, Validator
             this.azureCredentialsForm.reset(
                 {'resource_group' : 'cloudlaunch',
                 'storage_account': 'clstorage',
-                'vm_default_username': 'cluser'});
+                'vm_default_username': 'ubuntu'});
         }
     }
 
