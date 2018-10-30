@@ -252,22 +252,22 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             case 'aws':
                 this._profileService.verifyCredentialsAWS(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, "", failureCallBack); });
+                               error => { this.handleVerificationFailure(creds, error, '', failureCallBack); });
                 break;
             case 'openstack':
                 this._profileService.verifyCredentialsOpenStack(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, "", failureCallBack); });
+                               error => { this.handleVerificationFailure(creds, error, '', failureCallBack); });
                 break;
             case 'azure':
                 this._profileService.verifyCredentialsAzure(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, "", failureCallBack); });
+                               error => { this.handleVerificationFailure(creds, error, '', failureCallBack); });
                 break;
             case 'gce':
                 this._profileService.verifyCredentialsGCE(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, "", failureCallBack); });
+                               error => { this.handleVerificationFailure(creds, error, '', failureCallBack); });
                 break;
         }
     }
