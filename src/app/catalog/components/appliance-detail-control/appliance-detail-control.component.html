@@ -62,14 +62,17 @@
                         <mat-form-field>
                             <input matInput id="id_deployment_name" type="text"
                                 placeholder="Provide a name for your deployment" formControlName="name"
-                                maxlength="63" pattern="[a-z0-9-]+"
+                                maxlength="63" pattern="^[a-z][-a-z0-9]{1,61}[a-z0-9]$"
                                 [errorStateMatcher]="showOnDirtyErrorStateMatcher" />
                             <mat-hint>A deployment name helps you identify your appliance.
                                     The name must be at most 63 characters long and can
-                                    consist of lowercase letters, numbers, and dashes.</mat-hint>
+                                    consist of lowercase letters, numbers, and dashes. It
+                                    must start with a letter and not end with a dash.</mat-hint>
                             <mat-error *ngIf="nameControl.errors && nameControl.errors.pattern">
                                 The deployment name may only consist of
-                                lowercase letters, numbers, and dashes.
+                                lowercase letters, numbers, and dashes. It must
+                                be less than 63 characters long, start
+                                with a letter, and not end with a dash.
                             </mat-error>
                             <mat-error *ngIf="nameControl.errors && nameControl.errors.maxlength">
                                 The name must be at most 63 characters long.
