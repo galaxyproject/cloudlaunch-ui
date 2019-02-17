@@ -38,7 +38,7 @@ export class DeploymentService {
         const allDepCreds = [].concat(profile.aws_creds)
                               .concat(profile.openstack_creds)
                               .concat(profile.azure_creds)
-                              .concat(profile.gce_creds)
+                              .concat(profile.gcp_creds)
                               .filter(c => c && c.cloud.slug === deployment.target_cloud);
 
         // If credentials are associated with this deployment, return that or return the first

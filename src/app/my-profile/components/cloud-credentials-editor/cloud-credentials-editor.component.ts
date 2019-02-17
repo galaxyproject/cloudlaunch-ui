@@ -15,7 +15,7 @@ import { map, mergeMap, startWith, distinctUntilChanged, shareReplay } from 'rxj
 
 // models
 import { Cloud } from '../../../shared/models/cloud';
-import { Credentials, AWSCredentials, OpenStackCredentials, AzureCredentials, GCECredentials } from '../../../shared/models/profile';
+import { Credentials, AWSCredentials, OpenStackCredentials, AzureCredentials, GCPCredentials } from '../../../shared/models/profile';
 
 // services
 import { CloudService } from '../../../shared/services/cloud.service';
@@ -66,7 +66,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     awsCredsCtrl: FormControl = new FormControl(null, Validators.required);
     openstackCredsCtrl: FormControl = new FormControl(null, Validators.required);
     azureCredsCtrl: FormControl = new FormControl(null, Validators.required);
-    gceCredsCtrl: FormControl = new FormControl(null, Validators.required);
+    gcpCredsCtrl: FormControl = new FormControl(null, Validators.required);
 
     // Observables
     filteredCloudTypes: Observable<Cloud[]>;
@@ -219,8 +219,8 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             return this.azureCredsCtrl;
         } else if (cloudType === 'openstack') {
             return this.openstackCredsCtrl;
-        } else if (cloudType === 'gce') {
-            return this.gceCredsCtrl;
+        } else if (cloudType === 'gcp') {
+            return this.gcpCredsCtrl;
         } else {
             return null;
         }
@@ -264,7 +264,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
                                error => { this.handleVerificationFailure(creds, error, '', failureCallBack); });
                 break;
-            case 'gce':
+            case 'gcp':
                 this._profileService.verifyCredentialsGCE(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
                                error => { this.handleVerificationFailure(creds, error, '', failureCallBack); });
@@ -355,8 +355,8 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
             this.azureCredsCtrl.patchValue(creds);
         } else if (creds instanceof OpenStackCredentials) {
             this.openstackCredsCtrl.patchValue(creds);
-        } else if (creds instanceof GCECredentials) {
-            this.gceCredsCtrl.patchValue(creds);
+        } else if (creds instanceof GCPCredentials) {
+            this.gcpCredsCtrl.patchValue(creds);
         }
     }
 
@@ -386,8 +386,8 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
                     this._profileService.saveCredentialsAzure(<AzureCredentials>creds)
                         .subscribe(result => this.handleCredentialsFinalised(result));
                     break;
-                case 'gce':
-                    this._profileService.saveCredentialsGCE(<GCECredentials>creds)
+                case 'gcp':
+                    this._profileService.saveCredentialsGCE(<GCPCredentials>creds)
                         .subscribe(result => this.handleCredentialsFinalised(result));
                     break;
             }
@@ -406,8 +406,8 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
                     this._profileService.createCredentialsAzure(<AzureCredentials>creds)
                         .subscribe(result => this.handleCredentialsFinalised(result));
                     break;
-                case 'gce':
-                    this._profileService.createCredentialsGCE(<GCECredentials>creds)
+                case 'gcp':
+                    this._profileService.createCredentialsGCE(<GCPCredentials>creds)
                         .subscribe(result => this.handleCredentialsFinalised(result));
                     break;
             }

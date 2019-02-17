@@ -1,7 +1,7 @@
 <div>
     <div class="panel panel-info">
         <div class="panel-heading">
-            <h3 class="panel-title">GCE Credentials</h3>
+            <h3 class="panel-title">GCP Credentials</h3>
         </div>
         <div class="panel-body">
             <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
@@ -49,7 +49,7 @@
             <button *ngIf="!editMode" type="button" class="btn btn-info" (click)="addNew()"><i class="fa fa-plus"></i> Add New Credentials </button>
 
             <div *ngIf="editMode">
-                <clui-cloud-credentials-editor cloudType="gce" [credentials]="currentObject" (credentialsChanged)="handleCredentialsChanged($event)"></clui-cloud-credentials-editor>
+                <clui-cloud-credentials-editor cloudType="gcp" [credentials]="currentObject" (credentialsChanged)="handleCredentialsChanged($event)"></clui-cloud-credentials-editor>
             </div>
         </div>
     </div>

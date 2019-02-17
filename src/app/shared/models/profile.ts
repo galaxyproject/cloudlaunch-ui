@@ -32,7 +32,7 @@ export class AzureCredentials extends Credentials {
     vm_default_username: string;
 }
 
-export class GCECredentials extends Credentials {
+export class GCPCredentials extends Credentials {
     credentials: string;
 }
 
@@ -44,7 +44,7 @@ export class UserProfile {
     aws_creds: AWSCredentials[];
     openstack_creds: OpenStackCredentials[];
     azure_creds: AzureCredentials[];
-    gce_creds: GCECredentials[];
+    gcp_creds: GCPCredentials[];
 }
 
 export class AuthToken {

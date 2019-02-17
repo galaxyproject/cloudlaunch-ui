@@ -1,25 +1,25 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 
 // models
-import { Credentials, GCECredentials } from '../../../../shared/models/profile';
+import { Credentials, GCPCredentials } from '../../../../shared/models/profile';
 
 // services
 import { ProfileService } from '../../../../shared/services/profile.service';
 
 
 @Component({
-    selector: 'clui-gce-cred-viewer',
-    templateUrl: './gce-cred-viewer.component.html'
+    selector: 'clui-gcp-cred-viewer',
+    templateUrl: './gcp-cred-viewer.component.html'
 })
-export class GCECredViewerComponent implements OnInit {
+export class GCPCredViewerComponent implements OnInit {
     @Input()
-    credentials: GCECredentials;
+    credentials: GCPCredentials;
 
     @Output()
     credentialsChanged = new EventEmitter<Credentials>();
 
     editMode = false;
-    currentObject: GCECredentials;
+    currentObject: GCPCredentials;
 
 
     constructor(private _profileService: ProfileService) {
@@ -27,7 +27,7 @@ export class GCECredViewerComponent implements OnInit {
 
     ngOnInit() {
         this.editMode = false;
-        this.currentObject = new GCECredentials();
+        this.currentObject = new GCPCredentials();
     }
 
     groupBy(list: any) {
@@ -49,10 +49,10 @@ export class GCECredViewerComponent implements OnInit {
 
     addNew() {
         this.editMode = true;
-        this.currentObject = new GCECredentials();
+        this.currentObject = new GCPCredentials();
     }
 
-    editExisting(creds: GCECredentials) {
+    editExisting(creds: GCPCredentials) {
         this.editMode = true;
         this.currentObject = creds;
     }
@@ -66,14 +66,14 @@ export class GCECredViewerComponent implements OnInit {
         return this.editMode && this.currentObject != null;
     }
 
-    deleteCreds(creds: GCECredentials) {
+    deleteCreds(creds: GCPCredentials) {
         this._profileService.deleteCredentialsGCE(creds)
             .subscribe(result => {
                 this.credentialsChanged.emit(creds);
             });
     }
 
-    handleCredentialsChanged(creds: GCECredentials) {
+    handleCredentialsChanged(creds: GCPCredentials) {
         this.editMode = false;
         this.currentObject = null;
         this.credentialsChanged.emit(creds);

@@ -12,7 +12,7 @@ import { Credentials } from '../models/profile';
 import { AWSCredentials } from '../models/profile';
 import { OpenStackCredentials } from '../models/profile';
 import { AzureCredentials } from '../models/profile';
-import { GCECredentials } from '../models/profile';
+import { GCPCredentials } from '../models/profile';
 import { CredVerificationResult } from '../models/profile';
 
 
@@ -23,7 +23,7 @@ export class ProfileService {
     private _creds_url_aws = `${this._profile_url}credentials/aws/`;
     private _creds_url_openstack = `${this._profile_url}credentials/openstack/`;
     private _creds_url_azure = `${this._profile_url}credentials/azure/`;
-    private _creds_url_gce = `${this._profile_url}credentials/gce/`;
+    private _creds_url_gcp = `${this._profile_url}credentials/gcp/`;
     private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/infrastructure/clouds/`;
     private _auth_token_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/auth/tokens/`;
 
@@ -34,7 +34,7 @@ export class ProfileService {
     }
 
     public getCredentialsForCloud(cloud_id: string): Observable<Credentials[]> {
-        const all_creds = this.getProfile().pipe(map(p => [].concat(p.aws_creds, p.openstack_creds, p.azure_creds, p.gce_creds)));
+        const all_creds = this.getProfile().pipe(map(p => [].concat(p.aws_creds, p.openstack_creds, p.azure_creds, p.gcp_creds)));
         return all_creds.pipe(map(creds => creds.filter(c => c && c.cloud.slug === cloud_id)));
     }
 
@@ -107,22 +107,22 @@ export class ProfileService {
             .pipe(catchError(this.handleError));
     }
 
-    public saveCredentialsGCE(creds: GCECredentials): Observable<GCECredentials> {
-        return this.http.put<GCECredentials>(`${this._creds_url_gce}${creds.id}/`, creds)
+    public saveCredentialsGCE(creds: GCPCredentials): Observable<GCPCredentials> {
+        return this.http.put<GCPCredentials>(`${this._creds_url_gcp}${creds.id}/`, creds)
             .pipe(catchError(this.handleError));
     }
 
-    public deleteCredentialsGCE(creds: GCECredentials): Observable<GCECredentials> {
-        return this.http.delete<GCECredentials>(`${this._creds_url_gce}${creds.id}/`)
+    public deleteCredentialsGCE(creds: GCPCredentials): Observable<GCPCredentials> {
+        return this.http.delete<GCPCredentials>(`${this._creds_url_gcp}${creds.id}/`)
             .pipe(catchError(this.handleError));
     }
 
-    public createCredentialsGCE(creds: GCECredentials): Observable<GCECredentials> {
-        return this.http.post<GCECredentials>(`${this._creds_url_gce}`, creds)
+    public createCredentialsGCE(creds: GCPCredentials): Observable<GCPCredentials> {
+        return this.http.post<GCPCredentials>(`${this._creds_url_gcp}`, creds)
             .pipe(catchError(this.handleError));
     }
 
-    public verifyCredentialsGCE(creds: GCECredentials): Observable<CredVerificationResult> {
+    public verifyCredentialsGCE(creds: GCPCredentials): Observable<CredVerificationResult> {
         const headers = {};
         addCredentialHeaders(headers, creds);
         return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.slug}/authenticate/`,
@@ -192,10 +192,10 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
                 headers['cl-azure-storage-account'] = azure_creds.storage_account;
                 headers['cl-azure-vm-default-username'] = azure_creds.vm_default_username;
                 break;
-            case 'gce':
-                const gce_creds = <GCECredentials>credentials;
+            case 'gcp':
+                const gcp_creds = <GCPCredentials>credentials;
                 // Parse then stringify credentials to remove any new lines
-                headers['cl-gce-credentials-json'] = JSON.stringify(JSON.parse(gce_creds.credentials));
+                headers['cl-gcp-credentials-json'] = JSON.stringify(JSON.parse(gcp_creds.credentials));
                 break;
         }
         // Angular doesn't like empty header values, so trim empty values
