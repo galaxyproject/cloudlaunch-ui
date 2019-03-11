@@ -94,20 +94,20 @@
           </mat-form-field>
        </div>
 
-        <!-- Placement selection -->
-        <div class="form-group full-width-container">
-            <mat-form-field>
-                <mat-select id="id_placement"
-                    [formControl]="placementCtrl">
-                    <mat-option>None</mat-option>
-                    <mat-option *ngFor="let placement of placementObs | async" [value]="placement.id">
-                        {{ placement.name }}
-                    </mat-option>
-                </mat-select>
-                <mat-placeholder><i *ngIf="placementHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>
-                    {{ placementHelp }}</mat-placeholder>
-            </mat-form-field>
-        </div>
+        <!--&lt;!&ndash; Placement selection &ndash;&gt;-->
+        <!--<div class="form-group full-width-container">-->
+            <!--<mat-form-field>-->
+                <!--<mat-select id="id_placement"-->
+                    <!--[formControl]="placementCtrl">-->
+                    <!--<mat-option>None</mat-option>-->
+                    <!--<mat-option *ngFor="let placement of placementObs | async" [value]="placement.id">-->
+                        <!--{{ placement.name }}-->
+                    <!--</mat-option>-->
+                <!--</mat-select>-->
+                <!--<mat-placeholder><i *ngIf="placementHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>-->
+                    <!--{{ placementHelp }}</mat-placeholder>-->
+            <!--</mat-form-field>-->
+        <!--</div>-->
 
         <!-- Key pair selection -->
         <div class="form-group full-width-container">
@@ -191,7 +191,7 @@
                 </mat-form-field>
           </div>
 
-        <ng-container *ngIf="cloud?.cloud_type === 'aws'" formGroupName="provider_settings">
+        <ng-container *ngIf="target?.target_zone?.cloud?.resourcetype === 'AWSCloud'" formGroupName="provider_settings">
             <!-- EBS optimized selection (AWS only) -->
             <div class="form-group full-width-container">
                 <mat-checkbox name="ebs_optimized" formControlName="ebsOptimised" matTooltip="If checked, use dedicated disk bandwidth (i.e., EBS-optimized)">

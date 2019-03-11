@@ -1,6 +1,7 @@
 import { ApplicationVersion } from './application';
 import { Credentials } from './profile';
 import { Task } from './task';
+import { PlacementZone } from "./cloud";
 
 export class Deployment {
     name: string;
@@ -10,11 +11,22 @@ export class Deployment {
     application_version: string;
     app_version_details: ApplicationVersion;
     application_config: any;
-    target_cloud: string;
+    deployment_target: DeploymentTarget;
+    // Only used during creates
+    deployment_target_id: number;
     config_app: any;
     launch_task: Task;
     latest_task: Task;
     tasks: Task[];
     archived: boolean;
-    credentials: Credentials;
+    credentials: string;
+}
+
+export class DeploymentTarget {
+    id: number;
+    resourcetype: string;
+}
+
+export class CloudDeploymentTarget extends DeploymentTarget {
+    target_zone: PlacementZone;
 }

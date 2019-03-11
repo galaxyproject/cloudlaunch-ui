@@ -9,14 +9,12 @@ import {
     NG_VALIDATORS,
     Validator
 } from '@angular/forms';
-import { Observable ,  Subject } from 'rxjs';
 
 // models
 import { Cloud } from '../../../shared/models/cloud';
 import { Credentials } from '../../../shared/models/profile';
 
 // services
-import { CloudService } from '../../../shared/services/cloud.service';
 import { ProfileService } from '../../../shared/services/profile.service';
 
 const CREDENTIALS_CONTROL_ACCESSOR = {
@@ -114,7 +112,6 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     // End: implementation of Validator interface
     constructor(
         private _profileService: ProfileService,
-        private _cloudService: CloudService,
         fb: FormBuilder) {
         this.credentialsSelectionForm = fb.group({
             'credential_type': this.credTypeCtrl,
@@ -160,7 +157,7 @@ export class CloudCredentialsSelectorComponent implements OnInit, ControlValueAc
     }
 
     retrieveStoredCredentials(cloud: Cloud, selectedCreds: Credentials) {
-        this._profileService.getCredentialsForCloud(cloud.slug)
+        this._profileService.getCredentialsForCloud(cloud.id)
             .subscribe(creds => this.handleRetrievedCredentials(creds, selectedCreds),
             error => this.errorMessage = <any>error);
     }

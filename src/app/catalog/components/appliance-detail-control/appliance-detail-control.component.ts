@@ -7,9 +7,9 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 import { AppPlaceHolderComponent } from './app-placeholder.component';
 
 // Models
-import { Application, ApplicationVersion, ApplicationVersionCloudConfig } from '../../../shared/models/application';
-import { Cloud } from '../../../shared/models/cloud';
+import { Application, ApplicationVersion, ApplicationVersionTargetConfig } from '../../../shared/models/application';
 import { Deployment } from '../../../shared/models/deployment';
+import { DeploymentTarget } from '../../../shared/models/deployment';
 import { Credentials } from '../../../shared/models/profile';
 
 // Services
@@ -41,7 +41,7 @@ export class ApplianceDetailControlComponent implements OnInit {
     appControl = new FormControl('', Validators.required);
     appVerControl = new FormControl('', Validators.required);
     credentialsControl = new FormControl('', Validators.required);
-    targetCloudControl = new FormControl('', Validators.required);
+    deploymentTargetControl = new FormControl('', Validators.required);
 
     showOnDirtyErrorStateMatcher = new ShowOnDirtyErrorStateMatcher();
 
@@ -59,13 +59,13 @@ export class ApplianceDetailControlComponent implements OnInit {
             'name': this.nameControl,
             'application': this.appControl,
             'application_version': this.appVerControl,
-            'target_cloud': this.targetCloudControl,
+            'deployment_target': this.deploymentTargetControl,
             'credentials': this.credentialsControl,
             'config_app': this.appConfigForm
         });
         this.appControl.valueChanges.subscribe(app => { this.onApplicationChange(app); });
         this.appVerControl.valueChanges.subscribe(appVer => { this.onVersionChange(appVer); });
-        this.targetCloudControl.valueChanges.subscribe(cloud => { this.onTargetCloudChange(cloud); });
+        this.deploymentTargetControl.valueChanges.subscribe(target => { this.onDeploymentTargetChange(target); });
         this.credentialsControl.valueChanges.subscribe(creds => { this.setRequestCredentials(creds); });
     }
 
@@ -79,7 +79,7 @@ export class ApplianceDetailControlComponent implements OnInit {
 
     /*
      * The fields have dependencies in the following order:
-     * Application -> Version -> Cloud -> Credentials
+     * Application -> Version -> Target -> Credentials
      */
     onApplicationChange(app: Application) {
         this.onVersionSelectById(app ? app.default_version : null);
@@ -95,33 +95,33 @@ export class ApplianceDetailControlComponent implements OnInit {
     }
 
     onVersionChange(version: ApplicationVersion) {
-        if (version && version.default_cloud) {
-            const default_cloud = this.getVersionConfigForCloud(version.default_cloud).cloud;
-            this.targetCloudControl.setValue(default_cloud);
+        if (version && version.default_target) {
+            const default_target = this.getVersionConfigForTarget(version.default_target).target;
+            this.deploymentTargetControl.setValue(default_target);
         } else {
-            this.targetCloudControl.patchValue(null);
+            this.deploymentTargetControl.patchValue(null);
         }
     }
 
-    onTargetCloudChange(cloud: Cloud) {
+    onDeploymentTargetChange(target: DeploymentTarget) {
         this.credentialsControl.patchValue(null);
     }
 
-    getCurrentAppCloudConfig(): ApplicationVersionCloudConfig {
-        const cloud = this.targetCloudControl.value;
-        if (cloud) {
-            return this.getVersionConfigForCloud(cloud.slug);
+    getCurrentAppTargetConfig(): ApplicationVersionTargetConfig {
+        const target = this.deploymentTargetControl.value;
+        if (target) {
+            return this.getVersionConfigForTarget(target.id);
         } else {
             return null;
         }
     }
 
-    getVersionConfigForCloud(slug: string): ApplicationVersionCloudConfig {
-        return this.appVerControl.value.cloud_config.filter((v: ApplicationVersionCloudConfig) => v.cloud.slug === slug)[0];
+    getVersionConfigForTarget(target_id: number): ApplicationVersionTargetConfig {
+        return this.appVerControl.value.target_config.filter((v: ApplicationVersionTargetConfig) => v.target.id === target_id)[0];
     }
 
-    getCloudsForSelectedVersion(): Cloud {
-        return this.appVerControl.value.cloud_config.map((v: ApplicationVersionCloudConfig)  => v.cloud);
+    getTargetsForSelectedVersion(): DeploymentTarget[] {
+        return this.appVerControl.value.target_config.map((v: ApplicationVersionTargetConfig)  => v.target);
     }
 
     /* Set global request credentials based on user entered data */
@@ -143,7 +143,7 @@ export class ApplianceDetailControlComponent implements OnInit {
         d.name = formValues['name'];
         d.application = formValues['application'].slug;
         d.application_version = formValues['application_version'].version;
-        d.target_cloud = formValues['target_cloud'].slug;
+        d.deployment_target_id = formValues['deployment_target'].id;
         d.config_app = formValues['config_app'];
         return d;
     }

@@ -1,19 +1,23 @@
 import { Cloud } from './cloud';
+import { DeploymentTarget } from "./deployment";
 
-export interface ApplicationVersionCloudConfig {
-    cloud: Cloud;
-    image: any;
+export interface ApplicationVersionTargetConfig {
+    target: DeploymentTarget;
     default_launch_config: any;
+}
+
+export interface ApplicationVersionCloudConfig extends ApplicationVersionTargetConfig {
+    image: any;
 }
 
 export interface ApplicationVersion {
     version: string;
     id: string;
     application: Application;
-    cloud_config: ApplicationVersionCloudConfig[];
+    target_config: ApplicationVersionTargetConfig[];
     frontend_component_path: string;
     frontend_component_name: string;
-    default_cloud: string;
+    default_target: number;
 }
 
 export interface Application {

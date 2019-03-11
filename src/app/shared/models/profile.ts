@@ -4,6 +4,7 @@ export class Credentials {
     id: string;
     name: string;
     default: boolean;
+    resourcetype: string;
     cloud: Cloud;
     cloud_id: string; // only used when saving new record
 }
@@ -32,7 +33,7 @@ export class AzureCredentials extends Credentials {
     vm_default_username: string;
 }
 
-export class GCECredentials extends Credentials {
+export class GCPCredentials extends Credentials {
     credentials: string;
 }
 
@@ -41,10 +42,7 @@ export class UserProfile {
     email: string;
     first_name: string;
     last_name: string;
-    aws_creds: AWSCredentials[];
-    openstack_creds: OpenStackCredentials[];
-    azure_creds: AzureCredentials[];
-    gce_creds: GCECredentials[];
+    credentials: Credentials[];
 }
 
 export class AuthToken {

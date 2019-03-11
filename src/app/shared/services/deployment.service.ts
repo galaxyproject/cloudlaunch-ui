@@ -7,7 +7,7 @@ import { Headers, RequestOptions } from '@angular/http';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { AppSettings } from '../../app.settings';
-import { Deployment } from '../models/deployment';
+import { CloudDeploymentTarget, Deployment } from '../models/deployment';
 import { UserProfile, Credentials } from '../models/profile';
 import { Task } from '../models/task';
 import { QueryResult } from '../models/query';
@@ -35,11 +35,7 @@ export class DeploymentService {
     }
 
     public getCredsForDeployment(deployment: Deployment, profile: UserProfile): Observable<Credentials> {
-        const allDepCreds = [].concat(profile.aws_creds)
-                              .concat(profile.openstack_creds)
-                              .concat(profile.azure_creds)
-                              .concat(profile.gce_creds)
-                              .filter(c => c && c.cloud.slug === deployment.target_cloud);
+        const allDepCreds = profile.credentials.filter(c => c && c.cloud.id === (<CloudDeploymentTarget>deployment.deployment_target).target_zone.cloud_id);
 
         // If credentials are associated with this deployment, return that or return the first
         // set of default credentials for the deployment's target cloud.
@@ -50,8 +46,8 @@ export class DeploymentService {
         }
     }
 
-    public getDeployment(slug: string): Observable<Deployment> {
-        return this.http.get<Deployment>(`${this._deployment_url}${slug}/`)
+    public getDeployment(deployment_id: string): Observable<Deployment> {
+        return this.http.get<Deployment>(`${this._deployment_url}${deployment_id}/`)
             .pipe(catchError(this.handleError));
     }
 

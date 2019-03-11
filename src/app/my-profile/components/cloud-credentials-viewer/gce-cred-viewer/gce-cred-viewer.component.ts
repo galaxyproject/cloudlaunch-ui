@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 
 // models
-import { Credentials, GCECredentials } from '../../../../shared/models/profile';
+import { Credentials, GCPCredentials } from '../../../../shared/models/profile';
 
 // services
 import { ProfileService } from '../../../../shared/services/profile.service';
@@ -13,13 +13,13 @@ import { ProfileService } from '../../../../shared/services/profile.service';
 })
 export class GCECredViewerComponent implements OnInit {
     @Input()
-    credentials: GCECredentials;
+    credentials: GCPCredentials;
 
     @Output()
     credentialsChanged = new EventEmitter<Credentials>();
 
     editMode = false;
-    currentObject: GCECredentials;
+    currentObject: GCPCredentials;
 
 
     constructor(private _profileService: ProfileService) {
@@ -27,7 +27,7 @@ export class GCECredViewerComponent implements OnInit {
 
     ngOnInit() {
         this.editMode = false;
-        this.currentObject = new GCECredentials();
+        this.currentObject = new GCPCredentials();
     }
 
     groupBy(list: any) {
@@ -35,11 +35,11 @@ export class GCECredViewerComponent implements OnInit {
         const results: any[] = [];
         if (list) {
             for (const item of list) {
-                if (item.cloud.slug in temp) {
-                    temp[item.cloud.slug].push(item);
+                if (item.cloud.id in temp) {
+                    temp[item.cloud.id].push(item);
                 } else {
-                    temp[item.cloud.slug] = [];
-                    temp[item.cloud.slug].push(item);
+                    temp[item.cloud.id] = [];
+                    temp[item.cloud.id].push(item);
                 }
             }
         }
@@ -49,10 +49,10 @@ export class GCECredViewerComponent implements OnInit {
 
     addNew() {
         this.editMode = true;
-        this.currentObject = new GCECredentials();
+        this.currentObject = new GCPCredentials();
     }
 
-    editExisting(creds: GCECredentials) {
+    editExisting(creds: GCPCredentials) {
         this.editMode = true;
         this.currentObject = creds;
     }
@@ -66,14 +66,14 @@ export class GCECredViewerComponent implements OnInit {
         return this.editMode && this.currentObject != null;
     }
 
-    deleteCreds(creds: GCECredentials) {
-        this._profileService.deleteCredentialsGCE(creds)
+    deleteCreds(creds: GCPCredentials) {
+        this._profileService.deleteCredentials(creds)
             .subscribe(result => {
                 this.credentialsChanged.emit(creds);
             });
     }
 
-    handleCredentialsChanged(creds: GCECredentials) {
+    handleCredentialsChanged(creds: GCPCredentials) {
         this.editMode = false;
         this.currentObject = null;
         this.credentialsChanged.emit(creds);

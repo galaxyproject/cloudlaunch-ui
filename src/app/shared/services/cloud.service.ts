@@ -22,80 +22,86 @@ import { QueryResult } from '../models/query';
 export class CloudService {
     constructor(private http: HttpClient) { }
 
+
+
     // TODO: This needs to be obtained from some global config
-    private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/infrastructure/clouds/`;
+    private _application_url = `${AppSettings.CLOUDLAUNCH_API_ENDPOINT}/infrastructure`;
+
+    private getZoneEndpoint(cloud_id: string, region_id: string, zone_id: string): string {
+        return `${this._application_url}/clouds/${cloud_id}/regions/${region_id}/zones/${zone_id}`
+    }
 
     public getClouds(): Observable<Cloud[]> {
-        return this.http.get<QueryResult<Cloud>>(this._application_url).pipe(
+        return this.http.get<QueryResult<Cloud>>(`${this._application_url}/clouds/`).pipe(
             map(qr => qr.results),
             catchError(this.handleError));
     }
 
-    public getCloud(slug: string): Observable<Cloud> {
-        return this.http.get<Cloud>(`${this._application_url}${slug}/`).pipe(
+    public getCloud(cloud_id: string): Observable<Cloud> {
+        return this.http.get<Cloud>(`${this._application_url}/clouds/${cloud_id}/`).pipe(
             catchError(this.handleError));
     }
 
-    public getVmTypes(slug: string): Observable<VmType[]> {
-        return this.http.get<QueryResult<VmType>>(`${this._application_url}${slug}/compute/vm_types/`)
+    public getRegions(cloud_id: string): Observable<Region[]> {
+        return this.http.get<QueryResult<Region>>(`${this._application_url}/clouds/${cloud_id}/regions/`)
             .pipe(
                     map(qr => qr.results),
                     catchError(this.handleError));
     }
 
-    public getRegions(slug: string): Observable<Region[]> {
-        return this.http.get<QueryResult<Region>>(`${this._application_url}${slug}/compute/regions/`)
-            .pipe(
-                    map(qr => qr.results),
-                    catchError(this.handleError));
-    }
-
-    public getPlacementZones(slug: string, region: string): Observable<PlacementZone[]> {
-        return this.http.get<QueryResult<PlacementZone>>(`${this._application_url}${slug}/compute/regions/${region}/zones/`)
+    public getPlacementZones(cloud_id: string, region_id: string): Observable<PlacementZone[]> {
+        return this.http.get<QueryResult<PlacementZone>>(`${this._application_url}/clouds/${cloud_id}/regions/${region_id}/zones/`)
             .pipe(
                     map(response => response.results),
                     catchError(this.handleError));
     }
 
-    public getKeyPairs(slug: string): Observable<KeyPair[]> {
-        return this.http.get<QueryResult<KeyPair>>(`${this._application_url}${slug}/security/keypairs/`)
+    public getVmTypes(cloud_id: string, region_id: string, zone_id: string): Observable<VmType[]> {
+        return this.http.get<QueryResult<VmType>>(`${this.getZoneEndpoint(cloud_id,region_id,zone_id)}/compute/vm_types/`)
             .pipe(
                     map(qr => qr.results),
                     catchError(this.handleError));
     }
 
-    public getNetworks(slug: string): Observable<Network[]> {
-        return this.http.get<QueryResult<Network>>(`${this._application_url}${slug}/networking/networks/`)
-            .pipe(
-                    map(response => response.results),
-                    catchError(this.handleError));
-    }
-
-    public getSubNets(slug: string, network_id: string): Observable<SubNet[]> {
-        return this.http.get<QueryResult<SubNet>>(`${this._application_url}${slug}/networking/networks/${network_id}/subnets/`)
+    public getKeyPairs(cloud_id: string, region_id: string, zone_id: string): Observable<KeyPair[]> {
+        return this.http.get<QueryResult<KeyPair>>(`${this.getZoneEndpoint(cloud_id,region_id,zone_id)}/security/keypairs/`)
             .pipe(
                     map(qr => qr.results),
                     catchError(this.handleError));
     }
 
-    public getGateways(slug: string, network_id: string): Observable<Gateway[]> {
-        return this.http.get<QueryResult<Gateway>>(`${this._application_url}${slug}/networking/networks/${network_id}/gateways/`)
+    public getNetworks(cloud_id: string, region_id: string, zone_id: string): Observable<Network[]> {
+        return this.http.get<QueryResult<Network>>(`${this.getZoneEndpoint(cloud_id,region_id,zone_id)}/networking/networks/`)
             .pipe(
                     map(response => response.results),
                     catchError(this.handleError));
     }
 
-    public getStaticIPs(slug: string, network_id: string, gateway_id: string): Observable<StaticIP[]> {
+    public getSubNets(cloud_id: string, region_id: string, zone_id: string, network_id: string): Observable<SubNet[]> {
+        return this.http.get<QueryResult<SubNet>>(`${this.getZoneEndpoint(cloud_id,region_id,zone_id)}/networking/networks/${network_id}/subnets/`)
+            .pipe(
+                    map(qr => qr.results),
+                    catchError(this.handleError));
+    }
+
+    public getGateways(cloud_id: string, region_id: string, zone_id: string, network_id: string): Observable<Gateway[]> {
+        return this.http.get<QueryResult<Gateway>>(`${this.getZoneEndpoint(cloud_id,region_id,zone_id)}/networking/networks/${network_id}/gateways/`)
+            .pipe(
+                    map(response => response.results),
+                    catchError(this.handleError));
+    }
+
+    public getStaticIPs(cloud_id: string, region_id: string, zone_id: string, network_id: string, gateway_id: string): Observable<StaticIP[]> {
         console.log('network_id: ' + network_id + ', gateway_id: ' + gateway_id);
         return this.http.get<QueryResult<StaticIP>>(
-                `${this._application_url}${slug}/networking/networks/${network_id}/gateways/${gateway_id}/floating_ips/`)
+                `${this.getZoneEndpoint(cloud_id,region_id,zone_id)}/networking/networks/${network_id}/gateways/${gateway_id}/floating_ips/`)
             .pipe(
                     map(qr => qr.results),
                     catchError(this.handleError));
     }
 
-    public getSavedClusters(slug: string): Observable<CloudManCluster[]> {
-        return this.http.get(`${this._application_url}${slug}/cloudman/`)
+    public getSavedClusters(cloud_id: string): Observable<CloudManCluster[]> {
+        return this.http.get(`${this._application_url}/clouds/${cloud_id}/cloudman/`)
             .pipe(
                     map(data => <CloudManCluster[]>data['saved_clusters']),
                     catchError(this.handleError));

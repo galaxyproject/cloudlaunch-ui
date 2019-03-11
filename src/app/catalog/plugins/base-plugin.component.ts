@@ -7,14 +7,12 @@ import {
     FormGroupDirective
 } from '@angular/forms';
 
-import { Cloud } from '../../shared/models/cloud';
-
 // Provides automatic initialisation of form values based on an initial Config
 // dictionary. Inheriting classes must implement the methods configName
 // and initialConfig. This class will walk through the initialConfig object,
 // setting form values as appropriate.
 export abstract class BasePluginComponent implements OnInit, OnDestroy {
-    protected cloudCtrl = new FormControl('');
+    protected targetCtrl = new FormControl('');
     private _initialConfig: any;
 
     get form(): FormGroup {
@@ -39,12 +37,12 @@ export abstract class BasePluginComponent implements OnInit, OnDestroy {
     }
 
     @Input()
-    public set cloud(value) {
-        this.cloudCtrl.patchValue(value);
+    public set target(value) {
+        this.targetCtrl.patchValue(value);
     }
 
-    public get cloud() {
-        return this.cloudCtrl.value;
+    public get target() {
+        return this.targetCtrl.value;
     }
 
     constructor(fb: FormBuilder, private parentContainer: FormGroupDirective) {

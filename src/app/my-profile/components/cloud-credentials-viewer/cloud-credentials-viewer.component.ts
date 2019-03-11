@@ -23,4 +23,9 @@ export class CloudCredentialsViewerComponent {
     handleCredentialsChanged(creds: Credentials) {
         this.credentialsChanged.emit(creds);
     }
+
+    getCredentials(resourcetype: string): Credentials[] {
+        return this.profile.credentials.filter(creds => creds.resourcetype == resourcetype)
+    }
+
 }

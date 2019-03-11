@@ -9,7 +9,7 @@
         <span class="text-muted">Version:</span> {{ deployment.app_version_details?.version }}
     </span><br />
     <span class="col-xs-12 col-md-12">
-        <span class="text-muted">Cloud:</span> {{ deployment.target_cloud }}
+        <span class="text-muted">Cloud:</span> {{ deployment.deployment_target?.target_zone?.cloud.name }}
     </span>
     <span class="col-xs-12 col-md-12" *ngIf="defaultCreds | async as credentials">
         <span class="text-muted">Credentials:</span> {{ credentials.name }}

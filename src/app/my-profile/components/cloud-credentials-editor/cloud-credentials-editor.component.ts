@@ -15,7 +15,7 @@ import { map, mergeMap, startWith, distinctUntilChanged, shareReplay } from 'rxj
 
 // models
 import { Cloud } from '../../../shared/models/cloud';
-import { Credentials, AWSCredentials, OpenStackCredentials, AzureCredentials, GCECredentials } from '../../../shared/models/profile';
+import { Credentials, AWSCredentials, OpenStackCredentials, AzureCredentials, GCPCredentials } from '../../../shared/models/profile';
 
 // services
 import { CloudService } from '../../../shared/services/cloud.service';
@@ -66,7 +66,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     awsCredsCtrl: FormControl = new FormControl(null, Validators.required);
     openstackCredsCtrl: FormControl = new FormControl(null, Validators.required);
     azureCredsCtrl: FormControl = new FormControl(null, Validators.required);
-    gceCredsCtrl: FormControl = new FormControl(null, Validators.required);
+    gcpCredsCtrl: FormControl = new FormControl(null, Validators.required);
 
     // Observables
     filteredCloudTypes: Observable<Cloud[]>;
@@ -193,12 +193,12 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     }
 
     isSameCloud(c1: Cloud, c2: Cloud): boolean {
-        return c1 && c2 && c1.slug === c2.slug;
+        return c1 && c2 && c1.id === c2.id;
     }
 
     onCloudChanged(cloud: Cloud) {
         if (cloud) {
-            this.cloudType = cloud.cloud_type;
+            this.cloudType = cloud.resourcetype;
         }
         this.saveIsPressed = false;
         this.useCredsIsPressed = false;
@@ -206,21 +206,21 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
 
     getCloudsForType(cloudType: any, cloudList: Cloud[]) {
         if (cloudType) {
-            return cloudList.filter(c => c.cloud_type === cloudType);
+            return cloudList.filter(c => c.resourcetype === cloudType);
         } else {
             return cloudList;
         }
     }
 
     getEditorFor(cloudType: string) {
-        if (cloudType === 'aws') {
+        if (cloudType === 'AWSCloud') {
             return this.awsCredsCtrl;
-        } else if (cloudType === 'azure') {
+        } else if (cloudType === 'AzureCloud') {
             return this.azureCredsCtrl;
-        } else if (cloudType === 'openstack') {
+        } else if (cloudType === 'OpenStackCloud') {
             return this.openstackCredsCtrl;
-        } else if (cloudType === 'gce') {
-            return this.gceCredsCtrl;
+        } else if (cloudType === 'GCPCloud') {
+            return this.gcpCredsCtrl;
         } else {
             return null;
         }
@@ -248,28 +248,10 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
         this.errorMessage = null;
         this.errorDetails = null;
         this.credVerificationInProgress = true;
-        switch (this.cloud.cloud_type) {
-            case 'aws':
-                this._profileService.verifyCredentialsAWS(creds)
+        creds.resourcetype = this.mapCloudTypeToCredentialsType(this.cloud.resourcetype);
+        this._profileService.verifyCredentials(creds)
                     .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
                                error => { this.handleVerificationFailure(creds, error, '', failureCallBack); });
-                break;
-            case 'openstack':
-                this._profileService.verifyCredentialsOpenStack(creds)
-                    .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, '', failureCallBack); });
-                break;
-            case 'azure':
-                this._profileService.verifyCredentialsAzure(creds)
-                    .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, '', failureCallBack); });
-                break;
-            case 'gce':
-                this._profileService.verifyCredentialsGCE(creds)
-                    .subscribe(result => { this.handleVerificationResult(creds, result, successCallBack, failureCallBack); },
-                               error => { this.handleVerificationFailure(creds, error, '', failureCallBack); });
-                break;
-        }
     }
 
     handleVerificationResult(creds: Credentials, result: any, successCallback: VerificationSuccessCallback,
@@ -341,7 +323,8 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     loadCredentialsFromFile($event: Event) {
         const file = (<HTMLInputElement>$event.target).files[0];
         if (file) {
-            const parser = new CredentialParser(this.cloudCtrl.value.cloud_type);
+            let credType = this.mapCloudTypeToCredentialsType(this.cloudCtrl.value.resourcetype);
+            const parser = new CredentialParser(credType);
             parser.loadCredentialsFromFile(
                     (<HTMLInputElement>$event.target).files[0],
                     (creds) => this.handleLoadedCredentials(creds));
@@ -349,20 +332,20 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     }
 
     handleLoadedCredentials(creds: Credentials) {
-        if (creds instanceof AWSCredentials) {
+        if (creds.resourcetype === "AWSCredentials") {
             this.awsCredsCtrl.patchValue(creds);
-        } else if (creds instanceof AzureCredentials) {
+        } else if (creds.resourcetype === "AzureCredentials") {
             this.azureCredsCtrl.patchValue(creds);
-        } else if (creds instanceof OpenStackCredentials) {
+        } else if (creds.resourcetype === "OpenStackCredentials") {
             this.openstackCredsCtrl.patchValue(creds);
-        } else if (creds instanceof GCECredentials) {
-            this.gceCredsCtrl.patchValue(creds);
+        } else if (creds.resourcetype === "GCPCredentials") {
+            this.gcpCredsCtrl.patchValue(creds);
         }
     }
 
     saveEdit() {
         const creds = <Credentials>this.credentials;
-        creds.cloud_id = creds.cloud.slug;
+        creds.cloud_id = creds.cloud.id;
         creds.default = creds.default || false;
 
         this.verifyCredentials(
@@ -371,46 +354,29 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
                 (vcreds, error) => { this.endSaveCredentials(vcreds, error); });
     }
 
+    mapCloudTypeToCredentialsType(cloudType: string) : string {
+        if (cloudType === 'AWSCloud') {
+            return "AWSCredentials";
+        } else if (cloudType === 'AzureCloud') {
+            return "AzureCredentials";
+        } else if (cloudType === 'OpenStackCloud') {
+            return "OpenStackCredentials";
+        } else if (cloudType === 'GCPCloud') {
+            return "GCPCredentials";
+        } else {
+            return null;
+        }
+    }
+
     continueSaveCredentials(creds: Credentials) {
         if (creds.id) { // Has an id, therefore, it's an existing record
-            switch (this.cloudTypeCtrl.value) {
-                case 'aws':
-                    this._profileService.saveCredentialsAWS(<AWSCredentials>creds)
-                        .subscribe(result => this.handleCredentialsFinalised(result));
-                    break;
-                case 'openstack':
-                    this._profileService.saveCredentialsOpenStack(<OpenStackCredentials>creds)
-                        .subscribe(result => this.handleCredentialsFinalised(result));
-                    break;
-                case 'azure':
-                    this._profileService.saveCredentialsAzure(<AzureCredentials>creds)
-                        .subscribe(result => this.handleCredentialsFinalised(result));
-                    break;
-                case 'gce':
-                    this._profileService.saveCredentialsGCE(<GCECredentials>creds)
-                        .subscribe(result => this.handleCredentialsFinalised(result));
-                    break;
-            }
-
+            creds.resourcetype = this.mapCloudTypeToCredentialsType(this.cloudTypeCtrl.value);
+            this._profileService.saveCredentials(<Credentials>creds)
+                .subscribe(result => this.handleCredentialsFinalised(result));
         } else { // Must be a new record
-            switch (this.cloudTypeCtrl.value) {
-                case 'aws':
-                    this._profileService.createCredentialsAWS(<AWSCredentials>creds)
+            creds.resourcetype = this.mapCloudTypeToCredentialsType(this.cloudTypeCtrl.value);
+            this._profileService.createCredentials(<Credentials>creds)
                         .subscribe(result => this.handleCredentialsFinalised(result));
-                    break;
-                case 'openstack':
-                    this._profileService.createCredentialsOpenStack(<OpenStackCredentials>creds)
-                        .subscribe(result => this.handleCredentialsFinalised(result));
-                    break;
-                case 'azure':
-                    this._profileService.createCredentialsAzure(<AzureCredentials>creds)
-                        .subscribe(result => this.handleCredentialsFinalised(result));
-                    break;
-                case 'gce':
-                    this._profileService.createCredentialsGCE(<GCECredentials>creds)
-                        .subscribe(result => this.handleCredentialsFinalised(result));
-                    break;
-            }
         }
         this.endSaveCredentials(creds, null);
     }

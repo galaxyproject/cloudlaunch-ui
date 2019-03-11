@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <mat-horizontal-stepper linear="true">
                 <mat-step [stepControl]="applianceLaunchForm.controls['credentials']">
-                    <ng-template matStepLabel>Select Target Cloud</ng-template>
+                    <ng-template matStepLabel>Select Deployment Target</ng-template>
                     <div class="form-group">
                         <div class="full-width-container">
                             <mat-form-field>
@@ -22,32 +22,36 @@
                     <div class="form-group" *ngIf="appVerControl?.value">
                         <div class="full-width-container">
                             <mat-form-field>
-                                <mat-select id="target_cloud"
-                                    placeholder="On which cloud would you like to launch your appliance?"
-                                    [formControl]="targetCloudControl">
-                                    <mat-option *ngFor="let cloud of getCloudsForSelectedVersion()" [value]="cloud">
-                                        {{ cloud.name }}
+                                <mat-select id="deployment_target"
+                                    placeholder="On which target would you like to launch your appliance?"
+                                    [formControl]="deploymentTargetControl">
+                                    <mat-option *ngFor="let target of getTargetsForSelectedVersion()" [value]="target">
+                                        cloud: {{ target.target_zone.cloud.name }}, region: {{ target.target_zone.region.name }}, zone: {{ target.target_zone.zone_id }}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
                     </div>
                     <!-- Credentials selection -->
-                    <div class="form-group" *ngIf="targetCloudControl?.value">
-                        <ng-container *ngIf="targetCloudControl.value?.access_instructions_url">
+                    <div class="form-group" *ngIf="deploymentTargetControl?.value">
+                        <ng-container *ngIf="deploymentTargetControl.value?.access_instructions_url">
                             <div class="alert alert-info">
-                                For detailed instructions on how to obtain credentials for this cloud,
-                                <a target="_blank" [href]="targetCloudControl.value.access_instructions_url" class="alert-link">
+                                For detailed instructions on how to obtain credentials for this deployment target,
+                                <a target="_blank" [href]="deploymentTargetControl.value.access_instructions_url" class="alert-link">
                                     click here.
                                 </a>
                             </div>
                         </ng-container>
                         <clui-cloud-credentials-selector id="id_cred_selector"
-                            [cloud]="targetCloudControl.value"
+                            [cloud]="deploymentTargetControl.value?.target_zone?.cloud"
                             [formControl]="credentialsControl">
                         </clui-cloud-credentials-selector>
                     </div>
 
+                    <div class="form-group" *ngIf="credentialsControl?.value">
+                    <!-- Cloud launching part of the form -->
+                        <clui-cloud-config-control [credentials]="credentialsControl?.value" [target]="deploymentTargetControl?.value" [initialConfig]="getCurrentAppTargetConfig()?.default_launch_config"></clui-cloud-config-control>
+                    </div>
                     <div>
                         <button mat-button matStepperNext class="btn btn-raised btn-info pull-right btn-lg"
                          [disabled]="!credentialsControl.value" type="button">
@@ -79,13 +83,11 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="form-group" [formGroup]="appConfigForm" *ngIf="getCurrentAppCloudConfig()?.default_launch_config">
-                        <clui-plugin-placeholder [initialConfig]="getCurrentAppCloudConfig()?.default_launch_config"
-                            [cloud]="credentialsControl.value?.cloud"
+                    <div class="form-group" [formGroup]="appConfigForm" *ngIf="getCurrentAppTargetConfig()?.default_launch_config">
+                        <clui-plugin-placeholder [initialConfig]="getCurrentAppTargetConfig()?.default_launch_config"
+                            [target]="deploymentTargetControl?.value"
                             [componentPath]="appVerControl.value.frontend_component_path"
                             [componentName]="appVerControl.value.frontend_component_name"></clui-plugin-placeholder>
-                        <!-- Cloud launching part of the form -->
-                        <clui-cloud-config-control [cloud]="credentialsControl.value?.cloud" [initialConfig]="getCurrentAppCloudConfig()?.default_launch_config"></clui-cloud-config-control>
                     </div>
 
                     <div>

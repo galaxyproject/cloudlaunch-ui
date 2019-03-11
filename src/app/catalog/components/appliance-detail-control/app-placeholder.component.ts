@@ -4,14 +4,14 @@ import { CompilerFactory } from '@angular/core';
 
 declare var System: any;
 
-import { Cloud } from '../../../shared/models/cloud';
+import { DeploymentTarget } from "../../../shared/models/deployment";
 
 @Component({
     selector: 'clui-plugin-placeholder',
     template: `<span #content></span>`
 })
 export class AppPlaceHolderComponent implements OnDestroy {
-    _cloud: Cloud;
+    _target: DeploymentTarget;
     _initialConfig: any;
     _componentPath: string;
     _componentName: string;
@@ -49,15 +49,15 @@ export class AppPlaceHolderComponent implements OnDestroy {
         }
     }
 
-    get cloud() {
-        return this._cloud;
+    get target() {
+        return this._target;
     }
 
     @Input()
-    set cloud(value) {
-        this._cloud = value;
+    set target(value) {
+        this._target = value;
         if (this._currentComponent) {
-            this._currentComponent.instance.cloud = value;
+            this._currentComponent.instance.target = value;
         }
     }
 
@@ -94,7 +94,7 @@ export class AppPlaceHolderComponent implements OnDestroy {
                 const factory = moduleWithFactories.componentFactories.find((x: any) => x.selector === componentSelector);
                 this._currentComponent = this.viewContainerRef.createComponent(factory, 0, this.viewContainerRef.injector);
                 this._currentComponent.instance.initialConfig = this.initialConfig;
-                this._currentComponent.instance.cloud = this.cloud;
+                this._currentComponent.instance.target = this.target;
             });
     }
 

@@ -18,7 +18,7 @@ import { CloudService } from '../../../shared/services/cloud.service';
     templateUrl: './cloudman.component.html',
     providers: [CloudService],
     // tslint:disable-next-line:use-input-property-decorator
-    inputs: ['cloud', 'initialConfig']
+    inputs: ['target', 'initialConfig']
 })
 
 export class CloudManConfigComponent extends BasePluginComponent implements OnDestroy {
@@ -42,7 +42,7 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
 
     // Observables
     savedClustersObservable: Observable<CloudManCluster[]>;
-    cloudCtrlSubscription: Subscription;
+    targetCtrlSubscription: Subscription;
     restartCtrlSubscription: Subscription;
 
     get form(): FormGroup {
@@ -68,7 +68,7 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
             'clusterSharedString': [null],
             'extraUserData': [null]
         });
-        this.cloudCtrlSubscription = this.cloudCtrl.valueChanges
+        this.targetCtrlSubscription = this.targetCtrl.valueChanges
                                      .subscribe(cluster => { this.showSavedClusters = false; this.restartClusterCtrl.patchValue(null); });
         this.restartCtrlSubscription = this.restartClusterCtrl.valueChanges
                                        .subscribe(cluster => { if (cluster) { this.storageTypeCtrl.setValue('volume'); } });
@@ -81,7 +81,7 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
     fetchSavedClusters() {
         this.showSavedClusters = true;
         this.savedClustersHelp = 'Retrieving saved clusters...';
-        this.savedClustersObservable = this._cloudService.getSavedClusters(this.cloud.slug)
+        this.savedClustersObservable = this._cloudService.getSavedClusters(this.target.cloud.id)
                                        .pipe(tap(clusters => { this.savedClustersHelp = 'Select a saved cluster'; },
                                                  error => { this.errorMessage = <any>error; }));
     }
@@ -90,8 +90,8 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
         if (this.restartCtrlSubscription) {
             this.restartCtrlSubscription.unsubscribe();
         }
-        if (this.cloudCtrlSubscription) {
-            this.cloudCtrlSubscription.unsubscribe();
+        if (this.targetCtrlSubscription) {
+            this.targetCtrlSubscription.unsubscribe();
         }
     }
 }

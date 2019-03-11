@@ -34,11 +34,11 @@ export class AWSCredViewerComponent implements OnInit {
         const results: any[] = [];
         if (list) {
             for (const item of list) {
-                if (item.cloud.slug in temp) {
-                    temp[item.cloud.slug].push(item);
+                if (item.cloud.id in temp) {
+                    temp[item.cloud.id].push(item);
                 } else {
-                    temp[item.cloud.slug] = [];
-                    temp[item.cloud.slug].push(item);
+                    temp[item.cloud.id] = [];
+                    temp[item.cloud.id].push(item);
                 }
             }
         }
@@ -66,7 +66,7 @@ export class AWSCredViewerComponent implements OnInit {
     }
 
     deleteCreds(creds: AWSCredentials) {
-        this._profileService.deleteCredentialsAWS(creds)
+        this._profileService.deleteCredentials(creds)
             .subscribe(result => {
                 this.credentialsChanged.emit(creds);
             });

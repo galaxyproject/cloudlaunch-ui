@@ -19,7 +19,7 @@ import { DockerService } from './services/docker_service';
     templateUrl: './docker.component.html',
     styleUrls: ['./docker.component.css'],
     // tslint:disable-next-line:use-input-property-decorator
-    inputs: ['cloud', 'initialConfig'],
+    inputs: ['target', 'initialConfig'],
     providers: [DockerService]
 })
 export class DockerConfigComponent extends BasePluginComponent {

@@ -31,7 +31,7 @@
                               <span class="text-muted">Version:</span> {{ deploy.app_version_details?.version }}
                             </span><br />
                             <span class="col-xs-12 col-md-12">
-                              <span class="text-muted">Cloud:</span> {{ deploy.target_cloud }}
+                              <span class="text-muted">Cloud:</span> {{ deploy.deployment_target?.target_zone?.cloud.name }}
                             </span>
                           </p>
                         </td>
