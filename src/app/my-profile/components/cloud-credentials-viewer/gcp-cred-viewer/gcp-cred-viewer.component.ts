@@ -8,10 +8,10 @@ import { ProfileService } from '../../../../shared/services/profile.service';
 
 
 @Component({
-    selector: 'clui-gce-cred-viewer',
-    templateUrl: './gce-cred-viewer.component.html'
+    selector: 'clui-gcp-cred-viewer',
+    templateUrl: './gcp-cred-viewer.component.html'
 })
-export class GCECredViewerComponent implements OnInit {
+export class GCPCredViewerComponent implements OnInit {
     @Input()
     credentials: GCPCredentials;
 

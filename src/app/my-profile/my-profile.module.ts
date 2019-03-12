@@ -23,13 +23,13 @@ import { CloudCredentialsViewerComponent } from './components/cloud-credentials-
 import { OpenStackCredViewerComponent } from './components/cloud-credentials-viewer/openstack-cred-viewer/openstack-cred-viewer.component';
 import { AWSCredViewerComponent } from './components/cloud-credentials-viewer/aws-cred-viewer/aws-cred-viewer.component';
 import { AzureCredViewerComponent } from './components/cloud-credentials-viewer/azure-cred-viewer/azure-cred-viewer.component';
-import { GCECredViewerComponent } from './components/cloud-credentials-viewer/gce-cred-viewer/gce-cred-viewer.component';
+import { GCPCredViewerComponent } from './components/cloud-credentials-viewer/gcp-cred-viewer/gcp-cred-viewer.component';
 
 import { CloudCredentialsEditorComponent } from './components/cloud-credentials-editor/cloud-credentials-editor.component';
 import { OpenStackCredEditorComponent } from './components/cloud-credentials-editor/openstack-cred-editor/openstack-cred-editor.component';
 import { AWSCredEditorComponent } from './components/cloud-credentials-editor/aws-cred-editor/aws-cred-editor.component';
 import { AzureCredEditorComponent } from './components/cloud-credentials-editor/azure-cred-editor/azure-cred-editor.component';
-import { GCECredEditorComponent } from './components/cloud-credentials-editor/gce-cred-editor/gce-cred-editor.component';
+import { GCPCredEditorComponent } from './components/cloud-credentials-editor/gcp-cred-editor/gcp-cred-editor.component';
 
 import { CloudCredentialsSelectorComponent } from './components/cloud-credentials-selector/cloud-credentials-selector.component';
 
@@ -60,9 +60,9 @@ import { CloudService } from '../shared/services/cloud.service';
     declarations: [
         MyProfilePageComponent, UserProfileComponent,
         CloudCredentialsViewerComponent,
-        OpenStackCredViewerComponent, AWSCredViewerComponent, AzureCredViewerComponent, GCECredViewerComponent,
+        OpenStackCredViewerComponent, AWSCredViewerComponent, AzureCredViewerComponent, GCPCredViewerComponent,
         CloudCredentialsEditorComponent,
-        OpenStackCredEditorComponent, AWSCredEditorComponent, AzureCredEditorComponent, GCECredEditorComponent,
+        OpenStackCredEditorComponent, AWSCredEditorComponent, AzureCredEditorComponent, GCPCredEditorComponent,
         CloudCredentialsSelectorComponent,
         ApiTokenEditorComponent
     ],

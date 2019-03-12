@@ -121,9 +121,9 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
                 headers['cl-azure-vm-default-username'] = azure_creds.vm_default_username;
                 break;
             case 'GCPCredentials':
-                const gce_creds = <GCPCredentials>credentials;
+                const gcp_creds = <GCPCredentials>credentials;
                 // Parse then stringify credentials to remove any new lines
-                headers['cl-gce-credentials-json'] = JSON.stringify(JSON.parse(gce_creds.credentials));
+                headers['cl-gcp-credentials-json'] = JSON.stringify(JSON.parse(gcp_creds.credentials));
                 break;
         }
         // Angular doesn't like empty header values, so trim empty values

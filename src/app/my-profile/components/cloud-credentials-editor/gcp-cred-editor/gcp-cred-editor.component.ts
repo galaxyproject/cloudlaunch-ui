@@ -13,25 +13,25 @@ import {
 } from '@angular/forms';
 
 
-const GCE_CREDENTIALS_CONTROL_ACCESSOR = {
+const GCP_CREDENTIALS_CONTROL_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => GCECredEditorComponent),
+    useExisting: forwardRef(() => GCPCredEditorComponent),
     multi: true
 };
 
-const GCE_CREDENTIALS_CONTROL_VALIDATOR = {
+const GCP_CREDENTIALS_CONTROL_VALIDATOR = {
     provide: NG_VALIDATORS,
-    useExisting: forwardRef(() => GCECredEditorComponent),
+    useExisting: forwardRef(() => GCPCredEditorComponent),
     multi: true
 };
 
 @Component({
-    selector: 'clui-gce-cred-editor',
-    templateUrl: './gce-cred-editor.component.html',
-    providers: [GCE_CREDENTIALS_CONTROL_ACCESSOR, GCE_CREDENTIALS_CONTROL_VALIDATOR]
+    selector: 'clui-gcp-cred-editor',
+    templateUrl: './gcp-cred-editor.component.html',
+    providers: [GCP_CREDENTIALS_CONTROL_ACCESSOR, GCP_CREDENTIALS_CONTROL_VALIDATOR]
 })
-export class GCECredEditorComponent implements ControlValueAccessor, Validator {
-    gceCredentialsForm: FormGroup;
+export class GCPCredEditorComponent implements ControlValueAccessor, Validator {
+    gcpCredentialsForm: FormGroup;
 
     // Form Controls
     credentials: FormControl = new FormControl(null, [Validators.required, this.jsonValidator()]);
@@ -46,9 +46,9 @@ export class GCECredEditorComponent implements ControlValueAccessor, Validator {
     // this is the initial value set to the component
     public writeValue(obj: any) {
         if (obj) {
-            this.gceCredentialsForm.patchValue(obj);
+            this.gcpCredentialsForm.patchValue(obj);
         } else {
-            this.gceCredentialsForm.reset();
+            this.gcpCredentialsForm.reset();
         }
     }
 
@@ -61,9 +61,9 @@ export class GCECredEditorComponent implements ControlValueAccessor, Validator {
 
     public setDisabledState(isDisabled: boolean): void {
         if (isDisabled) {
-            this.gceCredentialsForm.disable();
+            this.gcpCredentialsForm.disable();
         } else {
-            this.gceCredentialsForm.enable();
+            this.gcpCredentialsForm.enable();
         }
     }
     // End: implementation of ControlValueAccessor
@@ -71,19 +71,19 @@ export class GCECredEditorComponent implements ControlValueAccessor, Validator {
     // Begin: implementation of Validator interface
     public validate(c: FormControl) {
         // Delegate to form
-        if (this.gceCredentialsForm.disabled || this.gceCredentialsForm.valid) {
+        if (this.gcpCredentialsForm.disabled || this.gcpCredentialsForm.valid) {
             return null;
         } else {
-            return { 'gce_credentials': 'invalid' };
+            return { 'gcp_credentials': 'invalid' };
         }
     }
     // End: implementation of Validator interface
 
     constructor(fb: FormBuilder) {
-        this.gceCredentialsForm = fb.group({
+        this.gcpCredentialsForm = fb.group({
             'credentials': this.credentials,
         });
-        this.gceCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
+        this.gcpCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
     }
 
     private jsonValidator(): ValidatorFn {
