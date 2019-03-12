@@ -6,13 +6,11 @@ import {
     FormGroupDirective,
     Validators
 } from '@angular/forms';
-import { Observable, Subscription, combineLatest } from 'rxjs';
-import { tap, filter, shareReplay, switchMap } from 'rxjs/operators';
+import { Observable, Subscription, combineLatest, merge } from 'rxjs';
+import { map, tap, filter, shareReplay, switchMap } from 'rxjs/operators';
 
 import {
-    Cloud,
     VmType,
-    Region,
     KeyPair,
     Network,
     SubNet,
@@ -58,6 +56,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     rootStorageSizeCtrl = new FormControl('');
     vmTypeCtrl = new FormControl('', Validators.required);
     // Just a dummy UI bound ctrl for setting the primitive value to vmTypeCtrl
+    credentialsCtrl = new FormControl('');
     vmTypeObjCtrl = new FormControl('', Validators.required);
     // placementCtrl = new FormControl('');
     keypairCtrl = new FormControl('');
@@ -87,7 +86,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     @Input()
     public set credentials(creds: Credentials) {
         // Force refresh on credential change
-        this.targetCtrl.updateValueAndValidity()
+        this.credentialsCtrl.patchValue(creds);
     }
 
     constructor(fb: FormBuilder, parentContainer: FormGroupDirective,
@@ -110,10 +109,19 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
             })
         });
         // share replay ensures that subscribers who join at any time get the last emitted value immediately
-        const targetObs = this.targetCtrl.valueChanges.pipe(
+        // Also trigger this observable whenever credentials change
+        const targetObs = merge(
+            this.targetCtrl.valueChanges,
+            this.credentialsCtrl.valueChanges)
+            .pipe(
+                map(val => { return this.targetCtrl.value }),
                 tap(target => { this.onTargetChange(target); }),
-                filter(c => !!c),
+                filter(t => !!t),
                 shareReplay(1));
+        // const targetObs = this.targetCtrl.valueChanges.pipe(
+        //         tap(target => { this.onTargetChange(target); }),
+        //         filter(c => !!c),
+        //         shareReplay(1));
         // Properties dependent on cloud
         // this.placementObs = targetObs.pipe(
         //                             tap(target => { this.placementHelp = 'Retrieving placement options...'; }),

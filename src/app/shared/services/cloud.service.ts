@@ -100,8 +100,8 @@ export class CloudService {
                     catchError(this.handleError));
     }
 
-    public getSavedClusters(cloud_id: string): Observable<CloudManCluster[]> {
-        return this.http.get(`${this._application_url}/clouds/${cloud_id}/cloudman/`)
+    public getSavedClusters(cloud_id: string, region_id: string, zone_id: string): Observable<CloudManCluster[]> {
+        return this.http.get(`${this.getZoneEndpoint(cloud_id,region_id,zone_id)}/cloudman/`)
             .pipe(
                     map(data => <CloudManCluster[]>data['saved_clusters']),
                     catchError(this.handleError));

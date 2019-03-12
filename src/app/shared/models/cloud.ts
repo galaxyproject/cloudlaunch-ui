@@ -48,6 +48,8 @@ export interface OpenStackRegion extends Region {
 }
 
 export interface PlacementZone {
+    cloud: Cloud;
+    region: Region;
     cloud_id: string;
     region_id: string;
     zone_id: string;
