@@ -1,7 +1,7 @@
 import { ApplicationVersion } from './application';
 import { Credentials } from './profile';
 import { Task } from './task';
-import { PlacementZone } from "./cloud";
+import { PlacementZone } from './cloud';
 
 export class Deployment {
     name: string;

@@ -10,9 +10,9 @@ import { Observable ,  Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { BasePluginComponent } from '../base-plugin.component';
-import { Cloud, CloudManCluster } from '../../../shared/models/cloud';
+import { CloudManCluster } from '../../../shared/models/cloud';
 import { CloudService } from '../../../shared/services/cloud.service';
-import { CloudDeploymentTarget } from "../../../shared/models/deployment";
+import { CloudDeploymentTarget } from '../../../shared/models/deployment';
 
 @Component({
     selector: 'clui-cloudman-config',
@@ -82,7 +82,7 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
     fetchSavedClusters() {
         this.showSavedClusters = true;
         this.savedClustersHelp = 'Retrieving saved clusters...';
-        let zone = (<CloudDeploymentTarget>this.target).target_zone;
+        const zone = (<CloudDeploymentTarget>this.target).target_zone;
         this.savedClustersObservable = this._cloudService.getSavedClusters(zone.cloud.id, zone.region.region_id, zone.zone_id)
                                        .pipe(tap(clusters => { this.savedClustersHelp = 'Select a saved cluster'; },
                                                  error => { this.errorMessage = <any>error; }));

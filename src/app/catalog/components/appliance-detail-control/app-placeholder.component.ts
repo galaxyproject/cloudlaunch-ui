@@ -4,7 +4,7 @@ import { CompilerFactory } from '@angular/core';
 
 declare var System: any;
 
-import { DeploymentTarget } from "../../../shared/models/deployment";
+import { DeploymentTarget } from '../../../shared/models/deployment';
 
 @Component({
     selector: 'clui-plugin-placeholder',

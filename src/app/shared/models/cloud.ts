@@ -3,22 +3,18 @@ export interface Cloud {
     name: string;
     resourcetype: string;
     access_instructions_url: string;
-    regions: Region[]
+    regions: Region[];
 }
 
-export interface AWSCloud extends Cloud {
-}
+export type AWSCloud = Cloud;
 
-export interface AzureCloud extends Cloud {
-}
+export type AzureCloud = Cloud;
 
-export interface GCPCloud extends Cloud {
-}
+export type GCPCloud = Cloud;
 
 export interface OpenStackCloud extends Cloud {
     auth_url: string;
     identity_api_version: string;
-
 }
 
 export interface Region {
@@ -26,7 +22,7 @@ export interface Region {
     name: string;
     cloud: string;
     resourcetype: string;
-    zones: PlacementZone[]
+    zones: PlacementZone[];
 }
 
 export interface AWSRegion extends Region {
@@ -38,14 +34,11 @@ export interface AWSRegion extends Region {
     s3_validate_certs: boolean;
 }
 
-export interface AzureRegion extends Region {
-}
+export type AzureRegion = Region;
 
-export interface GCPRegion extends Region {
-}
+export type GCPRegion = Region;
 
-export interface OpenStackRegion extends Region {
-}
+export type OpenStackRegion = Region;
 
 export interface PlacementZone {
     cloud: Cloud;

@@ -26,7 +26,7 @@ import { Credentials } from '../../../shared/models/profile';
 // Services
 import { CloudService } from '../../../shared/services/cloud.service';
 import { validateConfig } from '@angular/router/src/config';
-import { DeploymentTarget } from "../../../shared/models/deployment";
+import { DeploymentTarget } from '../../../shared/models/deployment';
 
 
 @Component({
@@ -114,7 +114,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
             this.targetCtrl.valueChanges,
             this.credentialsCtrl.valueChanges)
             .pipe(
-                map(val => { return this.targetCtrl.value }),
+                map(val => this.targetCtrl.value),
                 tap(target => { this.onTargetChange(target); }),
                 filter(t => !!t),
                 shareReplay(1));
@@ -131,7 +131,9 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
         //                                 error => { this.errorMessage = <any>error; }));
         this.vmTypeObs = targetObs.pipe(
                                 tap(target => { this.vmTypeHelp = 'Retrieving instance types...'; }),
-                                switchMap(target => this._cloudService.getVmTypes(target.target_zone.cloud.id, target.target_zone.region.region_id, target.target_zone.zone_id)),
+                                switchMap(target =>
+                                    this._cloudService.getVmTypes(target.target_zone.cloud.id, target.target_zone.region.region_id,
+                                        target.target_zone.zone_id)),
                                 tap(vmTypes => { this.vmTypeHelp = 'What type of virtual hardware would you like to use?';
                                                  // Keep the two values synchronised between vmTypeCtrl and vmTypeObjCtrl
                                                  const currentType = vmTypes.filter(vmType => vmType.name === this.vmTypeCtrl.value);
@@ -139,15 +141,20 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
                                     error => { this.errorMessage = <any>error; }));
         this.keypairObs = targetObs.pipe(
                                 tap(target => { this.keypairsHelp = 'Retrieving keypairs...'; }),
-                                switchMap(target => this._cloudService.getKeyPairs(target.target_zone.cloud.id, target.target_zone.region.region_id, target.target_zone.zone_id)),
+                                switchMap(target =>
+                                    this._cloudService.getKeyPairs(target.target_zone.cloud.id, target.target_zone.region.region_id,
+                                        target.target_zone.zone_id)),
                                 tap(kp => { this.keypairsHelp = 'Which keypair would you like to use for this Virtual Machine?'; },
                                    error => { this.errorMessage = <any>error; }));
         this.networkObs = targetObs.pipe(
-                                  tap(target => { this.networksHelp = 'Retrieving list of networks...';
-                                                       this.subnetsHelp = 'Before choosing a subnet, select a network first.';
-                                                       this.gatewayHelp = 'Before choosing a gateway, select a network first.';
-                                                       this.staticIPHelp = 'Before selecting a floating IP, select a network and a gateway.'; }),
-                                  switchMap(target => this._cloudService.getNetworks(target.target_zone.cloud.id, target.target_zone.region.region_id, target.target_zone.zone_id)),
+                                  tap(target => {
+                                        this.networksHelp = 'Retrieving list of networks...';
+                                        this.subnetsHelp = 'Before choosing a subnet, select a network first.';
+                                        this.gatewayHelp = 'Before choosing a gateway, select a network first.';
+                                        this.staticIPHelp = 'Before selecting a floating IP, select a network and a gateway.'; }),
+                                  switchMap(target =>
+                                      this._cloudService.getNetworks(target.target_zone.cloud.id, target.target_zone.region.region_id,
+                                          target.target_zone.zone_id)),
                                   tap(net => { this.networksHelp = 'In which network would you like to place this Virtual Machine?'; },
                                       error => { this.errorMessage = <any>error; }));
         // Properties dependent on network
@@ -157,11 +164,15 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
                                                  this.subnetCtrl.patchValue(null); }),
                                 shareReplay(1));
         this.subnetObs = combineLatest(targetObs, networkObs).pipe(
-                                   switchMap(([target, net_id]) => this._cloudService.getSubNets(target.target_zone.cloud.id, target.target_zone.region.region_id, target.target_zone.zone_id, net_id)),
+                                   switchMap(([target, net_id]) =>
+                                       this._cloudService.getSubNets(target.target_zone.cloud.id, target.target_zone.region.region_id,
+                                           target.target_zone.zone_id, net_id)),
                                    tap(subnet => { this.subnetsHelp = 'In which subnet would you like to place this Virtual Machine?'; },
                                       error => { this.errorMessage = <any>error; }));
         this.gatewayObs = combineLatest(targetObs, networkObs).pipe(
-                            switchMap(([target, net_id]) => this._cloudService.getGateways(target.target_zone.cloud.id, target.target_zone.region.region_id, target.target_zone.zone_id, net_id)),
+                            switchMap(([target, net_id]) =>
+                                this._cloudService.getGateways(target.target_zone.cloud.id, target.target_zone.region.region_id,
+                                    target.target_zone.zone_id, net_id)),
                             tap(gateway => { this.gatewayHelp = 'Which internet gateway would you like to use for internet connectivity?';
                                              this.staticIPHelp = 'Select internet gateway first.'; },
                                 error => { this.errorMessage = <any>error; }));
@@ -171,8 +182,9 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
                             tap(gateway => {this.staticIPHelp = 'Retrieving static IPs...'; }),
                             shareReplay(1));
         this.staticIpObs = combineLatest(targetObs, networkObs, gatewayObs).pipe(
-                                     switchMap(([target, net_id, gateway_id]) => this._cloudService.getStaticIPs(
-                                             target.target_zone.cloud.id, target.target_zone.region.region_id, target.target_zone.zone_id, net_id, gateway_id)),
+                                     switchMap(([target, net_id, gateway_id]) =>
+                                         this._cloudService.getStaticIPs(target.target_zone.cloud.id, target.target_zone.region.region_id,
+                                             target.target_zone.zone_id, net_id, gateway_id)),
                                      tap(staticIP => { this.staticIPHelp = 'Which static IP would you like to attach to your appliance?'; },
                                          error => { this.errorMessage = <any>error; }));
 

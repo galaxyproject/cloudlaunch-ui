@@ -35,7 +35,8 @@ export class DeploymentService {
     }
 
     public getCredsForDeployment(deployment: Deployment, profile: UserProfile): Observable<Credentials> {
-        const allDepCreds = profile.credentials.filter(c => c && c.cloud.id === (<CloudDeploymentTarget>deployment.deployment_target).target_zone.cloud_id);
+        const allDepCreds = profile.credentials.filter(
+            c => c && c.cloud.id === (<CloudDeploymentTarget>deployment.deployment_target).target_zone.cloud_id);
 
         // If credentials are associated with this deployment, return that or return the first
         // set of default credentials for the deployment's target cloud.

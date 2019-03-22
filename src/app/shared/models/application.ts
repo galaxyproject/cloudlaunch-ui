@@ -1,5 +1,5 @@
 import { Cloud } from './cloud';
-import { DeploymentTarget } from "./deployment";
+import { DeploymentTarget } from './deployment';
 
 export interface ApplicationVersionTargetConfig {
     target: DeploymentTarget;

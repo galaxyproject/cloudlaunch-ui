@@ -25,7 +25,7 @@ export class CloudCredentialsViewerComponent {
     }
 
     getCredentials(resourcetype: string): Credentials[] {
-        return this.profile.credentials.filter(creds => creds.resourcetype == resourcetype)
+        return this.profile.credentials.filter(creds => creds.resourcetype === resourcetype);
     }
 
 }

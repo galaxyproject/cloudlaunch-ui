@@ -323,7 +323,7 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     loadCredentialsFromFile($event: Event) {
         const file = (<HTMLInputElement>$event.target).files[0];
         if (file) {
-            let credType = this.mapCloudTypeToCredentialsType(this.cloudCtrl.value.resourcetype);
+            const credType = this.mapCloudTypeToCredentialsType(this.cloudCtrl.value.resourcetype);
             const parser = new CredentialParser(credType);
             parser.loadCredentialsFromFile(
                     (<HTMLInputElement>$event.target).files[0],
@@ -332,13 +332,13 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     }
 
     handleLoadedCredentials(creds: Credentials) {
-        if (creds.resourcetype === "AWSCredentials") {
+        if (creds.resourcetype === 'AWSCredentials') {
             this.awsCredsCtrl.patchValue(creds);
-        } else if (creds.resourcetype === "AzureCredentials") {
+        } else if (creds.resourcetype === 'AzureCredentials') {
             this.azureCredsCtrl.patchValue(creds);
-        } else if (creds.resourcetype === "OpenStackCredentials") {
+        } else if (creds.resourcetype === 'OpenStackCredentials') {
             this.openstackCredsCtrl.patchValue(creds);
-        } else if (creds.resourcetype === "GCPCredentials") {
+        } else if (creds.resourcetype === 'GCPCredentials') {
             this.gcpCredsCtrl.patchValue(creds);
         }
     }
@@ -354,15 +354,15 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
                 (vcreds, error) => { this.endSaveCredentials(vcreds, error); });
     }
 
-    mapCloudTypeToCredentialsType(cloudType: string) : string {
+    mapCloudTypeToCredentialsType(cloudType: string): string {
         if (cloudType === 'AWSCloud') {
-            return "AWSCredentials";
+            return 'AWSCredentials';
         } else if (cloudType === 'AzureCloud') {
-            return "AzureCredentials";
+            return 'AzureCredentials';
         } else if (cloudType === 'OpenStackCloud') {
-            return "OpenStackCredentials";
+            return 'OpenStackCredentials';
         } else if (cloudType === 'GCPCloud') {
-            return "GCPCredentials";
+            return 'GCPCredentials';
         } else {
             return null;
         }
