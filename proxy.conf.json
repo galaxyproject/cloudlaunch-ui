@@ -1,9 +1,5 @@
 {
-  "/api": {
-    "target": "http://localhost:8000",
-    "secure": false
-  },
-  "/accounts": {
+  "/cloudlaunch": {
     "target": "http://localhost:8000",
     "secure": false
   }

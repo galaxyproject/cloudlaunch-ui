@@ -5,7 +5,7 @@ module.exports = {
     server: {
         "baseDir": "./dist",
         middleware: {
-            1: proxyMiddleware('/api', {
+            1: proxyMiddleware('/cloudlaunch', {
                 target: 'http://localhost:8000',
                 changeOrigin: true   // for vhosted sites, changes host header to match to target's host
             }),
