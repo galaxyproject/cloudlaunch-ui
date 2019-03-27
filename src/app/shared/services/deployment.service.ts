@@ -58,6 +58,9 @@ export class DeploymentService {
     }
 
     public updateDeployment(deployment: Deployment): Observable<Deployment> {
+        if (!deployment.deployment_target_id) {
+            deployment.deployment_target_id = deployment.deployment_target.id;
+        }
         return this.http.put<Deployment>(`${this._deployment_url}${deployment.id}/`, deployment)
             .pipe(catchError(this.handleError));
     }
