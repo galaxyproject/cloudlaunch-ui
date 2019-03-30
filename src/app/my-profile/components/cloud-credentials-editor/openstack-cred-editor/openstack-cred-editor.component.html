@@ -33,7 +33,7 @@
             </mat-form-field>
         </div>
 
-        <ng-container *ngIf="cloud?.extra_data['identity_api_version'] != 'v2.0'">
+        <ng-container *ngIf="cloud?.identity_api_version != 'v2.0'">
             <!-- Project domain name -->
             <div class="form-group full-width-container">
                 <mat-form-field>

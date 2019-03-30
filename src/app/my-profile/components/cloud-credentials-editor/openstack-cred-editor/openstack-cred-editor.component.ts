@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 
 // models
-import { Cloud } from '../../../../shared/models/cloud';
+import { OpenStackCloud } from '../../../../shared/models/cloud';
 
 
 const OPENSTACK_CREDENTIALS_CONTROL_ACCESSOR = {
@@ -35,7 +35,7 @@ export class OpenStackCredEditorComponent implements ControlValueAccessor, Valid
     openstackCredentialsForm: FormGroup;
     showPassword = false;
 
-    @Input() cloud: Cloud;
+    @Input() cloud: OpenStackCloud;
 
     // Form Controls
     usernameCtrl: FormControl = new FormControl(null, Validators.required);

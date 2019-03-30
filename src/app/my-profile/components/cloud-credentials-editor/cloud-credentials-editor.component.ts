@@ -332,13 +332,13 @@ export class CloudCredentialsEditorComponent implements OnInit, ControlValueAcce
     }
 
     handleLoadedCredentials(creds: Credentials) {
-        if (creds.resourcetype === 'AWSCredentials') {
+        if (creds instanceof AWSCredentials) {
             this.awsCredsCtrl.patchValue(creds);
-        } else if (creds.resourcetype === 'AzureCredentials') {
+        } else if (creds instanceof AzureCredentials) {
             this.azureCredsCtrl.patchValue(creds);
-        } else if (creds.resourcetype === 'OpenStackCredentials') {
+        } else if (creds instanceof OpenStackCredentials) {
             this.openstackCredsCtrl.patchValue(creds);
-        } else if (creds.resourcetype === 'GCPCredentials') {
+        } else if (creds instanceof  GCPCredentials) {
             this.gcpCredsCtrl.patchValue(creds);
         }
     }
