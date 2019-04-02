@@ -35,6 +35,7 @@ export class GCPCredEditorComponent implements ControlValueAccessor, Validator {
 
     // Form Controls
     credentials: FormControl = new FormControl(null, [Validators.required, this.jsonValidator()]);
+    vmDefaultUserCtrl: FormControl = new FormControl('ubuntu', Validators.required);
 
     // Begin: implementation of ControlValueAccessor
 
@@ -48,7 +49,7 @@ export class GCPCredEditorComponent implements ControlValueAccessor, Validator {
         if (obj) {
             this.gcpCredentialsForm.patchValue(obj);
         } else {
-            this.gcpCredentialsForm.reset();
+            this.gcpCredentialsForm.reset({'vm_default_username': 'ubuntu'});
         }
     }
 
@@ -82,6 +83,7 @@ export class GCPCredEditorComponent implements ControlValueAccessor, Validator {
     constructor(fb: FormBuilder) {
         this.gcpCredentialsForm = fb.group({
             'credentials': this.credentials,
+            'vm_default_username': this.vmDefaultUserCtrl,
         });
         this.gcpCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
     }

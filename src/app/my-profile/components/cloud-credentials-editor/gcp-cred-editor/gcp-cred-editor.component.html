@@ -9,5 +9,15 @@
                 <mat-hint>Copy your GCP credentials json file into this field, or use the upload button above.</mat-hint>
             </mat-form-field>
         </div>
+        <!-- GCP VM Default User Name -->
+        <div class="form-group full-width-container">
+            <mat-form-field>
+                <input matInput id="id_vm_default_username" type="text"
+                placeholder="Which username would you like to use as the default VM system user?"
+                formControlName="vm_default_username" />
+                <mat-error *ngIf="vmDefaultUserCtrl.hasError('required')">VM Default Username is <strong>required</strong></mat-error>
+                <mat-hint>When launching a new virtual machine, the keypair you specify at launch will be associated with this user's account and you must use this username to ssh in. You can leave the defaults as is if you're unsure.</mat-hint>
+            </mat-form-field>
+        </div>
     </div>
 </div>
