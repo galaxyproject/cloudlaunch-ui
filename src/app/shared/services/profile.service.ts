@@ -54,7 +54,7 @@ export class ProfileService {
         const headers = {};
         addCredentialHeaders(headers, creds);
         return this.http.post<CredVerificationResult>(`${this._application_url}${creds.cloud.id}/authenticate/`,
-                                                      creds, { headers: new HttpHeaders(headers) })
+            {}, { headers: new HttpHeaders(headers) })
             .pipe(catchError(this.handleError));
     }
 
