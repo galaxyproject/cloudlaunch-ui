@@ -99,31 +99,31 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
         switch (credentials.resourcetype) {
             case 'OpenStackCredentials':
                 const os_creds = <OpenStackCredentials>credentials;
-                headers['cl-os-username'] = os_creds.username;
-                headers['cl-os-password'] = os_creds.password;
-                headers['cl-os-project-name'] = os_creds.project_name;
-                headers['cl-os-project-domain-name'] = os_creds.project_domain_name;
-                headers['cl-os-user-domain-name'] = os_creds.user_domain_name;
+                headers['cl-os-username'] = os_creds.os_username;
+                headers['cl-os-password'] = os_creds.os_password;
+                headers['cl-os-project-name'] = os_creds.os_project_name;
+                headers['cl-os-project-domain-name'] = os_creds.os_project_domain_name;
+                headers['cl-os-user-domain-name'] = os_creds.os_user_domain_name;
                 break;
             case 'AWSCredentials':
                 const aws_creds = <AWSCredentials>credentials;
-                headers['cl-aws-access-key'] = aws_creds.access_key;
-                headers['cl-aws-secret-key'] = aws_creds.secret_key;
+                headers['cl-aws-access-key'] = aws_creds.aws_access_key;
+                headers['cl-aws-secret-key'] = aws_creds.aws_secret_key;
                 break;
             case 'AzureCredentials':
                 const azure_creds = <AzureCredentials>credentials;
-                headers['cl-azure-subscription-id'] = azure_creds.subscription_id;
-                headers['cl-azure-client-id'] = azure_creds.client_id;
-                headers['cl-azure-secret'] = azure_creds.secret;
-                headers['cl-azure-tenant'] = azure_creds.tenant;
-                headers['cl-azure-resource-group'] = azure_creds.resource_group;
-                headers['cl-azure-storage-account'] = azure_creds.storage_account;
-                headers['cl-azure-vm-default-username'] = azure_creds.vm_default_username;
+                headers['cl-azure-subscription-id'] = azure_creds.azure_subscription_id;
+                headers['cl-azure-client-id'] = azure_creds.azure_client_id;
+                headers['cl-azure-secret'] = azure_creds.azure_secret;
+                headers['cl-azure-tenant'] = azure_creds.azure_tenant;
+                headers['cl-azure-resource-group'] = azure_creds.azure_resource_group;
+                headers['cl-azure-storage-account'] = azure_creds.azure_storage_account;
+                headers['cl-azure-vm-default-username'] = azure_creds.azure_vm_default_username;
                 break;
             case 'GCPCredentials':
                 const gcp_creds = <GCPCredentials>credentials;
                 // Parse then stringify credentials to remove any new lines
-                headers['cl-gcp-credentials-json'] = JSON.stringify(JSON.parse(gcp_creds.credentials));
+                headers['cl-gcp-credentials-json'] = JSON.stringify(JSON.parse(gcp_creds.gcp_service_creds_dict));
                 break;
         }
         // Angular doesn't like empty header values, so trim empty values

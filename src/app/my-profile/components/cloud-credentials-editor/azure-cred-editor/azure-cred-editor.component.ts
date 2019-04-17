@@ -58,9 +58,9 @@ export class AzureCredEditorComponent implements ControlValueAccessor, Validator
             this.azureCredentialsForm.patchValue(obj);
         } else {
             this.azureCredentialsForm.reset(
-                {'resource_group' : 'cloudlaunch',
-                'storage_account': 'clstorage',
-                'vm_default_username': 'ubuntu'});
+                {'azure_resource_group' : 'cloudlaunch',
+                'azure_storage_account': 'clstorage',
+                'azure_vm_default_username': 'ubuntu'});
         }
     }
 
@@ -93,13 +93,13 @@ export class AzureCredEditorComponent implements ControlValueAccessor, Validator
 
     constructor(fb: FormBuilder) {
         this.azureCredentialsForm = fb.group({
-            'subscription_id': this.subscriptionIdCtrl,
-            'client_id': this.clientIdCtrl,
-            'secret': this.secretCtrl,
-            'tenant': this.tenantCtrl,
-            'resource_group': this.resourceGroupCtrl,
-            'storage_account': this.storageAccountCtrl,
-            'vm_default_username': this.vmDefaultUserCtrl,
+            'azure_subscription_id': this.subscriptionIdCtrl,
+            'azure_client_id': this.clientIdCtrl,
+            'azure_secret': this.secretCtrl,
+            'azure_tenant': this.tenantCtrl,
+            'azure_resource_group': this.resourceGroupCtrl,
+            'azure_storage_account': this.storageAccountCtrl,
+            'azure_vm_default_username': this.vmDefaultUserCtrl,
         });
         this.azureCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
     }

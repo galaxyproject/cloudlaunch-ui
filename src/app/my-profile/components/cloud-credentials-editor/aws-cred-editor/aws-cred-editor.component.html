@@ -6,7 +6,7 @@
             <mat-form-field>
                 <input matInput id="id_access_key" type="text"
                 placeholder="What is your Amazon Web Services access key ID?"
-                formControlName="access_key" />
+                formControlName="aws_access_key" />
                 <mat-error *ngIf="accessKeyCtrl.hasError('required')">Access key is <strong>required</strong></mat-error>
                 <mat-hint>Your AWS Access Key can be obtained by following the instructions in the link above.</mat-hint>
             </mat-form-field>
@@ -16,7 +16,7 @@
             <mat-form-field>
                 <input matInput id="id_secret_key" [type]="showPassword ? 'text' : 'password'"
                     placeholder="What is your Amazon Web Services secret key?"
-                    formControlName="secret_key" />
+                    formControlName="aws_secret_key" />
                 <mat-icon matSuffix (click)="showPassword = !showPassword" matTooltip="show/hide secret key">{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 <mat-error *ngIf="secretKeyCtrl.hasError('required')">Secret key is <strong>required</strong></mat-error>
                 <mat-hint>Your AWS Secret Key can be obtained by following the instructions in the link above.</mat-hint>

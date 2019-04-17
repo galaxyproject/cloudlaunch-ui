@@ -10,31 +10,31 @@ export class Credentials {
 }
 
 export class AWSCredentials extends Credentials {
-    access_key: string;
-    secret_key: string;
+    aws_access_key: string;
+    aws_secret_key: string;
 }
 
 export class OpenStackCredentials extends Credentials {
-    username: string;
-    password: string;
-    project_name: string;
-    project_domain_name: string;
-    user_domain_name: string;
-    identity_api_version: string;
+    os_username: string;
+    os_password: string;
+    os_project_name: string;
+    os_project_domain_name: string;
+    os_user_domain_name: string;
+    os_identity_api_version: string;
 }
 
 export class AzureCredentials extends Credentials {
-    subscription_id: string;
-    client_id: string;
-    secret: string;
-    tenant: string;
-    resource_group: string;
-    storage_account: string;
-    vm_default_username: string;
+    azure_subscription_id: string;
+    azure_client_id: string;
+    azure_secret: string;
+    azure_tenant: string;
+    azure_resource_group: string;
+    azure_storage_account: string;
+    azure_vm_default_username: string;
 }
 
 export class GCPCredentials extends Credentials {
-    credentials: string;
+    gcp_service_creds_dict: string;
 }
 
 export class UserProfile {

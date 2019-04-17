@@ -82,7 +82,7 @@ export class GCPCredEditorComponent implements ControlValueAccessor, Validator {
 
     constructor(fb: FormBuilder) {
         this.gcpCredentialsForm = fb.group({
-            'credentials': this.credentials,
+            'gcp_service_creds_dict': this.credentials,
             'vm_default_username': this.vmDefaultUserCtrl,
         });
         this.gcpCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));

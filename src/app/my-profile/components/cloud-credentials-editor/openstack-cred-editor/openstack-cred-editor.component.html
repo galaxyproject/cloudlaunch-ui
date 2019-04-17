@@ -6,7 +6,7 @@
             <mat-form-field>
                 <input matInput id="id_username" type="text"
                 placeholder="What is your OpenStack API Username?"
-                formControlName="username" />
+                formControlName="os_username" />
                 <mat-error *ngIf="usernameCtrl.hasError('required')">Access key is <strong>required</strong></mat-error>
                 <mat-hint>Your OpenStack Username can be obtained by following the instructions in the link above.</mat-hint>
             </mat-form-field>
@@ -16,7 +16,7 @@
             <mat-form-field>
                 <input matInput id="id_password" [type]="showPassword ? 'text' : 'password'"
                     placeholder="What is your OpenStack API Password?"
-                    formControlName="password" />
+                    formControlName="os_password" />
                 <mat-icon matSuffix (click)="showPassword = !showPassword" matTooltip="show/hide password">{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 <mat-error *ngIf="passwordCtrl.hasError('required')">Password is <strong>required</strong></mat-error>
                 <mat-hint>Your OpenStack Password can be obtained by following the instructions in the link above.</mat-hint>
@@ -27,7 +27,7 @@
             <mat-form-field>
                 <input matInput id="id_project_name" type="text"
                 placeholder="Which OpenStack Project/Tenancy do you want to deploy into?"
-                formControlName="project_name" />
+                formControlName="os_project_name" />
                 <mat-error *ngIf="projectNameCtrl.hasError('required')">Project name is <strong>required</strong></mat-error>
                 <mat-hint>You must provide the OpenStack Project or Tenancy Name here, not the id. Any appliance you launch will be created within this project.</mat-hint>
             </mat-form-field>
@@ -39,7 +39,7 @@
                 <mat-form-field>
                     <input matInput id="id_project_domain_name" type="text"
                     placeholder="What is your OpenStack Project Domain Name?"
-                    formControlName="project_domain_name" />
+                    formControlName="os_project_domain_name" />
                     <mat-hint>Your OpenStack Project Domain Name (required to access some OpenStack clouds).</mat-hint>
                 </mat-form-field>
             </div>
@@ -48,7 +48,7 @@
                 <mat-form-field>
                     <input matInput id="id_user_domain_name" type="text"
                     placeholder="What is your OpenStack User Domain Name?"
-                    formControlName="user_domain_name" />
+                    formControlName="os_user_domain_name" />
                     <mat-hint>Your OpenStack User Domain Name (required to access some OpenStack clouds).</mat-hint>
                 </mat-form-field>
             </div>

@@ -76,12 +76,12 @@ export class CredentialParser {
 
     parseOpenstackCreds(content: string, callback: CredentialParserCallback) {
         const creds = new OpenStackCredentials();
-        creds.project_name = CredentialParser.extractValueByKey('OS_PROJECT_NAME', content) ||
+        creds.os_project_name = CredentialParser.extractValueByKey('OS_PROJECT_NAME', content) ||
                             CredentialParser.extractValueByKey('OS_TENANT_NAME', content);
-        creds.username = CredentialParser.extractValueByKey('OS_USERNAME', content);
-        creds.password = CredentialParser.extractValueByKey('OS_PASSWORD', content);
-        creds.user_domain_name = CredentialParser.extractValueByKey('OS_USER_DOMAIN_NAME', content);
-        creds.project_domain_name = CredentialParser.extractValueByKey('OS_PROJECT_DOMAIN_NAME', content) ||
+        creds.os_username = CredentialParser.extractValueByKey('OS_USERNAME', content);
+        creds.os_password = CredentialParser.extractValueByKey('OS_PASSWORD', content);
+        creds.os_user_domain_name = CredentialParser.extractValueByKey('OS_USER_DOMAIN_NAME', content);
+        creds.os_project_domain_name = CredentialParser.extractValueByKey('OS_PROJECT_DOMAIN_NAME', content) ||
                                     CredentialParser.extractValueByKey('OS_PROJECT_DOMAIN_ID', content);
 
         callback(creds);
@@ -89,28 +89,28 @@ export class CredentialParser {
 
     parseAWSCreds(content: string, callback: CredentialParserCallback) {
         const creds = new AWSCredentials();
-        creds.access_key = CredentialParser.extractValueByKey('ACCESS_KEY', content);
-        creds.secret_key = CredentialParser.extractValueByKey('SECRET_KEY', content);
+        creds.aws_access_key = CredentialParser.extractValueByKey('ACCESS_KEY', content);
+        creds.aws_secret_key = CredentialParser.extractValueByKey('SECRET_KEY', content);
 
         callback(creds);
     }
 
     parseAzureCreds(content: string, callback: CredentialParserCallback) {
         const creds = new AzureCredentials();
-        creds.subscription_id = CredentialParser.extractValueByKey('AZURE_SUBSCRIPTION_ID', content);
-        creds.client_id = CredentialParser.extractValueByKey('AZURE_CLIENT_ID', content);
-        creds.secret = CredentialParser.extractValueByKey('AZURE_SECRET', content);
-        creds.tenant = CredentialParser.extractValueByKey('AZURE_TENANT', content);
-        creds.resource_group = CredentialParser.extractValueByKey('AZURE_RESOURCE_GROUP', content);
-        creds.storage_account = CredentialParser.extractValueByKey('AZURE_STORAGE_ACCOUNT', content);
-        creds.vm_default_username = CredentialParser.extractValueByKey('AZURE_VM_DEFAULT_USERNAME', content);
+        creds.azure_subscription_id = CredentialParser.extractValueByKey('AZURE_SUBSCRIPTION_ID', content);
+        creds.azure_client_id = CredentialParser.extractValueByKey('AZURE_CLIENT_ID', content);
+        creds.azure_secret = CredentialParser.extractValueByKey('AZURE_SECRET', content);
+        creds.azure_tenant = CredentialParser.extractValueByKey('AZURE_TENANT', content);
+        creds.azure_resource_group = CredentialParser.extractValueByKey('AZURE_RESOURCE_GROUP', content);
+        creds.azure_storage_account = CredentialParser.extractValueByKey('AZURE_STORAGE_ACCOUNT', content);
+        creds.azure_vm_default_username = CredentialParser.extractValueByKey('AZURE_VM_DEFAULT_USERNAME', content);
 
         callback(creds);
     }
 
     parseGCPCreds(content: string, callback: CredentialParserCallback) {
         const creds = new GCPCredentials();
-        creds.credentials = content;
+        creds.gcp_service_creds_dict = content;
 
         callback(creds);
     }

@@ -89,11 +89,11 @@ export class OpenStackCredEditorComponent implements ControlValueAccessor, Valid
 
     constructor(fb: FormBuilder) {
         this.openstackCredentialsForm = fb.group({
-            'username': this.usernameCtrl,
-            'password': this.passwordCtrl,
-            'project_name': this.projectNameCtrl,
-            'project_domain_name': this.projectDomainNameCtrl,
-            'user_domain_name': this.userDomainNameCtrl,
+            'os_username': this.usernameCtrl,
+            'os_password': this.passwordCtrl,
+            'os_project_name': this.projectNameCtrl,
+            'os_project_domain_name': this.projectDomainNameCtrl,
+            'os_user_domain_name': this.userDomainNameCtrl,
         });
         this.openstackCredentialsForm.valueChanges.subscribe(data => this.propagateChange(data));
     }
