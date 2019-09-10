@@ -16,7 +16,7 @@ import { DeploymentService } from '../../../../shared/services/deployment.servic
 import { MatDialog } from '@angular/material';
 import { ArchiveDeleteConfirmDlgComponent } from '../dialogs/archive-delete-confirm.component';
 
-const AUTOMATIC_HEALTH_CHECK_MINUTES = 7;
+const AUTOMATIC_HEALTH_CHECK_MINUTES = 1;
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -73,8 +73,17 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     // information was over 10 minutes ago, then automatically kick off a
     // HEALTH_CHECK task
     initializeAutomaticHealthCheck() {
+        const latest_task = this.deployment.latest_task;
+        if (latest_task.status !== 'PENDING' && latest_task.status !== 'PROGRESSING' && latest_task.action !== 'DELETE'
+        && latest_task.status !== 'DELETE') {
+            const addedMoment = moment(latest_task.added);
+            if (addedMoment.isBefore(moment().subtract(AUTOMATIC_HEALTH_CHECK_MINUTES, 'minutes'))) {
+                this.runTask(this.deployment, 'HEALTH_CHECK');
+            }
+        }
+
         return this.defaultCreds.subscribe(credentials => {
-            if (credentials) {
+            /*if (credentials) {
                 const latest_task = this.deployment.latest_task;
                 if (latest_task.status !== 'PENDING' && latest_task.status !== 'PROGRESSING' && latest_task.action !== 'DELETE') {
                     const addedMoment = moment(latest_task.added);
@@ -82,7 +91,7 @@ export class DeploymentComponent implements OnInit, OnDestroy {
                         this.runTask(this.deployment, 'HEALTH_CHECK');
                     }
                 }
-            }
+            }*/
         });
     }
 

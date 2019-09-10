@@ -32,7 +32,7 @@
     <div [ngSwitch]="deployment.latest_task?.action">
         <clui-launch-task-status *ngSwitchCase="'LAUNCH'" [task]="deployment.latest_task" hasCredentials="!!(defaultCreds | async)"></clui-launch-task-status>
         <clui-delete-task-status *ngSwitchCase="'DELETE'" [task]="deployment.latest_task"></clui-delete-task-status>
-        <clui-health-check-task-status *ngSwitchDefault [task]="deployment.latest_task"></clui-health-check-task-status>
+        <clui-health-check-task-status *ngSwitchDefault [task]="deployment.latest_task"><span>{{ initializeAutomaticHealthCheck() }} ago</span></clui-health-check-task-status>
     </div>
     <a *ngIf="deployment.latest_task?.status == 'FAILURE'" href="https://github.com/galaxyproject/cloudlaunch/issues/new" target="_blank" class="small">
         <i class="fa fa-exclamation"></i> Report this failure?
@@ -63,7 +63,7 @@
 </td>
 <td>
   <div class="btn-group" style="margin-top: 0px" role="group" aria-label="Actions">
-    <button *ngIf="defaultCreds | async as credentials" class="btn btn-secondary pill" type="button" (click)="runTask(deployment, 'HEALTH_CHECK')" [disabled]="isLatestTaskRunning()" matTooltip="Run Health Check">
+    <button *ngIf="defaultCreds" class="btn btn-secondary pill" type="button" (click)="runTask(deployment, 'HEALTH_CHECK')" [disabled]="isLatestTaskRunning()" matTooltip="Run Health Check">
         <i class="fa fa-refresh"></i>
     </button>
     <button type="button" class="btn btn-secondary pill" (click)="openArchiveConfirmDialog(deployment)" [disabled]="isLatestTaskRunning()" matTooltip="Archive/Delete">
