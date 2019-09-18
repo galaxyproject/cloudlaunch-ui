@@ -32,7 +32,7 @@
     <div [ngSwitch]="deployment.latest_task?.action">
         <clui-launch-task-status *ngSwitchCase="'LAUNCH'" [task]="deployment.latest_task" hasCredentials="!!(defaultCreds | async)"></clui-launch-task-status>
         <clui-delete-task-status *ngSwitchCase="'DELETE'" [task]="deployment.latest_task"></clui-delete-task-status>
-        <clui-health-check-task-status *ngSwitchDefault [task]="deployment.latest_task"><span>{{ initializeAutomaticHealthCheck() }} ago</span></clui-health-check-task-status>
+        <clui-health-check-task-status *ngSwitchDefault [task]="deployment.latest_task"><span>{{ initializeAutomaticHealthCheck() }}</span></clui-health-check-task-status>
     </div>
     <a *ngIf="deployment.latest_task?.status == 'FAILURE'" href="https://github.com/galaxyproject/cloudlaunch/issues/new" target="_blank" class="small">
         <i class="fa fa-exclamation"></i> Report this failure?
@@ -42,7 +42,8 @@
     <span *ngIf="deployment.latest_task?.status == 'SUCCESS' &&
                  deployment.latest_task?.action !== 'DELETE' &&
                  deployment.latest_task?.result?.instance_status !== 'unknown' &&
-                 deployment.latest_task?.result?.instance_status !== 'deleted'; else dimBlock">
+                 deployment.latest_task?.result?.instance_status !== 'deleted' &&
+                 deployment.latest_task?.result?.instance_status !== 'not_found'; else dimBlock">
         <a *ngIf="deployment.launch_task?.result?.cloudLaunch?.applicationURL?.length; else ipBlock"
          class="btn-link" href="{{ deployment.launch_task?.result?.cloudLaunch?.applicationURL }}" target="_blank">
             <span>{{ deployment.launch_task?.result?.cloudLaunch?.applicationURL }}</span>
