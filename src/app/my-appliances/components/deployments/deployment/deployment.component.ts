@@ -13,7 +13,7 @@ import { Credentials, UserProfile } from '../../../../shared/models/profile';
 import { Task } from '../../../../shared/models/task';
 import { DeploymentService } from '../../../../shared/services/deployment.service';
 
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ArchiveDeleteConfirmDlgComponent } from '../dialogs/archive-delete-confirm.component';
 
 const AUTOMATIC_HEALTH_CHECK_MINUTES = 7;

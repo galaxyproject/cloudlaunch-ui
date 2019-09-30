@@ -3,16 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { MatStepperModule } from '@angular/material';
-import { MatProgressSpinnerModule } from '@angular/material';
-import { MatPaginatorModule } from '@angular/material';
-import { MatSlideToggleModule } from '@angular/material';
-import { MatSelectModule } from '@angular/material';
-import { MatRadioModule } from '@angular/material';
-import { MatInputModule } from '@angular/material';
-import { MatCheckboxModule } from '@angular/material';
-import { MatTooltipModule } from '@angular/material';
-import { MatIconModule } from '@angular/material';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 
 import { OrderModule } from 'ngx-order-pipe';
 

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, HostListener, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 
 import { Observable, Subscription } from 'rxjs';
 import { startWith, debounceTime, switchMap } from 'rxjs/operators';

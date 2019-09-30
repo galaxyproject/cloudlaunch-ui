@@ -7,9 +7,9 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { LayoutModule } from '../shared/layout.module';
 import { MyAppliancesRoutingModule } from './my-appliances-routing.module';
 
-import { MatDialogModule } from '@angular/material';
-import { MatButtonModule } from '@angular/material';
-import { MatTooltipModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // Components
 import { DeploymentsComponent } from './components/deployments/deployments.component';
