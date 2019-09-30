@@ -2,7 +2,6 @@ import { throwError as observableThrowError,  Observable, from } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { Headers, RequestOptions } from '@angular/http';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 

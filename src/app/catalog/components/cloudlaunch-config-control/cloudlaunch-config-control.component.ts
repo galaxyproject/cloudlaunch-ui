@@ -25,7 +25,6 @@ import { Credentials } from '../../../shared/models/profile';
 
 // Services
 import { CloudService } from '../../../shared/services/cloud.service';
-import { validateConfig } from '@angular/router/src/config';
 import { DeploymentTarget } from '../../../shared/models/deployment';
 
 

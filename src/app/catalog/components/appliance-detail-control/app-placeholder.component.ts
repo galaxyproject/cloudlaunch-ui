@@ -1,5 +1,4 @@
 import { Component, ComponentRef, ViewContainerRef, ViewChild, OnDestroy, Input } from '@angular/core';
-import { ComponentFactoryResolver } from '@angular/core/src/linker/component_factory_resolver';
 import { CompilerFactory } from '@angular/core';
 
 declare var System: any;

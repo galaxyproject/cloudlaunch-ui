@@ -6,7 +6,7 @@ import {
     Validators,
     FormGroupDirective } from '@angular/forms';
 
-import { Observable ,  Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { BasePluginComponent } from '../base-plugin.component';

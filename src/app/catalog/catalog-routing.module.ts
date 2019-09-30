@@ -12,7 +12,7 @@ import { ApplianceDetailPageComponent } from './components/appliance-detail-page
 const appRoutes: Routes = [
     { path: '', component: CatalogPageComponent },
     { path: 'appliance/:slug', component: ApplianceDetailPageComponent, canActivate: [AuthGuardService] },
-    { path: 'plugins', loadChildren: 'app/catalog/plugins/plugins.module#PluginsModule' }
+    { path: 'plugins', loadChildren: () => import('app/catalog/plugins/plugins.module').then(m => m.PluginsModule) }
 ];
 
 @NgModule({
