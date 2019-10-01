@@ -42,7 +42,7 @@ export class ApiTokenEditorComponent implements OnInit {
 
   ngOnInit() {
       this.authTokenObservable = this.authTokenChanged.pipe(
-              startWith(null),
+              startWith(<string>null),
               switchMap(() => this._profileService.getAuthTokens()));
   }
 

@@ -162,13 +162,13 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
                                                  this.gatewayHelp = 'Retrieving internet gateways...';
                                                  this.subnetCtrl.patchValue(null); }),
                                 shareReplay(1));
-        this.subnetObs = combineLatest(targetObs, networkObs).pipe(
+        this.subnetObs = combineLatest([targetObs, networkObs]).pipe(
                                    switchMap(([target, net_id]) =>
                                        this._cloudService.getSubNets(target.target_zone.cloud.id, target.target_zone.region.region_id,
                                            target.target_zone.zone_id, net_id)),
                                    tap(subnet => { this.subnetsHelp = 'In which subnet would you like to place this Virtual Machine?'; },
                                       error => { this.errorMessage = <any>error; }));
-        this.gatewayObs = combineLatest(targetObs, networkObs).pipe(
+        this.gatewayObs = combineLatest([targetObs, networkObs]).pipe(
                             switchMap(([target, net_id]) =>
                                 this._cloudService.getGateways(target.target_zone.cloud.id, target.target_zone.region.region_id,
                                     target.target_zone.zone_id, net_id)),
@@ -180,7 +180,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
         const gatewayObs = this.gatewayCtrl.valueChanges.pipe(
                             tap(gateway => {this.staticIPHelp = 'Retrieving static IPs...'; }),
                             shareReplay(1));
-        this.staticIpObs = combineLatest(targetObs, networkObs, gatewayObs).pipe(
+        this.staticIpObs = combineLatest([targetObs, networkObs, gatewayObs]).pipe(
                                      switchMap(([target, net_id, gateway_id]) =>
                                          this._cloudService.getStaticIPs(target.target_zone.cloud.id, target.target_zone.region.region_id,
                                              target.target_zone.zone_id, net_id, gateway_id)),

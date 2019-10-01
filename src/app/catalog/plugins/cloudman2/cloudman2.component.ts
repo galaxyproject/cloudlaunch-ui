@@ -12,9 +12,7 @@ import { CloudService } from '../../../shared/services/cloud.service';
 @Component({
     selector: 'clui-cm2-config',
     templateUrl: './cloudman2.component.html',
-    providers: [CloudService],
-    // tslint:disable-next-line:use-input-property-decorator
-    inputs: ['cloud', 'initialConfig']
+    providers: [CloudService]
 })
 export class CloudMan2ConfigComponent extends BasePluginComponent {
 
@@ -33,6 +31,16 @@ export class CloudMan2ConfigComponent extends BasePluginComponent {
 
     get configName(): string {
         return 'config_cloudman2';
+    }
+
+    @Input()
+    public set target(value: any) {
+        super.target = value;
+    }
+
+    @Input()
+    public set initialConfig(value: any) {
+        super.initialConfig = value;
     }
 
     constructor(fb: FormBuilder, parentContainer: FormGroupDirective) {

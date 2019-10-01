@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Pages
@@ -14,4 +13,4 @@ const appRoutes: Routes = [
     imports: [RouterModule.forChild(appRoutes)],
     exports: [RouterModule]
 })
-export class AboutRoutingModule { }
+export class AboutRoutingModule {}

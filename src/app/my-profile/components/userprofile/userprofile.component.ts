@@ -39,7 +39,7 @@ export class UserProfileComponent {
             'last_name': this.last_name,
         });
         this.profileObs = this.profileChanged.pipe(
-                              startWith(null),
+                              startWith(null as string),
                               switchMap(() => this.profileService.getProfile()),
                               tap(profile => this.profileForm.patchValue(profile)));
     }

@@ -18,8 +18,6 @@ import { DockerService } from './services/docker_service';
     selector: 'clui-docker-config',
     templateUrl: './docker.component.html',
     styleUrls: ['./docker.component.css'],
-    // tslint:disable-next-line:use-input-property-decorator
-    inputs: ['target', 'initialConfig'],
     providers: [DockerService]
 })
 export class DockerConfigComponent extends BasePluginComponent {
@@ -38,6 +36,16 @@ export class DockerConfigComponent extends BasePluginComponent {
 
     get configName(): string {
         return 'config_docker';
+    }
+
+    @Input()
+    public set target(value: any) {
+        super.target = value;
+    }
+
+    @Input()
+    public set initialConfig(value: any) {
+        super.initialConfig = value;
     }
 
     constructor(fb: FormBuilder,
@@ -74,9 +82,10 @@ export class DockerConfigComponent extends BasePluginComponent {
         this.dockerLaunchForm.reset();
         this.dockerLaunchForm.controls['repo_name'].setValue(repo.repo_name);
 
-        forkJoin(
+        forkJoin([
             this._dockerService.getRepoDetail(repo),
             this._dockerService.getDockerFile(repo)
+            ]
         ).subscribe(
                 data => {
                     this.fetchInProgress = false;

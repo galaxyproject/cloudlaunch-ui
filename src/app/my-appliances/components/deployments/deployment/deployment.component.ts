@@ -52,11 +52,13 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     constructor(private deploymentService: DeploymentService,
                 private sanitizer: DomSanitizer,
                 private dialog: MatDialog) {
-        this.defaultCreds = combineLatest(this.deploymentCtrl.valueChanges.pipe(shareReplay(1)),
-                                          this.profileCtrl.valueChanges.pipe(shareReplay(1)))
-                            .pipe(
-                                    filter(([deployment, profile]) => !!deployment && !!profile),
-                                    mergeMap(([deployment, profile]) => this.deploymentService.getCredsForDeployment(deployment, profile)));
+        this.defaultCreds = combineLatest([
+            this.deploymentCtrl.valueChanges.pipe(shareReplay(1)),
+            this.profileCtrl.valueChanges.pipe(shareReplay(1))
+        ])
+            .pipe(
+                filter(([deployment, profile]) => !!deployment && !!profile),
+                mergeMap(([deployment, profile]) => this.deploymentService.getCredsForDeployment(deployment, profile)));
     }
 
     ngOnInit() {

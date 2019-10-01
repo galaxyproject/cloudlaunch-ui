@@ -17,9 +17,7 @@ import { CloudDeploymentTarget } from '../../../shared/models/deployment';
 @Component({
     selector: 'clui-cloudman-config',
     templateUrl: './cloudman.component.html',
-    providers: [CloudService],
-    // tslint:disable-next-line:use-input-property-decorator
-    inputs: ['target', 'initialConfig']
+    providers: [CloudService]
 })
 
 export class CloudManConfigComponent extends BasePluginComponent implements OnDestroy {
@@ -52,6 +50,16 @@ export class CloudManConfigComponent extends BasePluginComponent implements OnDe
 
     get configName(): string {
         return 'config_cloudman';
+    }
+
+    @Input()
+    public set target(value: any) {
+        super.target = value;
+    }
+
+    @Input()
+    public set initialConfig(value: any) {
+        super.initialConfig = value;
     }
 
     constructor(fb: FormBuilder, @Host() parentContainer: FormGroupDirective,
