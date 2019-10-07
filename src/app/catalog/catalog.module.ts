@@ -23,6 +23,7 @@ import { ApplianceDetailPageComponent } from './components/appliance-detail-page
 import { ApplianceDetailControlComponent } from './components/appliance-detail-control/appliance-detail-control.component';
 import { AppPlaceHolderComponent } from './components/appliance-detail-control/app-placeholder.component';
 import { CloudLaunchConfigControlComponent } from './components/cloudlaunch-config-control/cloudlaunch-config-control.component';
+import { HostnameSelectorComponent } from './components/hostname-selector-control/hostname-selector.component';
 import { CatalogRoutingModule } from './catalog-routing.module';
 import { MyProfileModule } from '../my-profile/my-profile.module';
 import { PluginsModule } from './plugins/plugins.module';
@@ -56,7 +57,7 @@ import { ProfileService } from '../shared/services/profile.service';
     ],
     declarations: [
         CatalogPageComponent, CatalogListComponent, ApplianceDetailPageComponent, ApplianceDetailControlComponent,
-        AppPlaceHolderComponent, CloudLaunchConfigControlComponent
+        AppPlaceHolderComponent, CloudLaunchConfigControlComponent, HostnameSelectorComponent
     ],
     providers: [ApplicationService, DeploymentService, CloudService, ProfileService]
 })

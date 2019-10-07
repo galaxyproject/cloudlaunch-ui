@@ -16,7 +16,7 @@
         <mat-slide-toggle (change)="toggleAdvanced()">Advanced options</mat-slide-toggle>
     </div>
 
-    <div [hidden]="!showAdvanced">
+    <div *ngIf="!showAdvanced">
         <mat-slide-toggle formControlName="pulsarOnly">Setup CloudMan with Pulsar only</mat-slide-toggle>
     </div>
 </div>

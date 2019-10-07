@@ -1,0 +1,46 @@
+<div [formGroup]="hostnameForm" class="form-group">
+    <div class='form-group full-width-container'>
+        <label>Hostname for this instance</label>
+        <mat-radio-group class="radio-group-horizontal" [formControl]="hostnameTypeCtrl">
+            <mat-radio-button value="none">None</mat-radio-button>
+            <mat-radio-button value="cloud_dns">Use Cloud DNS</mat-radio-button>
+            <mat-radio-button value="manual">Manually specify hostname</mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+    <div *ngIf="hostnameTypeCtrl.value" [ngSwitch]="hostnameTypeCtrl.value">
+        <div *ngSwitchCase="'none'" class='form-group full-width-container'>
+            <p>No hostname. The instance's public ip must be used to access this instance.</p>
+        </div>
+        <div *ngSwitchCase="'cloud_dns'" class='form-group full-width-container'>
+            <mat-form-field>
+                <mat-select id="id_host_dns" [formControl]="dnsZoneCtrl">
+                    <mat-option *ngFor="let dnsZone of dnsZoneObs | async" [value]="dnsZone">
+                        {{ dnsZone.name }} <span *ngIf="dnsZone.admin_email">({{ dnsZone.admin_email }})</span>
+                    </mat-option>
+                </mat-select>
+                <mat-placeholder>
+                    <i *ngIf="dnsZoneHelp.includes('Retrieving')" class="fa fa-spinner fa-spin fa-fw"></i>
+                    {{ dnsZoneHelp }}
+                </mat-placeholder>
+                <mat-error *ngIf="dnsZoneCtrl.hasError('required')">A Host Zone is <strong>required</strong></mat-error>
+                <mat-hint>A dns A record will be automatically created in the selected zone and mapped to this instance's IP.</mat-hint>
+            </mat-form-field>
+            <mat-form-field *ngIf="dnsZoneCtrl.value">
+                <input matInput type="text" placeholder="What subdomain would you like to use for this instance?" [formControl]="dnsRecordCtrl" />
+                <mat-hint>Leave this field blank to create the A record directly under the host zone.</mat-hint>
+                <span matSuffix>.{{ dnsZoneCtrl.value?.name }}</span>
+            </mat-form-field>
+        </div>
+        <div *ngSwitchCase="'manual'" class='form-group full-width-container'>
+            <mat-form-field>
+                <input matInput type="text" placeholder="What hostname would you like to use for this instance?" [formControl]="manualHostnameCtrl" />
+                <mat-error *ngIf="manualHostnameCtrl.hasError('required')">A hostname is
+                    <strong>required</strong>
+                </mat-error>
+                <mat-hint>You will have to manually assign a hostname to point to this instance's IP prior to launch.
+                    We recommend pre-selecting a Floating IP in CloudLaunch options so that the DNS can be preconfigured.</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+</div>

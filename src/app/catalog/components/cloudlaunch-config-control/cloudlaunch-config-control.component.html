@@ -72,6 +72,10 @@
         </mat-form-field>
     </div>
 
+    <div class='form-group full-width-container'>
+        <clui-hostname-selector [formControl]="hostnameCtrl" [target]="target" [credentials]="credentials"></clui-hostname-selector>
+    </div>
+
     <div class="form-group label-floating is-empty">
         <mat-slide-toggle (change)="toggleAdvanced()">Advanced cloud launch options</mat-slide-toggle>
     </div>

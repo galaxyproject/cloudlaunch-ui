@@ -14,6 +14,7 @@ import { Network } from '../models/cloud';
 import { SubNet } from '../models/cloud';
 import { Gateway } from '../models/cloud';
 import { StaticIP } from '../models/cloud';
+import { DnsZone } from '../models/cloud';
 import { CloudManCluster } from '../models/cloud';
 import { QueryResult } from '../models/query';
 
@@ -95,9 +96,17 @@ export class CloudService {
 
     public getStaticIPs(cloud_id: string, region_id: string, zone_id: string, network_id: string,
                         gateway_id: string): Observable<StaticIP[]> {
-        console.log('network_id: ' + network_id + ', gateway_id: ' + gateway_id);
+        // console.log('network_id: ' + network_id + ', gateway_id: ' + gateway_id);
         return this.http.get<QueryResult<StaticIP>>(
             `${this.getZoneEndpoint(cloud_id, region_id, zone_id)}/networking/networks/${network_id}/gateways/${gateway_id}/floating_ips/`)
+            .pipe(
+                    map(qr => qr.results),
+                    catchError(this.handleError));
+    }
+
+    public getDnsZones(cloud_id: string, region_id: string, zone_id: string): Observable<DnsZone[]> {
+        return this.http.get<QueryResult<DnsZone>>(
+            `${this.getZoneEndpoint(cloud_id, region_id, zone_id)}/dns/dns_zones/`)
             .pipe(
                     map(qr => qr.results),
                     catchError(this.handleError));

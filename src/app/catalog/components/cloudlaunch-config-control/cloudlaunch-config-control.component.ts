@@ -63,6 +63,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
     subnetCtrl = new FormControl('');
     gatewayCtrl = new FormControl('');
     staticIpCtrl = new FormControl('');
+    hostnameCtrl: FormControl = new FormControl('', Validators.required);
 
     // Observables
     // placementObs: Observable<PlacementZone[]>;
@@ -93,6 +94,7 @@ export class CloudLaunchConfigControlComponent extends BasePluginComponent imple
         super(fb, parentContainer);
         this.cloudLaunchForm = fb.group({
             'vmType': this.vmTypeCtrl,
+            'hostnameConfig': this.hostnameCtrl,
             'rootStorageType': this.rootStorageTypeCtrl,
             'rootStorageSize': this.rootStorageSizeCtrl,
             // 'placementZone': this.placementCtrl,

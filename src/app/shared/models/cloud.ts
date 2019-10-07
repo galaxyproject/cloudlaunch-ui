@@ -76,10 +76,17 @@ export interface Gateway {
     id: string;
     name: string;
 }
+
 export interface StaticIP {
     id: string;
     ip: string;
     state: string;
+}
+
+export interface DnsZone {
+    id: string;
+    name: string;
+    admin_email: string;
 }
 
 export interface CloudManCluster {
