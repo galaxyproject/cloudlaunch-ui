@@ -15,9 +15,9 @@ import {DnsZone, VmType} from '../../../shared/models/cloud';
 
 // Services
 import { CloudService } from '../../../shared/services/cloud.service';
-import {merge, Observable} from "rxjs";
-import {filter, map, shareReplay, switchMap, tap, startWith} from "rxjs/operators";
-import {Credentials} from "../../../shared/models/profile";
+import {merge, Observable} from 'rxjs';
+import {filter, map, shareReplay, switchMap, tap, startWith} from 'rxjs/operators';
+import {Credentials} from '../../../shared/models/profile';
 
 
 const HOSTNAME_SELECT_CONTROL_ACCESSOR = {
