@@ -1,11 +1,11 @@
 #########################
 ### build environment ###
 ### Ref: https://github.com/avatsaev/angular4-docker-example
-### http://mherman.org/blog/2018/02/26/dockerizing-an-angular-app/#.WuLSdNNuaL4 
+### http://mherman.org/blog/2018/02/26/dockerizing-an-angular-app/#.WuLSdNNuaL4
 #########################
 
 # base image
-FROM node:9.6.1 as builder
+FROM node:11.0.0 as builder
 
 # set working directory
 RUN mkdir /app
