@@ -42,7 +42,8 @@
     <span *ngIf="deployment.latest_task?.status == 'SUCCESS' &&
                  deployment.latest_task?.action !== 'DELETE' &&
                  deployment.latest_task?.result?.instance_status !== 'unknown' &&
-                 deployment.latest_task?.result?.instance_status !== 'deleted'; else dimBlock">
+                 deployment.latest_task?.result?.instance_status !== 'deleted' &&
+                 deployment.latest_task?.result?.instance_status !== 'not_found'; else dimBlock">
         <a *ngIf="deployment.launch_task?.result?.cloudLaunch?.applicationURL?.length; else ipBlock"
          class="btn-link" href="{{ deployment.launch_task?.result?.cloudLaunch?.applicationURL }}" target="_blank">
             <span>{{ deployment.launch_task?.result?.cloudLaunch?.applicationURL }}</span>
@@ -63,7 +64,7 @@
 </td>
 <td>
   <div class="btn-group" style="margin-top: 0px" role="group" aria-label="Actions">
-    <button *ngIf="defaultCreds | async as credentials" class="btn btn-secondary pill" type="button" (click)="runTask(deployment, 'HEALTH_CHECK')" [disabled]="isLatestTaskRunning()" matTooltip="Run Health Check">
+    <button *ngIf="defaultCreds" class="btn btn-secondary pill" type="button" (click)="runTask(deployment, 'HEALTH_CHECK')" [disabled]="isLatestTaskRunning()" matTooltip="Run Health Check">
         <i class="fa fa-refresh"></i>
     </button>
     <button type="button" class="btn btn-secondary pill" (click)="openArchiveConfirmDialog(deployment)" [disabled]="isLatestTaskRunning()" matTooltip="Archive/Delete">
