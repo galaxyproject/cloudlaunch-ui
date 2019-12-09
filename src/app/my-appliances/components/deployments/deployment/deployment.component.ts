@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NgSwitch, NgSwitchDefault } from '@angular/common';
 import { FormControl } from '@angular/forms';
 
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import { Observable, Subscription, combineLatest, merge } from 'rxjs';
 import { map, mergeMap, filter, shareReplay } from 'rxjs/operators';
 
 import * as moment from 'moment';
@@ -75,10 +75,13 @@ export class DeploymentComponent implements OnInit, OnDestroy {
     // information was over 10 minutes ago, then automatically kick off a
     // HEALTH_CHECK task
     initializeAutomaticHealthCheck() {
-        return this.defaultCreds.subscribe(credentials => {
+        return merge(this.defaultCreds, this.currentTimer).subscribe(credentials => {
             if (credentials) {
                 const latest_task = this.deployment.latest_task;
-                if (latest_task.status !== 'PENDING' && latest_task.status !== 'PROGRESSING' && latest_task.action !== 'DELETE') {
+                if (latest_task.status !== 'PENDING' && latest_task.status !== 'PROGRESSING' && latest_task.action !== 'DELETE'
+                    && latest_task.result.instance_status !== 'unknown' && latest_task.result.instance_status !== 'deleted'
+                    && latest_task.result.instance_status !== 'not_found') {
+
                     const addedMoment = moment(latest_task.added);
                     if (addedMoment.isBefore(moment().subtract(AUTOMATIC_HEALTH_CHECK_MINUTES, 'minutes'))) {
                         this.runTask(this.deployment, 'HEALTH_CHECK');
