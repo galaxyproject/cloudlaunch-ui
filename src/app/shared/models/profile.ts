@@ -18,6 +18,7 @@ export class OpenStackCredentials extends Credentials {
     os_username: string;
     os_password: string;
     os_project_name: string;
+    os_project_domain_id: string;
     os_project_domain_name: string;
     os_user_domain_name: string;
     os_identity_api_version: string;

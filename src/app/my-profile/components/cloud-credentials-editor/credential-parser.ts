@@ -81,8 +81,8 @@ export class CredentialParser {
         creds.os_username = CredentialParser.extractValueByKey('OS_USERNAME', content);
         creds.os_password = CredentialParser.extractValueByKey('OS_PASSWORD', content);
         creds.os_user_domain_name = CredentialParser.extractValueByKey('OS_USER_DOMAIN_NAME', content);
-        creds.os_project_domain_name = CredentialParser.extractValueByKey('OS_PROJECT_DOMAIN_NAME', content) ||
-                                    CredentialParser.extractValueByKey('OS_PROJECT_DOMAIN_ID', content);
+        creds.os_project_domain_id = CredentialParser.extractValueByKey('OS_PROJECT_DOMAIN_ID', content);
+        creds.os_project_domain_name = CredentialParser.extractValueByKey('OS_PROJECT_DOMAIN_NAME', content);
 
         callback(creds);
     }

@@ -102,6 +102,7 @@ export function addCredentialHeaders(headers: any, credentials: Credentials) {
                 headers['cl-os-username'] = os_creds.os_username;
                 headers['cl-os-password'] = os_creds.os_password;
                 headers['cl-os-project-name'] = os_creds.os_project_name;
+                headers['cl-os-project-domain-id'] = os_creds.os_project_domain_id;
                 headers['cl-os-project-domain-name'] = os_creds.os_project_domain_name;
                 headers['cl-os-user-domain-name'] = os_creds.os_user_domain_name;
                 break;

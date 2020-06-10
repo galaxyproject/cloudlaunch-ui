@@ -41,6 +41,7 @@ export class OpenStackCredEditorComponent implements ControlValueAccessor, Valid
     usernameCtrl: FormControl = new FormControl(null, Validators.required);
     passwordCtrl: FormControl = new FormControl(null, Validators.required);
     projectNameCtrl: FormControl = new FormControl(null, Validators.required);
+    projectDomainIdCtrl: FormControl = new FormControl(null);
     projectDomainNameCtrl: FormControl = new FormControl(null);
     userDomainNameCtrl: FormControl = new FormControl(null);
 
@@ -92,6 +93,7 @@ export class OpenStackCredEditorComponent implements ControlValueAccessor, Valid
             'os_username': this.usernameCtrl,
             'os_password': this.passwordCtrl,
             'os_project_name': this.projectNameCtrl,
+            'os_project_domain_id': this.projectDomainIdCtrl,
             'os_project_domain_name': this.projectDomainNameCtrl,
             'os_user_domain_name': this.userDomainNameCtrl,
         });
