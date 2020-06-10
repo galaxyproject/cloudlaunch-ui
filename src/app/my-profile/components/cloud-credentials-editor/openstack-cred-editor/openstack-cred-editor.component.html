@@ -34,6 +34,15 @@
         </div>
 
         <ng-container *ngIf="cloud?.identity_api_version != 'v2.0'">
+            <!-- Project domain id -->
+            <div class="form-group full-width-container">
+                <mat-form-field>
+                    <input matInput id="id_project_domain_id" type="text"
+                    placeholder="What is your OpenStack Project Domain ID?"
+                    formControlName="os_project_domain_id" />
+                    <mat-hint>Your OpenStack Project Domain ID (required to access some OpenStack clouds).</mat-hint>
+                </mat-form-field>
+            </div>
             <!-- Project domain name -->
             <div class="form-group full-width-container">
                 <mat-form-field>
