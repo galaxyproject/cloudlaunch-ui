@@ -4,29 +4,47 @@
 cloudlaunch-ui
 ==============
 
-A user interface for the `CloudLaunch app`_.
+A web user interface for the `CloudLaunch application`_. CloudLaunch is a
+ReSTful, extensible Django app for discovering and launching applications on
+cloud, container, or local infrastructure. A live version is available at
+https://launch.usegalaxy.org/.
 
-A public server can be accessed at https://beta.launch.usegalaxy.org/.
+More documentation about CloudLaunch is available at
+https://cloudlaunch.readthedocs.io/.
 
-Setup development environment
------------------------------
+Installation
+------------
+
+The recommended  method for installing CloudLaunch is via its Helm chart
+https://github.com/cloudve/cloudlaunch-helm.
+
+For a local installation of a development server, run the following.
+
+1. Clone the repository
+
+.. code-block:: bash
+
+    $ git clone https://github.com/galaxyproject/cloudlaunch-ui.git
+    $ cd cloudlaunch-ui
+
+2. Install required libraries
 
 Make sure you have ``node`` (version 6.*) installed. Then install
 dependencies with the following commands:
 
 .. code-block:: bash
 
-    # Install typescript development support if necessary
+    # Install typescript development support
     npm install -g tsd
     # Install angular-cli
     npm install -g @angular/cli
     # Install dependencies
     npm install
 
-Start the development server
-----------------------------
+Running the development server
+------------------------------
 
-To start the dev server, run:
+To start the development server, run:
 
 .. code-block:: bash
 
@@ -38,7 +56,7 @@ Access the server at ``http://localhost:4200/``. The app will
 automatically reload if you change any of the source files.
 
 Alongside this development server, it’s necessary to run the CloudLaunch
-app (see `README`_ for the app); default assumes the CloudLaunch app
+app (see `README`_ for it); default assumes the CloudLaunch app
 runs on ``127.0.0.1:8000``.
 
 Code scaffolding
@@ -67,7 +85,7 @@ Run ``ng e2e`` to execute the end-to-end tests via `Protractor`_. Before
 running the tests make sure you are serving the app via ``ng serve``.
 
 
-.. _CloudLaunch app: https://github.com/galaxyproject/cloudlaunch/
+.. _CloudLaunch application: https://github.com/galaxyproject/cloudlaunch/
 .. _README: https://github.com/galaxyproject/cloudlaunch/blob/dev/README.rst
 .. _Karma: https://karma-runner.github.io
 .. _Protractor: http://www.protractortest.org/
