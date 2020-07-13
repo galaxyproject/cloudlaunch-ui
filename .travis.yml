@@ -6,11 +6,7 @@ node_js:
   - '10.9.0'
 
 addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
+  chrome: stable
 
 before_install:
   - export CHROME_BIN=chromium-browser
@@ -21,7 +17,7 @@ before_script:
   - yarn global add @angular/cli
   - yarn install
 
-script: 
+script:
   - ng lint
   - yarn buildprod
   - ng e2e
