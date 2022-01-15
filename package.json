@@ -30,7 +30,7 @@
     "@types/marked": "^0.6.5",
     "bootstrap-material-design": "^0.5.10",
     "core-js": "^2.6.11",
-    "marked": "^0.7.0",
+    "marked": "^4.0.10",
     "moment": "^2.24.0",
     "ngx-clipboard": "^12.3.0",
     "ngx-markdown": "^8.2.1",
