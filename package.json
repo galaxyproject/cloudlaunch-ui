@@ -35,7 +35,7 @@
     "ngx-clipboard": "^12.3.0",
     "ngx-markdown": "^8.2.1",
     "ngx-order-pipe": "^2.0.4",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "rxjs": "^6.5.3",
     "rxjs-tslint": "^0.1.7",
     "ts-helpers": "^1.1.2",
